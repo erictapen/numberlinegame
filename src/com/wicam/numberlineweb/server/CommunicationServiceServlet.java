@@ -375,26 +375,42 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = getGameById(gameid);
-
+		
 		if (playerid == 1){
-			//save position for player 1
-			g.setPlayerActPos(1,clickedAt);
-			g.setPlayerAclicked(true);
-			// change state if waiting for other player
-			if (!g.isPlayerBclicked()){
+			int posOtherPlayer = g.getPlayerActPos(2);
+			System.out.println(clickedAt + "\t" + posOtherPlayer);
+			if (Math.abs(clickedAt - posOtherPlayer) < 12){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
+			}
+			else {
+				//save position for player 1
+				g.setPlayerActPos(1,clickedAt);
+				g.setPlayerAclicked(true);
+				// change state if waiting for other player
+				if (!g.isPlayerBclicked()){
+					setGameState(getGameById(gameid),4);
+					this.setChanged(gameid);
+				}
 			}
 		}
 
 		if (playerid == 2){
-			//save position for player 1
-			g.setPlayerActPos(2,clickedAt);
-			g.setPlayerBclicked(true);
-			// change state if waiting for other player
-			if (!g.isPlayerAclicked()){
+			int posOtherPlayer = g.getPlayerActPos(1);
+			System.out.println(clickedAt + "\t" + posOtherPlayer);
+			if (Math.abs(clickedAt - posOtherPlayer) < 12){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
+			}
+			else {
+				//save position for player 1
+				g.setPlayerActPos(2,clickedAt);
+				g.setPlayerBclicked(true);
+				// change state if waiting for other player
+				if (!g.isPlayerAclicked()){
+					setGameState(getGameById(gameid),4);
+					this.setChanged(gameid);
+				}
 			}
 		}
 
@@ -439,9 +455,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 				getGameById(gameid).setWinnerOfLastRound(2);	
 				getGameById(gameid).setPlayerPoints(2,getGameById(gameid).getPlayerPoints(2) +1);
 				System.out.println("Spieler B hat gewonnen");
-
 			}
-
+			
 			//restart 			
 			startGame(gameid);
 
