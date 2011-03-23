@@ -190,19 +190,57 @@ public class NumberLineGameCoordinator {
 			gameView.setRightNumber(g.getRightNumber());
 			gameView.setExerciseNumber(g.getExerciseNumber());
 			// TODO Umlaute
-			gameView.setInfoText("Mache deine Schaetzung!");
+			if (g.isPlayerAready() && g.isPlayerBready())
+				gameView.setInfoText("Mache deine Schaetzung!");
+			else
+				// info that we wait for the other player
+				gameView.setInfoText("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
 			break;
 
 		//started, next player
 		case 4:
-			System.out.println(playerID + "\t" + g.isPlayerAclicked() + "\t" + g.isPlayerBclicked());
-			if (this.playerID == 2 && g.isPlayerBclicked()) {
-				//gameView.setEnemyPointer(g.getPlayerActPos(2));
-				gameView.setInfoText("Warte auf " + g.getPlayerName(1) + "!");
+			if (this.playerID == 1){
+				if(g.isPlayerBclicked()) {
+					gameView.setEnemyPointer(g.getPlayerActPos(2));
+				}
+				if(g.isPlayerAclicked()){
+					// if server has been asked, if the position is available, pointer has not been drawn
+					gameView.setInfoText("Warte auf " + g.getPlayerName(2) + "!");
+					gameView.setOwnPointer(g.getPlayerActPos(1));
+				}
+				else {
+					// if position was not available, player gets a second chance
+					System.out.println(sessionClicked + "\t" + 2);
+					if (sessionClicked){
+						gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
+						sessionClicked = false;
+					}
+					else{
+						gameView.setInfoText("Mache deine Schaetzung!");
+					}
+				}
 			}
-			if (this.playerID == 1 && g.isPlayerAclicked()) {
-				//gameView.setEnemyPointer(g.getPlayerActPos(1));
-				gameView.setInfoText("Warte auf " + g.getPlayerName(2) + "!");
+			
+			if (this.playerID == 2){
+				if(g.isPlayerAclicked()) {
+					gameView.setEnemyPointer(g.getPlayerActPos(1));
+				}
+				if(g.isPlayerBclicked()){
+					// if server has been asked, if the position is available, pointer has not been drawn
+					gameView.setInfoText("Warte auf " + g.getPlayerName(1) + "!");
+					gameView.setOwnPointer(g.getPlayerActPos(2));
+				}
+				else {
+					System.out.println(sessionClicked + "\t" + 2);
+					if (sessionClicked){
+						// if position was not available, player gets a second chance
+						gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
+						sessionClicked = false;
+					}
+					else{
+						gameView.setInfoText("Mache deine Schaetzung!");
+					}
+				}
 			}
 			
 			break;
@@ -211,12 +249,14 @@ public class NumberLineGameCoordinator {
 		case 5:
 
 			if (this.playerID == 2) {
+				gameView.setOwnPointer(g.getPlayerActPos(2));
 				gameView.setEnemyPointer(g.getPlayerActPos(1));
 				gameView.showPointerText(g.getPlayerActPos(this.playerID),openGame.getExerciseNumber());
 				gameView.showEnemyPointerText(g.getPlayerActPos(1),openGame.getExerciseNumber());
 				gameView.setEnemyPoints(g.getPlayerPoints(1),g.getPlayerName(1));
 				gameView.setPoints(g.getPlayerPoints(this.playerID),g.getPlayerName(2));
 			}else{
+				gameView.setOwnPointer(g.getPlayerActPos(1));
 				gameView.setEnemyPointer(g.getPlayerActPos(2));
 				gameView.showPointerText(g.getPlayerActPos(this.playerID),openGame.getExerciseNumber());
 				gameView.showEnemyPointerText(g.getPlayerActPos(2),openGame.getExerciseNumber());
@@ -235,8 +275,7 @@ public class NumberLineGameCoordinator {
 			}
 
 			break;
-			
-		}
+		}	
 		
 		if (g.getState() == 100 - ((this.playerID % 2) +1)) {
 			
@@ -269,21 +308,31 @@ public class NumberLineGameCoordinator {
 
 	public void clickAt(int x) {
 
-		//if (((openGame.getState() == 3 && this.playerID ==1) ||
-		//		(openGame.getState() == 4 && this.playerID ==2))&&
-		//		!sessionClicked) {
 		if (openGame.isPlayerAready() && openGame.isPlayerBready() &&
 				(openGame.getState() == 3 || openGame.getState() == 4) && 
 				!sessionClicked){
+			this.sessionClicked = true;
 			
-			sessionClicked = true;
-
-			gameView.setOwnPointer(x);
-
-			commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), dummyCallback); 
+			// check if other player's position has already been displayed
+			int posOtherPlayer = openGame.getPlayerActPos(playerID%2+1);
+			
+			// ask server if it is available
+			if (posOtherPlayer == Integer.MIN_VALUE){
+				gameView.setInfoText("Ueberpruefe, ob Position verfuegbar!");
+				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), dummyCallback);
+			}
+			else {
+				// it has been already displayed. Thus, we don't have to communicate with the server
+				if (Math.abs(x - posOtherPlayer) < 12){
+					this.sessionClicked = false;
+					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
+				}
+				else {
+					gameView.setOwnPointer(x);
+					commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), dummyCallback);
+				}
+			}
 		}
-		//}
-
 	}
 
 	public String escapeString(String str) {
