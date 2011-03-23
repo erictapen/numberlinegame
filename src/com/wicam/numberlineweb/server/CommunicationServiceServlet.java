@@ -369,7 +369,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	 * <gameid>:<playerid>:<clickPosition>
 	 */
 	@Override
-	public boolean clickedAt(String clicked) {
+	public NumberLineGameState clickedAt(String clicked) {
 
 		int playerid = Integer.parseInt(clicked.split(":")[1]);
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -462,14 +462,14 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		}
 
-		return true;
+		return getGameById(gameid);
 	}
 
 	/**
 	 * TODO: there must be a better solution...
 	 * <gameid>:<playerid>
 	 */
-	public boolean updateReadyness(String ids) {
+	public NumberLineGameState updateReadyness(String ids) {
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		NumberLineGameState g = getGameById(gameid);
@@ -478,7 +478,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		if (playerid == 2)
 			g.setPlayerBready(true);
 		this.setChanged(gameid);
-		return true;
+		return getGameById(gameid);
 	}
 
 	/**
