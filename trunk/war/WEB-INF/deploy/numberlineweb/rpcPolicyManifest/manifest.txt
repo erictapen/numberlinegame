@@ -1,0 +1,3 @@
+# Module numberlineweb
+# RPC service class, partial path of RPC policy file
+com.wicam.numberlineweb.client.CommunicationService, F3A21D377BA5C9C172F2B28ECDE4AC84.gwt.rpc
