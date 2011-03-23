@@ -19,9 +19,9 @@ public interface CommunicationService extends RemoteService {
 
 	public String joinGame(String id);
 
-	public boolean clickedAt(String clicked);
+	public NumberLineGameState clickedAt(String clicked);
 	
-	public boolean updateReadyness(String s);
+	public NumberLineGameState updateReadyness(String s);
 
 	public NumberLineGameState update(String ids);
 
