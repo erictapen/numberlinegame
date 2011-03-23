@@ -183,18 +183,14 @@ public class NumberLineGameCoordinator {
 		//started
 		case 3:
 			gameView.clear();
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), updateCallback);
 			sessionClicked=false;
 
 			gameView.setLeftNumber(g.getLeftNumber());
 			gameView.setRightNumber(g.getRightNumber());
 			gameView.setExerciseNumber(g.getExerciseNumber());
 			// TODO Umlaute
-			if (g.isPlayerAready() && g.isPlayerBready())
-				gameView.setInfoText("Mache deine Schaetzung!");
-			else
-				// info that we wait for the other player
-				gameView.setInfoText("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
+			gameView.setInfoText("Mache deine Schaetzung!");
 			break;
 
 		//started, next player
@@ -318,8 +314,7 @@ public class NumberLineGameCoordinator {
 			
 			// ask server if it is available
 			if (posOtherPlayer == Integer.MIN_VALUE){
-				gameView.setInfoText("Ueberpruefe, ob Position verfuegbar!");
-				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), dummyCallback);
+				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 			}
 			else {
 				// it has been already displayed. Thus, we don't have to communicate with the server
@@ -329,7 +324,7 @@ public class NumberLineGameCoordinator {
 				}
 				else {
 					gameView.setOwnPointer(x);
-					commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), dummyCallback);
+					commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 				}
 			}
 		}
