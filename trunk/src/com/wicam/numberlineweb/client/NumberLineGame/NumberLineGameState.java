@@ -21,8 +21,8 @@ public class NumberLineGameState implements Serializable{
 	private int playerApoints=0;
 	private int playerBpoints=0;
 
-	private int playerAactPos;
-	private int playerBactPos;
+	private int playerAactPos = Integer.MIN_VALUE;
+	private int playerBactPos = Integer.MIN_VALUE;
 
 	private int winnerOfLastRound;
 	

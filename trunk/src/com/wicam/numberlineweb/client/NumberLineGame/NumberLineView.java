@@ -77,8 +77,8 @@ public class NumberLineView extends Composite  {
 		canvas.closePath();
 		canvas.stroke();
 
-		pointer.setHTML("<div style='width:6px;height:30px;background-color:blue'></div>");
-		pointerEnemy.setHTML("<div style='width:6px;height:30px;background-color:red'></div>");
+		pointer.setHTML("<div style='width:12px;height:30px;background-color:blue'></div>");
+		pointerEnemy.setHTML("<div style='width:12px;height:30px;background-color:red'></div>");
 
 		points.setHTML("<div style='font-size:30px;color:blue'></div>");
 		enemyPoints.setHTML("<div style='width:50px;text-align:right;font-size:30px;color:red'></div>");

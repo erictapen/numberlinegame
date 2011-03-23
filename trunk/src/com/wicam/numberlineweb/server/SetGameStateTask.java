@@ -18,6 +18,10 @@ public class SetGameStateTask extends TimerTask {
 
 	@Override
 	public void run() {
+		// reset clicked pos
+		s.getGameById(gameid).setPlayerActPos(1, Integer.MIN_VALUE);
+		s.getGameById(gameid).setPlayerActPos(2, Integer.MIN_VALUE);
+		
 		s.setGameState(s.getGameById(gameid), state);
 	}
 
