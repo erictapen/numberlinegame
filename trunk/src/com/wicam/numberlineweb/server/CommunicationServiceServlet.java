@@ -51,10 +51,6 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	private void startGame(int id) {
 
-		NumberLineGameState game = getGameById(id);
-
-		newNumbers(game);
-
 		Timer t = new Timer();
 
 		//wait 6 seconds for users to be ready
@@ -67,7 +63,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	 * Calculate new number & new exercise
 	 * @param game
 	 */
-	private void newNumbers(NumberLineGameState game) {
+	void newNumbers(NumberLineGameState game) {
 
 		int leftNumber;
 		int rightNumber;
@@ -369,14 +365,14 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	 * <gameid>:<playerid>:<clickPosition>
 	 */
 	@Override
-	public NumberLineGameState clickedAt(String clicked) {
+	synchronized public NumberLineGameState clickedAt(String clicked) {
 
 		int playerid = Integer.parseInt(clicked.split(":")[1]);
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = getGameById(gameid);
 		
-		if (playerid == 1){
+		if (playerid == 1 && !g.isPlayerAclicked()){
 			int posOtherPlayer = g.getPlayerActPos(2);
 			System.out.println(clickedAt + "\t" + posOtherPlayer);
 			if (Math.abs(clickedAt - posOtherPlayer) < 12){
@@ -395,7 +391,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			}
 		}
 
-		if (playerid == 2){
+		if (playerid == 2 && !g.isPlayerBclicked()){
 			int posOtherPlayer = g.getPlayerActPos(1);
 			System.out.println(clickedAt + "\t" + posOtherPlayer);
 			if (Math.abs(clickedAt - posOtherPlayer) < 12){

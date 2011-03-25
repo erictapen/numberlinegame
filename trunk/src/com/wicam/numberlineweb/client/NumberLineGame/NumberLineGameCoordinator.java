@@ -206,7 +206,6 @@ public class NumberLineGameCoordinator {
 				}
 				else {
 					// if position was not available, player gets a second chance
-					System.out.println(sessionClicked + "\t" + 2);
 					if (sessionClicked){
 						gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
 						sessionClicked = false;
@@ -227,7 +226,6 @@ public class NumberLineGameCoordinator {
 					gameView.setOwnPointer(g.getPlayerActPos(2));
 				}
 				else {
-					System.out.println(sessionClicked + "\t" + 2);
 					if (sessionClicked){
 						// if position was not available, player gets a second chance
 						gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
@@ -243,7 +241,8 @@ public class NumberLineGameCoordinator {
 
 		//evaluation, who has won?
 		case 5:
-
+			System.out.println("both clicked:\t" + g.getPlayerActPos(1) + "\t" + g.getPlayerActPos(2));
+			System.out.println("exercise number:\t" + openGame.getExerciseNumber());
 			if (this.playerID == 2) {
 				gameView.setOwnPointer(g.getPlayerActPos(2));
 				gameView.setEnemyPointer(g.getPlayerActPos(1));
