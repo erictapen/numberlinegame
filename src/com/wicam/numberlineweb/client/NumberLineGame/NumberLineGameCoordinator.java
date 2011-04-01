@@ -180,10 +180,18 @@ public class NumberLineGameCoordinator {
 			gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
 			break;
 
+		case 21:
+			
+			//start is pending. I am ready!
+			if (!openGame.isPlayerReady(this.playerID)) {
+				GWT.log("pending... sending ready!");
+				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), updateCallback);
+			}
+			break;
+			
 		//started
 		case 3:
 			gameView.clear();
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), updateCallback);
 			sessionClicked=false;
 
 			gameView.setLeftNumber(g.getLeftNumber());
@@ -303,8 +311,7 @@ public class NumberLineGameCoordinator {
 
 	public void clickAt(int x) {
 
-		if (openGame.isPlayerAready() && openGame.isPlayerBready() &&
-				(openGame.getState() == 3 || openGame.getState() == 4) && 
+		if ((openGame.getState() == 3 || openGame.getState() == 4) && 
 				!sessionClicked){
 			this.sessionClicked = true;
 			

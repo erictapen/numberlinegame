@@ -246,19 +246,16 @@ public class NumberLineGameState implements Serializable{
 		return playerBclicked;
 	}
 
-	public void setPlayerAready(boolean playerAready) {
-		this.playerAready = playerAready;
+	public void setPlayerReady(int id,boolean playerReady) {
+		if (id == 1) this.playerAready = playerReady;
+		if (id == 2) this.playerBready = playerReady;
 	}
 
-	public boolean isPlayerAready() {
-		return playerAready;
+	public boolean isPlayerReady(int id) {
+		if (id == 1) return playerBready;
+		if (id == 2) return playerBready;
+		return false;
 	}
 
-	public void setPlayerBready(boolean playerBready) {
-		this.playerBready = playerBready;
-	}
-
-	public boolean isPlayerBready() {
-		return playerBready;
-	}
+	
 }

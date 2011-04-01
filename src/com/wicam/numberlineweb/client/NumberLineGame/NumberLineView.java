@@ -30,8 +30,8 @@ public class NumberLineView extends Composite  {
 	
 	final HTML labelLeft = new HTML();
 	final HTML labelRight = new HTML();
-	final HTML pointer = new HTML();
-	final HTML pointerEnemy = new HTML();
+	final HTML pointer = new NumberLineGamePointer(22,"blue");
+	final HTML pointerEnemy = new NumberLineGamePointer(22,"red");
 	final HTML pointerTextEnemy = new HTML();
 	final HTML pointerText = new HTML();
 	final HTML infoText = new HTML();
@@ -77,8 +77,6 @@ public class NumberLineView extends Composite  {
 		canvas.closePath();
 		canvas.stroke();
 
-		pointer.setHTML("<div style='width:12px;height:30px;background-color:blue'></div>");
-		pointerEnemy.setHTML("<div style='width:12px;height:30px;background-color:red'></div>");
 
 		points.setHTML("<div style='font-size:30px;color:blue'></div>");
 		enemyPoints.setHTML("<div style='width:50px;text-align:right;font-size:30px;color:red'></div>");
@@ -178,6 +176,16 @@ public class NumberLineView extends Composite  {
 
 	}
 
+	
+	public void setPointerSize(int width) {
+		
+		
+		
+		
+		
+		
+	}
+	
 
 	public void showPointerText(int x, int correct)  {
 
