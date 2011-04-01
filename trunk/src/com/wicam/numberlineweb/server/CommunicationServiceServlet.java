@@ -54,7 +54,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		Timer t = new Timer();
 
 		//wait 6 seconds for users to be ready
-		t.schedule(new SetGameStateTask(id, 3, this), 6000);
+		t.schedule(new SetGameStateTask(id, 21, this), 6000);
 
 
 	}
@@ -245,11 +245,9 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 			current = i.next();
 
-			System.out.println("++ " + current.getGameId() + " ++ " +  current.getPlayerId() );
-
+			
 			if (current.getGameId() == game && current.getPlayerId() == player) {
 
-				System.out.println("Player #" + player + " in game #" + game + " resetted.");
 				current.reset();
 				return;
 
@@ -374,7 +372,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		
 		if (playerid == 1 && !g.isPlayerAclicked()){
 			int posOtherPlayer = g.getPlayerActPos(2);
-			System.out.println(clickedAt + "\t" + posOtherPlayer);
+		
 			if (Math.abs(clickedAt - posOtherPlayer) < 12){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
@@ -393,7 +391,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		if (playerid == 2 && !g.isPlayerBclicked()){
 			int posOtherPlayer = g.getPlayerActPos(1);
-			System.out.println(clickedAt + "\t" + posOtherPlayer);
+			
 			if (Math.abs(clickedAt - posOtherPlayer) < 12){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
@@ -410,7 +408,6 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			}
 		}
 
-		System.out.println("KLICK: " + Integer.toString(clickedAt) +" / " +  Integer.toString(rawPosToReal(clickedAt,g)));
 		if (getGameById(gameid).isPlayerAclicked() && getGameById(gameid).isPlayerBclicked()){
 			setGameState(getGameById(gameid),5);
 
@@ -419,8 +416,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			g.setPlayerBclicked(false);
 
 			// reset ready state
-			g.setPlayerAready(false);
-			g.setPlayerBready(false);
+			g.setPlayerReady(1,false);
+			g.setPlayerReady(2,false);
 
 			//who has won?
 
@@ -461,6 +458,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		return getGameById(gameid);
 	}
 
+	
 	/**
 	 * TODO: there must be a better solution...
 	 * <gameid>:<playerid>
@@ -469,13 +467,18 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		NumberLineGameState g = getGameById(gameid);
-		if (playerid == 1)
-			g.setPlayerAready(true);
-		if (playerid == 2)
-			g.setPlayerBready(true);
-		this.setChanged(gameid);
+		
+			g.setPlayerReady(playerid,true);
+	
+		if (g.isPlayerReady(1) && g.isPlayerReady(2)) setGameState(g, 3);
+		
+		//we _dont_ update gamestatus here, because were already returning
+		//the new game state!
+		
 		return getGameById(gameid);
 	}
+	
+	
 
 	/**
 	 * converts a real cursor-position (the one that is displayed to the user) into
@@ -530,8 +533,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 
 		chatMsgs.add(msg);
-		System.out.println("MSG: " + msg.toString());
-
+		
 		return false;
 	}
 

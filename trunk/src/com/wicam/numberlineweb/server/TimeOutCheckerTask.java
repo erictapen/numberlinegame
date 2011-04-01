@@ -38,6 +38,7 @@ public class TimeOutCheckerTask extends TimerTask {
 			TimeOutState current = i.next();
 			
 			if (!current.countDown()) {
+				System.out.println("Player " + current.getPlayerId() + " timed out :(");
 				servlet.leavePlayer(current.getPlayerId(), current.getGameId());
 			}
 			
