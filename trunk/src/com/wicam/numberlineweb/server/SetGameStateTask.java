@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public class SetGameStateTask extends TimerTask {
 
-
+      
 	int gameid;
 	int state;
 	CommunicationServiceServlet s;
