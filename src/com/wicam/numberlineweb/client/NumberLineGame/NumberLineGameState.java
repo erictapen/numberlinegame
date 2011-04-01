@@ -17,7 +17,7 @@ public class NumberLineGameState implements Serializable{
 
 	private String playerA;
 	private String playerB;
-		
+
 	private int playerApoints=0;
 	private int playerBpoints=0;
 
@@ -25,10 +25,11 @@ public class NumberLineGameState implements Serializable{
 	private int playerBactPos = Integer.MIN_VALUE;
 
 	private int winnerOfLastRound;
-	
+
 	private int leftNumber;
 	private int rightNumber;
 	private int exerciseNumber;
+	private int pointerWidth;
 
 	private String gameName;
 	private int gameId;
@@ -37,7 +38,7 @@ public class NumberLineGameState implements Serializable{
 
 	private boolean playerAclicked;
 	private boolean playerBclicked;
-	
+
 	// needed to synchronize states
 	private boolean playerAready;
 	private boolean playerBready;
@@ -53,6 +54,18 @@ public class NumberLineGameState implements Serializable{
 
 		}
 		return 0;
+
+	}
+
+	public void setPointerWidth(int width) {
+
+		this.pointerWidth = width;
+
+	}
+
+	public int getPointerWidth() {
+
+		return this.pointerWidth;
 
 	}
 
@@ -108,11 +121,11 @@ public class NumberLineGameState implements Serializable{
 	}
 
 	public int getPlayerCount() {
-		
+
 		if (playerA != null && playerB != null) return 2;
 		if (playerA != null || playerB != null) return 1;
 		return 0;
-		
+
 	}
 
 	public int getLeftNumber() {
@@ -139,7 +152,7 @@ public class NumberLineGameState implements Serializable{
 		this.rightNumber = rightNumber;
 	}
 
-	
+
 	public int getWinnerOfLastRound() {
 		return winnerOfLastRound;
 	}
@@ -147,8 +160,8 @@ public class NumberLineGameState implements Serializable{
 	public void setWinnerOfLastRound(int winnerOfLastRound) {
 		this.winnerOfLastRound = winnerOfLastRound;
 	}
-	
-	
+
+
 	public NumberLineGameState() {
 
 
@@ -214,20 +227,20 @@ public class NumberLineGameState implements Serializable{
 
 
 	}
-	
+
 	public void removePlayer(int id) {
-		
+
 		if (id == 1) {
-			
+
 			playerA=null;
-			
+
 		}else{
-			
+
 			playerB=null;
 		}
-		
-		
-		
+
+
+
 	}
 
 	public void setPlayerAclicked(boolean playerAclicked) {
@@ -257,5 +270,5 @@ public class NumberLineGameState implements Serializable{
 		return false;
 	}
 
-	
+
 }

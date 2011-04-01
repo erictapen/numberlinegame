@@ -28,7 +28,7 @@ public class NumberLineGameCoordinator {
 	private NumberLineView gameView;
 	private NumberLineGameSelector gameSelector;
 	private CommunicationServiceAsync commServ;
-	
+
 	/**
 	 * Constructs the coordinator with comm-service and a rootPanel
 	 * @param commServ
@@ -41,13 +41,13 @@ public class NumberLineGameCoordinator {
 		this.rootPanel = root;
 
 	}
-	
+
 	/**
 	 * Initializes the coordinator
 	 */
 
 	public void init() {
-		
+
 		gameSelector = new NumberLineGameSelector(this);
 		rootPanel.add(gameSelector);
 
@@ -58,12 +58,12 @@ public class NumberLineGameCoordinator {
 		};
 
 		//main loop-timer
-		t.scheduleRepeating(2000);
+		t.scheduleRepeating(1000);
 		refreshGameList();
-		
+
 		GWT.log("game coordinator loaded.");
 	}
-	
+
 	/**
 	 * Open a game name 'name'. Call back will get state of opened game
 	 * @param name
@@ -77,7 +77,7 @@ public class NumberLineGameCoordinator {
 		commServ.openGame(g, gameOpenedCallBack);
 
 	}
-	
+
 	/**
 	 * refreshes the game list. Callback will redraw list
 	 */
@@ -98,13 +98,13 @@ public class NumberLineGameCoordinator {
 
 		//we dont want anonymous players
 		if (name.equals("")) name="Spieler";
-		
+
 		name = escapeString(name);
 
 		commServ.joinGame(Integer.toString(id) + ":" + name, gameJoinedCallback);
 
 	}
-	
+
 	/**
 	 * Called after our pĺayer joined the game.
 	 * @param playerID
@@ -119,7 +119,7 @@ public class NumberLineGameCoordinator {
 		this.gameView = new NumberLineView();
 		controller = new NumberLineController(this);
 		gameView.addMouseHandler(controller);
-		
+
 		//construct an empty game-state with the given information
 		NumberLineGameState g = new NumberLineGameState();
 		g.setGameId(gameID);
@@ -134,7 +134,7 @@ public class NumberLineGameCoordinator {
 		/*
 		 * Optional: Add chat window from package "Chat"
 		 */
-		
+
 		ChatView chatView = new ChatView();
 		chatC = new ChatCoordinator(openGame.getId(),chatView,commServ);
 
@@ -146,16 +146,23 @@ public class NumberLineGameCoordinator {
 		RootPanel.get("chatwrap").getElement().getStyle().setVisibility(Visibility.VISIBLE);
 
 	}
-	
+
 	/**
 	 * Called after game state was received.
 	 * @param g
 	 */
 
 	private void updateGame(NumberLineGameState g) {
-		
+
 		//we already have the lates state
 		if (g==null) return;
+
+		//update pointer width if changed
+		if (gameView.getPointerWidth() != g.getPointerWidth()) {
+
+			gameView.setPointerWidth(g.getPointerWidth());
+
+		}
 
 		switch (g.getState()) {
 
@@ -163,15 +170,15 @@ public class NumberLineGameCoordinator {
 		case -1:
 			//TODO: close game
 			break;
-		//awaiting players
+			//awaiting players
 		case 0:
 			gameView.setInfoText("Warte auf Spieler...");
 			break;
-		//awaiting 2nd player
+			//awaiting 2nd player
 		case 1:
 			gameView.setInfoText("Warte auf zweiten Spieler...");
 			break;
-		//awaiting start
+			//awaiting start
 		case 2:
 
 			chatC.setUserName(g.getPlayerName(this.playerID));
@@ -181,15 +188,15 @@ public class NumberLineGameCoordinator {
 			break;
 
 		case 21:
-			
+
 			//start is pending. I am ready!
 			if (!openGame.isPlayerReady(this.playerID)) {
 				GWT.log("pending... sending ready!");
 				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), updateCallback);
 			}
 			break;
-			
-		//started
+
+			//started
 		case 3:
 			gameView.clear();
 			sessionClicked=false;
@@ -201,7 +208,7 @@ public class NumberLineGameCoordinator {
 			gameView.setInfoText("Mache deine Schaetzung!");
 			break;
 
-		//started, next player
+			//started, next player
 		case 4:
 			if (this.playerID == 1){
 				if(g.isPlayerBclicked()) {
@@ -223,7 +230,7 @@ public class NumberLineGameCoordinator {
 					}
 				}
 			}
-			
+
 			if (this.playerID == 2){
 				if(g.isPlayerAclicked()) {
 					gameView.setEnemyPointer(g.getPlayerActPos(1));
@@ -244,10 +251,10 @@ public class NumberLineGameCoordinator {
 					}
 				}
 			}
-			
+
 			break;
 
-		//evaluation, who has won?
+			//evaluation, who has won?
 		case 5:
 			System.out.println("both clicked:\t" + g.getPlayerActPos(1) + "\t" + g.getPlayerActPos(2));
 			System.out.println("exercise number:\t" + openGame.getExerciseNumber());
@@ -268,9 +275,9 @@ public class NumberLineGameCoordinator {
 			}
 
 			if (g.getWinnerOfLastRound() == 0) {
-			
+
 				gameView.setInfoText("Unentschieden!");
-				
+
 			}else if (g.getWinnerOfLastRound() == this.playerID ) {
 				gameView.setInfoText("Du hast gewonnen!");
 			}else{
@@ -279,20 +286,20 @@ public class NumberLineGameCoordinator {
 
 			break;
 		}	
-		
+
 		if (g.getState() == 100 - ((this.playerID % 2) +1)) {
-			
+
 			gameView.setInfoText("Der andere Spieler hat das Spiel verlassen!");
-			
-			
+
+
 		}
-		
+
 
 		openGame = g;
 
 
 	}
-	
+
 	/**
 	 * Make update-call to server
 	 */
@@ -314,17 +321,17 @@ public class NumberLineGameCoordinator {
 		if ((openGame.getState() == 3 || openGame.getState() == 4) && 
 				!sessionClicked){
 			this.sessionClicked = true;
-			
+
 			// check if other player's position has already been displayed
 			int posOtherPlayer = openGame.getPlayerActPos(playerID%2+1);
-			
+
 			// ask server if it is available
 			if (posOtherPlayer == Integer.MIN_VALUE){
 				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 			}
 			else {
 				// it has been already displayed. Thus, we don't have to communicate with the server
-				if (Math.abs(x - posOtherPlayer) < 12){
+				if (Math.abs(x - posOtherPlayer) < openGame.getPointerWidth()){
 					this.sessionClicked = false;
 					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
 				}
@@ -337,25 +344,25 @@ public class NumberLineGameCoordinator {
 	}
 
 	public String escapeString(String str) {
-		
+
 		return str.replace(":", " ");
-		
+
 	}
-	
+
 
 
 	public void mouseMovedTo(int x, int y) {
 
 
-		/**
-		if (((openGame.getState() == 3 && this.playerID ==1) ||
-				(openGame.getState() == 4 && this.playerID ==2))&&
+		
+		if (((openGame.getState() == 3 ) ||
+				(openGame.getState() == 4 && !sessionClicked))&&
 				!sessionClicked) {
 
-			x = gameView.rawPosToReal(x);
-			gameView.setOwnPointer(x);
+			//x = gameView.rawPosToReal(x);
+			if (x>=100 && x<=500)	gameView.setOwnPointer(x-100);
 		}
-		 **/
+		 
 
 	}
 
@@ -445,14 +452,14 @@ public class NumberLineGameCoordinator {
 
 
 			if (result != null) {
-				
+
 				gameSelector.clearGameList();
 				Iterator<NumberLineGameState> i = result.iterator();
 				while(i.hasNext()) {
 
 					gameSelector.addGame(i.next());
 				}
-				
+
 			}
 		}
 

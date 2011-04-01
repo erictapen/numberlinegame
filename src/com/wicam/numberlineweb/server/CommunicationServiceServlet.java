@@ -27,7 +27,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	boolean timeOutListLock = false;
 
-	Timer timeOutTimer = new Timer();
+	private Timer timeOutTimer = new Timer();
 
 
 
@@ -114,9 +114,18 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			updateStates.add(new UpdateState(playerid,game.getId(),false));
 
 			//add this user to the timeout list
+			
+			while (timeOutListLocked()) {
+				
+				
+			}
+			
+			timeOutListLock();
 
 			timeOutStates.add(new TimeOutState(playerid, game.getId(),6));
 
+			timeOutListUnLock();
+			
 			return game.getId() + ":" + playerid;
 
 		}
@@ -134,6 +143,10 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		currentId++;
 
 		game.setGameId(currentId);
+		
+		//this can later be made changeable
+		game.setPointerWidth(12);
+		
 		openGames.add(game);
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
@@ -321,8 +334,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	void leavePlayer(int playerid, int gameid) {
 
 	
-		timeOutListLock();
-
+		
 		setGameState(getGameById(gameid),100-playerid);
 		getGameById(gameid).removePlayer(playerid);
 
@@ -331,6 +343,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			removeGame(gameid);
 
 		}
+		
 
 		this.setChanged(gameid);
 
@@ -373,7 +386,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		if (playerid == 1 && !g.isPlayerAclicked()){
 			int posOtherPlayer = g.getPlayerActPos(2);
 		
-			if (Math.abs(clickedAt - posOtherPlayer) < 12){
+			if (Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth()){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
 			}

@@ -24,7 +24,11 @@ public class TimeOutCheckerTask extends TimerTask {
 	@Override
 	public void run() {
 		
+		
+		
 		Iterator<TimeOutState> i = timeOutStates.iterator();
+		
+		
 		
 		while (servlet.timeOutListLocked()) {
 			
@@ -38,11 +42,15 @@ public class TimeOutCheckerTask extends TimerTask {
 			TimeOutState current = i.next();
 			
 			if (!current.countDown()) {
-				System.out.println("Player " + current.getPlayerId() + " timed out :(");
+			
+				timeOutStates.remove(current);
+				servlet.timeOutListUnLock();
 				servlet.leavePlayer(current.getPlayerId(), current.getGameId());
+				break;
 			}
 			
 		}
+		
 		
 		servlet.timeOutListUnLock();
 		
