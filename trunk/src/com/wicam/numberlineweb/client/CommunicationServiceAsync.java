@@ -16,7 +16,7 @@ public interface CommunicationServiceAsync {
 
 	public void clickedAt(String s,AsyncCallback<NumberLineGameState> callback);
 	
-	public void updateReadyness(String s,AsyncCallback<NumberLineGameState> callback);
+	public void updateReadyness(String s,AsyncCallback<Boolean> callback);
 
 	public void update(String ids, AsyncCallback<NumberLineGameState> callback);
 
