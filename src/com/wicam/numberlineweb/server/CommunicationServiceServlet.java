@@ -15,7 +15,7 @@ import com.wicam.numberlineweb.client.chatView.ChatMsg;
  * Servlet for the number line game. Everthing server-side is handled here
  * @author patrick
  *
- */
+ */ 
 
 public class CommunicationServiceServlet extends RemoteServiceServlet implements CommunicationService{
 
@@ -26,6 +26,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 
 	boolean timeOutListLock = false;
+	
 
 	private Timer timeOutTimer = new Timer();
 
@@ -38,7 +39,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	public CommunicationServiceServlet() {
 
-		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(timeOutStates, this), 0, 1000);
+		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(timeOutStates, this), 0, 5000);
 
 
 
@@ -97,8 +98,9 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		NumberLineGameState game = getGameById(id);
 
-		//only join if free...
-		if (game.isFree()) {
+		
+		//only join if free and not yet started...
+		if (game.isFree() && game.getState() < 2) {
 
 			int playerid = game.addPlayer(player);
 
@@ -111,20 +113,15 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			}
 
 			//add this user to the update-state list
+	
+			
 			updateStates.add(new UpdateState(playerid,game.getId(),false));
-
+			
 			//add this user to the timeout list
-			
-			while (timeOutListLocked()) {
-				
-				
-			}
-			
-			timeOutListLock();
 
+		
 			timeOutStates.add(new TimeOutState(playerid, game.getId(),6));
 
-			timeOutListUnLock();
 			
 			return game.getId() + ":" + playerid;
 
@@ -143,10 +140,10 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		currentId++;
 
 		game.setGameId(currentId);
-		
+
 		//this can later be made changeable
 		game.setPointerWidth(12);
-		
+
 		openGames.add(game);
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
@@ -183,6 +180,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	public void setChanged(int gameID) {
 
+		
+
 		Iterator<UpdateState> i = updateStates.iterator();
 
 		while(i.hasNext()) {
@@ -194,6 +193,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			}
 
 		}
+		
+		
 
 	}
 
@@ -208,6 +209,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	public void setUpToDate(int id, int player) {
 
+		
 		Iterator<UpdateState> i = updateStates.iterator();
 
 		while(i.hasNext()) {
@@ -218,6 +220,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 				s.setActual(true);
 			}
 		}
+
 	}
 
 	/**
@@ -228,6 +231,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	 */
 
 	public boolean isUpToDate(int id, int player) {
+
+		
 
 		Iterator<UpdateState> i = updateStates.iterator();
 
@@ -240,7 +245,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			}
 
 		}
-
+		
 		return false;
 	}
 
@@ -258,7 +263,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 			current = i.next();
 
-			
+
 			if (current.getGameId() == game && current.getPlayerId() == player) {
 
 				current.reset();
@@ -268,14 +273,16 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 
 		}
+		
+	
 
 
 	}
 
+
 	private void removeGame(int gameid) {
 
 		openGames.remove(getGameById(gameid));
-
 
 		Iterator<UpdateState> i = updateStates.iterator();
 
@@ -284,18 +291,24 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 			UpdateState current = i.next();
 
-			if (current.getGameId() == gameid) updateStates.remove(current);
+			if (current.getGameId() == gameid) {
+				updateStates.remove(current);
+				System.out.println("Removed game #" + gameid);
+				break;
+			}
 
 
 		}
+		
+		
 
 		while (timeOutListLocked()) {
-			
-			
+
+
 		}
-		
+
 		timeOutListLock();
-		
+
 		Iterator<TimeOutState> it = timeOutStates.iterator();
 
 
@@ -333,17 +346,18 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	void leavePlayer(int playerid, int gameid) {
 
-	
-		
+
+
 		setGameState(getGameById(gameid),100-playerid);
 		getGameById(gameid).removePlayer(playerid);
 
 		if (getGameById(gameid).getPlayerCount() == 0) {
 
 			removeGame(gameid);
+			
 
 		}
-		
+
 
 		this.setChanged(gameid);
 
@@ -382,10 +396,10 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = getGameById(gameid);
-		
+
 		if (playerid == 1 && !g.isPlayerAclicked()){
 			int posOtherPlayer = g.getPlayerActPos(2);
-		
+
 			if (Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth()){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
@@ -404,7 +418,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		if (playerid == 2 && !g.isPlayerBclicked()){
 			int posOtherPlayer = g.getPlayerActPos(1);
-			
+
 			if (Math.abs(clickedAt - posOtherPlayer) < 12){
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
@@ -462,7 +476,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 				getGameById(gameid).setPlayerPoints(2,getGameById(gameid).getPlayerPoints(2) +1);
 				System.out.println("Spieler B hat gewonnen");
 			}
-			
+
 			//restart 			
 			startGame(gameid);
 
@@ -471,27 +485,29 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		return getGameById(gameid);
 	}
 
-	
+
 	/**
 	 * TODO: there must be a better solution...
 	 * <gameid>:<playerid>
 	 */
-	public NumberLineGameState updateReadyness(String ids) {
+	public boolean updateReadyness(String ids) {
+
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		NumberLineGameState g = getGameById(gameid);
-		
-			g.setPlayerReady(playerid,true);
-	
+
+		g.setPlayerReady(playerid,true);
+
 		if (g.isPlayerReady(1) && g.isPlayerReady(2)) setGameState(g, 3);
-		
-		//we _dont_ update gamestatus here, because were already returning
-		//the new game state!
-		
-		return getGameById(gameid);
+
+
+		setChanged(g.getId());
+
+		//we dont want a player to get the update sooner than the other
+		return true;
 	}
-	
-	
+
+
 
 	/**
 	 * converts a real cursor-position (the one that is displayed to the user) into
@@ -546,7 +562,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 
 		chatMsgs.add(msg);
-		
+
 		return false;
 	}
 

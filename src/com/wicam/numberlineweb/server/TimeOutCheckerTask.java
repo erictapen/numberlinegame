@@ -45,7 +45,9 @@ public class TimeOutCheckerTask extends TimerTask {
 			
 				timeOutStates.remove(current);
 				servlet.timeOutListUnLock();
+				System.out.println("player " + current.getPlayerId() + " timed out.");
 				servlet.leavePlayer(current.getPlayerId(), current.getGameId());
+			
 				break;
 			}
 			

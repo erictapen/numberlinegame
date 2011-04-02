@@ -21,7 +21,7 @@ public interface CommunicationService extends RemoteService {
 
 	public NumberLineGameState clickedAt(String clicked);
 	
-	public NumberLineGameState updateReadyness(String s);
+	public boolean updateReadyness(String s);
 
 	public NumberLineGameState update(String ids);
 

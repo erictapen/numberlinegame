@@ -40,8 +40,8 @@ public class NumberLineGameState implements Serializable{
 	private boolean playerBclicked;
 
 	// needed to synchronize states
-	private boolean playerAready;
-	private boolean playerBready;
+	private boolean playerAready = false;
+	private boolean playerBready = false;
 
 
 	public int getPlayerPoints(int id) {
@@ -260,13 +260,22 @@ public class NumberLineGameState implements Serializable{
 	}
 
 	public void setPlayerReady(int id,boolean playerReady) {
-		if (id == 1) this.playerAready = playerReady;
-		if (id == 2) this.playerBready = playerReady;
+		System.out.println(id);
+		if (id == 1) {
+			this.playerAready = playerReady;
+		}
+		if (id == 2) {
+			this.playerBready = playerReady;
+		}
 	}
 
 	public boolean isPlayerReady(int id) {
-		if (id == 1) return playerBready;
-		if (id == 2) return playerBready;
+		if (id == 1) {
+			return playerAready;
+		}
+		if (id == 2) {
+			return playerBready;
+		}
 		return false;
 	}
 

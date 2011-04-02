@@ -28,6 +28,7 @@ public class NumberLineGameCoordinator {
 	private NumberLineView gameView;
 	private NumberLineGameSelector gameSelector;
 	private CommunicationServiceAsync commServ;
+	private int refreshIntervall;
 
 	/**
 	 * Constructs the coordinator with comm-service and a rootPanel
@@ -58,12 +59,36 @@ public class NumberLineGameCoordinator {
 		};
 
 		//main loop-timer
-		t.scheduleRepeating(1000);
+		t.scheduleRepeating(500);
 		refreshGameList();
+		
+		
 
 		GWT.log("game coordinator loaded.");
 	}
 
+	
+	/**
+	 * sets the refresh rate of the main loop timer
+	 */
+	
+	private void setRefreshRate(int rate) {
+		
+		GWT.log("r-rate to " + rate);
+		
+		if (this.refreshIntervall != rate) {
+			
+			this.refreshIntervall = rate;
+			t.scheduleRepeating(rate);
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
 	/**
 	 * Open a game name 'name'. Call back will get state of opened game
 	 * @param name
@@ -168,19 +193,23 @@ public class NumberLineGameCoordinator {
 
 		//game closed
 		case -1:
+			setRefreshRate(2000);
 			//TODO: close game
 			break;
 			//awaiting players
 		case 0:
+			setRefreshRate(2000);
 			gameView.setInfoText("Warte auf Spieler...");
 			break;
 			//awaiting 2nd player
 		case 1:
+			setRefreshRate(2000);
 			gameView.setInfoText("Warte auf zweiten Spieler...");
 			break;
 			//awaiting start
 		case 2:
 
+			setRefreshRate(1000);
 			chatC.setUserName(g.getPlayerName(this.playerID));
 			gameView.setPoints(0, g.getPlayerName(this.playerID));
 			gameView.setEnemyPoints(0, g.getPlayerName((this.playerID % 2) +1));
@@ -189,10 +218,10 @@ public class NumberLineGameCoordinator {
 
 		case 21:
 
+			setRefreshRate(200);
 			//start is pending. I am ready!
 			if (!openGame.isPlayerReady(this.playerID)) {
-				GWT.log("pending... sending ready!");
-				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), updateCallback);
+				  commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			}
 			break;
 
@@ -204,12 +233,19 @@ public class NumberLineGameCoordinator {
 			gameView.setLeftNumber(g.getLeftNumber());
 			gameView.setRightNumber(g.getRightNumber());
 			gameView.setExerciseNumber(g.getExerciseNumber());
-			// TODO Umlaute
-			gameView.setInfoText("Mache deine Schaetzung!");
+			gameView.setInfoText("Mache deine Schätzung!");
+			
+			//kritischer moment, setze refreshrate nach oben
+			setRefreshRate(200);
+			
+			
 			break;
 
 			//started, next player
 		case 4:
+			
+			setRefreshRate(500);
+			
 			if (this.playerID == 1){
 				if(g.isPlayerBclicked()) {
 					gameView.setEnemyPointer(g.getPlayerActPos(2));
@@ -256,6 +292,7 @@ public class NumberLineGameCoordinator {
 
 			//evaluation, who has won?
 		case 5:
+			setRefreshRate(1000);
 			System.out.println("both clicked:\t" + g.getPlayerActPos(1) + "\t" + g.getPlayerActPos(2));
 			System.out.println("exercise number:\t" + openGame.getExerciseNumber());
 			if (this.playerID == 2) {
@@ -289,6 +326,7 @@ public class NumberLineGameCoordinator {
 
 		if (g.getState() == 100 - ((this.playerID % 2) +1)) {
 
+			setRefreshRate(1000);
 			gameView.setInfoText("Der andere Spieler hat das Spiel verlassen!");
 
 
@@ -354,7 +392,7 @@ public class NumberLineGameCoordinator {
 	public void mouseMovedTo(int x, int y) {
 
 
-		
+
 		if (((openGame.getState() == 3 ) ||
 				(openGame.getState() == 4 && !sessionClicked))&&
 				!sessionClicked) {
@@ -362,7 +400,7 @@ public class NumberLineGameCoordinator {
 			//x = gameView.rawPosToReal(x);
 			if (x>=100 && x<=500)	gameView.setOwnPointer(x-100);
 		}
-		 
+
 
 	}
 
@@ -457,7 +495,12 @@ public class NumberLineGameCoordinator {
 				Iterator<NumberLineGameState> i = result.iterator();
 				while(i.hasNext()) {
 
-					gameSelector.addGame(i.next());
+					NumberLineGameState g = i.next();
+					
+					//we dont want to display full games here...
+					if (g.isFree() && g.getState() < 2) {
+						gameSelector.addGame(g);
+					}
 				}
 
 			}

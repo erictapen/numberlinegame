@@ -6,12 +6,14 @@ import java.util.ArrayList;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -39,7 +41,7 @@ public class NumberLineGameSelector extends Composite  {
 	final SingleSelectionModel<NumberLineGameState> selectionModel = new SingleSelectionModel<NumberLineGameState>();
 	final TextPopupBox gamePopUp = new TextPopupBox("Bitte gebe einen Namen für das Spiel ein!", "Mein Spiel");
 	private NumberLineGameCoordinator coordinator;
-
+	private Timer t;
 
 	/**
 	 * A cell for our open games list
@@ -167,11 +169,22 @@ public class NumberLineGameSelector extends Composite  {
 
 		motherPanel.add(createGameButton);
 		motherPanel.add(joinGameButton);
-		motherPanel.add(refreshButton);
+		//motherPanel.add(refreshButton);
 
 		motherPanel.setWidgetPosition(joinGameButton, 450, 30);
-		motherPanel.setWidgetPosition(refreshButton, 15, 340);
+		//motherPanel.setWidgetPosition(refreshButton, 15, 340);
 		motherPanel.setWidgetPosition(createGameButton, 450, 60);
+		
+		
+		t = new Timer() {
+			public void run() {
+				
+				coordinator.refreshGameList();
+			}
+		};
+
+		//main loop-timer
+		t.scheduleRepeating(2000);
 
 	}
 
@@ -192,7 +205,13 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 	public int getSelectedGameId() {
-		return selectionModel.getSelectedObject().getId();
+		
+		if (selectionModel.getSelectedObject()!=null) {
+			return selectionModel.getSelectedObject().getId();
+		}else{
+			GWT.log("none selected");
+			return -1;
+		}
 	}
 
 
@@ -208,6 +227,9 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 	protected void joinGame() {
+		
+		if (this.getSelectedGameId() < 0) return;
+		
 		final TextPopupBox b = new TextPopupBox("Bitte gib deinen Namen ein", "Spieler");
 
 		b.addClickHandler(new ClickHandler() {
@@ -222,6 +244,7 @@ public class NumberLineGameSelector extends Composite  {
 			}
 
 		});
+		t.cancel();
 		gamePopUp.hide();
 		b.show();
 	}
