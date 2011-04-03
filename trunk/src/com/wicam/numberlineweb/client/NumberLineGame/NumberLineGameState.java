@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -15,14 +16,9 @@ public class NumberLineGameState implements Serializable{
 	private static final long serialVersionUID = 846864907276321588L;
 
 
-	private String playerA;
-	private String playerB;
-
-	private int playerApoints=0;
-	private int playerBpoints=0;
-
-	private int playerAactPos = Integer.MIN_VALUE;
-	private int playerBactPos = Integer.MIN_VALUE;
+	private ArrayList<Player> players = new ArrayList<Player>();
+	
+	private int numberOfMaxPlayers;
 
 	private int winnerOfLastRound;
 
@@ -36,25 +32,11 @@ public class NumberLineGameState implements Serializable{
 
 	private int state = -1;
 
-	private boolean playerAclicked;
-	private boolean playerBclicked;
 
-	// needed to synchronize states
-	private boolean playerAready = false;
-	private boolean playerBready = false;
-
-
-	public int getPlayerPoints(int id) {
-		switch (id) {
-		case 1:
-			return playerApoints;
-
-		case 2:
-			return playerBpoints;
-
-		}
+	public int getPlayerPoints(int playerid) {
+		if (playerid-1 < players.size())
+			return players.get(playerid-1).getPoints();
 		return 0;
-
 	}
 
 	public void setPointerWidth(int width) {
@@ -69,63 +51,40 @@ public class NumberLineGameState implements Serializable{
 
 	}
 
-	public String getPlayerName(int id) {
+	public String getPlayerName(int playerid) {
 
-		switch (id) {
-		case 1:
-			return playerA;
-
-		case 2:
-			return playerB;
-		}
+		if (playerid-1 < players.size())
+			return players.get(playerid-1).getName();
 		return null;
-
 	}
 
-	public void setPlayerPoints(int id,int to) {
-		switch (id) {
-		case 1:
-			playerApoints = to;
-			break;
-		case 2:
-			playerBpoints = to;
-			break;
-
-		}
+	public void setPlayerPoints(int playerid,int to) {
+		if(playerid-1 < players.size())
+			players.get(playerid-1).setPoints(to);
 
 	}
 
 
-	public int getPlayerActPos(int id) {
-		switch (id) {
-		case 1:
-			return playerAactPos;
-
-		case 2:
-			return playerBactPos;
-
-		}
+	public int getPlayerActPos(int playerid) {
+		if(playerid-1 < players.size())
+			return players.get(playerid-1).getActPos();
 
 		return 0;
 	}
 
-	public void setPlayerActPos(int id, int to) {
-		switch (id) {
-		case 1:
-			playerAactPos = to;
-			break;
-		case 2:
-			playerBactPos = to;
-			break;
-		}
+	public void setPlayerActPos(int playerid, int to) {
+		if(playerid-1 < players.size())
+			players.get(playerid-1).setActPos(to);
 	}
 
+	public void resetAllPlayerActPos(){
+		for (Player player: players){
+			player.setActPos(Integer.MIN_VALUE);
+		}
+	}
+	
 	public int getPlayerCount() {
-
-		if (playerA != null && playerB != null) return 2;
-		if (playerA != null || playerB != null) return 1;
-		return 0;
-
+		return players.size();
 	}
 
 	public int getLeftNumber() {
@@ -204,80 +163,75 @@ public class NumberLineGameState implements Serializable{
 
 
 	public boolean isFree() {
-
-		return playerA==null || playerB==null;
-
-
+		return players.size() < numberOfMaxPlayers;
 	}
 
-	public int addPlayer(String name) {
-
-		if (playerA==null) {
-			playerA=name;
-			return 1;
-		}else{
-			if (playerA.equals(name)) {
-				name += " 2";
-				playerA += " 1";
+	public int addPlayer(String newName) {
+		int countSameName = 1;
+		for (Player player: players){
+			// to ensure different names
+			if (newName.equals(player.getName())){
+				countSameName++;
+				// TODO: only a solution if number of players with same name < 10
+				if (countSameName > 2)
+					newName = newName.substring(0, newName.length()-2) + " " + countSameName;
+				else
+					newName = newName + " " + countSameName;
 			}
-			playerB=name;
-			return 2;
-
 		}
-
-
+		System.out.println(newName);
+		players.add(new Player());
+		players.get(players.size()-1).setName(newName);
+		return players.size();
 	}
 
-	public void removePlayer(int id) {
-
-		if (id == 1) {
-
-			playerA=null;
-
-		}else{
-
-			playerB=null;
-		}
-
-
-
+	public void removePlayer(int playerid) {
+		if (playerid-1 < players.size())
+			players.remove(playerid-1);
 	}
 
-	public void setPlayerAclicked(boolean playerAclicked) {
-		this.playerAclicked = playerAclicked;
+	public void setPlayerClicked(int playerid){
+		if (playerid-1 < players.size())
+			players.get(playerid-1).setClicked(true);
 	}
-
-	public boolean isPlayerAclicked() {
-		return playerAclicked;
-	}
-
-	public void setPlayerBclicked(boolean playerBclicked) {
-		this.playerBclicked = playerBclicked;
-	}
-
-	public boolean isPlayerBclicked() {
-		return playerBclicked;
-	}
-
-	public void setPlayerReady(int id,boolean playerReady) {
-		System.out.println(id);
-		if (id == 1) {
-			this.playerAready = playerReady;
-		}
-		if (id == 2) {
-			this.playerBready = playerReady;
-		}
-	}
-
-	public boolean isPlayerReady(int id) {
-		if (id == 1) {
-			return playerAready;
-		}
-		if (id == 2) {
-			return playerBready;
-		}
+	
+	public boolean isPlayerClicked(int playerid){
+		if (playerid-1 < players.size())
+			return players.get(playerid-1).isClicked();
 		return false;
 	}
 
+	public void resetPlayersClicked(){
+		for (int i = 0; i < players.size(); i++){
+			players.get(i).setClicked(false);
+		}
+	}
+	
+	public void setPlayerReady(int playerid, boolean playerReady) {
+		players.get(playerid-1).setReady(playerReady);
+	}
 
+	public boolean isPlayerReady(int playerid) {
+		if (playerid-1 < players.size())
+			return players.get(playerid-1).isReady();
+		return false;
+	}
+
+	public void resetReadyness(){
+		for (Player player: players){
+			player.setReady(false);
+		}
+	}
+	
+	public void setNumberOfPlayers(int numberOfPlayers) {
+		this.numberOfMaxPlayers = numberOfPlayers;
+	}
+
+	public int getNumberOfPlayers() {
+		return numberOfMaxPlayers;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
 }

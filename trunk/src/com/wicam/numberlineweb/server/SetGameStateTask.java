@@ -23,8 +23,7 @@ public class SetGameStateTask extends TimerTask {
 		s.setGameState(s.getGameById(gameid), state);
 		
 		// reset clicked pos
-		s.getGameById(gameid).setPlayerActPos(1, Integer.MIN_VALUE);
-		s.getGameById(gameid).setPlayerActPos(2, Integer.MIN_VALUE);
+		s.getGameById(gameid).resetAllPlayerActPos();
 		
 		// numbers should be changed while winner info is displayed
 		s.newNumbers(s.getGameById(gameid));
