@@ -397,84 +397,82 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = getGameById(gameid);
 
-		if (playerid == 1 && !g.isPlayerAclicked()){
-			int posOtherPlayer = g.getPlayerActPos(2);
-
-			if (Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth()){
-				setGameState(getGameById(gameid),4);
-				this.setChanged(gameid);
+		if (!g.isPlayerClicked(playerid)){
+			boolean posIsFree = true;
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				if (i+1 != playerid){
+					int posOtherPlayer = g.getPlayerActPos(i+1);
+					if (Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth())
+						posIsFree = false;
+				}
 			}
-			else {
-				//save position for player 1
-				g.setPlayerActPos(1,clickedAt);
-				g.setPlayerAclicked(true);
+			if (posIsFree){
+				//save position for playerid
+				g.setPlayerActPos(playerid,clickedAt);
+				g.setPlayerClicked(playerid);
 				// change state if waiting for other player
-				if (!g.isPlayerBclicked()){
+				boolean otherPlayersClicked = true;
+				for (int i = 0; i < g.getPlayers().size(); i++){
+					if (i+1 != playerid)
+						if (!g.isPlayerClicked(i+1))
+							otherPlayersClicked = false;
+				}
+				if (!otherPlayersClicked){
 					setGameState(getGameById(gameid),4);
 					this.setChanged(gameid);
 				}
 			}
-		}
-
-		if (playerid == 2 && !g.isPlayerBclicked()){
-			int posOtherPlayer = g.getPlayerActPos(1);
-
-			if (Math.abs(clickedAt - posOtherPlayer) < 12){
+			else {
 				setGameState(getGameById(gameid),4);
 				this.setChanged(gameid);
 			}
-			else {
-				//save position for player 1
-				g.setPlayerActPos(2,clickedAt);
-				g.setPlayerBclicked(true);
-				// change state if waiting for other player
-				if (!g.isPlayerAclicked()){
-					setGameState(getGameById(gameid),4);
-					this.setChanged(gameid);
-				}
-			}
 		}
 
-		if (getGameById(gameid).isPlayerAclicked() && getGameById(gameid).isPlayerBclicked()){
+		boolean allPlayersClicked = true;
+		for (int i = 0; i < g.getPlayers().size(); i++)
+			if (!g.isPlayerClicked(i+1))
+				allPlayersClicked = false;
+		
+		if (allPlayersClicked){
 			setGameState(getGameById(gameid),5);
 
 			// reset clicked state
-			g.setPlayerAclicked(false);
-			g.setPlayerBclicked(false);
+			g.resetPlayersClicked();
 
 			// reset ready state
-			g.setPlayerReady(1,false);
-			g.setPlayerReady(2,false);
+			g.resetReadyness();
 
 			//who has won?
 
-			if ((Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(1),g)- getGameById(gameid).getExerciseNumber())
-					== Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(2),g)- getGameById(gameid).getExerciseNumber()))){
-
+			ArrayList<Integer> playersWithMinDiff = new ArrayList<Integer>();
+			double minDiff = Double.MAX_VALUE;
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				double curDiff = Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(i+1),g)- getGameById(gameid).getExerciseNumber());
+				if (curDiff < minDiff){
+					minDiff = curDiff;
+					// reset list
+					playersWithMinDiff = new ArrayList<Integer>();
+					// add player
+					playersWithMinDiff.add(i+1);
+				}
+				// add other player
+				else if (curDiff == minDiff)
+					playersWithMinDiff.add(i+1);
+			}
+			
+			if (playersWithMinDiff.size() > 1){
 				//draw
 				getGameById(gameid).setWinnerOfLastRound(0);
 				System.out.println("Unentschieden :)");
-				getGameById(gameid).setPlayerPoints(1,getGameById(gameid).getPlayerPoints(1) +1);
-				getGameById(gameid).setPlayerPoints(2,getGameById(gameid).getPlayerPoints(2) +1);
-
-			}else if (Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(1),g)- getGameById(gameid).getExerciseNumber())
-					< Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(2),g)- getGameById(gameid).getExerciseNumber())) {
-
-				//PLAYER 1
-
-				getGameById(gameid).setWinnerOfLastRound(1);
-				getGameById(gameid).setPlayerPoints(1,getGameById(gameid).getPlayerPoints(1) +1);
-				System.out.println("Spieler A hat gewonnen");
-
-
-			}else if (Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(1),g)- getGameById(gameid).getExerciseNumber())
-					> Math.abs(rawPosToReal(getGameById(gameid).getPlayerActPos(2),g)- getGameById(gameid).getExerciseNumber())){
-
-				//PLAYER 2
-
-				getGameById(gameid).setWinnerOfLastRound(2);	
-				getGameById(gameid).setPlayerPoints(2,getGameById(gameid).getPlayerPoints(2) +1);
-				System.out.println("Spieler B hat gewonnen");
+				for (Integer i: playersWithMinDiff){
+					getGameById(gameid).setPlayerPoints(i,getGameById(gameid).getPlayerPoints(i) +1);
+				}
+			}else {
+				// one player best
+				
+				getGameById(gameid).setWinnerOfLastRound(playersWithMinDiff.get(0));
+				getGameById(gameid).setPlayerPoints(playersWithMinDiff.get(0),getGameById(gameid).getPlayerPoints(playersWithMinDiff.get(0)) +1);
+				System.out.println(getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
 			}
 
 			//restart 			
@@ -498,7 +496,13 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		g.setPlayerReady(playerid,true);
 
-		if (g.isPlayerReady(1) && g.isPlayerReady(2)) setGameState(g, 3);
+		boolean allReady = true;
+		for (int i = 0; i < g.getPlayers().size(); i++){
+			if (!g.isPlayerReady(i+1))
+				allReady = false;
+		}
+		
+		if (allReady) setGameState(g, 3);
 
 
 		setChanged(g.getId());
