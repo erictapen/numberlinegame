@@ -343,11 +343,12 @@ public class NumberLineGameCoordinator {
 			
 			// ask server if it is available
 			if (posOtherPlayer == Integer.MIN_VALUE){
+				
 				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 			}
 			else {
 				// it has been already displayed. Thus, we don't have to communicate with the server
-				if (Math.abs(x - posOtherPlayer) < openGame.getPointerWidth()){
+				if (!(posOtherPlayer == Integer.MIN_VALUE) && Math.abs(x - posOtherPlayer) < openGame.getPointerWidth()){
 					this.sessionClicked = false;
 					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
 				}
@@ -467,21 +468,7 @@ public class NumberLineGameCoordinator {
 		public void onSuccess(ArrayList<NumberLineGameState> result) {
 
 
-			if (result != null) {
-
-				gameSelector.clearGameList();
-				Iterator<NumberLineGameState> i = result.iterator();
-				while(i.hasNext()) {
-
-					NumberLineGameState g = i.next();
-					
-					//we dont want to display full games here...
-					if (g.isFree() && g.getState() < 2) {
-						gameSelector.addGame(g);
-					}
-				}
-
-			}
+			gameSelector.setGameList(result);
 		}
 
 	};
@@ -498,14 +485,6 @@ public class NumberLineGameCoordinator {
 
 
 			if (result != null) {
-				gameSelector.clearGameList();
-				Iterator<NumberLineGameState> i = result.iterator();
-				while(i.hasNext()) {
-
-					NumberLineGameState g = i.next();
-					gameSelector.addGame(g);
-
-				}
 
 				gameSelector.setSelected(openedGame);
 				gameSelector.joinGame();
