@@ -235,9 +235,13 @@ public class NumberLineGameSelector extends Composite  {
 				NumberLineGameState g = i.next();
 
 				//we dont want to display full or ended games here...
-				if ((g.isFree() && g.getState() < 2) && !gameInList(g,openGames)) {
+				if ((g.isFree() && g.getState() < 2) ) {
 
-					openGames.add(g);
+					if (!gameInList(g,openGames)) {
+						openGames.add(g);
+					}else if (getGameById(g.getId(),openGames).getPlayerCount() != g.getPlayerCount()) {
+						openGames.set(openGames.indexOf(getGameById(g.getId(),openGames)), g);
+					}
 				}
 			}
 
@@ -250,6 +254,24 @@ public class NumberLineGameSelector extends Composite  {
 
 	}
 
+	
+	private NumberLineGameState getGameById(int id, ArrayList<NumberLineGameState> games) {
+		
+		Iterator<NumberLineGameState> i = games.iterator();
+		
+		while (i.hasNext()) {
+			
+			NumberLineGameState current= i.next();
+			
+			if (current.getId() == id) return current;
+			
+		}
+		
+		return null;
+		
+	}
+	
+	
 	private boolean gameInList(NumberLineGameState g, ArrayList<NumberLineGameState> games) {
 
 		Iterator<NumberLineGameState> it = games.iterator();
