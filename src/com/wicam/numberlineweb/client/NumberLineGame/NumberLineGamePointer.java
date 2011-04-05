@@ -6,6 +6,7 @@ public class NumberLineGamePointer extends HTML{
 
 
 	int width;
+	int height;
 	String color;
 	
 	
@@ -13,11 +14,21 @@ public class NumberLineGamePointer extends HTML{
 
 		this.color = colorString;
 		this.width = width;
+		this.height = 30;
 		reRender();
 
 
 	}
 
+	public NumberLineGamePointer(int width, int height, String colorString) {
+
+		this.color = colorString;
+		this.width = width;
+		this.height = height;
+		reRender();
+
+
+	}
 
 	public void setColor(String colorString) {
 
@@ -33,9 +44,16 @@ public class NumberLineGamePointer extends HTML{
 
 	}
 	
+	public void setHeight(int height) {
+
+		this.height = height;
+		reRender();
+
+	}
+	
 	private void reRender() {
 		
-		this.setHTML("<div style='width:" + width + "px;height:30px;background-color:" + color + "'></div>");
+		this.setHTML("<div style='width:" + width + "px;height:" + height + "px;background-color:" + color + "'></div>");
 
 		
 	}

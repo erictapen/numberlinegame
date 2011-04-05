@@ -37,12 +37,13 @@ public class NumberLineGameSelector extends Composite  {
 
 	final AbsolutePanel motherPanel = new AbsolutePanel();
 	final TextCell textCell = new TextCell();
-	private Button createGameButton;
+	private Button[] createGameButtons;
 	private Button refreshButton;
 	final SingleSelectionModel<NumberLineGameState> selectionModel = new SingleSelectionModel<NumberLineGameState>();
 	final TextPopupBox gamePopUp = new TextPopupBox("Bitte gebe einen Namen für das Spiel ein!", "Mein Spiel");
 	private NumberLineGameCoordinator coordinator;
 	private Timer t;
+	private final int boxWidth = 750;
 	
 
 	/**
@@ -56,7 +57,7 @@ public class NumberLineGameSelector extends Composite  {
 		public void render(Context context,	NumberLineGameState game, SafeHtmlBuilder sb) {
 
 			sb.appendHtmlConstant("<div style='padding:4px;font-size:14px'>");
-			sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/2)");
+			sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/" + game.getMaxNumberOfPlayers() + ")");
 			sb.appendHtmlConstant("</div>");
 
 		}
@@ -92,8 +93,10 @@ public class NumberLineGameSelector extends Composite  {
 	private void init() {
 
 		RootPanel.get().add(motherPanel);
-
-		createGameButton = new Button("Neues Spiel");
+		createGameButtons = new Button[4];
+		for (int i = 0; i < createGameButtons.length; i++){
+			createGameButtons[i] = new Button("Neues Spiel (" + (i+2) + " Spieler)");
+		}
 		refreshButton = new Button("Refresh");
 
 		cellList.setSelectionModel(selectionModel);
@@ -128,26 +131,27 @@ public class NumberLineGameSelector extends Composite  {
 			}
 		});
 
+		for (int i = 0; i < createGameButtons.length; i++){
+			final int numberOfPlayers = i+2;
+			createGameButtons[i].addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					gamePopUp.addClickHandler(new ClickHandler() {
 
-		createGameButton.addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							gamePopUp.setEnabled(false);
+							coordinator.openGame(gamePopUp.getTextValue(), numberOfPlayers);
+						}
 
-			@Override
-			public void onClick(ClickEvent event) {
+					});
 
-				gamePopUp.addClickHandler(new ClickHandler() {
+					gamePopUp.show();
 
-					@Override
-					public void onClick(ClickEvent event) {
-						gamePopUp.setEnabled(false);
-						coordinator.openGame(gamePopUp.getTextValue());
-					}
-
-				});
-
-				gamePopUp.show();
-
-			}
-		});
+				}
+			});
+		}
 
 		motherPanel.setWidth("600px");
 		motherPanel.setHeight("400px");
@@ -162,20 +166,26 @@ public class NumberLineGameSelector extends Composite  {
 		motherPanel.add(title);
 		motherPanel.setWidgetPosition(title, 15, 20);
 
-		createGameButton.setHeight("30px");
-		createGameButton.setWidth("120px");
+		for (int i = 0; i < createGameButtons.length; i++){
+			createGameButtons[i].setHeight("30px");
+			createGameButtons[i].setWidth("220px");
+		}
+		
 		joinGameButton.setHeight("30px");
-		joinGameButton.setWidth("120px");
+		joinGameButton.setWidth("220px");
 		refreshButton.setHeight("30px");
 
-
-		motherPanel.add(createGameButton);
+		for (int i = 0; i < createGameButtons.length; i++){
+			motherPanel.add(createGameButtons[i]);
+		}
 		motherPanel.add(joinGameButton);
 		//motherPanel.add(refreshButton);
 
-		motherPanel.setWidgetPosition(joinGameButton, 450, 30);
+		motherPanel.setWidgetPosition(joinGameButton, boxWidth-250, 30);
 		//motherPanel.setWidgetPosition(refreshButton, 15, 340);
-		motherPanel.setWidgetPosition(createGameButton, 450, 60);
+		for (int i = 0; i < createGameButtons.length; i++){
+			motherPanel.setWidgetPosition(createGameButtons[i], boxWidth-250, 60+i*30);
+		}
 
 		clearGameList();
 
@@ -327,7 +337,7 @@ public class NumberLineGameSelector extends Composite  {
 
 
 				b.hide();
-				coordinator.joinGame(NumberLineGameSelector.this.getSelectedGameId(), b.getTextValue());
+				coordinator.joinGame(NumberLineGameSelector.this.getSelectedGameId(), b.getTextValue(),selectionModel.getSelectedObject().getMaxNumberOfPlayers());
 				t.cancel();
 			}
 
