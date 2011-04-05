@@ -227,11 +227,18 @@ public class NumberLineGameState implements Serializable{
 		this.numberOfMaxPlayers = numberOfPlayers;
 	}
 
-	public int getNumberOfPlayers() {
+	public int getMaxNumberOfPlayers() {
 		return numberOfMaxPlayers;
 	}
 
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+	
+	public ArrayList<String> getPlayerNamesList() {
+		ArrayList<String> playerNamesList = new ArrayList<String>();
+		for (Player player: players)
+			playerNamesList.add(player.getName());
+		return playerNamesList;
 	}
 }

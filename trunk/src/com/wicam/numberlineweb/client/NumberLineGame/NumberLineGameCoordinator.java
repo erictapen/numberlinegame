@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
@@ -16,7 +15,7 @@ import com.wicam.numberlineweb.client.chatView.ChatView;
 
 public class NumberLineGameCoordinator {
 
-	private int numberOfPlayers = 2;
+	private int numberOfPlayers;
 	private NumberLineGameState openGame = null;
 	private Panel rootPanel;
 	private NumberLineController controller;
@@ -94,8 +93,9 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void openGame(String name) {
+	public void openGame(String name, int numberOfPlayers) {
 
+		this.numberOfPlayers = numberOfPlayers;
 		NumberLineGameState g = new NumberLineGameState();
 		g.setGameName(name);
 		g.setNumberOfPlayers(numberOfPlayers);
@@ -120,8 +120,9 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void joinGame(int id,String name) {
-
+	public void joinGame(int id,String name, int numberOfPlayers) {
+		this.numberOfPlayers = numberOfPlayers;
+		
 		//we dont want anonymous players
 		if (name.equals("")) name="Spieler";
 
@@ -156,7 +157,7 @@ public class NumberLineGameCoordinator {
 		//clear the root panel and draw the game
 		rootPanel.clear();
 		rootPanel.add(gameView);
-
+		
 		/*
 		 * Optional: Add chat window from package "Chat"
 		 */
@@ -189,7 +190,7 @@ public class NumberLineGameCoordinator {
 			gameView.setPointerWidth(g.getPointerWidth());
 
 		}
-
+		
 		switch (g.getState()) {
 
 		//game closed
@@ -205,7 +206,9 @@ public class NumberLineGameCoordinator {
 			//awaiting 2nd player
 		case 1:
 			setRefreshRate(2000);
-			if (g.getNumberOfPlayers() <= 2)
+			for (int i = 0; i < g.getPlayers().size(); i++)
+				gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
+			if (g.getMaxNumberOfPlayers() <= 2)
 				gameView.setInfoText("Warte auf zweiten Spieler...");
 			else
 				gameView.setInfoText("Warte auf andere Spieler...");
@@ -286,6 +289,8 @@ public class NumberLineGameCoordinator {
 				gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 
+			gameView.showCorrectPositionPointer(openGame.getExerciseNumber());
+			
 			if (g.getWinnerOfLastRound() == 0) {
 				gameView.setInfoText("Unentschieden!");
 

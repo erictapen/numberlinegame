@@ -25,6 +25,7 @@ public class ChatView extends Composite{
 	final TextArea ta = new TextArea();
 	final TextBox tb = new TextBox();
 	final Button sendButton = new Button();
+	final int boxWidth = 750;
 
 	private ChatController c;
 
@@ -40,10 +41,10 @@ public class ChatView extends Composite{
 
 	public void init() {
 
-		ta.setWidth("500px");
+		ta.setWidth((boxWidth-100) + "px");
 		ta.setHeight("70px");
 
-		tb.setWidth("500px");
+		tb.setWidth((boxWidth-100) + "px");
 		sendButton.setWidth("86px");
 		sendButton.setHeight("106px");
 		sendButton.setText("Senden");
@@ -60,7 +61,7 @@ public class ChatView extends Composite{
 
 		motherPanel.setWidgetPosition(ta, 0, 0);
 		motherPanel.setWidgetPosition(tb, 0, 82);
-		motherPanel.setWidgetPosition(sendButton, 512, 2);
+		motherPanel.setWidgetPosition(sendButton, boxWidth-88, 2);
 
 		//this provides sending behaviour when pressing enter
 		tb.addKeyDownHandler(new KeyDownHandler() {

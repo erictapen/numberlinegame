@@ -29,7 +29,7 @@ public class NumberLineWeb implements EntryPoint {
 		//our HTML file has a div with id = "game". this will be our mother panel, so
 		// everything else can be styled with simple html / css.
 		NumberLineGameCoordinator coordinator = new NumberLineGameCoordinator(commService,RootPanel.get("game"));
-				
+		
 		coordinator.init();
 		
 	}
