@@ -39,7 +39,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	public CommunicationServiceServlet() {
 
-		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(timeOutStates, this), 0, 5000);
+		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(timeOutStates, this), 0, 4000);
 
 
 
@@ -120,7 +120,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			//add this user to the timeout list
 
 		
-			timeOutStates.add(new TimeOutState(playerid, game.getId(),6));
+			timeOutStates.add(new TimeOutState(playerid, game.getId(),5));
 
 			
 			return game.getId() + ":" + playerid;
@@ -292,7 +292,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 			UpdateState current = i.next();
 
 			if (current.getGameId() == gameid) {
-				updateStates.remove(current);
+				i.remove();
 				System.out.println("Removed game #" + gameid);
 				break;
 			}
@@ -316,7 +316,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 			TimeOutState current = it.next();
 
-			if (current.getGameId() == gameid) timeOutStates.remove(current);
+			if (current.getGameId() == gameid) it.remove();
 
 
 		}
@@ -397,13 +397,17 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = getGameById(gameid);
 
+		
+		
 		if (!g.isPlayerClicked(playerid)){
 			boolean posIsFree = true;
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				if (i+1 != playerid){
 					int posOtherPlayer = g.getPlayerActPos(i+1);
-					if (Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth())
+				
+					if (!(posOtherPlayer == Integer.MIN_VALUE) && Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth())
 						posIsFree = false;
+						
 				}
 			}
 			if (posIsFree){

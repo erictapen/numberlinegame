@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -42,6 +43,7 @@ public class NumberLineGameSelector extends Composite  {
 	final TextPopupBox gamePopUp = new TextPopupBox("Bitte gebe einen Namen für das Spiel ein!", "Mein Spiel");
 	private NumberLineGameCoordinator coordinator;
 	private Timer t;
+	
 
 	/**
 	 * A cell for our open games list
@@ -100,7 +102,7 @@ public class NumberLineGameSelector extends Composite  {
 		ScrollPanel s = new ScrollPanel(cellList);
 
 		s.setWidth("400px");
-		s.setHeight("250px");
+		s.setHeight("300px");
 
 
 		Button joinGameButton = new Button("Mitspielen");
@@ -165,7 +167,7 @@ public class NumberLineGameSelector extends Composite  {
 		joinGameButton.setHeight("30px");
 		joinGameButton.setWidth("120px");
 		refreshButton.setHeight("30px");
-		
+
 
 		motherPanel.add(createGameButton);
 		motherPanel.add(joinGameButton);
@@ -174,11 +176,13 @@ public class NumberLineGameSelector extends Composite  {
 		motherPanel.setWidgetPosition(joinGameButton, 450, 30);
 		//motherPanel.setWidgetPosition(refreshButton, 15, 340);
 		motherPanel.setWidgetPosition(createGameButton, 450, 60);
-		
-		
+
+		clearGameList();
+
 		t = new Timer() {
+
 			public void run() {
-				
+
 				coordinator.refreshGameList();
 			}
 		};
@@ -197,15 +201,77 @@ public class NumberLineGameSelector extends Composite  {
 
 	}
 
-	public void addGame(NumberLineGameState g) {
 
-		openGames.add(g);
-		cellList.setRowData(openGames);
+
+	public void setGameList(ArrayList<NumberLineGameState> games) {
+
+
+
+		if (games != null) {
+
+			
+			//first, remove closed game
+
+
+
+			Iterator<NumberLineGameState> i = openGames.iterator();
+
+
+
+			while (i.hasNext()) {
+
+
+				NumberLineGameState g = i.next();
+				
+				if (!gameInList(g,games)) i.remove();
+
+			}
+
+			//now add new games...
+
+			i = games.iterator();
+			while(i.hasNext()) {
+
+				NumberLineGameState g = i.next();
+
+				//we dont want to display full or ended games here...
+				if ((g.isFree() && g.getState() < 2) && !gameInList(g,openGames)) {
+
+					openGames.add(g);
+				}
+			}
+
+			cellList.setRowData(openGames);
+			
+
+		}
+
+
 
 	}
 
+	private boolean gameInList(NumberLineGameState g, ArrayList<NumberLineGameState> games) {
+
+		Iterator<NumberLineGameState> it = games.iterator();
+
+
+		while (it.hasNext()) {
+
+
+			if (it.next().getId() == g.getId()) return true;
+
+
+		}
+
+		return false;
+
+
+	}
+
+
+
 	public int getSelectedGameId() {
-		
+
 		if (selectionModel.getSelectedObject()!=null) {
 			return selectionModel.getSelectedObject().getId();
 		}else{
@@ -227,9 +293,9 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 	protected void joinGame() {
-		
+
 		if (this.getSelectedGameId() < 0) return;
-		
+
 		final TextPopupBox b = new TextPopupBox("Bitte gib deinen Namen ein", "Spieler");
 
 		b.addClickHandler(new ClickHandler() {
@@ -240,11 +306,11 @@ public class NumberLineGameSelector extends Composite  {
 
 				b.hide();
 				coordinator.joinGame(NumberLineGameSelector.this.getSelectedGameId(), b.getTextValue());
-
+				t.cancel();
 			}
 
 		});
-		t.cancel();
+		
 		gamePopUp.hide();
 		b.show();
 	}
