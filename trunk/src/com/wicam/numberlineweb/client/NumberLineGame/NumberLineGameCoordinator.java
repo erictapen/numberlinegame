@@ -20,6 +20,7 @@ public class NumberLineGameCoordinator {
 	private Panel rootPanel;
 	private NumberLineController controller;
 	private boolean sessionClicked = false;
+	private boolean triedToClick = false; // indicates if players has already tried to click at a position which was not available
 	private ChatCoordinator chatC;
 	private NumberLineGameState openedGame;
 	private Timer t;
@@ -236,6 +237,7 @@ public class NumberLineGameCoordinator {
 		case 3:
 			gameView.clear();
 			sessionClicked=false;
+			triedToClick=false;
 
 			gameView.setLeftNumber(g.getLeftNumber());
 			gameView.setRightNumber(g.getRightNumber());
@@ -268,7 +270,7 @@ public class NumberLineGameCoordinator {
 			}
 			else {
 				// if position was not available, player gets a second chance
-				if (sessionClicked){
+				if (triedToClick || sessionClicked){
 					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
 					sessionClicked = false;
 				}
@@ -341,27 +343,10 @@ public class NumberLineGameCoordinator {
 		if ((openGame.getState() == 3 || openGame.getState() == 4) && 
 				!sessionClicked){
 			this.sessionClicked = true;
+			this.triedToClick = true;
 
 			// check if other player's position has already been displayed
-			int posOtherPlayer = openGame.getPlayerActPos(playerID%2+1);
-			System.out.println("posOtherPlayer: " + posOtherPlayer);
-			
-			// ask server if it is available
-			if (posOtherPlayer == Integer.MIN_VALUE){
-				
-				commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
-			}
-			else {
-				// it has been already displayed. Thus, we don't have to communicate with the server
-				if (!(posOtherPlayer == Integer.MIN_VALUE) && Math.abs(x - posOtherPlayer) < openGame.getPointerWidth()){
-					this.sessionClicked = false;
-					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
-				}
-				else {
-					gameView.setPointer(playerID,x);
-					commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
-				}
-			}
+			commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 		}
 	}
 
