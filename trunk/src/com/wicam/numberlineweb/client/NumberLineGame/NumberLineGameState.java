@@ -26,6 +26,8 @@ public class NumberLineGameState implements Serializable{
 	private int rightNumber;
 	private int exerciseNumber;
 	private int pointerWidth;
+	private int maxItems = 20; // maximal exercise numbers
+	private int itemCount = 0; // number of exercise numbers that have been set
 
 	private String gameName;
 	private int gameId;
@@ -100,6 +102,7 @@ public class NumberLineGameState implements Serializable{
 	}
 
 	public void setExerciseNumber(int exerciseNumber) {
+		itemCount++;
 		this.exerciseNumber = exerciseNumber;
 	}
 
@@ -241,4 +244,29 @@ public class NumberLineGameState implements Serializable{
 			playerNamesList.add(player.getName());
 		return playerNamesList;
 	}
+
+	public void setItemCount(int itemCount) {
+		this.itemCount = itemCount;
+	}
+
+	public int getItemCount() {
+		return itemCount;
+	}
+
+	public void setMaxItems(int maxItems) {
+		this.maxItems = maxItems;
+	}
+
+	public int getMaxItems() {
+		return maxItems;
+	}
+	
+	public void setHasLeftGame(int playerid, boolean leftGame) {
+		this.players.get(playerid-1).setLeftGame(leftGame);
+	}
+	
+	public boolean getHasLeftGame(int playerid) {
+		return this.players.get(playerid-1).hasLeftGame();
+	}
+	
 }

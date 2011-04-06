@@ -13,6 +13,7 @@ public class Player implements Serializable{
 	private boolean clicked = false;
 	private int actPos = Integer.MIN_VALUE;
 	private boolean ready = false; // for synchronization
+	private boolean leftGame = false;
 	
 	public void setName(String name) {
 		this.name = name;
@@ -45,6 +46,12 @@ public class Player implements Serializable{
 	}
 	public boolean isReady() {
 		return ready;
+	}
+	public void setLeftGame(boolean leftGame) {
+		this.leftGame = leftGame;
+	}
+	public boolean hasLeftGame() {
+		return leftGame;
 	}
 	
 }

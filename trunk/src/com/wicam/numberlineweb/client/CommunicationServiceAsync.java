@@ -13,6 +13,8 @@ public interface CommunicationServiceAsync {
 	public void openGame(NumberLineGameState game,AsyncCallback<NumberLineGameState> callback);
 
 	public void joinGame(String id,AsyncCallback<String> callback);
+	
+	public void leaveGame(String id,AsyncCallback<Boolean> callback);
 
 	public void clickedAt(String s,AsyncCallback<NumberLineGameState> callback);
 	

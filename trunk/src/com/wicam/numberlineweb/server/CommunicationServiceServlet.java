@@ -60,6 +60,16 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	}
 
+	private void endGame(int id) {
+
+		Timer t = new Timer();
+
+		//wait 6 seconds for users to be ready
+		t.schedule(new SetGameStateTask(id, 6, this), 6000);
+
+
+	}
+	
 	/**
 	 * Calculate new number & new exercise
 	 * @param game
@@ -479,9 +489,12 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 				System.out.println(getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
 			}
 
-			//restart 			
-			startGame(gameid);
-
+			//restart 
+			if (getGameById(gameid).getItemCount() == getGameById(gameid).getMaxItems()){
+				endGame(gameid);
+			}
+			else
+				startGame(gameid);
 		}
 
 		return getGameById(gameid);
@@ -556,6 +569,28 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		g.setState(state);
 		setChanged(g.getId());
 
+	}
+	
+	// TODO: comment it
+	public boolean leaveGame(String ids){
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		NumberLineGameState g = getGameById(gameid);
+		
+		g.setHasLeftGame(playerid, true);
+		setChanged(g.getId());
+		
+		boolean allLeft = true;
+		for (int i = 0; i < g.getPlayers().size(); i++){
+			if (!g.getHasLeftGame(i+1))
+				allLeft = false;
+		}
+		
+		// remove game if all players left
+		if(allLeft)
+			this.removeGame(gameid);
+		
+		return true;
 	}
 
 
