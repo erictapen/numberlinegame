@@ -104,6 +104,18 @@ public class NumberLineGameCoordinator {
 		commServ.openGame(g, gameOpenedCallBack);
 
 	}
+	
+	/**
+	 * Close a game
+	 * @param name
+	 */
+
+	public void closeGame(NumberLineGameState g) {
+		System.out.println(g.getPlayerName(this.playerID) + " closed Game");
+		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		rootPanel.clear();
+		init();
+	}
 
 	/**
 	 * refreshes the game list. Callback will redraw list
@@ -305,6 +317,11 @@ public class NumberLineGameCoordinator {
 			}
 
 			break;
+		case 6:
+			// TODO: winner screen
+			closeGame(g);
+			break;
+			
 		}	
 
 		// TODO: multiplayer capability

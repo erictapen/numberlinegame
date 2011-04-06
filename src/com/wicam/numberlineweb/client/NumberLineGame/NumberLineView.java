@@ -43,8 +43,6 @@ public class NumberLineView extends Composite  {
 	final HTML exerciseText = new HTML();
 	final HTML infoBox = new HTML();
 	ArrayList<HTML> pointsList = new ArrayList<HTML>();
-	//final HTML points = new HTML();
-	//final HTML enemyPoints = new HTML();
 	private MouseHandler mouseHandler;
 
 	private int leftNumber;
@@ -68,13 +66,10 @@ public class NumberLineView extends Composite  {
 
 	private void init() {
 
-		// initialize pointers and pointersText
-		// TODO: only three players
+		// initialize pointers
 		for (int i = 0; i < numberOfPlayers; i++){
 			//final HTML pointerText = new HTML();
-			//final HTML points = new HTML();
 			//pointerTextList.add(pointerText);
-			//pointsList.add(points);
 			final NumberLineGamePointer pointer = new NumberLineGamePointer(2,this.playerColors[i]);
 			pointerList.add(pointer);
 		}
@@ -95,10 +90,6 @@ public class NumberLineView extends Composite  {
 		canvas.closePath();
 		canvas.stroke();
 
-
-		//pointsList.get(0).setHTML("<div style='font-size:30px;color:blue'></div>");
-		//pointsList.get(1).setHTML("<div style='width:50px;text-align:right;font-size:30px;color:red'></div>");
-
 		//for (int i = 0; i < pointerTextList.size(); i++){
 		//	pointerTextList.get(i).setHTML("<div style='font-size:16px;border:solid black 2px'></div>");
 		//}
@@ -116,20 +107,6 @@ public class NumberLineView extends Composite  {
 		p.setWidgetPosition(infoBox, 10, 290);
 
 		p.add(canvas);
-
-		//for (int i = 0; i < pointsList.size(); i++){
-		//	p.add(pointsList.get(i));
-		//}
-		/*
-		if (pointsList.size() == 2){
-			p.setWidgetPosition(pointsList.get(1), 415, 347);
-			p.setWidgetPosition(pointsList.get(0), 30, 347);
-		}
-		if (pointsList.size() == 3){
-			p.setWidgetPosition(pointsList.get(2), 222, 347);
-			p.setWidgetPosition(pointsList.get(1), 415, 347);
-			p.setWidgetPosition(pointsList.get(0), 30, 347);
-		}*/
 		
 
 		p.add(labelLeft);
@@ -206,7 +183,6 @@ public class NumberLineView extends Composite  {
 	}
 	
 	public void showCorrectPositionPointer(int x){
-		System.out.println("showPointer at: " + x);
 		p.add(correctPositionPointer);
 		p.setWidgetPosition(correctPositionPointer, realPosToRaw(x)+100-Math.round(3), 170);
 	}
@@ -215,7 +191,6 @@ public class NumberLineView extends Composite  {
 	public void showPointerText(int playerid, int x, int correct)  {
 		//p.add(pointerTextList.get(playerid-1));
 		//setPointerText(playerid, rawPosToReal(x),correct,pointerTextList.get(playerid-1));
-		// TODO: position
 		//p.setWidgetPosition(pointerTextList.get(playerid-1), x+100, 159);
 
 	}
@@ -287,12 +262,5 @@ public class NumberLineView extends Composite  {
 			}                           
 		}
 	}
-	
-	/*public void setPlayerNamesCellList(ArrayList<String> playersNameList){
-		for (int i = 1; i < playersNameList.size()+1; i++){
-			playerNamesFlexTable.setHTML(i, 1, "<div style='font-size:30px;color:" + playerColors[i-1] + "'>0<span style='font-size:14px'> " + playersNameList.get(i-1) +"</span></div>");
-		}
-	}*/
-
 
 }

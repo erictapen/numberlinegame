@@ -18,6 +18,8 @@ public interface CommunicationService extends RemoteService {
 	public NumberLineGameState openGame(NumberLineGameState g);
 
 	public String joinGame(String id);
+	
+	public boolean leaveGame(String id);
 
 	public NumberLineGameState clickedAt(String clicked);
 	
