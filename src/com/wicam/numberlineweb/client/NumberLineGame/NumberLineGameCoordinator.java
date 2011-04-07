@@ -336,7 +336,7 @@ public class NumberLineGameCoordinator {
 				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
 					
 					gameView.setInfoText(current.getName() + " hat das Spiel verlassen");
-					
+					gameView.deletePlayerFromPointList(g.getPlayers().indexOf(current)+1);
 				}
 				
 				
