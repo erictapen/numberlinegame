@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.chatView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * A chat message. Holds username, id and the msg itself.
@@ -20,6 +21,7 @@ public class ChatMsg implements  Serializable{
 	private String from;
 	private String msg;
 	private int gameid;
+	private ArrayList<String> sentTo = new ArrayList<String>();
 
 	public ChatMsg() {
 
@@ -35,6 +37,18 @@ public class ChatMsg implements  Serializable{
 		return from;
 	}
 
+	public void sentTo(String id) {
+		
+		if (!hasSentTo(id)) sentTo.add(id);
+		
+	}
+	
+	public boolean hasSentTo(String id) {
+		
+		return sentTo.indexOf(id) > -1;
+		
+	}
+	
 	public String getMsg() {		
 		return msg;
 	}

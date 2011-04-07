@@ -617,9 +617,10 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 			ChatMsg act = i.next();
 
-			if (act.getGameID() == gameid && !act.getFrom().equals(uname)) {
+			if (act.getGameID() == gameid && !act.getFrom().equals(uname) && !act.hasSentTo(uname)) {
 
-				chatMsgs.remove(act);
+				act.sentTo(uname);
+				
 				return act;
 
 			}
