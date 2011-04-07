@@ -115,6 +115,8 @@ public class NumberLineGameCoordinator {
 	public void closeGame(NumberLineGameState g) {
 		System.out.println(g.getPlayerName(this.playerID) + " closed Game");
 		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		RootPanel.get("chatwrap").getElement().getStyle().setVisibility(Visibility.HIDDEN);
+		RootPanel.get("chat").clear();
 		rootPanel.clear();
 		init();
 	}
