@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 public class NumberLineView extends Composite  {
 
 	final HorizontalPanel motherPanel = new HorizontalPanel();
-	final GWTCanvas canvas = new GWTCanvas(600,400);
 	final AbsolutePanel p = new AbsolutePanel();
 
 	/**
@@ -78,18 +77,12 @@ public class NumberLineView extends Composite  {
 
 		p.getElement().getStyle().setPosition(Position.RELATIVE);
 
-		canvas.setLineWidth(6);
-		canvas.setStrokeStyle(Color.BLACK);
-		canvas.beginPath();
-		canvas.moveTo(100,180);
-		canvas.lineTo(100,210);
-		canvas.moveTo(100,195);
-		canvas.lineTo(500,195);
-		canvas.moveTo(500,182);
-		canvas.lineTo(500,208);
-		canvas.closePath();
-		canvas.stroke();
-
+	
+		// IE compatible canvas
+		p.add(new HTML("<div style='border:none; background-color:black;width:400px;height:6px;overflow:hidden;position:absolute;left:100px;top:192px'></div>"));
+		p.add(new HTML("<div style='border:none; background-color:black;width:6px;height:28px;overflow:hidden;position:absolute;left:97px;top:181px'></div>"));
+		p.add(new HTML("<div style='border:none; background-color:black;width:6px;height:28px;overflow:hidden;position:absolute;left:497px;top:181px'></div>"));
+		
 		//for (int i = 0; i < pointerTextList.size(); i++){
 		//	pointerTextList.get(i).setHTML("<div style='font-size:16px;border:solid black 2px'></div>");
 		//}
@@ -97,6 +90,7 @@ public class NumberLineView extends Composite  {
 		exerciseText.setHTML("<div id='exercise' style='border:solid black 4px;padding:5px 20px;font-size:25px'>---</div>");
 		infoBox.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Awaiting Signal...</div>");
 
+		HTML c = new HTML("<div id='canvas' style='width:600px;height:400px'></div>");
 
 		p.add(exerciseText);
 
@@ -106,7 +100,8 @@ public class NumberLineView extends Composite  {
 
 		p.setWidgetPosition(infoBox, 10, 290);
 
-		p.add(canvas);
+		p.add(c);
+		
 
 
 		p.add(labelLeft);
@@ -121,6 +116,7 @@ public class NumberLineView extends Composite  {
 		final AbsolutePanel p2 = new AbsolutePanel();
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
+		
 
 		p2.add(playerNamesFlexTable);
 
