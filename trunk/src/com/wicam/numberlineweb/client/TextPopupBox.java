@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client;
 
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -25,6 +26,7 @@ public class TextPopupBox extends DialogBox {
 
 	final TextBox text = new TextBox();
 	final Button ok = new Button("OK!");
+	final Button cancel = new Button("Abbrechen");
 	protected VerticalPanel p = new VerticalPanel();
 	final VerticalPanel v = new VerticalPanel();
 
@@ -54,9 +56,24 @@ public class TextPopupBox extends DialogBox {
 		v.add(p);
 		v.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		ok.setWidth("60px");
-		v.add(ok);
+		HorizontalPanel z = new HorizontalPanel();
+		
+		z.add(ok);
+		z.add(cancel);
+		z.setSpacing(5);
+		v.add(z);
 		v.setSpacing(10);
 		setWidget(v);
+		
+		cancel.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				TextPopupBox.this.hide();
+			}
+			
+		});
 
 		//this adds ok-functionality when pressing enter
 		text.addKeyDownHandler(new KeyDownHandler() {

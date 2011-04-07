@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.wicam.numberlineweb.client.TextPopupBox;
 
@@ -44,7 +45,7 @@ public class NumberLineGameSelector extends Composite  {
 	private NumberLineGameCoordinator coordinator;
 	private Timer t;
 	private final int boxWidth = 750;
-
+	private Button joinGameButton;
 
 	/**
 	 * A cell for our open games list
@@ -94,13 +95,32 @@ public class NumberLineGameSelector extends Composite  {
 
 		RootPanel.get().add(motherPanel);
 
+		joinGameButton = new Button("Mitspielen");
+
+		joinGameButton.setEnabled(false);
 
 		createGameButton = new Button("Neues Spiel");
 
-		refreshButton = new Button("Refresh");
-
+		
 		cellList.setSelectionModel(selectionModel);
 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler(){
+
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				// TODO Auto-generated method stub
+				if (selectionModel.getSelectedObject() != null) {
+					
+					joinGameButton.setEnabled(true);
+					
+				}else{
+					joinGameButton.setEnabled(false);
+				}
+			}
+			
+			
+		});
 
 		ScrollPanel s = new ScrollPanel(cellList);
 
@@ -108,9 +128,7 @@ public class NumberLineGameSelector extends Composite  {
 		s.setHeight("300px");
 
 
-		Button joinGameButton = new Button("Mitspielen");
-
-
+	
 		joinGameButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -121,15 +139,7 @@ public class NumberLineGameSelector extends Composite  {
 			}
 		});
 
-		refreshButton.addClickHandler(new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-
-				coordinator.refreshGameList();
-
-			}
-		});
 
 		createGameButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -171,7 +181,7 @@ public class NumberLineGameSelector extends Composite  {
 
 		joinGameButton.setHeight("30px");
 		joinGameButton.setWidth("220px");
-		refreshButton.setHeight("30px");
+
 
 
 		motherPanel.add(createGameButton);
