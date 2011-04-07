@@ -26,11 +26,11 @@ public class NumberLineView extends Composite  {
 	final HorizontalPanel motherPanel = new HorizontalPanel();
 	final GWTCanvas canvas = new GWTCanvas(600,400);
 	final AbsolutePanel p = new AbsolutePanel();
-	
+
 	/**
 	 * TODO: create own Composite-Classes for elements
 	 */
-	
+
 	private int numberOfPlayers;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
@@ -73,9 +73,9 @@ public class NumberLineView extends Composite  {
 			final NumberLineGamePointer pointer = new NumberLineGamePointer(2,this.playerColors[i]);
 			pointerList.add(pointer);
 		}
-		
+
 		//draw everthing
-		
+
 		p.getElement().getStyle().setPosition(Position.RELATIVE);
 
 		canvas.setLineWidth(6);
@@ -107,7 +107,7 @@ public class NumberLineView extends Composite  {
 		p.setWidgetPosition(infoBox, 10, 290);
 
 		p.add(canvas);
-		
+
 
 		p.add(labelLeft);
 		p.add(labelRight);
@@ -115,17 +115,17 @@ public class NumberLineView extends Composite  {
 		p.setWidgetPosition(labelLeft, 40, 177);
 		p.setWidgetPosition(labelRight, 510, 177);
 
-		
+
 		motherPanel.add(p);
-		
+
 		final AbsolutePanel p2 = new AbsolutePanel();
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
-		
+
 		p2.add(playerNamesFlexTable);
-		
+
 		motherPanel.add(p2);
-		
+
 		RootPanel.get().add(motherPanel);
 	}
 
@@ -137,6 +137,11 @@ public class NumberLineView extends Composite  {
 
 	public void setPoints(int playerid, int p,String name) {
 		playerNamesFlexTable.setHTML(playerid, 1, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
+	}
+
+	public void deletePlayerFromPointList(int playerid) {
+		playerNamesFlexTable.clearCell(playerid, 1);
+		playerNamesFlexTable.removeCell(playerid, 1);
 	}
 
 
@@ -151,7 +156,7 @@ public class NumberLineView extends Composite  {
 	 */
 
 	public void clear() {
-		
+
 		for (int i = 0; i < pointerList.size(); i++){
 			p.remove(pointerList.get(i));
 			//p.remove(pointerTextList.get(i));
@@ -165,28 +170,28 @@ public class NumberLineView extends Composite  {
 		setPointerPos(x,pointerList.get(playerid-1));
 
 	}
-	
+
 	public void setPointerWidth(int width) {
-		
-		
+
+
 		this.pointerWidth = width;
 		for (int i = 0; i < pointerList.size(); i++)
 			this.pointerList.get(i).setWidth(width);		
-		
+
 	}
-	
+
 	public int getPointerWidth() {
-				
+
 		return pointerWidth;
-				
-		
+
+
 	}
-	
+
 	public void showCorrectPositionPointer(int x){
 		p.add(correctPositionPointer);
 		p.setWidgetPosition(correctPositionPointer, realPosToRaw(x)+100-Math.round(3), 170);
 	}
-	
+
 
 	public void showPointerText(int playerid, int x, int correct)  {
 		//p.add(pointerTextList.get(playerid-1));
@@ -194,7 +199,7 @@ public class NumberLineView extends Composite  {
 		//p.setWidgetPosition(pointerTextList.get(playerid-1), x+100, 159);
 
 	}
-	
+
 	public int realPosToRaw(int pos) {
 
 		return (int)((pos -leftNumber) /  ((double)(rightNumber -leftNumber)/400));
