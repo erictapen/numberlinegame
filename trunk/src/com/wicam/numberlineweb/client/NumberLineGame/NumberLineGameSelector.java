@@ -37,14 +37,14 @@ public class NumberLineGameSelector extends Composite  {
 
 	final AbsolutePanel motherPanel = new AbsolutePanel();
 	final TextCell textCell = new TextCell();
-	private Button[] createGameButtons;
+	private Button createGameButton;
 	private Button refreshButton;
 	final SingleSelectionModel<NumberLineGameState> selectionModel = new SingleSelectionModel<NumberLineGameState>();
-	final TextPopupBox gamePopUp = new TextPopupBox("Bitte gebe einen Namen für das Spiel ein!", "Mein Spiel");
+	final GameCreatePopupBox gamePopUp = new GameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
 	private NumberLineGameCoordinator coordinator;
 	private Timer t;
 	private final int boxWidth = 750;
-	
+
 
 	/**
 	 * A cell for our open games list
@@ -57,7 +57,7 @@ public class NumberLineGameSelector extends Composite  {
 		public void render(Context context,	NumberLineGameState game, SafeHtmlBuilder sb) {
 
 			sb.appendHtmlConstant("<div style='padding:4px;font-size:14px'>");
-			sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/" + game.getMaxNumberOfPlayers() + ")");
+			sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/" + game.getMaxNumberOfPlayers() + " Spieler, " + game.getMaxItems() + " Runden)");
 			sb.appendHtmlConstant("</div>");
 
 		}
@@ -93,10 +93,10 @@ public class NumberLineGameSelector extends Composite  {
 	private void init() {
 
 		RootPanel.get().add(motherPanel);
-		createGameButtons = new Button[4];
-		for (int i = 0; i < createGameButtons.length; i++){
-			createGameButtons[i] = new Button("Neues Spiel (" + (i+2) + " Spieler)");
-		}
+
+
+		createGameButton = new Button("Neues Spiel");
+
 		refreshButton = new Button("Refresh");
 
 		cellList.setSelectionModel(selectionModel);
@@ -131,27 +131,25 @@ public class NumberLineGameSelector extends Composite  {
 			}
 		});
 
-		for (int i = 0; i < createGameButtons.length; i++){
-			final int numberOfPlayers = i+2;
-			createGameButtons[i].addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					gamePopUp.addClickHandler(new ClickHandler() {
+		createGameButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
 
-						@Override
-						public void onClick(ClickEvent event) {
-							gamePopUp.setEnabled(false);
-							coordinator.openGame(gamePopUp.getTextValue(), numberOfPlayers);
-						}
+				gamePopUp.addClickHandler(new ClickHandler() {
 
-					});
+					@Override
+					public void onClick(ClickEvent event) {
+						gamePopUp.setEnabled(false);
+						coordinator.openGame(gamePopUp.getTextValue(), gamePopUp.getPlayerCount(),gamePopUp.getRoundCount());
+					}
 
-					gamePopUp.show();
+				});
 
-				}
-			});
-		}
+				gamePopUp.show();
+
+			}
+		});
+
 
 		motherPanel.setWidth("600px");
 		motherPanel.setHeight("400px");
@@ -166,26 +164,26 @@ public class NumberLineGameSelector extends Composite  {
 		motherPanel.add(title);
 		motherPanel.setWidgetPosition(title, 15, 20);
 
-		for (int i = 0; i < createGameButtons.length; i++){
-			createGameButtons[i].setHeight("30px");
-			createGameButtons[i].setWidth("220px");
-		}
-		
+
+		createGameButton.setHeight("30px");
+		createGameButton.setWidth("220px");
+
+
 		joinGameButton.setHeight("30px");
 		joinGameButton.setWidth("220px");
 		refreshButton.setHeight("30px");
 
-		for (int i = 0; i < createGameButtons.length; i++){
-			motherPanel.add(createGameButtons[i]);
-		}
+
+		motherPanel.add(createGameButton);
+
 		motherPanel.add(joinGameButton);
 		//motherPanel.add(refreshButton);
 
 		motherPanel.setWidgetPosition(joinGameButton, boxWidth-250, 30);
 		//motherPanel.setWidgetPosition(refreshButton, 15, 340);
-		for (int i = 0; i < createGameButtons.length; i++){
-			motherPanel.setWidgetPosition(createGameButtons[i], boxWidth-250, 60+i*30);
-		}
+
+		motherPanel.setWidgetPosition(createGameButton, boxWidth-250, 60);
+
 
 		clearGameList();
 
@@ -219,7 +217,7 @@ public class NumberLineGameSelector extends Composite  {
 
 		if (games != null) {
 
-			
+
 			//first, remove closed game
 
 
@@ -232,7 +230,7 @@ public class NumberLineGameSelector extends Composite  {
 
 
 				NumberLineGameState g = i.next();
-				
+
 				if (!gameInList(g,games)) i.remove();
 
 			}
@@ -256,7 +254,7 @@ public class NumberLineGameSelector extends Composite  {
 			}
 
 			cellList.setRowData(openGames);
-			
+
 
 		}
 
@@ -264,24 +262,24 @@ public class NumberLineGameSelector extends Composite  {
 
 	}
 
-	
+
 	private NumberLineGameState getGameById(int id, ArrayList<NumberLineGameState> games) {
-		
+
 		Iterator<NumberLineGameState> i = games.iterator();
-		
+
 		while (i.hasNext()) {
-			
+
 			NumberLineGameState current= i.next();
-			
+
 			if (current.getId() == id) return current;
-			
+
 		}
-		
+
 		return null;
-		
+
 	}
-	
-	
+
+
 	private boolean gameInList(NumberLineGameState g, ArrayList<NumberLineGameState> games) {
 
 		Iterator<NumberLineGameState> it = games.iterator();
@@ -342,7 +340,7 @@ public class NumberLineGameSelector extends Composite  {
 			}
 
 		});
-		
+
 		gamePopUp.hide();
 		b.show();
 	}

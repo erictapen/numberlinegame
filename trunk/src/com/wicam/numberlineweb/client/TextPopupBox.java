@@ -7,7 +7,12 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 /**
  * A simple popup box, prompting a question, returning a string value
@@ -20,7 +25,8 @@ public class TextPopupBox extends DialogBox {
 
 	final TextBox text = new TextBox();
 	final Button ok = new Button("OK!");
-
+	protected VerticalPanel p = new VerticalPanel();
+	final VerticalPanel v = new VerticalPanel();
 
 	public TextPopupBox(String request, String value) {
 
@@ -33,12 +39,24 @@ public class TextPopupBox extends DialogBox {
 
 	public TextPopupBox() {
 
-		final FlowPanel p = new FlowPanel();
+		HorizontalPanel f = new HorizontalPanel();
+		
 
-		p.add(text);
-		p.add(ok);
+		f.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		f.setSpacing(5);
+		f.add(new HTML("Name: "));
+		f.add(text);
+		
 
-		setWidget(p);
+		p.add(f);
+		p.setSpacing(5);
+		
+		v.add(p);
+		v.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		ok.setWidth("60px");
+		v.add(ok);
+		v.setSpacing(10);
+		setWidget(v);
 
 		//this adds ok-functionality when pressing enter
 		text.addKeyDownHandler(new KeyDownHandler() {

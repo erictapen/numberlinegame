@@ -95,12 +95,13 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void openGame(String name, int numberOfPlayers) {
+	public void openGame(String name, int numberOfPlayers,int numberOfRounds) {
 
 		this.numberOfPlayers = numberOfPlayers;
 		NumberLineGameState g = new NumberLineGameState();
 		g.setGameName(name);
 		g.setNumberOfPlayers(numberOfPlayers);
+		g.setMaxItems(numberOfRounds);
 
 		commServ.openGame(g, gameOpenedCallBack);
 
