@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.chatView;
 
 
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -45,6 +46,20 @@ public class ChatView extends Composite{
 		ta.setHeight("70px");
 
 		tb.setWidth((boxWidth-100) + "px");
+		ta.setReadOnly(true);
+		
+		ta.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				tb.setFocus(true);
+				
+			}
+			
+			
+			
+		});
+		
 		sendButton.setWidth("86px");
 		sendButton.setHeight("106px");
 		sendButton.setText("Senden");
