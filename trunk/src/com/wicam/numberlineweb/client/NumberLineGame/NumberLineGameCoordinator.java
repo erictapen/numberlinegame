@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
@@ -322,16 +323,29 @@ public class NumberLineGameCoordinator {
 			closeGame(g);
 			break;
 			
+		case 99:
+			// player has left the game
+			
+			Iterator<Player> i = g.getPlayers().iterator();
+			
+			while (i.hasNext()) {
+				
+				Player current = i.next();
+				
+				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
+					
+					gameView.setInfoText(current.getName() + " hat das Spiel verlassen");
+					
+				}
+				
+				
+			}
+			
+			
+			break;
+			
 		}	
 
-		// TODO: multiplayer capability
-		if (g.getState() == 100 - ((this.playerID % 2) +1)) {
-
-			setRefreshRate(1000);
-			gameView.setInfoText("Der andere Spieler hat das Spiel verlassen!");
-
-
-		}
 
 
 		openGame = g;

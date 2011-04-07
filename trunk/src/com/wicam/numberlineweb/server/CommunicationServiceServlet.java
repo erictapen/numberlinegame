@@ -358,8 +358,8 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 
 
-		setGameState(getGameById(gameid),100-playerid);
-		getGameById(gameid).removePlayer(playerid);
+		setGameState(getGameById(gameid),99);
+		getGameById(gameid).setHasLeftGame(playerid,true);
 
 		if (getGameById(gameid).getPlayerCount() == 0) {
 

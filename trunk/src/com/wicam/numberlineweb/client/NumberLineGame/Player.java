@@ -15,6 +15,7 @@ public class Player implements Serializable{
 	private boolean ready = false; // for synchronization
 	private boolean leftGame = false;
 	
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -25,6 +26,8 @@ public class Player implements Serializable{
 	public void setPoints(int points) {
 		this.points = points;
 	}
+	
+
 	
 	public int getPoints() {
 		return points;
