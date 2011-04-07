@@ -46,7 +46,7 @@ public class NumberLineGameState implements Serializable{
 		this.pointerWidth = width;
 
 	}
-
+	
 	public int getPointerWidth() {
 
 		return this.pointerWidth;
@@ -172,7 +172,7 @@ public class NumberLineGameState implements Serializable{
 	public int addPlayer(String newName) {
 		int countSameName = 1;
 		for (Player player: players){
-			// to ensure different names
+			// to ensure different namesremovePlayer
 			if (newName.equals(player.getName())){
 				countSameName++;
 				// TODO: only a solution if number of players with same name < 10
@@ -188,10 +188,6 @@ public class NumberLineGameState implements Serializable{
 		return players.size();
 	}
 
-	public void removePlayer(int playerid) {
-		if (playerid-1 < players.size())
-			players.remove(playerid-1);
-	}
 
 	public void setPlayerClicked(int playerid){
 		if (playerid-1 < players.size())
