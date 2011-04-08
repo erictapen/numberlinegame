@@ -17,6 +17,7 @@ import com.wicam.numberlineweb.client.chatView.ChatView;
 public class NumberLineGameCoordinator {
 
 	private int numberOfPlayers;
+	private int numberOfNPCs;
 	private NumberLineGameState openGame = null;
 	private Panel rootPanel;
 	private NumberLineController controller;
@@ -95,12 +96,14 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void openGame(String name, int numberOfPlayers,int numberOfRounds) {
+	public void openGame(String name, int numberOfPlayers, int numberOfNPCs, int numberOfRounds) {
 
 		this.numberOfPlayers = numberOfPlayers;
+		this.numberOfNPCs = numberOfNPCs;
 		NumberLineGameState g = new NumberLineGameState();
 		g.setGameName(name);
 		g.setNumberOfPlayers(numberOfPlayers);
+		g.setNumberOfMaxNPCs(numberOfNPCs);
 		g.setMaxItems(numberOfRounds);
 
 		commServ.openGame(g, gameOpenedCallBack);
@@ -137,8 +140,9 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void joinGame(int id,String name, int numberOfPlayers) {
+	public void joinGame(int id,String name, int numberOfPlayers, int numberOfNPCs) {
 		this.numberOfPlayers = numberOfPlayers;
+		this.numberOfNPCs = numberOfNPCs;
 		
 		//we dont want anonymous players
 		if (name.equals("")) name="Spieler";
@@ -160,7 +164,7 @@ public class NumberLineGameCoordinator {
 		this.playerID = playerID;
 
 		//construct game
-		this.gameView = new NumberLineView(numberOfPlayers);
+		this.gameView = new NumberLineView(numberOfPlayers, numberOfNPCs);
 		controller = new NumberLineController(this);
 		gameView.addMouseHandler(controller);
 
@@ -291,7 +295,7 @@ public class NumberLineGameCoordinator {
 					sessionClicked = false;
 				}
 				else{
-					gameView.setInfoText("Mache deine Schaetzung!");
+					gameView.setInfoText("Mache deine Schätzung!");
 				}
 			}
 			
@@ -329,11 +333,11 @@ public class NumberLineGameCoordinator {
 		case 99:
 			// player has left the game
 			
-			Iterator<Player> i = g.getPlayers().iterator();
+			Iterator<NumberLineGamePlayer> i = g.getPlayers().iterator();
 			
 			while (i.hasNext()) {
 				
-				Player current = i.next();
+				NumberLineGamePlayer current = i.next();
 				
 				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
 					

@@ -31,6 +31,7 @@ public class NumberLineView extends Composite  {
 	 */
 
 	private int numberOfPlayers;
+	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 	final HTML labelLeft = new HTML();
@@ -41,15 +42,16 @@ public class NumberLineView extends Composite  {
 	final HTML infoText = new HTML();
 	final HTML exerciseText = new HTML();
 	final HTML infoBox = new HTML();
-	ArrayList<HTML> pointsList = new ArrayList<HTML>();
+	//ArrayList<HTML> pointsList = new ArrayList<HTML>();
 	private MouseHandler mouseHandler;
 
 	private int leftNumber;
 	private int rightNumber;
 	private int pointerWidth;
 
-	public NumberLineView(int numberOfPlayers) {
+	public NumberLineView(int numberOfPlayers, int numberOfNPCs) {
 		this.numberOfPlayers = numberOfPlayers;
+		this.numberOfNPCs = numberOfNPCs;
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
@@ -66,7 +68,8 @@ public class NumberLineView extends Composite  {
 	private void init() {
 
 		// initialize pointers
-		for (int i = 0; i < numberOfPlayers; i++){
+		int numberOfPointers = numberOfPlayers+numberOfNPCs;
+		for (int i = 0; i < numberOfPointers; i++){
 			//final HTML pointerText = new HTML();
 			//pointerTextList.add(pointerText);
 			final NumberLineGamePointer pointer = new NumberLineGamePointer(2,this.playerColors[i]);
@@ -161,7 +164,6 @@ public class NumberLineView extends Composite  {
 	}
 
 	public void setPointer(int playerid, int x)  {
-
 		p.add(pointerList.get(playerid-1));
 		setPointerPos(x,pointerList.get(playerid-1));
 

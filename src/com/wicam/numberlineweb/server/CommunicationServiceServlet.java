@@ -118,20 +118,20 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 				setGameState(getGameById(game.getId()),1);
 
 			}else{
+				// add NPCs
+				for (int i = 0; i < game.getNumberOfMaxNPCs(); i++)
+					addNPC(game);
 				setGameState(getGameById(game.getId()),2);
 				startGame(id);
 			}
 
 			//add this user to the update-state list
-	
 			
 			updateStates.add(new UpdateState(playerid,game.getId(),false));
 			
 			//add this user to the timeout list
-
 		
 			timeOutStates.add(new TimeOutState(playerid, game.getId(),5));
-
 			
 			return game.getId() + ":" + playerid;
 
@@ -141,6 +141,11 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 	}
 
+	private void addNPC(NumberLineGameState game){
+		int playerid = game.addPlayer("NPC");
+		new NumberLineGameNPC(this, game.getId(), playerid);
+	}
+	
 	/**
 	 * opens a game with the give state
 	 */
@@ -157,7 +162,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		openGames.add(game);
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
-
+		
 		return game;
 
 	}
@@ -505,12 +510,11 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 	 * TODO: there must be a better solution...
 	 * <gameid>:<playerid>
 	 */
-	public boolean updateReadyness(String ids) {
-
+	synchronized public boolean updateReadyness(String ids) {
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		NumberLineGameState g = getGameById(gameid);
-
+		
 		g.setPlayerReady(playerid,true);
 
 		boolean allReady = true;

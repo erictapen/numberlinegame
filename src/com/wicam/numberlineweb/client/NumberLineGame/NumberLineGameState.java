@@ -16,10 +16,11 @@ public class NumberLineGameState implements Serializable{
 	private static final long serialVersionUID = 846864907276321588L;
 
 
-	private ArrayList<Player> players = new ArrayList<Player>();
+	private ArrayList<NumberLineGamePlayer> players = new ArrayList<NumberLineGamePlayer>();
 	
 	private int numberOfMaxPlayers;
-
+	private int numberOfMaxNPCs;
+	
 	private int winnerOfLastRound;
 
 	private int leftNumber;
@@ -80,7 +81,7 @@ public class NumberLineGameState implements Serializable{
 	}
 
 	public void resetAllPlayerActPos(){
-		for (Player player: players){
+		for (NumberLineGamePlayer player: players){
 			player.setActPos(Integer.MIN_VALUE);
 		}
 	}
@@ -171,7 +172,7 @@ public class NumberLineGameState implements Serializable{
 
 	public int addPlayer(String newName) {
 		int countSameName = 1;
-		for (Player player: players){
+		for (NumberLineGamePlayer player: players){
 			// to ensure different namesremovePlayer
 			if (newName.equals(player.getName())){
 				countSameName++;
@@ -183,7 +184,7 @@ public class NumberLineGameState implements Serializable{
 			}
 		}
 		System.out.println(newName);
-		players.add(new Player());
+		players.add(new NumberLineGamePlayer());
 		players.get(players.size()-1).setName(newName);
 		return players.size();
 	}
@@ -217,7 +218,7 @@ public class NumberLineGameState implements Serializable{
 	}
 
 	public void resetReadyness(){
-		for (Player player: players){
+		for (NumberLineGamePlayer player: players){
 			player.setReady(false);
 		}
 	}
@@ -230,13 +231,13 @@ public class NumberLineGameState implements Serializable{
 		return numberOfMaxPlayers;
 	}
 
-	public ArrayList<Player> getPlayers() {
+	public ArrayList<NumberLineGamePlayer> getPlayers() {
 		return players;
 	}
 	
 	public ArrayList<String> getPlayerNamesList() {
 		ArrayList<String> playerNamesList = new ArrayList<String>();
-		for (Player player: players)
+		for (NumberLineGamePlayer player: players)
 			playerNamesList.add(player.getName());
 		return playerNamesList;
 	}
@@ -263,6 +264,14 @@ public class NumberLineGameState implements Serializable{
 	
 	public boolean getHasLeftGame(int playerid) {
 		return this.players.get(playerid-1).hasLeftGame();
+	}
+
+	public void setNumberOfMaxNPCs(int numberOfMaxNPCs) {
+		this.numberOfMaxNPCs = numberOfMaxNPCs;
+	}
+
+	public int getNumberOfMaxNPCs() {
+		return numberOfMaxNPCs;
 	}
 	
 }
