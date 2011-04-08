@@ -20,6 +20,12 @@ public class NumberLineGameNPC {
 		new CPUBehavior().run();
 	}
 	
+	protected int realPosToRaw(int pos, int leftNumber, int rightNumber) {
+
+		return (int)((pos -leftNumber) /  ((double)(rightNumber -leftNumber)/400));
+
+	}
+	
 	private class CPUBehavior extends TimerTask {
 		
 		@Override
@@ -47,12 +53,12 @@ public class NumberLineGameNPC {
 							makeClick = true;
 						}
 						else{
-							int x = game.getExerciseNumber() + (int) (new Random().nextGaussian() *(Math.abs(game.getRightNumber() - game.getLeftNumber()))/6.0);
-							x = (int)((x -game.getLeftNumber()) /  ((double)(game.getRightNumber() -game.getLeftNumber())/400));
-							if (x < game.getLeftNumber())
-								x = game.getLeftNumber();
-							if (x > game.getRightNumber())
-								x = game.getRightNumber();
+							int x = realPosToRaw(game.getExerciseNumber(), game.getLeftNumber(), game.getRightNumber());
+							x = (int)(x +  new Random().nextGaussian()*50);
+							if (x < 0)
+								x = 0;
+							if (x > 400)
+								x = 400;
 							comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x));
 							if (!game.isPlayerClicked(playerid)){
 								// position was not available => retry
@@ -68,7 +74,7 @@ public class NumberLineGameNPC {
 				break;
 			}
 			
-			if (state == 6){
+			if (state == 7 || state == 99){
 				comm.leaveGame(game.getId() + ":" + Integer.toString(playerid));
 			}
 			else {

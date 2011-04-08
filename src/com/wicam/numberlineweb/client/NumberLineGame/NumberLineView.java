@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.google.gwt.widgetideas.graphics.client.Color;
 import com.google.gwt.widgetideas.graphics.client.GWTCanvas;
@@ -25,6 +26,7 @@ public class NumberLineView extends Composite  {
 
 	final HorizontalPanel motherPanel = new HorizontalPanel();
 	final AbsolutePanel p = new AbsolutePanel();
+	final AbsolutePanel playerPanel = new AbsolutePanel();
 
 	/**
 	 * TODO: create own Composite-Classes for elements
@@ -116,14 +118,13 @@ public class NumberLineView extends Composite  {
 
 		motherPanel.add(p);
 
-		final AbsolutePanel p2 = new AbsolutePanel();
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
 		
 
-		p2.add(playerNamesFlexTable);
+		playerPanel.add(playerNamesFlexTable);
 
-		motherPanel.add(p2);
+		motherPanel.add(playerPanel);
 
 		RootPanel.get().add(motherPanel);
 	}
@@ -223,7 +224,28 @@ public class NumberLineView extends Composite  {
 
 	}*/
 
-
+	public void showRankingTable(ArrayList<NumberLineGamePlayer> players){
+		playerPanel.clear();
+		p.clear();
+		
+		FlexTable rankingTable = new FlexTable();
+		rankingTable.setCellPadding(5);
+		
+		p.add(rankingTable);
+		Collections.sort(players);
+		int lastPoints = -1;
+		int position = 0;
+		for (int i = 0; i < players.size(); i++){
+			if (!(lastPoints == players.get(i).getPoints())){
+				lastPoints = players.get(i).getPoints();
+				position = i+1;
+			}
+			rankingTable.setHTML(i+1, 1, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + position + ".</div>");
+			rankingTable.setHTML(i+1, 2, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + players.get(i).getName() + "</div>");
+			rankingTable.setHTML(i+1, 3, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + players.get(i).getPoints()  + "</div>");
+		}
+	}
+	
 	private void setPointerPos(int x,HTML pointer) {
 
 		p.setWidgetPosition(pointer, x+100-Math.round(pointerWidth/2), 180);

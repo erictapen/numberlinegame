@@ -2,7 +2,7 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.io.Serializable;
 
-public class NumberLineGamePlayer implements Serializable{
+public class NumberLineGamePlayer implements Serializable, Comparable<NumberLineGamePlayer>{
 
 	/**
 	 * 
@@ -14,6 +14,7 @@ public class NumberLineGamePlayer implements Serializable{
 	private int actPos = Integer.MIN_VALUE;
 	private boolean ready = false; // for synchronization
 	private boolean leftGame = false;
+	private int colorId = 0;
 	
 	
 	public void setName(String name) {
@@ -55,6 +56,16 @@ public class NumberLineGamePlayer implements Serializable{
 	}
 	public boolean hasLeftGame() {
 		return leftGame;
+	}
+	@Override
+	public int compareTo(NumberLineGamePlayer p) {
+		return p.points -this.points;
+	}
+	public void setColorId(int colorId) {
+		this.colorId = colorId;
+	}
+	public int getColorId() {
+		return colorId;
 	}
 	
 }

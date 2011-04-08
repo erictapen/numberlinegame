@@ -64,8 +64,10 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 
 		Timer t = new Timer();
 
-		//wait 6 seconds for users to be ready
+		// winner screen
 		t.schedule(new SetGameStateTask(id, 6, this), 6000);
+		// close game
+		t.schedule(new SetGameStateTask(id, 7, this), 6000+30000);
 
 
 	}
@@ -80,8 +82,16 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		int rightNumber;
 		int exerciseNumber;
 
-		leftNumber = (int) (Math.random() * 900);
-		rightNumber = (int) (Math.random() * (1000-leftNumber)) + leftNumber;
+		if (game.getNumberRange().isRandom()){
+			// not the full range for minNumber
+			leftNumber = game.getNumberRange().getMinNumber() + (int) (Math.random() * (game.getNumberRange().getMaxNumber()*9/10 - game.getNumberRange().getMinNumber()));
+			rightNumber = (int) (Math.random() * (game.getNumberRange().getMaxNumber()-leftNumber)) + leftNumber;
+		}
+		else {
+			leftNumber = game.getNumberRange().getMinNumber();
+			rightNumber = game.getNumberRange().getMaxNumber();
+		}
+		
 		exerciseNumber = leftNumber + ((int) (Math.random() * (rightNumber - leftNumber))) ;
 
 		game.setLeftNumber(leftNumber);
@@ -366,7 +376,7 @@ public class CommunicationServiceServlet extends RemoteServiceServlet implements
 		setGameState(getGameById(gameid),99);
 		getGameById(gameid).setHasLeftGame(playerid,true);
 
-		if (getGameById(gameid).getPlayerCount() == 0) {
+		if ((getGameById(gameid).getPlayerCount()-getGameById(gameid).getNumberOfMaxNPCs()) <= 0) {
 
 			removeGame(gameid);
 			
