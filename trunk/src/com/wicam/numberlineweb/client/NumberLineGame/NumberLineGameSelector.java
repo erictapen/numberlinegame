@@ -150,7 +150,8 @@ public class NumberLineGameSelector extends Composite  {
 					@Override
 					public void onClick(ClickEvent event) {
 						gamePopUp.setEnabled(false);
-						coordinator.openGame(gamePopUp.getTextValue(), gamePopUp.getPlayerCount(),gamePopUp.getRoundCount());
+						coordinator.openGame(gamePopUp.getTextValue(), gamePopUp.getPlayerCount(), 
+												gamePopUp.getNPCsCount(), gamePopUp.getRoundCount());
 					}
 
 				});
@@ -345,7 +346,8 @@ public class NumberLineGameSelector extends Composite  {
 
 
 				b.hide();
-				coordinator.joinGame(NumberLineGameSelector.this.getSelectedGameId(), b.getTextValue(),selectionModel.getSelectedObject().getMaxNumberOfPlayers());
+				coordinator.joinGame(NumberLineGameSelector.this.getSelectedGameId(), b.getTextValue(),selectionModel.getSelectedObject().getMaxNumberOfPlayers(),
+										selectionModel.getSelectedObject().getNumberOfMaxNPCs());
 				t.cancel();
 			}
 
