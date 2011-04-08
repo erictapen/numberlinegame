@@ -14,6 +14,7 @@ public class GameCreatePopupBox extends TextPopupBox {
 	ListBox playerCount = new ListBox();
 	ListBox roundCount = new ListBox();
 	ListBox npcsCount = new ListBox();
+	ListBox possibleRanges = new ListBox();
 	
 	public GameCreatePopupBox (String msg, String def) {
 		
@@ -49,6 +50,11 @@ public class GameCreatePopupBox extends TextPopupBox {
 			}
 		});
 		
+		possibleRanges.addItem("0 to 100");
+		possibleRanges.addItem("0 to 1000");
+		possibleRanges.addItem("zweistellig");
+		possibleRanges.addItem("dreistellig");
+		
 		HorizontalPanel f = new HorizontalPanel();
 		f.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		f.setSpacing(5);
@@ -72,6 +78,14 @@ public class GameCreatePopupBox extends TextPopupBox {
 		h.add(roundCount);
 		
 		super.p.add(h);
+		
+		HorizontalPanel i = new HorizontalPanel();
+		i.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		i.setSpacing(5);
+		i.add(new HTML("Zahlenbereich: "));
+		i.add(possibleRanges);
+		
+		super.p.add(i);
 	}
 	
 	public int getRoundCount() {
@@ -93,6 +107,24 @@ public class GameCreatePopupBox extends TextPopupBox {
 		return Integer.parseInt(npcsCount.getItemText(npcsCount.getSelectedIndex()));
 		
 		
+	}
+	
+	public NumberRange getNumberRange() {
+		NumberRange nr = new NumberRange();
+		
+		if (possibleRanges.getSelectedIndex()== 0)
+			nr.setRange(0, 100, false);
+		
+		if (possibleRanges.getSelectedIndex()== 1)
+			nr.setRange(0, 1000, false);
+		
+		if (possibleRanges.getSelectedIndex()== 2)
+			nr.setRange(10, 99, true);
+	
+		if (possibleRanges.getSelectedIndex()== 3)
+			nr.setRange(100, 999, true);
+			
+		return nr;
 	}
 	
 }

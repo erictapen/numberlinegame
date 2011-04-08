@@ -96,7 +96,7 @@ public class NumberLineGameCoordinator {
 	 * @param name
 	 */
 
-	public void openGame(String name, int numberOfPlayers, int numberOfNPCs, int numberOfRounds) {
+	public void openGame(String name, int numberOfPlayers, int numberOfNPCs, int numberOfRounds, NumberRange numberRange) {
 
 		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfNPCs = numberOfNPCs;
@@ -105,6 +105,7 @@ public class NumberLineGameCoordinator {
 		g.setNumberOfPlayers(numberOfPlayers);
 		g.setNumberOfMaxNPCs(numberOfNPCs);
 		g.setMaxItems(numberOfRounds);
+		g.setNumberRange(numberRange);
 
 		commServ.openGame(g, gameOpenedCallBack);
 
@@ -327,6 +328,9 @@ public class NumberLineGameCoordinator {
 			break;
 		case 6:
 			// TODO: winner screen
+			gameView.showRankingTable(openGame.getPlayers());
+			break;
+		case 7:
 			closeGame(g);
 			break;
 			

@@ -151,7 +151,8 @@ public class NumberLineGameSelector extends Composite  {
 					public void onClick(ClickEvent event) {
 						gamePopUp.setEnabled(false);
 						coordinator.openGame(gamePopUp.getTextValue(), gamePopUp.getPlayerCount(), 
-												gamePopUp.getNPCsCount(), gamePopUp.getRoundCount());
+												gamePopUp.getNPCsCount(), gamePopUp.getRoundCount(),
+												gamePopUp.getNumberRange());
 					}
 
 				});

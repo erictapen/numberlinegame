@@ -23,6 +23,8 @@ public class NumberLineGameState implements Serializable{
 	
 	private int winnerOfLastRound;
 
+	private NumberRange numberRange;
+	
 	private int leftNumber;
 	private int rightNumber;
 	private int exerciseNumber;
@@ -186,6 +188,7 @@ public class NumberLineGameState implements Serializable{
 		System.out.println(newName);
 		players.add(new NumberLineGamePlayer());
 		players.get(players.size()-1).setName(newName);
+		players.get(players.size()-1).setColorId(players.size()-1);
 		return players.size();
 	}
 
@@ -272,6 +275,14 @@ public class NumberLineGameState implements Serializable{
 
 	public int getNumberOfMaxNPCs() {
 		return numberOfMaxNPCs;
+	}
+
+	public NumberRange getNumberRange() {
+		return numberRange;
+	}
+
+	public void setNumberRange(NumberRange numberRange) {
+		this.numberRange = numberRange;
 	}
 	
 }
