@@ -13,20 +13,24 @@ import com.wicam.numberlineweb.client.chatView.ChatMsg;
 public interface CommunicationService extends RemoteService {
 
 
-	public ArrayList<NumberLineGameState> getOpenGames();
-
-	public NumberLineGameState openGame(NumberLineGameState g);
+	public ArrayList<GameState> getOpenGames();
 
 	public String joinGame(String id);
 	
 	public boolean leaveGame(String id);
-
-	public NumberLineGameState clickedAt(String clicked);
 	
 	public boolean updateReadyness(String s);
 
-	public NumberLineGameState update(String ids);
+	public GameState update(String ids);
+	
+	// number line game
+	
+	public NumberLineGameState openNumberLineGame(NumberLineGameState g);
+	
+	public GameState clickedAt(String clicked);	
 
+	// chat
+	
 	public boolean sendChatMsg(ChatMsg msg);
 
 	public ChatMsg[] getNewChatMsgs(String ids);

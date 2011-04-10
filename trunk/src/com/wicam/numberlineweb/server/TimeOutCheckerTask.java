@@ -8,14 +8,14 @@ public class TimeOutCheckerTask extends TimerTask {
 
 	
 	private ArrayList<TimeOutState> timeOutStates;
-	private CommunicationServiceServlet servlet;
+	private GameCommunication gameComm;
 	
 	
-	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates, CommunicationServiceServlet servlet) {
+	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates, GameCommunication gameComm) {
 		
 		
 		this.timeOutStates = timeOutStates;
-		this.servlet = servlet;
+		this.gameComm = gameComm;
 		
 		
 	}
@@ -30,12 +30,12 @@ public class TimeOutCheckerTask extends TimerTask {
 		
 		
 		
-		while (servlet.timeOutListLocked()) {
+		while (gameComm.timeOutListLocked()) {
 			
 			
 		}
 		
-		servlet.timeOutListLock();
+		gameComm.timeOutListLock();
 		
 		while (i.hasNext()) {
 			
@@ -44,9 +44,9 @@ public class TimeOutCheckerTask extends TimerTask {
 			if (!current.countDown()) {
 			
 				timeOutStates.remove(current);
-				servlet.timeOutListUnLock();
+				gameComm.timeOutListUnLock();
 				System.out.println("player " + current.getPlayerId() + " timed out.");
-				servlet.leavePlayer(current.getPlayerId(), current.getGameId());
+				gameComm.leavePlayer(current.getPlayerId(), current.getGameId());
 			
 				break;
 			}
@@ -54,7 +54,7 @@ public class TimeOutCheckerTask extends TimerTask {
 		}
 		
 		
-		servlet.timeOutListUnLock();
+		gameComm.timeOutListUnLock();
 		
 		
 	}

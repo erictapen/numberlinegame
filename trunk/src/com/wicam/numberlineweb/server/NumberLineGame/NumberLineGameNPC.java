@@ -1,10 +1,11 @@
-package com.wicam.numberlineweb.server;
+package com.wicam.numberlineweb.server.NumberLineGame;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
+import com.wicam.numberlineweb.server.CommunicationServiceServlet;
 
 public class NumberLineGameNPC {
 
@@ -13,7 +14,7 @@ public class NumberLineGameNPC {
 	private int playerid;
 	boolean makeClick = false;
 	
-	NumberLineGameNPC(CommunicationServiceServlet comm, int gameid, int playerid){
+	public NumberLineGameNPC(CommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
@@ -31,7 +32,7 @@ public class NumberLineGameNPC {
 		@Override
 		synchronized public void run() {
 			Timer t = new Timer();
-			NumberLineGameState game = comm.getGameById(gameid);
+			NumberLineGameState game = (NumberLineGameState) comm.getGameComm().getGameById(gameid);
 			int state = game.getState();
 			int time = 500;
 			switch (state){
@@ -59,8 +60,8 @@ public class NumberLineGameNPC {
 								x = 0;
 							if (x > 400)
 								x = 400;
-							comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x));
-							if (!game.isPlayerClicked(playerid)){
+							NumberLineGameState g = comm.getNumberLineGameComm().clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x));
+							if (!g.isPlayerClicked(playerid)){
 								// position was not available => retry
 								time = 700 + (int)(new Random().nextGaussian()*100);
 								if (time < 500)

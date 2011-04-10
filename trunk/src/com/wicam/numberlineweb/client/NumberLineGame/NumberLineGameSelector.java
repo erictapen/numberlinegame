@@ -15,15 +15,15 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.wicam.numberlineweb.client.GameSelector;
+import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.TextPopupBox;
 
 
@@ -34,15 +34,12 @@ import com.wicam.numberlineweb.client.TextPopupBox;
  *
  */
 
-public class NumberLineGameSelector extends Composite  {
+public class NumberLineGameSelector extends GameSelector {
 
-	final AbsolutePanel motherPanel = new AbsolutePanel();
 	final TextCell textCell = new TextCell();
 	private Button createGameButton;
-	private Button refreshButton;
 	final SingleSelectionModel<NumberLineGameState> selectionModel = new SingleSelectionModel<NumberLineGameState>();
 	final GameCreatePopupBox gamePopUp = new GameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
-	private NumberLineGameCoordinator coordinator;
 	private Timer t;
 	private final int boxWidth = 750;
 	private Button joinGameButton;
@@ -81,7 +78,6 @@ public class NumberLineGameSelector extends Composite  {
 
 
 	public NumberLineGameSelector(NumberLineGameCoordinator coordinator) {
-
 		init();
 
 		this.coordinator = coordinator;
@@ -91,7 +87,7 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 
-	private void init() {
+	protected void init() {
 
 		RootPanel.get().add(motherPanel);
 
@@ -101,7 +97,6 @@ public class NumberLineGameSelector extends Composite  {
 
 		createGameButton = new Button("Neues Spiel");
 
-		
 		cellList.setSelectionModel(selectionModel);
 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
@@ -150,9 +145,13 @@ public class NumberLineGameSelector extends Composite  {
 					@Override
 					public void onClick(ClickEvent event) {
 						gamePopUp.setEnabled(false);
-						coordinator.openGame(gamePopUp.getTextValue(), gamePopUp.getPlayerCount(), 
-												gamePopUp.getNPCsCount(), gamePopUp.getRoundCount(),
-												gamePopUp.getNumberRange());
+						NumberLineGameState gameState = new NumberLineGameState();
+						gameState.setGameName(gamePopUp.getTextValue());
+						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
+						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
+						gameState.setMaxItems(gamePopUp.getRoundCount());
+						gameState.setNumberRange(gamePopUp.getNumberRange());
+						coordinator.openGame(gameState);
 					}
 
 				});
@@ -223,36 +222,36 @@ public class NumberLineGameSelector extends Composite  {
 
 
 
-	public void setGameList(ArrayList<NumberLineGameState> games) {
+	public void setGameList(ArrayList<? extends GameState> result) {
 
 
 
-		if (games != null) {
+		if (result != null) {
 
 
 			//first, remove closed game
 
 
 
-			Iterator<NumberLineGameState> i = openGames.iterator();
+			Iterator<? extends GameState> i = openGames.iterator();
 
 
 
 			while (i.hasNext()) {
 
 
-				NumberLineGameState g = i.next();
+				NumberLineGameState g = (NumberLineGameState) i.next();
 
-				if (!gameInList(g,games)) i.remove();
+				if (!gameInList(g,result)) i.remove();
 
 			}
 
 			//now add new games...
 
-			i = games.iterator();
+			i = result.iterator();
 			while(i.hasNext()) {
 
-				NumberLineGameState g = i.next();
+				NumberLineGameState g = (NumberLineGameState) i.next();
 
 				//we dont want to display full or ended games here...
 				if ((g.isFree() && g.getState() < 2) ) {
@@ -292,9 +291,9 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 
-	private boolean gameInList(NumberLineGameState g, ArrayList<NumberLineGameState> games) {
+	private boolean gameInList(NumberLineGameState g, ArrayList<? extends GameState> games) {
 
-		Iterator<NumberLineGameState> it = games.iterator();
+		Iterator<? extends GameState> it = games.iterator();
 
 
 		while (it.hasNext()) {
@@ -323,8 +322,8 @@ public class NumberLineGameSelector extends Composite  {
 	}
 
 
-	public void setSelected (NumberLineGameState g) {
-		selectionModel.setSelected(g, true);
+	public void setSelected (GameState g) {
+		selectionModel.setSelected((NumberLineGameState) g, true);
 
 	}
 
@@ -334,7 +333,7 @@ public class NumberLineGameSelector extends Composite  {
 
 	}
 
-	protected void joinGame() {
+	public void joinGame() {
 
 		if (this.getSelectedGameId() < 0) return;
 
