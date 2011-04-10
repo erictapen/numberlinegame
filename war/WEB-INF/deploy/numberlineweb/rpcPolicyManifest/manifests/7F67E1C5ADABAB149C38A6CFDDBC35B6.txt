@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.CommunicationService
+path: CF7A49C1034CF3ADFAC29857E7A7E246.gwt.rpc

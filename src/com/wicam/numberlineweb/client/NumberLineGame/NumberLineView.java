@@ -3,18 +3,16 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
-import com.google.gwt.widgetideas.graphics.client.GWTCanvas;
-
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.Player;
 
 /**
  * The game view.
@@ -22,7 +20,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
  *
  */
 
-public class NumberLineView extends Composite  {
+public class NumberLineView extends GameView  {
 
 	final HorizontalPanel motherPanel = new HorizontalPanel();
 	final AbsolutePanel p = new AbsolutePanel();
@@ -224,7 +222,7 @@ public class NumberLineView extends Composite  {
 
 	}*/
 
-	public void showRankingTable(ArrayList<NumberLineGamePlayer> players){
+	public void showRankingTable(ArrayList<? extends Player> players){
 		playerPanel.clear();
 		p.clear();
 		
@@ -240,9 +238,10 @@ public class NumberLineView extends Composite  {
 				lastPoints = players.get(i).getPoints();
 				position = i+1;
 			}
-			rankingTable.setHTML(i+1, 1, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + position + ".</div>");
-			rankingTable.setHTML(i+1, 2, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + players.get(i).getName() + "</div>");
-			rankingTable.setHTML(i+1, 3, "<div style='font-size:25px;color:" + playerColors[players.get(i).getColorId()] + "'>" + players.get(i).getPoints()  + "</div>");
+			NumberLineGamePlayer player = (NumberLineGamePlayer) players.get(i);
+			rankingTable.setHTML(i+1, 1, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + position + ".</div>");
+			rankingTable.setHTML(i+1, 2, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + players.get(i).getName() + "</div>");
+			rankingTable.setHTML(i+1, 3, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + players.get(i).getPoints()  + "</div>");
 		}
 	}
 	
