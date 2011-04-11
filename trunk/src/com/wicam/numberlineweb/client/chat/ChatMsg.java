@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.client.chatView;
+package com.wicam.numberlineweb.client.chat;
 
 import java.io.Serializable;
 import java.util.ArrayList;

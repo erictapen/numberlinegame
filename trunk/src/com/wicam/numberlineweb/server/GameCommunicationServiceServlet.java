@@ -4,25 +4,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
-import com.wicam.numberlineweb.server.NumberLineGame.NumberLineGameNPC;
-import com.wicam.numberlineweb.server.NumberLineGame.SetNumberLineGameStateTask;
 
-public class GameCommunication {
-	
-	ArrayList<GameState> openGames = new ArrayList<GameState>();
+public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5789421149680201217L;
+
+	protected ArrayList<GameState> openGames = new ArrayList<GameState>();
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
-	CommunicationServiceServlet comm;
+	GameCommunicationServiceServlet comm;
 	
 	boolean timeOutListLock = false;
 	private Timer timeOutTimer = new Timer();
-	int currentId=0;
+	protected int currentId=0;
 	int gamePending;
 	
-	public GameCommunication (CommunicationServiceServlet comm){
-		this.comm = comm;
+	public GameCommunicationServiceServlet (){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(), this), 0, 4000);
 	}
 	
@@ -36,11 +40,20 @@ public class GameCommunication {
 		Timer t = new Timer();
 
 		//wait 6 seconds for users to be ready
-		if (getGameById(id) instanceof NumberLineGameState){
-			t.schedule(new SetNumberLineGameStateTask(id, 21, this), 6000);
-		}
-		else
-			t.schedule(new SetGameStateTask(id, 21, this), 6000);
+		t.schedule(new SetGameStateTask(id, 21, this), 6000);
+	}
+	
+	@Override
+	public GameState openGame(GameState g) {
+		currentId++;
+
+		g.setGameId(currentId);
+
+		openGames.add(g);
+
+		System.out.println("Opend Game " + Integer.toString(currentId));
+		
+		return g;
 	}
 
 	public void endGame(int id) {
@@ -106,11 +119,7 @@ public class GameCommunication {
 
 	}
 
-	private void addNPC(GameState game){
-		int playerid = game.addPlayer("NPC");
-		if (game instanceof NumberLineGameState)
-			new NumberLineGameNPC(comm, game.getId(), playerid);
-	}
+	abstract protected void addNPC(GameState game);
 	
 	/**
 	 * opens a game with the give state

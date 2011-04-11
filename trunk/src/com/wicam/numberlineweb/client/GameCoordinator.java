@@ -9,13 +9,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
-import com.wicam.numberlineweb.client.chatView.ChatController;
-import com.wicam.numberlineweb.client.chatView.ChatCoordinator;
-import com.wicam.numberlineweb.client.chatView.ChatView;
+import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.chat.ChatController;
+import com.wicam.numberlineweb.client.chat.ChatCoordinator;
+import com.wicam.numberlineweb.client.chat.ChatView;
 
 public abstract class GameCoordinator {
 
-	protected CommunicationServiceAsync commServ;
+	protected GameCommunicationServiceAsync commServ;
+	protected ChatCommunicationServiceAsync chatCommServ;
 	protected Panel rootPanel;
 	protected GameSelector gameSelector;
 	protected Timer t;
@@ -34,9 +36,10 @@ public abstract class GameCoordinator {
 	 * @param root
 	 */
 
-	public GameCoordinator(CommunicationServiceAsync commServ, Panel root) {
+	public GameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatCommServ, Panel root) {
 
 		this.commServ = commServ;
+		this.chatCommServ = chatCommServ;
 		this.rootPanel = root;
 
 	}
@@ -77,7 +80,7 @@ public abstract class GameCoordinator {
 		// chat only if more than 1 player
 
 		ChatView chatView = new ChatView();
-		chatC = new ChatCoordinator(openGame.getId(),chatView,commServ);
+		chatC = new ChatCoordinator(openGame.getId(),chatView,chatCommServ);
 
 		ChatController chatContr = new ChatController(chatC);
 		chatView.addController(chatContr);
@@ -190,7 +193,7 @@ public abstract class GameCoordinator {
 	 * Callbacks are called after server-information was received
 	 */
 
-	protected AsyncCallback<NumberLineGameState> gameOpenedCallBack = new AsyncCallback<NumberLineGameState>() {
+	protected AsyncCallback<GameState> gameOpenedCallBack = new AsyncCallback<GameState>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -198,7 +201,7 @@ public abstract class GameCoordinator {
 		}
 
 		@Override
-		public void onSuccess(NumberLineGameState result) {
+		public void onSuccess(GameState result) {
 
 			openedGame = result;
 			commServ.getOpenGames(openGamesAndJoinCallback);	

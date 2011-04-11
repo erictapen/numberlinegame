@@ -5,10 +5,10 @@ import java.util.Iterator;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
-import com.wicam.numberlineweb.client.CommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
+import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class NumberLineGameCoordinator extends GameCoordinator{
 	
@@ -16,9 +16,10 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 	private boolean sessionClicked = false;
 	private boolean triedToClick = false; // indicates if players has already tried to click at a position which was not available
 
-	public NumberLineGameCoordinator(CommunicationServiceAsync commServ,
+	public NumberLineGameCoordinator(NumberLineGameCommunicationServiceAsync commServ,
+			ChatCommunicationServiceAsync chatCommServ, 
 			Panel root) {
-		super(commServ, root);
+		super(commServ, chatCommServ, root);
 	}
 	
 	/**
@@ -54,8 +55,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
-		NumberLineGameState g = (NumberLineGameState) gameState;
-		commServ.openNumberLineGame(g, gameOpenedCallBack);
+		((NumberLineGameCommunicationServiceAsync)commServ).openGame(gameState, gameOpenedCallBack);
 
 	}
 	
@@ -275,7 +275,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			this.triedToClick = true;
 
 			// check if other player's position has already been displayed
-			commServ.clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
+			((NumberLineGameCommunicationServiceAsync)commServ).clickedAt(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + Integer.toString(x), updateCallback);
 		}
 	}
 

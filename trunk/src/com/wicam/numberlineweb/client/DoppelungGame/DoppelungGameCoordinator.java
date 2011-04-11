@@ -3,15 +3,16 @@ package com.wicam.numberlineweb.client.DoppelungGame;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
-import com.wicam.numberlineweb.client.CommunicationServiceAsync;
+import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class DoppelungGameCoordinator extends GameCoordinator{
 
-	public DoppelungGameCoordinator(CommunicationServiceAsync commServ,
+	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root) {
-		super(commServ, root);
+		super(commServ, chatServ, root);
 	}
 
 	@Override

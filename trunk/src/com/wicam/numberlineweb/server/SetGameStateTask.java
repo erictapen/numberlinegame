@@ -13,7 +13,7 @@ public class SetGameStateTask extends TimerTask {
       
 	protected int gameid;
 	int state;
-	protected GameCommunication s;
+	protected GameCommunicationServiceServlet s;
 
 
 	@Override
@@ -22,7 +22,7 @@ public class SetGameStateTask extends TimerTask {
 	}
 
 
-	public SetGameStateTask(int gameid, int state, GameCommunication s) {
+	public SetGameStateTask(int gameid, int state, GameCommunicationServiceServlet s) {
 
 		this.gameid = gameid;
 		this.state = state;

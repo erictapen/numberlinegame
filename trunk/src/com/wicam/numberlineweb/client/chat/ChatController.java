@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.client.chatView;
+package com.wicam.numberlineweb.client.chat;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

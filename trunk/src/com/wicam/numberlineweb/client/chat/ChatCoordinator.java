@@ -1,8 +1,7 @@
-package com.wicam.numberlineweb.client.chatView;
+package com.wicam.numberlineweb.client.chat;
 
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.wicam.numberlineweb.client.CommunicationServiceAsync;
 
 /**
  * Providing the chat backbone
@@ -14,12 +13,12 @@ public class ChatCoordinator {
 
 
 	ChatView view;
-	CommunicationServiceAsync commServ;
+	ChatCommunicationServiceAsync commServ;
 	int gameid;
 	String uname;
 	boolean open=false;
 
-	public ChatCoordinator(int gameid,ChatView view, CommunicationServiceAsync commServ) {
+	public ChatCoordinator(int gameid,ChatView view, ChatCommunicationServiceAsync commServ) {
 
 
 		this.gameid = gameid;

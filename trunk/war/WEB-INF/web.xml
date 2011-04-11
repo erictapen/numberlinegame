@@ -7,13 +7,29 @@
   
   <!-- Servlets -->
   <servlet>
-    <servlet-name>CommunicationServiceServlet</servlet-name>
-    <servlet-class>com.wicam.numberlineweb.server.CommunicationServiceServlet</servlet-class>
+    <servlet-name>GameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.GameCommunicationServiceServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ChatCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.chat.ChatCommunicationServiceServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>NumberLineGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.NumberLineGame.NumberLineGameCommunicationServiceServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>CommunicationServiceServlet</servlet-name>
-    <url-pattern>/numberlineweb/communication</url-pattern>
+    <servlet-name>GameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/gameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>NumberLineGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/numberLineGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ChatCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/chatCommunication</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

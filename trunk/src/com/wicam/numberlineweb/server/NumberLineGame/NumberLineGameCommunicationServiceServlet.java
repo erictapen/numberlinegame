@@ -1,24 +1,41 @@
 package com.wicam.numberlineweb.server.NumberLineGame;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
+import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
-import com.wicam.numberlineweb.server.GameCommunication;
+import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 
-public class NumberLineGameCommunication {
+public class NumberLineGameCommunicationServiceServlet extends
+		GameCommunicationServiceServlet implements NumberLineGameCommunicationService {
 
-	private GameCommunication gameComm;
-	
-	public NumberLineGameCommunication(GameCommunication gameComm) {
-		this.gameComm = gameComm;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7200332323767902482L;
+
+	@Override
+	public void startGame(int id) {
+
+		Timer t = new Timer();
+
+		//wait 6 seconds for users to be ready
+		t.schedule(new SetNumberLineGameStateTask(id, 21, this), 6000);
 	}
 	
+	@Override
+	protected void addNPC(GameState game){
+		int playerid = game.addPlayer("NPC");
+		new NumberLineGameNPC(this, game.getId(), playerid);
+	}
 	
 	/**
 	 * Calculate new number & new exercise
 	 * @param game
 	 */
-	static void newNumbers(NumberLineGameState game) {
+	public void newNumbers(NumberLineGameState game) {
 
 		int leftNumber;
 		int rightNumber;
@@ -51,7 +68,7 @@ public class NumberLineGameCommunication {
 		int playerid = Integer.parseInt(clicked.split(":")[1]);
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
-		NumberLineGameState g = (NumberLineGameState) gameComm.getGameById(gameid);
+		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);
 
 		
 		
@@ -78,13 +95,13 @@ public class NumberLineGameCommunication {
 							otherPlayersClicked = false;
 				}
 				if (!otherPlayersClicked){
-					gameComm.setGameState(gameComm.getGameById(gameid),4);
-					gameComm.setChanged(gameid);
+					this.setGameState(this.getGameById(gameid),4);
+					this.setChanged(gameid);
 				}
 			}
 			else {
-				gameComm.setGameState(gameComm.getGameById(gameid),4);
-				gameComm.setChanged(gameid);
+				this.setGameState(this.getGameById(gameid),4);
+				this.setChanged(gameid);
 			}
 		}
 
@@ -94,7 +111,7 @@ public class NumberLineGameCommunication {
 				allPlayersClicked = false;
 		
 		if (allPlayersClicked){
-			gameComm.setGameState(gameComm.getGameById(gameid),5);
+			this.setGameState(this.getGameById(gameid),5);
 
 			// reset clicked state
 			g.resetPlayersClicked();
@@ -126,22 +143,22 @@ public class NumberLineGameCommunication {
 				g.setWinnerOfLastRound(0);
 				System.out.println("Unentschieden :)");
 				for (Integer i: playersWithMinDiff){
-					gameComm.getGameById(gameid).setPlayerPoints(i,gameComm.getGameById(gameid).getPlayerPoints(i) +1);
+					this.getGameById(gameid).setPlayerPoints(i,this.getGameById(gameid).getPlayerPoints(i) +1);
 				}
 			}else {
 				// one player best
 				
 				g.setWinnerOfLastRound(playersWithMinDiff.get(0));
-				gameComm.getGameById(gameid).setPlayerPoints(playersWithMinDiff.get(0),gameComm.getGameById(gameid).getPlayerPoints(playersWithMinDiff.get(0)) +1);
-				System.out.println(gameComm.getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
+				this.getGameById(gameid).setPlayerPoints(playersWithMinDiff.get(0),this.getGameById(gameid).getPlayerPoints(playersWithMinDiff.get(0)) +1);
+				System.out.println(this.getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
 			}
 
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
-				gameComm.endGame(gameid);
+				this.endGame(gameid);
 			}
 			else
-				gameComm.startGame(gameid);
+				this.startGame(gameid);
 		}
 
 		return g;
@@ -175,4 +192,20 @@ public class NumberLineGameCommunication {
 
 
 	}
+
+	@Override
+	public GameState openGame(GameState g) {
+		currentId++;
+
+		g.setGameId(currentId);
+
+		((NumberLineGameState) g).setPointerWidth(14);
+		
+		openGames.add(g);
+
+		System.out.println("Opend Game " + Integer.toString(currentId));
+		
+		return g;
+	}
+
 }

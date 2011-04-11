@@ -8,10 +8,10 @@ public class TimeOutCheckerTask extends TimerTask {
 
 	
 	private ArrayList<TimeOutState> timeOutStates;
-	private GameCommunication gameComm;
+	private GameCommunicationServiceServlet gameComm;
 	
 	
-	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates, GameCommunication gameComm) {
+	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates, GameCommunicationServiceServlet gameComm) {
 		
 		
 		this.timeOutStates = timeOutStates;
