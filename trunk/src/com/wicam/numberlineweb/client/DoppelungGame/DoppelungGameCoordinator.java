@@ -13,6 +13,8 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class DoppelungGameCoordinator extends GameCoordinator{
 
+	private DoppelungGameController controller;
+	
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root) {
 		super(commServ, chatServ, root);
@@ -50,7 +52,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.playerID = playerID;
 
 		//construct game
-		this.view = new DoppelungGameView(numberOfPlayers);
+		controller = new DoppelungGameController(this);
+		this.view = new DoppelungGameView(numberOfPlayers, controller);
 		DoppelungGameView gameView = (DoppelungGameView) view;
 		
 		
@@ -96,10 +99,18 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			//awaiting 2nd player
 		case 1:
 			setRefreshRate(2000);
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				// TODO: set Points
+			}
+			// TODO: wait for second player
 			break;
 			//awaiting start
 		case 2:
-
+			if (this.numberOfPlayers > 1)
+				chatC.setUserName(g.getPlayerName(this.playerID));
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				// TODO: set Points
+			}
 			setRefreshRate(1000);
 			break;
 
@@ -114,10 +125,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			//started
 		case 3:
-			
+			gameView.showVowelChoice();
+			// TODO: play word
+			System.out.println(g.getCurWord().getWord());
 			break;
-
-			//started, next player
+			
 		case 4:
 			
 			break;
@@ -153,6 +165,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			break;
 		}
 		
+	}
+	
+	public void startButtonClicked(){
+		if (!openGame.isPlayerReady(this.playerID)) {
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		}
 	}
 
 }

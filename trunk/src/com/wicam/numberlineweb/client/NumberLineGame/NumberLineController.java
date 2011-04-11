@@ -1,17 +1,14 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.wicam.numberlineweb.client.GameController;
 
-public class NumberLineController implements MouseHandler {
+public class NumberLineController extends GameController {
 
 
-	private NumberLineGameCoordinator coordinator;
 
 	public NumberLineController(NumberLineGameCoordinator coordinator) {
-
-		this.coordinator=coordinator;
-	
-
+		super(coordinator);
 	}
 
 
@@ -38,14 +35,14 @@ public class NumberLineController implements MouseHandler {
 
 		
 		
-		coordinator.clickAt(x);
+		((NumberLineGameCoordinator) coordinator).clickAt(x);
 
 	}
 
 	@Override
 	public void onMouseMove(Widget who, int x, int y) {
 		
-		coordinator.mouseMovedTo(x,y);
+		((NumberLineGameCoordinator) coordinator).mouseMovedTo(x,y);
 
 	}
 

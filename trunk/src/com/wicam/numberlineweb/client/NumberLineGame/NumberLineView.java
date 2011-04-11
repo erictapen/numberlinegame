@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.MouseHandler;
 import com.wicam.numberlineweb.client.Player;
 
 /**

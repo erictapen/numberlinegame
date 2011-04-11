@@ -5,6 +5,12 @@ import com.wicam.numberlineweb.client.Player;
 
 public class DoppelungGameState extends GameState {
 
+	private DoppelungGameWord curWord = null;
+	
+	public void setNextWord(DoppelungGameWord word){
+		curWord = word;
+	}
+	
 	@Override
 	public int addPlayer(String newName) {
 		int countSameName = 1;
@@ -23,6 +29,24 @@ public class DoppelungGameState extends GameState {
 		newPlayer.setName(newName);
 		players.add(newPlayer);
 		return players.size();
+	}
+	
+	public void setStartButtonClicked(int playerid, boolean startButtonClicked) {
+		((DoppelungGamePlayer)players.get(playerid-1)).setStartButtonClicked(startButtonClicked);
+	}
+
+	public boolean hasStartButtonClicked(int playerid) {
+		if (playerid-1 < players.size())
+			((DoppelungGamePlayer)players.get(playerid-1)).isStartButtonClicked();
+		return false;
+	}
+
+	public void setCurWord(DoppelungGameWord curWord) {
+		this.curWord = curWord;
+	}
+
+	public DoppelungGameWord getCurWord() {
+		return curWord;
 	}
 
 }

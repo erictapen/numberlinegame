@@ -7,7 +7,6 @@ import java.util.Timer;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
 public class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -48,7 +47,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 		currentId++;
 
 		g.setGameId(currentId);
-
+		
 		openGames.add(g);
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
@@ -120,27 +119,6 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 	}
 
 	protected void addNPC(GameState game){}
-	
-	/**
-	 * opens a game with the give state
-	 */
-
-	public NumberLineGameState openNumberLineGame(NumberLineGameState game) {
-
-		currentId++;
-
-		game.setGameId(currentId);
-
-		//this can later be made changeable
-		game.setPointerWidth(12);
-
-		openGames.add(game);
-
-		System.out.println("Opend Game " + Integer.toString(currentId));
-		
-		return game;
-
-	}
 
 	/**
 	 * get a gamestate by its game-ID
