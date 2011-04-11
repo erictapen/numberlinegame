@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
@@ -62,7 +61,7 @@ public abstract class GameCoordinator {
 	 * @param name
 	 */
 
-	public void closeGame(NumberLineGameState g){
+	public void closeGame(GameState g){
 		System.out.println(g.getPlayerName(this.playerID) + " closed Game");
 		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		if (this.numberOfPlayers > 1){
