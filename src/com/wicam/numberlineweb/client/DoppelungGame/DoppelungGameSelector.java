@@ -1,39 +1,41 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
-import java.util.ArrayList;
-
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameSelector;
-import com.wicam.numberlineweb.client.GameState;
 
 public class DoppelungGameSelector extends GameSelector {
 	
 	public DoppelungGameSelector(GameCoordinator coordinator) {
-		this.coordinator = coordinator;
+		super(coordinator);
 	}
 
 	@Override
-	protected void init() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void joinGame() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void addGameCreationHandler() {
+		createGameButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
 
-	@Override
-	public void setGameList(ArrayList<? extends GameState> result) {
-		// TODO Auto-generated method stub
-		
-	}
+				gamePopUp.addClickHandler(new ClickHandler() {
 
-	@Override
-	public void setSelected(GameState g) {
-		// TODO Auto-generated method stub
-		
+					@Override
+					public void onClick(ClickEvent event) {
+						gamePopUp.setEnabled(false);
+						DoppelungGameState gameState = new DoppelungGameState();
+						gameState.setGameName(gamePopUp.getTextValue());
+						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
+						gameState.setNumberOfMaxNPCs(0);
+						coordinator.openGame(gameState);
+						gamePopUp.hide();
+					}
+
+				});
+
+				gamePopUp.show();
+
+			}
+		});		
 	}
 
 }
