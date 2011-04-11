@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.server.NumberLineGame;
 
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
-import com.wicam.numberlineweb.server.GameCommunication;
 import com.wicam.numberlineweb.server.SetGameStateTask;
 
 public class SetNumberLineGameStateTask extends SetGameStateTask{
@@ -14,10 +13,10 @@ public class SetNumberLineGameStateTask extends SetGameStateTask{
 		((NumberLineGameState)s.getGameById(gameid)).resetAllPlayerActPos();
 		
 		// numbers should be changed while winner info is displayed
-		NumberLineGameCommunication.newNumbers((NumberLineGameState) s.getGameById(gameid));
+		((NumberLineGameCommunicationServiceServlet) s).newNumbers((NumberLineGameState) s.getGameById(gameid));
 	}
 	
-	public SetNumberLineGameStateTask(int gameid, int state, GameCommunication s) {
+	public SetNumberLineGameStateTask(int gameid, int state, NumberLineGameCommunicationServiceServlet s) {
 		super(gameid, state, s);
 	}
 

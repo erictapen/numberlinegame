@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.client.chatView;
+package com.wicam.numberlineweb.client.chat;
 
 
 import com.google.gwt.dom.client.Style.Position;

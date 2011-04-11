@@ -1,25 +1,21 @@
-package com.wicam.numberlineweb.server;
+package com.wicam.numberlineweb.server.chat;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.wicam.numberlineweb.client.chatView.ChatMsg;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
+import com.wicam.numberlineweb.client.chat.ChatMsg;
 
-public class ChatCommunication {
+public class ChatCommunicationServiceServlet extends RemoteServiceServlet implements ChatCommunicationService {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3510955814325081896L;
 
 	ArrayList<ChatMsg> chatMsgs = new ArrayList<ChatMsg>();
 	
-	ChatCommunication(){
-		
-	}
-	
-	/**
-	 * CHAT FUNCTIONALITY
-	 * ==================
-	 * 
-	 * TODO: use extra classes for this.
-	 */
-
 	public boolean sendChatMsg(ChatMsg msg) {
 
 
@@ -75,4 +71,5 @@ public class ChatCommunication {
 
 
 	}
+
 }
