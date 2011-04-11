@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.client.NumberLineGame;
+package com.wicam.numberlineweb.client;
 
 import com.google.gwt.user.client.ui.Widget;
 
