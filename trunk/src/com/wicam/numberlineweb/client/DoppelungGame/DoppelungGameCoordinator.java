@@ -39,7 +39,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
 		DoppelungGameState g = (DoppelungGameState) gameState;
-		// TODO: for DoppelungGame commServ.openNumberLineGame(g, gameOpenedCallBack);
+		commServ.openGame(g, gameOpenedCallBack);
 	}
 
 	@Override

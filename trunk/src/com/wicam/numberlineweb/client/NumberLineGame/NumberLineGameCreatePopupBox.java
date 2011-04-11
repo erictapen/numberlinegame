@@ -6,25 +6,17 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.wicam.numberlineweb.client.TextPopupBox;
 
-public class GameCreatePopupBox extends TextPopupBox {
+public class NumberLineGameCreatePopupBox extends com.wicam.numberlineweb.client.GameCreatePopupBox {
 
 	
-	ListBox playerCount = new ListBox();
 	ListBox roundCount = new ListBox();
 	ListBox npcsCount = new ListBox();
 	ListBox possibleRanges = new ListBox();
 	
-	public GameCreatePopupBox (String msg, String def) {
+	public NumberLineGameCreatePopupBox (String msg, String def) {
 		
 		super(msg,def);
-		
-		playerCount.addItem("1");
-		playerCount.addItem("2");
-		playerCount.addItem("3");
-		playerCount.addItem("4");
-		playerCount.addItem("5");
 		
 		roundCount.addItem("5");
 		roundCount.addItem("10");
@@ -91,13 +83,6 @@ public class GameCreatePopupBox extends TextPopupBox {
 	public int getRoundCount() {
 		
 		return Integer.parseInt(roundCount.getItemText(roundCount.getSelectedIndex()));
-		
-		
-	}
-	
-	public int getPlayerCount() {
-		
-		return Integer.parseInt(playerCount.getItemText(playerCount.getSelectedIndex()));
 		
 		
 	}
