@@ -1,11 +1,14 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import java.util.Iterator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class DoppelungGameCoordinator extends GameCoordinator{
@@ -47,7 +50,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.playerID = playerID;
 
 		//construct game
-		this.view = new DoppelungGameView(numberOfPlayers, numberOfNPCs);
+		this.view = new DoppelungGameView(numberOfPlayers);
 		DoppelungGameView gameView = (DoppelungGameView) view;
 		
 		
@@ -73,7 +76,82 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	@Override
 	protected void updateGame(GameState gameState) {
-		// TODO Auto-generated method stub
+		DoppelungGameState g = (DoppelungGameState) gameState;
+		DoppelungGameView gameView = (DoppelungGameView) view;
+		
+		//we already have the lates state
+		if (g==null) return;
+		
+		switch (g.getState()) {
+
+		//game closed
+		case -1:
+			setRefreshRate(2000);
+			//TODO: close game
+			break;
+			//awaiting players
+		case 0:
+			setRefreshRate(2000);
+			break;
+			//awaiting 2nd player
+		case 1:
+			setRefreshRate(2000);
+			break;
+			//awaiting start
+		case 2:
+
+			setRefreshRate(1000);
+			break;
+
+		case 21:
+
+			setRefreshRate(200);
+			//start is pending. I am ready!
+			if (!openGame.isPlayerReady(this.playerID)) {
+				  commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+			}
+			break;
+
+			//started
+		case 3:
+			
+			break;
+
+			//started, next player
+		case 4:
+			
+			break;
+
+			//evaluation, who has won?
+		case 5:
+
+
+			break;
+		case 6:
+			break;
+		case 7:
+			closeGame(g);
+			break;
+			
+		case 99:
+			// player has left the game
+			
+			Iterator<? extends Player> i = g.getPlayers().iterator();
+			
+			while (i.hasNext()) {
+				
+				Player current = i.next();
+				
+				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
+					// TODO: view left game
+				}
+				
+				
+			}
+			
+			
+			break;
+		}
 		
 	}
 

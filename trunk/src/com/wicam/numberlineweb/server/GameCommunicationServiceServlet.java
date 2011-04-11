@@ -9,7 +9,7 @@ import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
-public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
+public class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
 	/**
 	 * 
@@ -119,7 +119,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 
-	abstract protected void addNPC(GameState game);
+	protected void addNPC(GameState game){}
 	
 	/**
 	 * opens a game with the give state

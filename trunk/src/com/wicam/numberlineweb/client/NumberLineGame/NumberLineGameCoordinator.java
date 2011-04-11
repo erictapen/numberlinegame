@@ -206,7 +206,6 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.setPointer(i+1, g.getPlayerActPos(i+1));
-				gameView.showPointerText(i+1, g.getPlayerActPos(i+1), g.getExerciseNumber());
 				gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 

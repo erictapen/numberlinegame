@@ -18,6 +18,11 @@ public class NumberLineGameCreatePopupBox extends com.wicam.numberlineweb.client
 		
 		super(msg,def);
 		
+		playerCount.addItem("2");
+		playerCount.addItem("3");
+		playerCount.addItem("4");
+		playerCount.addItem("5");
+		
 		roundCount.addItem("5");
 		roundCount.addItem("10");
 		roundCount.addItem("15");

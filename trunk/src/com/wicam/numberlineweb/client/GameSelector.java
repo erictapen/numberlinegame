@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
 public abstract class GameSelector extends Composite {
 
@@ -218,7 +217,7 @@ public abstract class GameSelector extends Composite {
 			while (i.hasNext()) {
 
 
-				NumberLineGameState g = (NumberLineGameState) i.next();
+				GameState g = i.next();
 
 				if (!gameInList(g,result)) i.remove();
 
@@ -229,7 +228,7 @@ public abstract class GameSelector extends Composite {
 			i = result.iterator();
 			while(i.hasNext()) {
 
-				NumberLineGameState g = (NumberLineGameState) i.next();
+				GameState g = i.next();
 
 				//we dont want to display full or ended games here...
 				if ((g.isFree() && g.getState() < 2) ) {
@@ -251,7 +250,7 @@ public abstract class GameSelector extends Composite {
 
 	}
 	
-	private boolean gameInList(NumberLineGameState g, ArrayList<? extends GameState> games) {
+	private boolean gameInList(GameState g, ArrayList<? extends GameState> games) {
 
 		Iterator<? extends GameState> it = games.iterator();
 
@@ -287,7 +286,7 @@ public abstract class GameSelector extends Composite {
 	}
 
 	public void setSelected (GameState g) {
-		selectionModel.setSelected((NumberLineGameState) g, true);
+		selectionModel.setSelected(g, true);
 
 	}
 
