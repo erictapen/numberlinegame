@@ -5,6 +5,9 @@ import com.wicam.numberlineweb.client.GameController;
 
 public class DoppelungGameController extends GameController {
 
+	public static final int SHORTVOWELBUTTON = 0;
+	public static final int LONGVOWELBUTTON = 1;
+	
 	public DoppelungGameController(DoppelungGameCoordinator coordinator) {
 		super(coordinator);
 	}
@@ -32,9 +35,11 @@ public class DoppelungGameController extends GameController {
 	}
 	
 	public void onShortVowelButtonClick(){
+		((DoppelungGameCoordinator) coordinator).vowelButtonClicked(SHORTVOWELBUTTON);
 	}
 	
 	public void onLongVowelButtonClick(){
+		((DoppelungGameCoordinator) coordinator).vowelButtonClicked(LONGVOWELBUTTON);
 	}
 
 }

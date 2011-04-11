@@ -12,7 +12,7 @@ public class SetGameStateTask extends TimerTask {
 
       
 	protected int gameid;
-	int state;
+	protected int state;
 	protected GameCommunicationServiceServlet s;
 
 

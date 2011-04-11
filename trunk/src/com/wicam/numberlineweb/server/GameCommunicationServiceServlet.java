@@ -60,9 +60,9 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 		Timer t = new Timer();
 
 		// winner screen
-		t.schedule(new SetGameStateTask(id, 6, this), 6000);
+		t.schedule(new SetGameStateTask(id, 97, this), 6000);
 		// close game
-		t.schedule(new SetGameStateTask(id, 7, this), 6000+15000);
+		t.schedule(new SetGameStateTask(id, 98, this), 6000+15000);
 
 
 	}
@@ -401,7 +401,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 		setChanged(g.getId());
 		
 		boolean allLeft = true;
-		for (int i = 0; i < g.getPlayers().size(); i++){
+		for (int i = 0; i < g.getPlayers().size()-g.getNumberOfMaxNPCs(); i++){
 			if (!g.getHasLeftGame(i+1))
 				allLeft = false;
 		}

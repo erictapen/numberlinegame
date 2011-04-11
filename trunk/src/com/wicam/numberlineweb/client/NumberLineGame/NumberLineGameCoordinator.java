@@ -223,11 +223,11 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			}
 
 			break;
-		case 6:
+		case 97:
 			// TODO: winner screen
 			gameView.showRankingTable(openGame.getPlayers());
 			break;
-		case 7:
+		case 98:
 			closeGame(g);
 			break;
 			
