@@ -5,7 +5,8 @@ import com.wicam.numberlineweb.client.Player;
 
 public class DoppelungGameState extends GameState {
 
-	private DoppelungGameWord curWord = null;
+	private DoppelungGameWord curWord = new DoppelungGameWord();
+	private boolean correctAnswered = false; // for the feedback
 	
 	public void setNextWord(DoppelungGameWord word){
 		curWord = word;
@@ -47,6 +48,14 @@ public class DoppelungGameState extends GameState {
 
 	public DoppelungGameWord getCurWord() {
 		return curWord;
+	}
+
+	public void setCorrectAnswered(boolean correctAnswered) {
+		this.correctAnswered = correctAnswered;
+	}
+
+	public boolean isCorrectAnswered() {
+		return correctAnswered;
 	}
 
 }

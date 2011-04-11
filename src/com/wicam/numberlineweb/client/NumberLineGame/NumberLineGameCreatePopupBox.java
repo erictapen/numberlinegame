@@ -47,8 +47,8 @@ public class NumberLineGameCreatePopupBox extends com.wicam.numberlineweb.client
 			}
 		});
 		
-		possibleRanges.addItem("0 to 100");
-		possibleRanges.addItem("0 to 1000");
+		possibleRanges.addItem("0 bis 100");
+		possibleRanges.addItem("0 bis 1000");
 		possibleRanges.addItem("zweistellig");
 		possibleRanges.addItem("dreistellig");
 		

@@ -6,6 +6,7 @@ import java.util.Timer;
 
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationService;
+import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
@@ -50,13 +51,73 @@ public class DoppelungGameCommunicationServiceServlet extends
 			return null;
 	}
 	
-	
+	// we do not need startGame because we have start buttons
 	@Override
-	public void startGame(int id) {
-		Timer t = new Timer();
+	public void startGame(int id) {}
 
-		//wait 6 seconds for users to be ready
-		t.schedule(new SetDoppelungGameStateTask(id, 21, this), 6000);
+	@Override
+	public GameState bottonClicked(String ids) {
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int bottonid = Integer.parseInt(ids.split(":")[2]);
+		
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		// feedback
+		this.setGameState(g, 4);
+		this.setChanged(gameid);
+		
+		// short vowel
+		if (g.getCurWord().isShortVowel()){
+			if (bottonid == DoppelungGameController.SHORTVOWELBUTTON)
+				g.setCorrectAnswered(true);
+			else
+				g.setCorrectAnswered(false);
+			
+			// TODO: afterwards start sub game
+			
+			Timer t = new Timer();
+			// afterwards start short vowel sub game
+			// 3 sec feedback
+			t.schedule(new SetDoppelungGameStateTask(gameid, 5, this), 3000);
+		}
+		// long vowel
+		else {
+			// player only gets points for correct choice
+			if (bottonid == DoppelungGameController.LONGVOWELBUTTON){
+				g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 5);
+				g.setCorrectAnswered(true);
+			}
+			else
+				g.setCorrectAnswered(false);
+			
+			Timer t = new Timer();
+			if (this.hasNextWord(gameid))
+				// afterwards start next trial
+				// 3 sec feedback
+				t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), 3000);
+			else {
+				this.endGame(gameid);
+			}
+		}
+		
+		return g;
+	}
+
+	@Override
+	public GameState shortVowelGameEnded(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		Timer t = new Timer();
+		if (this.hasNextWord(gameid))
+			// 3 sec feedback
+			t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), 3000);
+		else
+			this.endGame(gameid);
+		
+		return g;
 	}
 
 }

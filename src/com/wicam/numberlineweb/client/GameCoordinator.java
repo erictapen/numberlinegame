@@ -69,6 +69,7 @@ public abstract class GameCoordinator {
 			RootPanel.get("chat").clear();
 		}
 		rootPanel.clear();
+		this.view = null;
 		init();
 	}
 	

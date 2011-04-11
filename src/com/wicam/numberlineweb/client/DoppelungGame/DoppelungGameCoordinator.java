@@ -14,6 +14,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
+	private boolean shortVowelGameEnded = false;
 	
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root) {
@@ -125,23 +126,28 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			//started
 		case 3:
-			gameView.showVowelChoice();
-			// TODO: play word
-			System.out.println(g.getCurWord().getWord());
+			shortVowelGameEnded = false;
+			gameView.showVowelChoice(g.getCurWord().getWord());
 			break;
 			
 		case 4:
-			
+			gameView.showFeedback(g.isCorrectAnswered());
 			break;
 
-			//evaluation, who has won?
 		case 5:
-
-
+			gameView.startShortVowelGame();
+			// TODO: real implementation
+			if (!shortVowelGameEnded){
+				shortVowelGameEnded = true;
+				((DoppelungGameCommunicationServiceAsync) commServ).shortVowelGameEnded(openGame.getId() + ":" + Integer.toString(playerID), updateCallback);
+			}
 			break;
-		case 6:
+			
+		case 97:
+			gameView.showEndScreen(g.getPlayerPoints(playerID));
 			break;
-		case 7:
+		
+		case 98:
 			closeGame(g);
 			break;
 			
@@ -171,6 +177,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		if (!openGame.isPlayerReady(this.playerID)) {
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
+	}
+	
+	public void vowelButtonClicked(int buttonid){
+		((DoppelungGameCommunicationServiceAsync)commServ).bottonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
+																			+ Integer.toString(buttonid), updateCallback);
 	}
 
 }
