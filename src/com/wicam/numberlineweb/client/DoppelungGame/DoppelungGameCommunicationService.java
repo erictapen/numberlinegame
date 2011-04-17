@@ -12,4 +12,6 @@ public interface DoppelungGameCommunicationService extends
 	public GameState bottonClicked(String ids);	
 	
 	public GameState shortVowelGameEnded(String ids);	
+	
+	public GameState updatePoints(String ids);
 }

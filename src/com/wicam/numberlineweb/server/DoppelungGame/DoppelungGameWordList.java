@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
 
+
 public class DoppelungGameWordList {
 	
 	public static ArrayList<DoppelungGameWord> createWordList(){

@@ -14,7 +14,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
-	private boolean shortVowelGameEnded = false;
+	private boolean shortVowelGameStarted = false;
 	
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root) {
@@ -57,7 +57,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.view = new DoppelungGameView(numberOfPlayers, controller);
 		DoppelungGameView gameView = (DoppelungGameView) view;
 		
-		
 		// TODO: add controller
 
 		
@@ -67,7 +66,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		g.setState(-1);
 		this.openGame = g;
 		update();
-
+		
 		//clear the root panel and draw the game
 		rootPanel.clear();
 		rootPanel.add(gameView);
@@ -101,7 +100,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 1:
 			setRefreshRate(2000);
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				// TODO: set Points
+				gameView.showPlayerName(i+1,g.getPlayerName(i+1));
 			}
 			// TODO: wait for second player
 			break;
@@ -110,13 +109,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (this.numberOfPlayers > 1)
 				chatC.setUserName(g.getPlayerName(this.playerID));
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				// TODO: set Points
+				gameView.showPlayerName(i+1,g.getPlayerName(i+1));
 			}
 			setRefreshRate(1000);
 			break;
 
 		case 21:
-
+			shortVowelGameStarted = false; // reset
 			setRefreshRate(200);
 			//start is pending. I am ready!
 			if (!openGame.isPlayerReady(this.playerID)) {
@@ -124,22 +123,25 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 			break;
 
-			//started
+			// word played and vowel choice
 		case 3:
-			shortVowelGameEnded = false;
 			gameView.showVowelChoice(g.getCurWord().getWord());
 			break;
-			
+			// feedback after choice
 		case 4:
 			gameView.showFeedback(g.isCorrectAnswered());
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
+			}
 			break;
-
+			// short vowel game
 		case 5:
-			gameView.startShortVowelGame();
-			// TODO: real implementation
-			if (!shortVowelGameEnded){
-				shortVowelGameEnded = true;
-				((DoppelungGameCommunicationServiceAsync) commServ).shortVowelGameEnded(openGame.getId() + ":" + Integer.toString(playerID), updateCallback);
+			if (!shortVowelGameStarted){
+				shortVowelGameStarted = true;
+				gameView.startShortVowelGame(g.getCurWord());
+			}
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
 			}
 			break;
 			
@@ -183,5 +185,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		((DoppelungGameCommunicationServiceAsync)commServ).bottonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
 																			+ Integer.toString(buttonid), updateCallback);
 	}
+	
+	public void endShortVowelGame(){
+		((DoppelungGameCommunicationServiceAsync) commServ).shortVowelGameEnded(openGame.getId() + ":" + Integer.toString(playerID), updateCallback);
+	}
 
+	public void updatePoints(String consonants){
+		((DoppelungGameCommunicationServiceAsync) commServ).updatePoints(openGame.getId() + ":" + Integer.toString(playerID) + ":" + consonants, updateCallback);
+	}
 }

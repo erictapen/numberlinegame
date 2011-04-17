@@ -1,7 +1,6 @@
-package com.wicam.numberlineweb.server.DoppelungGame;
+package com.wicam.numberlineweb.client.DoppelungGame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class DoppelungGameConsonantPairListCreater {
 
@@ -22,7 +21,17 @@ public class DoppelungGameConsonantPairListCreater {
 		// add the correct ones
 		for (int i = 0; i < numberOfCorrectPairs; i++)
 			list.add(correctPair);
-		Collections.shuffle(list);
+		shuffleList(list);
 		return list;
+	}
+	
+	// own shuffle implementation, because GWT does not support Collections.shuffle()
+	private static void shuffleList(ArrayList<String> list){
+		for (int i = 0; i < list.size(); i++){
+			int randomPosition = (int)(Math.random()*list.size());
+			String tmp = list.get(i);
+			list.set(i, list.get(randomPosition));
+			list.set(randomPosition,tmp);
+		}
 	}
 }

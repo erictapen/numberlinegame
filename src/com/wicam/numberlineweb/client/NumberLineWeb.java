@@ -29,26 +29,25 @@ public class NumberLineWeb implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		
+		boolean numberLineGame = true;
 		
 		//first, lets initialize our communication systems
-		NumberLineGameCommunicationServiceAsync commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+		GameCommunicationServiceAsync commService;
 		ChatCommunicationServiceAsync chatCommService = (ChatCommunicationServiceAsync) GWT.create(ChatCommunicationService.class);
+		GameCoordinator coordinator;
 		
 		//our HTML file has a div with id = "game". this will be our mother panel, so
 		// everything else can be styled with simple html / css.
-		NumberLineGameCoordinator coordinator = new NumberLineGameCoordinator(commService,chatCommService,RootPanel.get("game"));
+		if (numberLineGame){
+			commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+			coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"));
+		}
+		else {
+			commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
+			coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"));
+		}
 		
 		coordinator.init();
-		
-		/*//first, lets initialize our communication systems
-		DoppelungGameCommunicationServiceAsync commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
-		ChatCommunicationServiceAsync chatCommService = (ChatCommunicationServiceAsync) GWT.create(ChatCommunicationService.class);
-		
-		//our HTML file has a div with id = "game". this will be our mother panel, so
-		// everything else can be styled with simple html / css.
-		DoppelungGameCoordinator coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"));
-		
-		coordinator.init();*/
 	}
 	
 	

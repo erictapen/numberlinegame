@@ -18,6 +18,11 @@ h1 {
 	width: 400px;
 }
 
+.gwt-ToggleButton:focus {
+    outline : none;
+    -moz-outline-style: none;
+}
+
 .dialogVPanel {
 	margin: 5px;
 }

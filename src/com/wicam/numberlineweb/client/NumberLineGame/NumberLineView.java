@@ -33,7 +33,6 @@ public class NumberLineView extends GameView  {
 
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
-	final String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 	final HTML labelLeft = new HTML();
 	final HTML labelRight = new HTML();
 	ArrayList<NumberLineGamePointer> pointerList = new ArrayList<NumberLineGamePointer>();
