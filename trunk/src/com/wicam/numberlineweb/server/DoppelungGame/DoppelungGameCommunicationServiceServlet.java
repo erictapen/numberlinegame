@@ -10,6 +10,7 @@ import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.SetGameStateTask;
 
 public class DoppelungGameCommunicationServiceServlet extends
 		GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
@@ -79,7 +80,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 			Timer t = new Timer();
 			// afterwards start short vowel sub game
 			// 3 sec feedback
-			t.schedule(new SetDoppelungGameStateTask(gameid, 5, this), 3000);
+			t.schedule(new SetGameStateTask(gameid, 5, this), 3000);
 		}
 		// long vowel
 		else {
@@ -116,6 +117,29 @@ public class DoppelungGameCommunicationServiceServlet extends
 			t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), 3000);
 		else
 			this.endGame(gameid);
+		
+		return g;
+	}
+
+	@Override
+	public GameState updatePoints(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		String consonants = ids.split(":")[2];
+		
+		int points = 0;
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		if (consonants.equals(g.getCurWord().getConsonantPair()))
+			points = g.isCorrectAnswered()?2:1;
+		else
+			points = -1;
+		
+		int newPoints = g.getPlayerPoints(playerid) + points;
+		if (newPoints < 0)
+			newPoints = 0;
+		
+		g.setPlayerPoints(playerid, newPoints);
 		
 		return g;
 	}
