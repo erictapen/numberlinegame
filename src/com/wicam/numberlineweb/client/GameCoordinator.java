@@ -27,7 +27,10 @@ public abstract class GameCoordinator {
 	protected int numberOfPlayers;
 	protected int numberOfNPCs;
 	protected int playerID;
+	protected GameTypeSelector gts;
+
 	private int refreshIntervall;
+	
 	
 	/**
 	 * Constructs the coordinator with comm-service and a rootPanel
@@ -35,12 +38,20 @@ public abstract class GameCoordinator {
 	 * @param root
 	 */
 
-	public GameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatCommServ, Panel root) {
+	public GameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatCommServ, Panel root, GameTypeSelector gts) {
 
 		this.commServ = commServ;
 		this.chatCommServ = chatCommServ;
 		this.rootPanel = root;
+		this.gts=gts;
 
+	}
+	
+	/**
+	 * Returns the instance of our current game type selector.
+	 */
+	public GameTypeSelector getGTS() {
+		return gts;
 	}
 	
 	/**
@@ -55,6 +66,21 @@ public abstract class GameCoordinator {
 	 */
 
 	abstract public void openGame(GameState gameState);
+	
+	
+	/**
+	 * Returns the game's name. Must be overwritten.
+	 * @param name
+	 */
+
+	
+	public String getGameName() {
+		
+		return "Spiel";
+		
+	}
+	
+	
 	
 	/**
 	 * Close a game

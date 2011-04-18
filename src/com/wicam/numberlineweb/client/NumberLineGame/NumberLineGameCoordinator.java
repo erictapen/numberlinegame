@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -18,8 +19,15 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 
 	public NumberLineGameCoordinator(NumberLineGameCommunicationServiceAsync commServ,
 			ChatCommunicationServiceAsync chatCommServ, 
-			Panel root) {
-		super(commServ, chatCommServ, root);
+			Panel root, GameTypeSelector gts) {
+		super(commServ, chatCommServ, root,gts);
+	}
+	
+	@Override
+	public String getGameName() {
+
+		return "NumberLine";
+
 	}
 	
 	/**
