@@ -30,12 +30,5 @@ public class NumberLineGamePlayer extends Player implements Serializable{
 		return actPos;
 	}
 	
-	public void setColorId(int colorId) {
-		this.colorId = colorId;
-	}
-	
-	public int getColorId() {
-		return colorId;
-	}
 	
 }

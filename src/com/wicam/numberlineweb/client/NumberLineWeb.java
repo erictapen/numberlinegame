@@ -1,6 +1,8 @@
 package com.wicam.numberlineweb.client;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,6 +14,7 @@ import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGamePlayer;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -38,6 +41,8 @@ public class NumberLineWeb implements EntryPoint {
 
 
 		showGameTypeSelector();
+		
+		
 
 	}
 
