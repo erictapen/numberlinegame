@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -17,10 +18,17 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private boolean shortVowelGameStarted = false;
 	
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
-			Panel root) {
-		super(commServ, chatServ, root);
+			Panel root, GameTypeSelector gs) {
+		super(commServ, chatServ, root,gs);
 	}
 
+	@Override
+	public String getGameName() {
+
+		return "Doppelung";
+
+	}
+	
 	@Override
 	public void init() {
 		gameSelector = new DoppelungGameSelector((DoppelungGameCoordinator) this);

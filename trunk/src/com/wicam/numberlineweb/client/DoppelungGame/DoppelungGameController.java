@@ -23,6 +23,8 @@ public class DoppelungGameController extends GameController {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 	@Override
 	public void onMouseMove(Widget who, int x, int y) {

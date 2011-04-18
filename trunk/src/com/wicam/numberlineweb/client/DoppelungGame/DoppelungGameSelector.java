@@ -9,6 +9,7 @@ public class DoppelungGameSelector extends GameSelector {
 	
 	public DoppelungGameSelector(GameCoordinator coordinator) {
 		super(coordinator);
+		
 	}
 
 	@Override

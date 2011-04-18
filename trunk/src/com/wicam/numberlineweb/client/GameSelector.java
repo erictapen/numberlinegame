@@ -25,9 +25,11 @@ public abstract class GameSelector extends Composite {
 
 	protected final AbsolutePanel motherPanel = new AbsolutePanel();
 	protected GameCoordinator coordinator;
+
 	protected Timer t;
 	final TextCell textCell = new TextCell();
 	protected Button createGameButton;
+	protected Button backButton;
 	protected final SingleSelectionModel<GameState> selectionModel = new SingleSelectionModel<GameState>();
 	protected final GameCreatePopupBox gamePopUp = new GameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
 	protected final int boxWidth = 750;
@@ -49,20 +51,25 @@ public abstract class GameSelector extends Composite {
 	protected final CellList<GameState> cellList = new CellList<GameState>(new GameCell(),keyProvider);
 	
 	public GameSelector(GameCoordinator coordinator) {
-		init();
-
+		
 		this.coordinator = coordinator;
+		
+		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
+		
+		
 
 	}
+	
 	
 	protected void init() {
 
 		RootPanel.get().add(motherPanel);
 
 		joinGameButton = new Button("Mitspielen");
-
+		backButton = new Button("Zurück");
+		
 		joinGameButton.setEnabled(false);
 
 		createGameButton = new Button("Neues Spiel");
@@ -103,6 +110,19 @@ public abstract class GameSelector extends Composite {
 
 			}
 		});
+		
+		backButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				coordinator.rootPanel.clear();
+			
+				coordinator.getGTS().init(coordinator.rootPanel);
+				
+
+			}
+		});
 
 		addGameCreationHandler();
 
@@ -112,7 +132,7 @@ public abstract class GameSelector extends Composite {
 
 		HTML title = new HTML();
 
-		title.setHTML("<div id='selectorTitle'>Offene Spiele");
+		title.setHTML("<div class='selectorTitle'>" + coordinator.getGameName() + " - Offene Spiele");
 
 		motherPanel.setWidgetPosition(s, 25, 70);
 
@@ -127,12 +147,15 @@ public abstract class GameSelector extends Composite {
 		joinGameButton.setHeight("30px");
 		joinGameButton.setWidth("220px");
 
-
+		backButton.setHeight("30px");
+		backButton.setWidth("120px");
+		
+		backButton.addStyleName("backButton");
 
 		motherPanel.add(createGameButton);
 
 		motherPanel.add(joinGameButton);
-		//motherPanel.add(refreshButton);
+		motherPanel.add(backButton);
 
 		motherPanel.setWidgetPosition(joinGameButton, boxWidth-250, 30);
 		//motherPanel.setWidgetPosition(refreshButton, 15, 340);

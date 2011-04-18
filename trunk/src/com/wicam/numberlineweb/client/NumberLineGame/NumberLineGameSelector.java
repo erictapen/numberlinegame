@@ -21,6 +21,7 @@ public class NumberLineGameSelector extends GameSelector {
 	
 	public NumberLineGameSelector(NumberLineGameCoordinator coordinator) {
 		super(coordinator);
+		
 	}
 
 	@Override
