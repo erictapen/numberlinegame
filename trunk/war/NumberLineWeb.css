@@ -124,7 +124,6 @@ div.gametype:hover div {
 
 div.gametype img {
 	margin-left: 5px;
-	
 	margin-top: 10px;
 }
 
@@ -138,7 +137,7 @@ div.gametype div {
 
 .gametypeselector {
 	margin: 10px;
-	height:425px;
+	height: 425px;
 }
 
 .gametypeselector .selectorTitle {
@@ -146,10 +145,41 @@ div.gametype div {
 }
 
 .backButton {
+	position: absolute;
+	bottom: 20px;
+	right: 30px;
+}
 
-	position:absolute;
-	bottom:20px;
-	right:30px;
+div.highscore-entry .highscore_pos {
+	display: block;
+	float: left;
+	width: 20px;
+	text-align: right;
+	color: #777;
+	padding-right:14px;
+	font-weight:bold;
+}
+
+div.highscore {
+	margin-left: 150px;
+	margin-top:20px;
+}
+
+div.highscore-wrap {
 	
+	padding:20px;
+	
+}
 
+div.highscore-entry .highscore_name {
+	display: block;
+	float: left;
+	width: 250px;
+	text-align: left;
+}
+
+div.highscore-entry {
+	margin-left: 15px;
+	margin-top: 9px;
+	font-size: 21px;
 }

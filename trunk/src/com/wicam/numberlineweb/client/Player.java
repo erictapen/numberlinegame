@@ -8,6 +8,7 @@ public abstract class Player implements IsSerializable, Comparable<Player>{
 	private int points = 0;
 	private boolean leftGame = false;
 	private boolean ready = false; // for synchronization
+	private int colorId = 1;
 	
 	public void setName(String name) {
 		this.name = name;
@@ -41,5 +42,13 @@ public abstract class Player implements IsSerializable, Comparable<Player>{
 	}
 	public int compareTo(Player p) {
 		return p.getPoints() - this.getPoints();
+	}
+	
+	public void setColorId(int colorId) {
+		this.colorId = colorId;
+	}
+	
+	public int getColorId() {
+		return colorId;
 	}
 }

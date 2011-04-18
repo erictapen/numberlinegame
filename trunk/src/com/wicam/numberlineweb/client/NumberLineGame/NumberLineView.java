@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.MouseHandler;
 import com.wicam.numberlineweb.client.Player;
 
@@ -192,28 +193,7 @@ public class NumberLineView extends GameView  {
 
 	}
 
-	public void showRankingTable(ArrayList<? extends Player> players){
-		playerPanel.clear();
-		p.clear();
-		
-		FlexTable rankingTable = new FlexTable();
-		rankingTable.setCellPadding(5);
-		
-		p.add(rankingTable);
-		Collections.sort(players);
-		int lastPoints = -1;
-		int position = 0;
-		for (int i = 0; i < players.size(); i++){
-			if (!(lastPoints == players.get(i).getPoints())){
-				lastPoints = players.get(i).getPoints();
-				position = i+1;
-			}
-			NumberLineGamePlayer player = (NumberLineGamePlayer) players.get(i);
-			rankingTable.setHTML(i+1, 1, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + position + ".</div>");
-			rankingTable.setHTML(i+1, 2, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + players.get(i).getName() + "</div>");
-			rankingTable.setHTML(i+1, 3, "<div style='font-size:25px;color:" + playerColors[player.getColorId()] + "'>" + players.get(i).getPoints()  + "</div>");
-		}
-	}
+	
 	
 	private void setPointerPos(int x,HTML pointer) {
 
