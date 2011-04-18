@@ -29,7 +29,7 @@ public class NumberLineWeb implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		
-		boolean numberLineGame = true;
+		boolean numberLineGame = false;
 		
 		//first, lets initialize our communication systems
 		GameCommunicationServiceAsync commService;
