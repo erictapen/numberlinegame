@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.wicam.numberlineweb.client.GameView;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -37,10 +38,11 @@ public class DoppelungGameView extends GameView {
 	ArrayList<HTML> playerNames = new ArrayList<HTML>();
 	
 	protected final Button startGameButton = new Button("Spiel Starten");
-	// TODO: better images
-	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("numberlineweb/gwt/standard/images/Knob Fast Forward.png", 270, 330);
-	protected final Image longVowelImage = new Image("numberlineweb/gwt/standard/images/Knob Play.png");
+	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("numberlineweb/doppelungGame/knall_small.jpg", 270, 330);
+	protected final Image longVowelImage = new Image("numberlineweb/doppelungGame/ziehen1.jpg");
 	private final FocusPanel focusPanel = new FocusPanel();
+	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
+	private final TextBox textBox = new TextBox();
 	
 	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 	
@@ -86,6 +88,23 @@ public class DoppelungGameView extends GameView {
 		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
 		
+		textBox.setMaxLength(10);
+		textBox.addKeyPressHandler(new KeyPressHandler(){
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER){
+					String enteredWord = textBox.getText().trim();
+					if (!enteredWord.equals("")){
+						gamePanel.remove(textBoxLabel);
+						gamePanel.remove(textBox);
+						doppelungGameController.wordEntered(enteredWord);
+					}
+				}
+			}
+			
+		});
+		
 		pointsPanel.add(canvasScore);
 		
 		int top = 60;
@@ -112,7 +131,7 @@ public class DoppelungGameView extends GameView {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				moveButtonOnGamePanel(event);
+				moveImageOnGamePanel(event);
 			}
 		});
 		
@@ -141,19 +160,22 @@ public class DoppelungGameView extends GameView {
 		gamePanel.clear();
 		gamePanel.add(canvas);
 		if (correctAnswer)
-			feedBackText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Richtig!</div>");
+			feedBackText.setHTML("<div style='font-size:25px'>Richtig!</div>");
 		else
-			feedBackText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Falsch!</div>");
+			feedBackText.setHTML("<div style='font-size:25px'>Falsch!</div>");
 		gamePanel.add(feedBackText);
-		gamePanel.setWidgetPosition(feedBackText, 230, 175);
+		gamePanel.setWidgetPosition(feedBackText, 250, 175);
 	}
 	
 	public void startShortVowelGame(DoppelungGameWord word){
 		gamePanel.clear();
-		initializeMovingConsonantList(word);
+		textBox.setText("");
 		gamePanel.add(shortVowelImage);
+		initializeMovingConsonantList(word);
 		gamePanel.add(canvas);
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
+		shortVowelImage.setX(270);
+		shortVowelImage.setY(330);
 		gamePanel.setWidgetPosition(shortVowelImage, 270, 330);
 		focusPanel.setFocus(true);
 	}
@@ -179,7 +201,7 @@ public class DoppelungGameView extends GameView {
 		}
 	}
 	
-	private void moveButtonOnGamePanel(KeyPressEvent event){
+	private void moveImageOnGamePanel(KeyPressEvent event){
 		int keyCode = event.getNativeEvent().getKeyCode();
 		int imgWidth = shortVowelImage.getOffsetWidth();
 		int imgHeight = this.shortVowelImage.getOffsetHeight();
@@ -222,15 +244,16 @@ public class DoppelungGameView extends GameView {
 			gamePanel.add(mc);
 			gamePanel.setWidgetPosition(mc, 50+i%9*50, -50);
 			mc.startMoving(i*2000);
-			mc.setSpeed(30, 1);
+			mc.setSpeed(10, 1);
 			this.movingConsonantsList.add(mc);
 			i++;
 		}
 	}
 	
 	public void setMovingConsonantsPosition(MovingConsonants mc, int x, int y){
-		if (y < gamePanel.getOffsetHeight())
+		if (y < gamePanel.getOffsetHeight()){
 			gamePanel.setWidgetPosition(mc, x, y);
+		}
 		else{
 			mc.setRemoved(true);
 			removeMovingConsonants(mc);
@@ -241,7 +264,14 @@ public class DoppelungGameView extends GameView {
 		gamePanel.remove(mc);
 		movingConsonantsList.remove(mc);
 		if (movingConsonantsList.isEmpty()){
-			doppelungGameController.endShortVowelGame();
+			gamePanel.remove(shortVowelImage);
+			gamePanel.remove(this.focusPanel);
+			gamePanel.add(textBoxLabel);
+			gamePanel.setWidgetPosition(textBoxLabel, 170, 150);
+			gamePanel.add(this.textBox);
+			gamePanel.setWidgetPosition(textBox, 230, 190);
+			textBox.setFocus(true);
+			//doppelungGameController.endShortVowelGame();
 		}
 	}
 	

@@ -106,22 +106,6 @@ public class DoppelungGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public GameState shortVowelGameEnded(String ids) {
-		int gameid = Integer.parseInt(ids.split(":")[0]);
-		
-		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		
-		Timer t = new Timer();
-		if (this.hasNextWord(gameid))
-			// 3 sec feedback
-			t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), 3000);
-		else
-			this.endGame(gameid);
-		
-		return g;
-	}
-
-	@Override
 	public GameState updatePoints(String ids) {
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = Integer.parseInt(ids.split(":")[1]);
@@ -140,6 +124,30 @@ public class DoppelungGameCommunicationServiceServlet extends
 			newPoints = 0;
 		
 		g.setPlayerPoints(playerid, newPoints);
+		
+		return g;
+	}
+
+	@Override
+	public GameState wordEntered(String word) {
+		int gameid = Integer.parseInt(word.split(":")[0]);
+		int playerid = Integer.parseInt(word.split(":")[1]);
+		String enteredWord = word.split(":")[2];
+		
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		int points = 0;
+		if (enteredWord.equals(g.getCurWord().getWord()))
+			points = 2;
+		
+		g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + points);
+		
+		Timer t = new Timer();
+		if (this.hasNextWord(gameid))
+			// 3 sec feedback
+			t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), 3000);
+		else
+			this.endGame(gameid);
 		
 		return g;
 	}

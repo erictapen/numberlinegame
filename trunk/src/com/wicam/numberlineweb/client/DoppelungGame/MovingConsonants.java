@@ -1,9 +1,9 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 
-public class MovingConsonants extends HTML{
+public class MovingConsonants extends Image{
 
 	private Move move;
 	private DoppelungGameView gameView;
@@ -11,9 +11,9 @@ public class MovingConsonants extends HTML{
 	private int x;
 	private int y;
 	private boolean removed = false;
-
+	
 	public MovingConsonants(String consonants, DoppelungGameView gameView, int x, int y){
-		super("<div style='font-size:14px;padding:5px;border:solid #333 1px;'>" + consonants + "</div>");
+		super("numberlineweb/doppelungGame/coins/coin_" + consonants + ".png");
 		this.consonants = consonants;
 		this.gameView = gameView;
 		this.x = x;
@@ -53,6 +53,7 @@ public class MovingConsonants extends HTML{
 	public String getConsonants() {
 		return consonants;
 	}
+
 
 	class Move extends Timer{
 		

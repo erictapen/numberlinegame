@@ -44,8 +44,8 @@ public class DoppelungGameController extends GameController {
 		((DoppelungGameCoordinator) coordinator).vowelButtonClicked(LONGVOWELBUTTON);
 	}
 	
-	public void endShortVowelGame(){
-		((DoppelungGameCoordinator) coordinator).endShortVowelGame();
+	public void wordEntered(String word){
+		((DoppelungGameCoordinator) coordinator).wordEntered(word);
 	}
 	
 	public void updatePoints(String consonants){

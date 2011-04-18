@@ -8,7 +8,7 @@ public interface DoppelungGameCommunicationServiceAsync extends GameCommunicatio
 
 	public void bottonClicked(String ids,AsyncCallback<GameState> callback);
 	
-	public void shortVowelGameEnded(String ids,AsyncCallback<GameState> callback);
-	
 	public void updatePoints(String ids, AsyncCallback<GameState> callback);
+	
+	public void wordEntered(String ids, AsyncCallback<GameState> callback);
 }
