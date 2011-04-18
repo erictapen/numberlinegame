@@ -15,7 +15,7 @@ public class GameCell extends AbstractCell<GameState> {
 	public void render(Context context,	GameState game, SafeHtmlBuilder sb) {
 
 		sb.appendHtmlConstant("<div style='padding:4px;font-size:14px'>");
-		sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/" + game.getMaxNumberOfPlayers() + " Spieler");
+		sb.appendEscaped(game.getName() + "       (" + game.getPlayerCount() + "/" + game.getMaxNumberOfPlayers() + " Spieler)");
 		sb.appendHtmlConstant("</div>");
 
 	}
