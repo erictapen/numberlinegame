@@ -194,11 +194,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 																			+ Integer.toString(buttonid), updateCallback);
 	}
 	
-	public void endShortVowelGame(){
-		((DoppelungGameCommunicationServiceAsync) commServ).shortVowelGameEnded(openGame.getId() + ":" + Integer.toString(playerID), updateCallback);
-	}
-
 	public void updatePoints(String consonants){
 		((DoppelungGameCommunicationServiceAsync) commServ).updatePoints(openGame.getId() + ":" + Integer.toString(playerID) + ":" + consonants, updateCallback);
+	}
+	
+	public void wordEntered(String word){
+		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}
 }

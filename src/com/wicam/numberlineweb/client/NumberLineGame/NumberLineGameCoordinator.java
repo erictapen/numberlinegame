@@ -198,7 +198,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			else {
 				// if position was not available, player gets a second chance
 				if (triedToClick || sessionClicked){
-					gameView.setInfoText("Position ist bereits belegt! Waehle eine andere Position!");
+					gameView.setInfoText("Position ist bereits belegt! Wähle eine andere Position!");
 					sessionClicked = false;
 				}
 				else{

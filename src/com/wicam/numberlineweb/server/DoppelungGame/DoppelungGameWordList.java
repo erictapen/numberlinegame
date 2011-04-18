@@ -45,7 +45,7 @@ public class DoppelungGameWordList {
 		gameWord.setShortVowel(false);
 		wordList.add(gameWord);
 		gameWord = new DoppelungGameWord();
-		gameWord.setWord("Frühling");
+		gameWord.setWord("FrÃ¼hling");
 		gameWord.setShortVowel(false);
 		wordList.add(gameWord);
 		gameWord = new DoppelungGameWord();
