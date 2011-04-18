@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService
+path: 8C28EF3284322893A9AE68C61854326C.gwt.rpc
