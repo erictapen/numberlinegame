@@ -28,6 +28,7 @@ public class TextPopupBox extends DialogBox {
 	final Button cancel = new Button("Abbrechen");
 	protected VerticalPanel p = new VerticalPanel();
 	final VerticalPanel v = new VerticalPanel();
+	private boolean hasClickHandler=false;
 
 	public TextPopupBox(String request, String value) {
 
@@ -115,6 +116,11 @@ public class TextPopupBox extends DialogBox {
 	 */
 	public void addClickHandler(ClickHandler handler) {
 		ok.addClickHandler(handler);
+		hasClickHandler=true;
+	}
+	
+	public boolean hasClickHandler() {
+		return hasClickHandler;
 	}
 
 

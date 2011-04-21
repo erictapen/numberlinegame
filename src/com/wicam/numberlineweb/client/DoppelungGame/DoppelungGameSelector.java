@@ -18,11 +18,11 @@ public class DoppelungGameSelector extends GameSelector {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				gamePopUp.addClickHandler(new ClickHandler() {
+				if (!gamePopUp.hasClickHandler()) gamePopUp.addClickHandler(new ClickHandler() {
 
 					@Override
 					public void onClick(ClickEvent event) {
-						gamePopUp.setEnabled(false);
+						
 						DoppelungGameState gameState = new DoppelungGameState();
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
