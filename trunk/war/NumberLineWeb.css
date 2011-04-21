@@ -183,3 +183,10 @@ div.highscore-entry {
 	margin-top: 9px;
 	font-size: 21px;
 }
+
+.chatwindow {
+
+	background-color:white;
+	border:solid black 1px;
+
+}
