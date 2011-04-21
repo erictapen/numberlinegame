@@ -61,6 +61,8 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 	 */
 
 	public void openGame(GameState gameState) {
+		
+		GWT.log("opening!");
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();

@@ -195,17 +195,13 @@ public class NumberLineGameCommunicationServiceServlet extends
 
 	@Override
 	public GameState openGame(GameState g) {
-		currentId++;
-
-		g.setGameId(currentId);
+		
 
 		((NumberLineGameState) g).setPointerWidth(14);
 		
-		openGames.add(g);
-
-		System.out.println("Opend Game " + Integer.toString(currentId));
+		return super.openGame(g);
 		
-		return g;
+
 	}
 
 }

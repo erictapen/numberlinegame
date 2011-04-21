@@ -18,6 +18,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 	protected ArrayList<GameState> openGames = new ArrayList<GameState>();
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
+	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
 	GameCommunicationServiceServlet comm;
 	
 	boolean timeOutListLock = false;
@@ -26,7 +27,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 	int gamePending;
 	
 	public GameCommunicationServiceServlet (){
-		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(), this), 0, 4000);
+		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
 	}
 	
 	public ArrayList<GameState> getOpenGames() {
@@ -49,6 +50,9 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 		g.setGameId(currentId);
 		
 		openGames.add(g);
+		//add game to empty game time out list
+		System.out.println("Added game #" + currentId + " to empty game timeouts.");
+		emptyGameTimeOutStates.add(new EmptyGameTimeOutState(currentId,20));
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
 		
@@ -248,12 +252,14 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 	}
 
 
-	private void removeGame(int gameid) {
-
+	protected void removeGame(int gameid) {
+		
+		
 		openGames.remove(getGameById(gameid));
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
+		
 
 		while (i.hasNext()) {
 
@@ -419,5 +425,9 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 
 	public ArrayList<TimeOutState> getTimeOutStates() {
 		return timeOutStates;
+	}
+	
+	public ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
+		return emptyGameTimeOutStates;
 	}
 }

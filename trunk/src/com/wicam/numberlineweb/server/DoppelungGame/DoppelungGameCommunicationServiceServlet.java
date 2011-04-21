@@ -24,21 +24,16 @@ public class DoppelungGameCommunicationServiceServlet extends
 	
 	@Override
 	public GameState openGame(GameState g) {
-		currentId++;
-
-		g.setGameId(currentId);
-
+		
+		
 		// initialize game list
 		wordLists.put(currentId, DoppelungGameWordList.createWordList().iterator());
 		
 		// set first word
 		((DoppelungGameState)g).setCurWord(getNextWord(currentId));
 		
-		openGames.add(g);
+		return super.openGame(g);
 
-		System.out.println("Opend Game " + Integer.toString(currentId));
-		
-		return g;
 	}
 	
 	public boolean hasNextWord(int gameid){
