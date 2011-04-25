@@ -1,9 +1,13 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.GameController;
 
-public class DoppelungGameController extends GameController {
+public class DoppelungGameController extends GameController implements KeyDownHandler, KeyUpHandler {
 
 	public static final int SHORTVOWELBUTTON = 0;
 	public static final int LONGVOWELBUTTON = 1;
@@ -50,6 +54,18 @@ public class DoppelungGameController extends GameController {
 	
 	public void updatePoints(String consonants){
 		((DoppelungGameCoordinator) coordinator).updatePoints(consonants);
+	}
+
+	@Override
+	public void onKeyDown(KeyDownEvent event) {
+		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		
+	}
+
+	@Override
+	public void onKeyUp(KeyUpEvent event) {
+		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		
 	}
 
 }

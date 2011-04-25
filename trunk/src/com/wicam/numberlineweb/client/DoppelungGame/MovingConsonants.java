@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
@@ -14,6 +15,9 @@ public class MovingConsonants extends Image{
 	
 	public MovingConsonants(String consonants, DoppelungGameView gameView, int x, int y){
 		super("numberlineweb/doppelungGame/coins/coin_" + consonants + ".png");
+		
+		GWT.log(consonants);
+		
 		this.consonants = consonants;
 		this.gameView = gameView;
 		this.x = x;
@@ -21,17 +25,19 @@ public class MovingConsonants extends Image{
 		move = new Move(this);
 	}
 	
-	public void setSpeed(int timeSpeed, int spaceSpeed){
-		move.setTimeSpeed(timeSpeed);
+	public void setSpeed( int spaceSpeed){
 		move.setSpaceSpeed(spaceSpeed);
 	}
 	
 	public void startMoving(){
-		move.schedule(move.timeSpeed);
+		
+		gameView.registerAniTask(move);
+
 	}
 	
 	public void startMoving(int delay){
-		move.schedule(delay + move.timeSpeed);
+		move.setDelay(delay);
+		gameView.registerAniTask(move);
 	}
 	
 	public boolean removed() {
@@ -55,22 +61,18 @@ public class MovingConsonants extends Image{
 	}
 
 
-	class Move extends Timer{
+	class Move extends AnimationTimerTask{
 		
 		MovingConsonants mc;
-		int timeSpeed;
+
 		int spaceSpeed;
 		
 		Move(MovingConsonants mc){
 			this.mc = mc;
-			this.timeSpeed = 200;
 			this.spaceSpeed = 5;
 		}
 		
-		void setTimeSpeed(int timeSpeed){
-			this.timeSpeed = timeSpeed;
-		}
-		
+
 		void setSpaceSpeed(int spaceSpeed){
 			this.spaceSpeed = spaceSpeed;
 		}
@@ -80,8 +82,8 @@ public class MovingConsonants extends Image{
 			gameView.setMovingConsonantsPosition(mc, x, y);
 			gameView.checkForCollision(mc);
 			
-			if (!removed){
-				this.schedule(timeSpeed);
+			if (removed){
+				this.markForDelete();
 			}
 		}
 	}
