@@ -50,10 +50,9 @@ public class DoppelungGameView extends GameView {
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
-	private AnimationTimer aniTimer = new AnimationTimer();
 
-	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 
+	
 	public DoppelungGameView(int numberOfPlayers, DoppelungGameController doppelungGameController) {
 		super(numberOfPlayers);
 		this.doppelungGameController = doppelungGameController;
@@ -145,10 +144,7 @@ public class DoppelungGameView extends GameView {
 	}
 
 
-	public void registerAniTask(AnimationTimerTask t) {
-		aniTimer.registerTask(t);
-	}
-
+	
 	public void showPlayerName(int playerid, String name){
 		playerNames.get(playerid-1).setHTML("<div style='font-size:14px;color:" + playerColors[playerid-1] + "'>" + name + "</div>");
 	}
@@ -177,19 +173,6 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedBackText, 250, 175);
 	}
 
-	public void startShortVowelGame(DoppelungGameWord word){
-		gamePanel.clear();
-		textBox.setText("");
-		gamePanel.add(shortVowelImage);
-		initializeMovingConsonantList(word);
-		gamePanel.add(canvas);
-		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
-		shortVowelImage.setX(270);
-		shortVowelImage.setY(330);
-		gamePanel.setWidgetPosition(shortVowelImage, 270, 330);
-		focusPanel.setFocus(true);
-	}
-
 	// TODO: real implementation
 	public void showEndScreen(int points){
 		gamePanel.clear();
@@ -209,6 +192,23 @@ public class DoppelungGameView extends GameView {
 			this.pointsBar2.setHTML("<div id='canvas' style='width:25px;height:" + points + "px;background-color:" +  this.playerColors[1] + "'></div>");
 			pointsPanel.setWidgetPosition(pointsBar2, 26, 60+pointsBar2Border.getOffsetHeight()-1-points);
 		}
+	}
+	
+	
+	public void showShortVowelGame() {
+		
+		
+		gamePanel.clear();
+		textBox.setText("");
+		gamePanel.add(shortVowelImage);
+	
+		gamePanel.add(canvas);
+		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
+		shortVowelImage.setX(270);
+		shortVowelImage.setY(330);
+		gamePanel.setWidgetPosition(shortVowelImage, 270, 330);
+		focusPanel.setFocus(true);
+		
 	}
 
 
@@ -262,69 +262,68 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(shortVowelImage, shortVowelImage.getX(), shortVowelImage.getY());
 
 	}
-
-	/**
-	 * TODO: this has to be done in the controller
-	 * @param word
-	 */
-
-	private void initializeMovingConsonantList(DoppelungGameWord word){
-		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),5,10);
-		int i = 0;
-		for (String consonantPair: consonantPairList){
-			MovingConsonants mc = new MovingConsonants(consonantPair, this, 50+i%9*50, -50);
-			gamePanel.add(mc);
-			gamePanel.setWidgetPosition(mc, 50+i%9*50, -50);
-			mc.startMoving(i*2000);
-			mc.setSpeed(3);
-			this.movingConsonantsList.add(mc);
-			i++;
-		}
+	
+	public boolean isOnCanvas(int y) {
+		
+		return y < gamePanel.getOffsetHeight();
+		
 	}
-
-	public void setMovingConsonantsPosition(MovingConsonants mc, int x, int y){
-		if (y < gamePanel.getOffsetHeight()){
-			gamePanel.setWidgetPosition(mc, x, y);
-		}
-		else{
-			mc.setRemoved(true);
-			removeMovingConsonants(mc);
-		}
-	}
-
-	public void removeMovingConsonants(MovingConsonants mc){
+	
+	public void hideMovingConsonant(MovingConsonants mc) {
+		
 		gamePanel.remove(mc);
-		movingConsonantsList.remove(mc);
-		if (movingConsonantsList.isEmpty()){
-			gamePanel.remove(shortVowelImage);
-			gamePanel.remove(this.focusPanel);
-			gamePanel.add(textBoxLabel);
-			gamePanel.setWidgetPosition(textBoxLabel, 170, 150);
-			gamePanel.add(this.textBox);
-			gamePanel.setWidgetPosition(textBox, 230, 190);
-			textBox.setFocus(true);
-			//doppelungGameController.endShortVowelGame();
-		}
+		
 	}
-
+	
+	public void showUserWordInput() {
+		gamePanel.remove(shortVowelImage);
+		gamePanel.remove(this.focusPanel);
+		gamePanel.add(textBoxLabel);
+		gamePanel.setWidgetPosition(textBoxLabel, 170, 150);
+		gamePanel.add(this.textBox);
+		gamePanel.setWidgetPosition(textBox, 230, 190);
+		textBox.setFocus(true);
+	}
+	
+	public int[] getShortVowelImageDimension() {
+		
+		int[] ret = new int[2];
+		
+		ret[0] = shortVowelImage.getOffsetWidth();
+		ret[1] = shortVowelImage.getOffsetHeight();
+		
+		return ret;
+		
+	}
+	
 	/**
-	 * TODO: this has to be done in the controller
-	 * @param mc
+	 * TODO: the view should NOT return the position but get it
+	 * @return
 	 */
-	public void checkForCollision(MovingConsonants mc){
-		int imgWidth = shortVowelImage.getOffsetWidth();
-		int imgHeight = this.shortVowelImage.getOffsetHeight();
-
-		int mcWidth = mc.getOffsetWidth();
-		int mcHeight = mc.getOffsetHeight();
-
-		int posXDiff = Math.abs(shortVowelImage.getX() - mc.getX());
-		int posYDiff = Math.abs(shortVowelImage.getY() - mc.getY());
-
-		if (posXDiff < imgWidth/2+mcWidth/2 && posYDiff < imgHeight/2+mcHeight/2){
-			doppelungGameController.updatePoints(mc.getConsonants());
-			mc.setRemoved(true);
-			removeMovingConsonants(mc);
-		}
+	
+	public int[] getShortVowelImagePosition() {
+		
+		int[] ret = new int[2];
+		
+		ret[0] = shortVowelImage.getX();
+		ret[1] = shortVowelImage.getY();
+		
+		return ret;
+		
 	}
+	
+	
+	public void showMovingConsonants(int offset, MovingConsonants mc) {
+		gamePanel.add(mc);
+		gamePanel.setWidgetPosition(mc, 50+offset%9*50, -50);
+		mc.startMoving(offset*2000);
+		mc.setSpeed(3);
+	}
+	
+	public void setMcPosition(MovingConsonants mc, int x, int y) {
+		gamePanel.setWidgetPosition(mc, x, y);
+	}
+
+
+	
 }
