@@ -7,6 +7,25 @@ public class DoppelungGameState extends GameState {
 
 	private DoppelungGameWord curWord = new DoppelungGameWord();
 	private boolean correctAnswered = false; // for the feedback
+	public String player1movingto;
+	public String player2movingto;
+	
+	public String enemyMovingTo(int playerid) {
+		
+		if (playerid==1) return player1movingto;
+		else return player2movingto;
+		
+		
+	}
+	
+	public void setEnemyMovingTo(int playerid, String to) {
+		
+		if (playerid==1) player1movingto = to;
+		else player2movingto = to;
+		
+		
+	}
+	 
 	
 	public void setNextWord(DoppelungGameWord word){
 		curWord = word;

@@ -6,9 +6,11 @@ import com.wicam.numberlineweb.client.GameState;
 
 public interface DoppelungGameCommunicationServiceAsync extends GameCommunicationServiceAsync {
 
-	public void bottonClicked(String ids,AsyncCallback<GameState> callback);
+	public void buttonClicked(String ids,AsyncCallback<GameState> callback);
 	
 	public void updatePoints(String ids, AsyncCallback<GameState> callback);
 	
 	public void wordEntered(String ids, AsyncCallback<GameState> callback);
+	
+	public void keyEvent(String ids, AsyncCallback<DoppelungGameState> callback);
 }

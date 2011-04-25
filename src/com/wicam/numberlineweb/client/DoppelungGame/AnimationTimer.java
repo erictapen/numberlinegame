@@ -23,7 +23,7 @@ public class AnimationTimer extends Timer {
 	//the global animation time is 30ms. Every animation has to set its
 	//animation according to this number. Performance is improved massivly this way,
 	//since concurring timers arent possible anymore.
-	private static final int TIMER_SPEED = 30;
+	private static final int TIMER_SPEED = 50;
 
 
 	/**
@@ -61,6 +61,8 @@ public class AnimationTimer extends Timer {
 	 */
 	public void registerTask(AnimationTimerTask t) {
 
+		if (tasks.contains(t)) return;
+		
 		this.tasks.add(t);
 		t.unmarkForDelete();
 		if (!this.isRunning) this.scheduleRepeating(TIMER_SPEED);
