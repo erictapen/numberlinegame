@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
@@ -20,6 +21,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
 	private boolean shortVowelGameStarted = false;
+	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
+	private AnimationTimer aniTimer = new AnimationTimer();
 
 
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -152,7 +155,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 5:
 			if (!shortVowelGameStarted){
 				shortVowelGameStarted = true;
-				gameView.startShortVowelGame(g.getCurWord());
+				startShortVowelGame(g.getCurWord());
 			}
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
@@ -187,6 +190,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			break;
 		}
 
+	}
+
+	public void registerAniTask(AnimationTimerTask t) {
+		aniTimer.registerTask(t);
 	}
 
 	/*
@@ -258,28 +265,28 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 				if (!keyDownDown) {
 					keyDownDown = true;
-					((DoppelungGameView)view).registerAniTask(moveDownTask);
+					registerAniTask(moveDownTask);
 				}
 
 				break;
 			case KeyCodes.KEY_RIGHT:
 				if (!keyRightDown) {
 					keyRightDown = true;
-					((DoppelungGameView)view).registerAniTask(moveRightTask);
+					registerAniTask(moveRightTask);
 				}
 
 				break;
 			case KeyCodes.KEY_UP:
 				if (!keyUpDown) {
 					keyUpDown = true;
-					((DoppelungGameView)view).registerAniTask(moveUpTask);
+					registerAniTask(moveUpTask);
 				}
 
 				break;
 			case KeyCodes.KEY_LEFT:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
-					((DoppelungGameView)view).registerAniTask(moveLeftTask);
+					registerAniTask(moveLeftTask);
 				}
 
 				break;
@@ -321,6 +328,97 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 
 		}
+
+	}
+
+	private void initializeMovingConsonantList(DoppelungGameWord word){
+		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),5,10);
+		int i = 0;
+		for (String consonantPair: consonantPairList){
+			MovingConsonants mc = new MovingConsonants(consonantPair, this, 50+i%9*50, -50);
+
+
+
+			((DoppelungGameView) view).showMovingConsonants(i, mc);
+
+			this.movingConsonantsList.add(mc);
+			i++;
+		}
+	}
+
+
+	public void setMovingConsonantsPosition(MovingConsonants mc, int x, int y){
+		if (((DoppelungGameView) view).isOnCanvas(y)){
+			((DoppelungGameView) view).setMcPosition(mc, x, y);
+		}
+		else{
+			mc.setRemoved(true);
+			removeMovingConsonants(mc);
+		}
+	}
+
+
+	public void removeMovingConsonants(MovingConsonants mc){
+		((DoppelungGameView) view).hideMovingConsonant(mc);
+		movingConsonantsList.remove(mc);
+		if (movingConsonantsList.isEmpty()){
+			
+			//finished MovingConsonantsGame
+			
+			endMovingConsonantsGame();
+			((DoppelungGameView) view).showUserWordInput();
+		}
+	}
+	
+	
+	public void endMovingConsonantsGame() {
+		
+		moveLeftTask.markForDelete();
+		moveRightTask.markForDelete();
+		moveUpTask.markForDelete();
+		moveDownTask.markForDelete();
+		
+		keyUpDown = false;
+		keyDownDown = false;
+		keyLeftDown = false;
+		keyRightDown = false;
+		
+	}
+
+
+	/**
+	 * TODO: this has to be done in the controller
+	 * @param mc
+	 */
+	public void checkForCollision(MovingConsonants mc){
+
+		int[] imgDimension = ((DoppelungGameView) view).getShortVowelImageDimension();
+
+		int imgWidth = imgDimension[0];
+		int imgHeight = imgDimension[1];
+
+		int mcWidth = mc.getOffsetWidth();
+		int mcHeight = mc.getOffsetHeight();
+
+		int[] imgPosition = ((DoppelungGameView) view).getShortVowelImagePosition();
+
+		int posXDiff = Math.abs(imgPosition[0] - mc.getX());
+		int posYDiff = Math.abs(imgPosition[1] - mc.getY());
+
+		if (posXDiff < imgWidth/2+mcWidth/2 && posYDiff < imgHeight/2+mcHeight/2){
+			updatePoints(mc.getConsonants());
+			mc.setRemoved(true);
+			removeMovingConsonants(mc);
+		}
+	}
+
+
+	public void startShortVowelGame(DoppelungGameWord word){
+
+		((DoppelungGameView)view).showShortVowelGame();
+		initializeMovingConsonantList(word);
+
+		
 
 	}
 

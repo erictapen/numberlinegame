@@ -7,19 +7,19 @@ import com.google.gwt.user.client.ui.Image;
 public class MovingConsonants extends Image{
 
 	private Move move;
-	private DoppelungGameView gameView;
+	private DoppelungGameCoordinator coordinator;
 	private String consonants;
 	private int x;
 	private int y;
 	private boolean removed = false;
 	
-	public MovingConsonants(String consonants, DoppelungGameView gameView, int x, int y){
+	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y){
 		super("numberlineweb/doppelungGame/coins/coin_" + consonants + ".png");
 		
 		GWT.log(consonants);
 		
 		this.consonants = consonants;
-		this.gameView = gameView;
+		this.coordinator = coordinator;
 		this.x = x;
 		this.y = y;
 		move = new Move(this);
@@ -31,13 +31,13 @@ public class MovingConsonants extends Image{
 	
 	public void startMoving(){
 		
-		gameView.registerAniTask(move);
+		coordinator.registerAniTask(move);
 
 	}
 	
 	public void startMoving(int delay){
 		move.setDelay(delay);
-		gameView.registerAniTask(move);
+		coordinator.registerAniTask(move);
 	}
 	
 	public boolean removed() {
@@ -79,8 +79,8 @@ public class MovingConsonants extends Image{
 		@Override
 		public void run() {
 			y = y + spaceSpeed;
-			gameView.setMovingConsonantsPosition(mc, x, y);
-			gameView.checkForCollision(mc);
+			coordinator.setMovingConsonantsPosition(mc, x, y);
+			coordinator.checkForCollision(mc);
 			
 			if (removed){
 				this.markForDelete();
