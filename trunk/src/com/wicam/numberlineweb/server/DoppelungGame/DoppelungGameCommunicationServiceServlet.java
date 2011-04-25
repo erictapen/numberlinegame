@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
 
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationService;
+import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
@@ -56,7 +58,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 	public void startGame(int id) {}
 
 	@Override
-	public GameState bottonClicked(String ids) {
+	public GameState buttonClicked(String ids) {
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int bottonid = Integer.parseInt(ids.split(":")[2]);
@@ -153,6 +155,54 @@ public class DoppelungGameCommunicationServiceServlet extends
 			this.endGame(gameid);
 		
 		return g;
+	}
+
+	@Override
+	public DoppelungGameState keyEvent(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		String event = ids.split(":")[2];
+		int keyCode = Integer.parseInt( ids.split(":")[3]);
+		
+		if (event.equals("stop")) {
+			
+			((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "stop");
+			
+		}
+		
+		if (event.equals("down")) {
+		
+		switch(keyCode){
+
+			case KeyCodes.KEY_DOWN:
+	
+				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "down");
+				break;
+			case KeyCodes.KEY_RIGHT:
+			
+				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "right");
+	
+				break;
+			case KeyCodes.KEY_UP:
+		
+				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid,"up");
+	
+				break;
+			case KeyCodes.KEY_LEFT:
+			
+				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid,"left");
+	
+				break;
+			
+			}
+		}
+		
+		
+		
+		System.out.println("Player #" + playerid + " in game #" + gameid + " '" + event + "'ed " + keyCode);
+		
+		this.setChanged(gameid);
+		return ((DoppelungGameState)this.getGameById(gameid));
 	}
 
 }

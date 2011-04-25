@@ -9,9 +9,11 @@ import com.wicam.numberlineweb.client.GameState;
 public interface DoppelungGameCommunicationService extends
 		GameCommunicationService {
 	
-	public GameState bottonClicked(String ids);	
+	public GameState buttonClicked(String ids);	
 	
 	public GameState updatePoints(String ids);
 	
 	public GameState wordEntered(String ids);
+	
+	public DoppelungGameState keyEvent(String ids);
 }

@@ -69,7 +69,7 @@ public class MovingConsonants extends Image{
 		
 		Move(MovingConsonants mc){
 			this.mc = mc;
-			this.spaceSpeed = 5;
+			this.spaceSpeed = 24;
 		}
 		
 

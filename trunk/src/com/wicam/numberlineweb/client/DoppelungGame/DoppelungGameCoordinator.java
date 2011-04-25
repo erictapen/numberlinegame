@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
@@ -155,8 +156,22 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 5:
 			if (!shortVowelGameStarted){
 				shortVowelGameStarted = true;
+				t.cancel();
+				registerAniTask(new AnimationTimerTask() {
+					
+					
+					@Override
+					public void run() {
+						update();
+					}
+					
+				});
+
 				startShortVowelGame(g.getCurWord());
 			}
+		
+			makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
+
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
 			}
@@ -206,7 +221,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepLeft();
+			((DoppelungGameView)view).moveStepLeft(true);
 		}
 
 	};
@@ -216,7 +231,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepRight();
+			((DoppelungGameView)view).moveStepRight(true);
 		}
 
 	};
@@ -226,7 +241,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepUp();
+			((DoppelungGameView)view).moveStepUp(true);
 
 		}
 
@@ -236,7 +251,48 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		@Override
 		public void run() {
-			((DoppelungGameView)view).moveStepDown();
+			((DoppelungGameView)view).moveStepDown(true);
+
+		}
+
+	};
+	
+	private AnimationTimerTask moveLeftTaskEnemy = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepLeft(false);
+		}
+
+	};
+
+	private AnimationTimerTask moveRightTaskEnemy = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepRight(false);
+		}
+
+	};
+
+	private AnimationTimerTask moveUpTaskEnemy = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepUp(false);
+
+		}
+
+	};
+
+	private AnimationTimerTask moveDownTaskEnemy = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+			((DoppelungGameView)view).moveStepDown(false);
 
 		}
 
@@ -259,19 +315,26 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		if (event instanceof KeyDownEvent) {
 
+
+
 			switch(keyCode){
 
 			case KeyCodes.KEY_DOWN:
 
 				if (!keyDownDown) {
 					keyDownDown = true;
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":down:" + keyCode,keyEventCallback);
+
 					registerAniTask(moveDownTask);
+
 				}
 
 				break;
 			case KeyCodes.KEY_RIGHT:
 				if (!keyRightDown) {
 					keyRightDown = true;
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":down:" + keyCode,keyEventCallback);
+
 					registerAniTask(moveRightTask);
 				}
 
@@ -279,6 +342,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case KeyCodes.KEY_UP:
 				if (!keyUpDown) {
 					keyUpDown = true;
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" + this.playerID + ":down:" + keyCode,keyEventCallback);
+
 					registerAniTask(moveUpTask);
 				}
 
@@ -286,6 +351,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case KeyCodes.KEY_LEFT:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" + this.playerID + ":down:" + keyCode,keyEventCallback);
+
 					registerAniTask(moveLeftTask);
 				}
 
@@ -294,11 +361,14 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 		if (event instanceof KeyUpEvent) {
 
+
 			switch(keyCode){
 
 			case KeyCodes.KEY_DOWN:
 
 				if (keyDownDown) {
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":up:" + keyCode,keyEventCallback);
+
 					keyDownDown = false;
 					moveDownTask.markForDelete();
 				}
@@ -306,6 +376,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case KeyCodes.KEY_RIGHT:
 				if (keyRightDown) {
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":up:" + keyCode,keyEventCallback);
+
 					keyRightDown = false;
 					moveRightTask.markForDelete();
 				}
@@ -313,6 +385,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case KeyCodes.KEY_UP:
 				if (keyUpDown) {
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" +  this.playerID + ":up:" + keyCode,keyEventCallback);
+
 					keyUpDown = false;
 					moveUpTask.markForDelete();
 				}
@@ -320,12 +394,17 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case KeyCodes.KEY_LEFT:
 				if (keyLeftDown) {
+					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + keyCode,keyEventCallback);
+
 					keyLeftDown = false;
 					moveLeftTask.markForDelete();
 				}
 
 				break;
 			}
+			
+			if (!keyDownDown && !keyUpDown && !keyLeftDown && !keyRightDown) ((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":stop:-1",keyEventCallback);
+
 
 		}
 
@@ -362,27 +441,69 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		((DoppelungGameView) view).hideMovingConsonant(mc);
 		movingConsonantsList.remove(mc);
 		if (movingConsonantsList.isEmpty()){
-			
+
 			//finished MovingConsonantsGame
-			
+
 			endMovingConsonantsGame();
 			((DoppelungGameView) view).showUserWordInput();
 		}
 	}
-	
-	
+
+
 	public void endMovingConsonantsGame() {
-		
+
 		moveLeftTask.markForDelete();
 		moveRightTask.markForDelete();
 		moveUpTask.markForDelete();
 		moveDownTask.markForDelete();
-		
+
 		keyUpDown = false;
 		keyDownDown = false;
 		keyLeftDown = false;
 		keyRightDown = false;
+
+	}
+
+	public void makeEnemyMove(String to) {
 		
+		if (to == null) to="stop";
+
+		if (to.equals("up")) {
+
+			this.registerAniTask(moveUpTaskEnemy);
+			
+		}
+
+		if (to.equals("down")) {
+
+			this.registerAniTask(moveDownTaskEnemy);
+			
+		}
+
+		if (to.equals("left")) {
+			
+			this.registerAniTask(moveLeftTaskEnemy);
+
+		}
+
+		if (to.equals("right")) {
+			
+			this.registerAniTask(moveRightTaskEnemy);
+
+		}
+		
+		if (to.equals("stop")) {
+			
+			moveUpTaskEnemy.markForDelete();
+			moveDownTaskEnemy.markForDelete();
+			moveLeftTaskEnemy.markForDelete();
+			moveRightTaskEnemy.markForDelete();
+			
+			
+		}
+
+
+
 	}
 
 
@@ -415,10 +536,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	public void startShortVowelGame(DoppelungGameWord word){
 
-		((DoppelungGameView)view).showShortVowelGame();
+		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers);
 		initializeMovingConsonantList(word);
 
-		
+
 
 	}
 
@@ -429,7 +550,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 	public void vowelButtonClicked(int buttonid){
-		((DoppelungGameCommunicationServiceAsync)commServ).bottonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
+		((DoppelungGameCommunicationServiceAsync)commServ).buttonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
 				+ Integer.toString(buttonid), updateCallback);
 	}
 
@@ -440,4 +561,20 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	public void wordEntered(String word){
 		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}
+
+
+	AsyncCallback<DoppelungGameState> keyEventCallback = new AsyncCallback<DoppelungGameState>() {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void onSuccess(DoppelungGameState result) {
+
+
+		}
+
+	};
 }

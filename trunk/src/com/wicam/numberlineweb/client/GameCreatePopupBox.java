@@ -16,6 +16,7 @@ public class GameCreatePopupBox extends TextPopupBox {
 		super(msg,def);
 		
 		playerCount.addItem("1");
+		playerCount.addItem("2");
 		
 		HorizontalPanel f = new HorizontalPanel();
 		f.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);

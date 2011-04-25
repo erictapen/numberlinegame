@@ -46,6 +46,9 @@ public class DoppelungGameView extends GameView {
 
 	protected final Button startGameButton = new Button("Spiel Starten");
 	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("numberlineweb/doppelungGame/knall_small.jpg", 270, 330);
+	protected final ShortVowelImage enemyShortVowelImage = new ShortVowelImage("numberlineweb/doppelungGame/knall_small.jpg", 270, 330);
+	
+	
 	protected final Image longVowelImage = new Image("numberlineweb/doppelungGame/ziehen1.jpg");
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
@@ -195,7 +198,7 @@ public class DoppelungGameView extends GameView {
 	}
 	
 	
-	public void showShortVowelGame() {
+	public void showShortVowelGame(int players) {
 		
 		
 		gamePanel.clear();
@@ -206,60 +209,91 @@ public class DoppelungGameView extends GameView {
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
 		shortVowelImage.setX(270);
 		shortVowelImage.setY(330);
+		
+		GWT.log(Integer.toString(players));
+		
+		if (players ==2) {
+			
+			gamePanel.add(enemyShortVowelImage);
+			enemyShortVowelImage.setX(270);
+			enemyShortVowelImage.setY(330);
+			gamePanel.setWidgetPosition(enemyShortVowelImage, 270, 330);
+						
+		}
 		gamePanel.setWidgetPosition(shortVowelImage, 270, 330);
 		focusPanel.setFocus(true);
 		
+		
+		
 	}
+	
+	
 
+	public void moveStepLeft(boolean own) {
+		
+	    ShortVowelImage image;
+		if (own) image = shortVowelImage;
+		else  image = enemyShortVowelImage;
+		
 
-	public void moveStepLeft() {
-
-		if (shortVowelImage.getX()-20 > 0) {
-			shortVowelImage.setX(shortVowelImage.getX()-20);
+		if (image.getX()-30 > 0) {
+			image.setX(image.getX()-30);
 		}else{
-			shortVowelImage.setX(0);
+			image.setX(0);
 		}
 
-		gamePanel.setWidgetPosition(shortVowelImage, shortVowelImage.getX(), shortVowelImage.getY());
+		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
 
 	}
 
-	public void moveStepUp() {
+	public void moveStepUp(boolean own) {
+		
+	    ShortVowelImage image;
+		if (own) image = shortVowelImage;
+		else  image = enemyShortVowelImage;
 
-		if (shortVowelImage.getY()-20 > 0)
-			shortVowelImage.setY(shortVowelImage.getY()-20);
+		if (image.getY()-30 > 0)
+			image.setY(image.getY()-30);
 		else
-			shortVowelImage.setY(0);
+			image.setY(0);
 
-		gamePanel.setWidgetPosition(shortVowelImage, shortVowelImage.getX(), shortVowelImage.getY());
+		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
 
 	}
 
-	public void moveStepRight() {
+	public void moveStepRight(boolean own) {
+		
+	    ShortVowelImage image;
+		if (own) image = shortVowelImage;
+		else  image = enemyShortVowelImage;
 
-		int imgWidth = shortVowelImage.getOffsetWidth();
+		int imgWidth = image.getOffsetWidth();
 
-		if (shortVowelImage.getX()+20+imgWidth < canvas.getOffsetWidth()-1)
-			shortVowelImage.setX(shortVowelImage.getX()+20);
+		if (image.getX()+30+imgWidth < canvas.getOffsetWidth()-1)
+			image.setX(image.getX()+30);
 		else
-			shortVowelImage.setX(canvas.getOffsetWidth() - 1 - imgWidth);
+			image.setX(canvas.getOffsetWidth() - 1 - imgWidth);
 
-		gamePanel.setWidgetPosition(shortVowelImage, shortVowelImage.getX(), shortVowelImage.getY());
+		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
 
 	}
 
-	public void moveStepDown() {
-		int imgHeight = shortVowelImage.getOffsetHeight();
+	public void moveStepDown(boolean own) {
+		
+	    ShortVowelImage image;
+		if (own) image = shortVowelImage;
+		else  image = enemyShortVowelImage;
+		int imgHeight = image.getOffsetHeight();
 
-		if (shortVowelImage.getY()+20+imgHeight < canvas.getOffsetHeight())
-			shortVowelImage.setY(shortVowelImage.getY()+20);
+		if (image.getY()+30+imgHeight < canvas.getOffsetHeight())
+			image.setY(image.getY()+30);
 		else
-			shortVowelImage.setY(canvas.getOffsetHeight() - imgHeight);
+			image.setY(canvas.getOffsetHeight() - imgHeight);
 
-		gamePanel.setWidgetPosition(shortVowelImage, shortVowelImage.getX(), shortVowelImage.getY());
+		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
 	}
 	
