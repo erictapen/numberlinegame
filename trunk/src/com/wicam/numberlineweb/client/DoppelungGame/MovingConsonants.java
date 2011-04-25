@@ -14,7 +14,7 @@ public class MovingConsonants extends Image{
 	private boolean removed = false;
 	
 	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y){
-		super("numberlineweb/doppelungGame/coins/coin_" + consonants + ".png");
+		super("doppelungGame/coins/coin_" + consonants + ".png");
 		
 		GWT.log(consonants);
 		
