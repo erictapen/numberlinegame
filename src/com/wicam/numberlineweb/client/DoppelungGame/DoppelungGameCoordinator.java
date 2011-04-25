@@ -3,6 +3,10 @@ package com.wicam.numberlineweb.client.DoppelungGame;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
@@ -16,7 +20,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
 	private boolean shortVowelGameStarted = false;
-	
+
+
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root, GameTypeSelector gs) {
 		super(commServ, chatServ, root,gs);
@@ -28,7 +33,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		return "Doppelung";
 
 	}
-	
+
+
 	@Override
 	public void init() {
 		gameSelector = new DoppelungGameSelector((DoppelungGameCoordinator) this);
@@ -45,7 +51,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		refreshGameList();
 
 		GWT.log("doppelung game coordinator loaded.");
-		
+
 	}
 
 	@Override
@@ -63,36 +69,36 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		//construct game
 		controller = new DoppelungGameController(this);
 		this.view = new DoppelungGameView(numberOfPlayers, controller);
-		DoppelungGameView gameView = (DoppelungGameView) view;
-		
+		DoppelungGameView gameView =  (DoppelungGameView) view;
+
 		// TODO: add controller
 
-		
+
 		//construct an empty game-state with the given information
 		DoppelungGameState g = new DoppelungGameState();
 		g.setGameId(gameID);
 		g.setState(-1);
 		this.openGame = g;
 		update();
-		
+
 		//clear the root panel and draw the game
 		rootPanel.clear();
 		rootPanel.add(gameView);
-		
+
 		if (this.numberOfPlayers > 1){
 			this.addChatView();
 		}
-		
+
 	}
 
 	@Override
 	protected void updateGame(GameState gameState) {
 		DoppelungGameState g = (DoppelungGameState) gameState;
-		DoppelungGameView gameView = (DoppelungGameView) view;
-		
+		DoppelungGameView gameView =  (DoppelungGameView) view;
+
 		//we already have the lates state
 		if (g==null) return;
-		
+
 		switch (g.getState()) {
 
 		//game closed
@@ -127,7 +133,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			setRefreshRate(200);
 			//start is pending. I am ready!
 			if (!openGame.isPlayerReady(this.playerID)) {
-				  commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			}
 			break;
 
@@ -152,52 +158,187 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
 			}
 			break;
-			
+
 		case 97:
 			gameView.showEndScreen(g.getPlayerPoints(playerID));
 			break;
-		
+
 		case 98:
 			closeGame(g);
 			break;
-			
+
 		case 99:
 			// player has left the game
-			
+
 			Iterator<? extends Player> i = g.getPlayers().iterator();
-			
+
 			while (i.hasNext()) {
-				
+
 				Player current = i.next();
-				
+
 				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
 					// TODO: view left game
 				}
-				
-				
+
+
 			}
-			
-			
+
+
 			break;
 		}
-		
+
 	}
-	
+
+	/*
+	 * Animation tasks will later be registered in the animation timer.
+	 * a task exists for every direction the player can move.
+	 */
+
+	private AnimationTimerTask moveLeftTask = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepLeft();
+		}
+
+	};
+
+	private AnimationTimerTask moveRightTask = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepRight();
+		}
+
+	};
+
+	private AnimationTimerTask moveUpTask = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+
+			((DoppelungGameView)view).moveStepUp();
+
+		}
+
+	};
+
+	private AnimationTimerTask moveDownTask = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+			((DoppelungGameView)view).moveStepDown();
+
+		}
+
+	};
+
+
+	/**
+	 * We only want a click to be registered ONCE.
+	 * TODO: an array would be nice here
+	 */
+
+	private boolean keyUpDown = false;
+	private boolean keyDownDown = false;
+	private boolean keyLeftDown = false;
+	private boolean keyRightDown = false;
+
+
+	public void moveImageOnGamePanel(KeyEvent event){
+		int keyCode = event.getNativeEvent().getKeyCode();
+
+		if (event instanceof KeyDownEvent) {
+
+			switch(keyCode){
+
+			case KeyCodes.KEY_DOWN:
+
+				if (!keyDownDown) {
+					keyDownDown = true;
+					((DoppelungGameView)view).registerAniTask(moveDownTask);
+				}
+
+				break;
+			case KeyCodes.KEY_RIGHT:
+				if (!keyRightDown) {
+					keyRightDown = true;
+					((DoppelungGameView)view).registerAniTask(moveRightTask);
+				}
+
+				break;
+			case KeyCodes.KEY_UP:
+				if (!keyUpDown) {
+					keyUpDown = true;
+					((DoppelungGameView)view).registerAniTask(moveUpTask);
+				}
+
+				break;
+			case KeyCodes.KEY_LEFT:
+				if (!keyLeftDown) {
+					keyLeftDown = true;
+					((DoppelungGameView)view).registerAniTask(moveLeftTask);
+				}
+
+				break;
+			}
+		}
+		if (event instanceof KeyUpEvent) {
+
+			switch(keyCode){
+
+			case KeyCodes.KEY_DOWN:
+
+				if (keyDownDown) {
+					keyDownDown = false;
+					moveDownTask.markForDelete();
+				}
+
+				break;
+			case KeyCodes.KEY_RIGHT:
+				if (keyRightDown) {
+					keyRightDown = false;
+					moveRightTask.markForDelete();
+				}
+
+				break;
+			case KeyCodes.KEY_UP:
+				if (keyUpDown) {
+					keyUpDown = false;
+					moveUpTask.markForDelete();
+				}
+
+				break;
+			case KeyCodes.KEY_LEFT:
+				if (keyLeftDown) {
+					keyLeftDown = false;
+					moveLeftTask.markForDelete();
+				}
+
+				break;
+			}
+
+		}
+
+	}
+
 	public void startButtonClicked(){
 		if (!openGame.isPlayerReady(this.playerID)) {
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
 	}
-	
+
 	public void vowelButtonClicked(int buttonid){
 		((DoppelungGameCommunicationServiceAsync)commServ).bottonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
-																			+ Integer.toString(buttonid), updateCallback);
+				+ Integer.toString(buttonid), updateCallback);
 	}
-	
+
 	public void updatePoints(String consonants){
 		((DoppelungGameCommunicationServiceAsync) commServ).updatePoints(openGame.getId() + ":" + Integer.toString(playerID) + ":" + consonants, updateCallback);
 	}
-	
+
 	public void wordEntered(String word){
 		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}

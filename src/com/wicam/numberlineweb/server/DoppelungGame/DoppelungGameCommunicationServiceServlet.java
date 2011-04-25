@@ -27,12 +27,16 @@ public class DoppelungGameCommunicationServiceServlet extends
 		
 		
 		// initialize game list
-		wordLists.put(currentId, DoppelungGameWordList.createWordList().iterator());
+	
+		GameState gameState =  super.openGame(g);
+		
+		wordLists.put(gameState.getId(), DoppelungGameWordList.createWordList().iterator());
 		
 		// set first word
-		((DoppelungGameState)g).setCurWord(getNextWord(currentId));
+		((DoppelungGameState)gameState).setCurWord(getNextWord(currentId));
 		
-		return super.openGame(g);
+		return gameState;
+		
 
 	}
 	
@@ -58,6 +62,9 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int bottonid = Integer.parseInt(ids.split(":")[2]);
 		
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		
+	
 		
 		// feedback
 		this.setGameState(g, 4);
@@ -98,6 +105,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		}
 		
 		return g;
+		
 	}
 
 	@Override
