@@ -45,11 +45,11 @@ public class DoppelungGameView extends GameView {
 	ArrayList<HTML> playerNames = new ArrayList<HTML>();
 
 	protected final Button startGameButton = new Button("Spiel Starten");
-	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("numberlineweb/doppelungGame/knall_small.jpg", 270, 330);
-	protected final ShortVowelImage enemyShortVowelImage = new ShortVowelImage("numberlineweb/doppelungGame/knall_small.jpg", 270, 330);
+	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.jpg", 270, 330);
+	protected final ShortVowelImage enemyShortVowelImage = new ShortVowelImage("doppelungGame/knall_small.jpg", 270, 330);
 	
 	
-	protected final Image longVowelImage = new Image("numberlineweb/doppelungGame/ziehen1.jpg");
+	protected final Image longVowelImage = new Image("doppelungGame/ziehen1.jpg");
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
