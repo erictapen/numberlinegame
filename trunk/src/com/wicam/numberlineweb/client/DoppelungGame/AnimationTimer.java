@@ -53,6 +53,15 @@ public class AnimationTimer extends Timer {
 		if (tasks.size() == 0) this.cancel();
 
 	}
+	
+	/**
+	 * Returns the number of tasks
+	 * 
+	 * @return number of tasks
+	 */
+	public int getNumberOfTasks(){
+		return this.tasks.size();
+	}
 
 	/**
 	 * Registers a new AnimationTask. The timer is started if it is not currently

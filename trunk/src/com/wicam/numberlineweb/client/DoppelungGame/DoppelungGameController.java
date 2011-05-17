@@ -59,13 +59,11 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
-		
 	}
 
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
 		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
-		
 	}
 
 }

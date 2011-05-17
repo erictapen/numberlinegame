@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
 public class MovingConsonants extends Image{
