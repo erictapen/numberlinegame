@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.client.DoppelungGame;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
@@ -22,8 +23,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
 	private boolean shortVowelGameStarted = false;
+	private boolean feedbackNumberSet = false;
+	private int feedbackNumber = 0;
 	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 	private AnimationTimer aniTimer = new AnimationTimer();
+	private SoundController soundController = new SoundController();
 
 
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -118,7 +122,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 1:
 			setRefreshRate(2000);
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.showPlayerName(i+1,g.getPlayerName(i+1));
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 			// TODO: wait for second player
 			break;
@@ -127,7 +131,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (this.numberOfPlayers > 1)
 				chatC.setUserName(g.getPlayerName(this.playerID));
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.showPlayerName(i+1,g.getPlayerName(i+1));
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 			setRefreshRate(1000);
 			break;
@@ -143,29 +147,50 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			// word played and vowel choice
 		case 3:
-			gameView.showVowelChoice(g.getCurWord().getWord());
+			feedbackNumberSet = false;
+			gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
+			gameView.showVowelChoice();
 			break;
-			// feedback after choice
+			// sound feedback after choice
 		case 4:
-			gameView.showFeedback(g.isCorrectAnswered());
+			if (!feedbackNumberSet){
+				if (g.isCorrectAnswered())
+					feedbackNumber = (int)(Math.random()*7);
+				else
+					feedbackNumber = (int)(Math.random()*4);
+				feedbackNumberSet = true;
+			}
+			gameView.showSoundFeedback(g.isCorrectAnswered(), g.getCurWord().isShortVowel(), feedbackNumber);
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			}
+			break;
+			// retry
+		case 41:
+			gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
+			gameView.showVowelChoice();
+			break;
+			// word feedback
+		case 42:
+			if (!feedbackNumberSet){
+				if (g.isCorrectAnswered())
+					feedbackNumber = (int)(Math.random()*7);
+				else
+					feedbackNumber = (int)(Math.random()*4);
+				feedbackNumberSet = true;
+			}
+			gameView.showWordFeedback(g.isCorrectAnswered(), g.getCurWord().getWordString(), feedbackNumber);
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 			break;
 			// short vowel game
 		case 5:
+			feedbackNumberSet = false;
 			if (!shortVowelGameStarted){
 				shortVowelGameStarted = true;
 				t.cancel();
-				registerAniTask(new AnimationTimerTask() {
-					
-					
-					@Override
-					public void run() {
-						update();
-					}
-					
-				});
+				registerAniTask(updateTask);
 
 				startShortVowelGame(g.getCurWord());
 			}
@@ -173,10 +198,17 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
 
 			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePointsBar(i+1, g.getPlayerPoints(i+1));
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 			break;
-
+			// retry word enter
+		case 6:
+			gameView.showUserWordInput();
+			break;
+			// clear game panel
+		case 7:
+			gameView.clearGamePanel();
+			break;
 		case 97:
 			gameView.showEndScreen(g.getPlayerPoints(playerID));
 			break;
@@ -215,7 +247,16 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	 * Animation tasks will later be registered in the animation timer.
 	 * a task exists for every direction the player can move.
 	 */
+	private AnimationTimerTask updateTask = new AnimationTimerTask() {
+		
+		@Override
+		public void run() {
+			update();
+		}
+		
+	};
 
+	
 	private AnimationTimerTask moveLeftTask = new AnimationTimerTask() {
 
 		@Override
@@ -498,7 +539,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			moveDownTaskEnemy.markForDelete();
 			moveLeftTaskEnemy.markForDelete();
 			moveRightTaskEnemy.markForDelete();
-			
 			
 		}
 
