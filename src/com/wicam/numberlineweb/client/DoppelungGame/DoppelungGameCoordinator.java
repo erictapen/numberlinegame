@@ -429,6 +429,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 					((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" +  this.playerID + ":up:" + keyCode,keyEventCallback);
 
 					keyUpDown = false;
+					GWT.log("gurr");
 					moveUpTask.markForDelete();
 				}
 
@@ -497,7 +498,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		moveRightTask.markForDelete();
 		moveUpTask.markForDelete();
 		moveDownTask.markForDelete();
-
+		
+		((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + KeyCodes.KEY_RIGHT,keyEventCallback);
+		((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + KeyCodes.KEY_LEFT,keyEventCallback);
+		((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + KeyCodes.KEY_DOWN,keyEventCallback);
+		((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + KeyCodes.KEY_UP,keyEventCallback);
+		
 		keyUpDown = false;
 		keyDownDown = false;
 		keyLeftDown = false;
@@ -577,6 +583,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	public void startShortVowelGame(DoppelungGameWord word){
 
 		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers);
+		
 		initializeMovingConsonantList(word);
 
 
