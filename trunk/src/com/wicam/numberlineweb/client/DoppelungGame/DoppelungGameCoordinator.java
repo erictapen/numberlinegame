@@ -16,6 +16,7 @@ import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
+import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -210,7 +211,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			gameView.clearGamePanel();
 			break;
 		case 97:
-			gameView.showEndScreen(g.getPlayerPoints(playerID));
+			HighScoreView h = new HighScoreView(openGame.getPlayers(),DoppelungGameView.playerColors);
+			rootPanel.clear();
+			h.init(rootPanel);
 			break;
 
 		case 98:
@@ -229,7 +232,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
 					// TODO: view left game
 				}
-
 
 			}
 
@@ -351,7 +353,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private boolean keyRightDown = false;
 
 
-	public void moveImageOnGamePanel(KeyEvent event){
+	public void moveImageOnGamePanel(KeyEvent<?> event){
 		int keyCode = event.getNativeEvent().getKeyCode();
 
 		if (event instanceof KeyDownEvent) {
@@ -453,18 +455,27 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 	private void initializeMovingConsonantList(DoppelungGameWord word){
-		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),5,10);
+		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),10,40);
 		int i = 0;
-		for (String consonantPair: consonantPairList){
-			MovingConsonants mc = new MovingConsonants(consonantPair, this, 50+i%9*50, -50);
-
-
-
-			((DoppelungGameView) view).showMovingConsonants(i, mc);
-
+		Iterator<String> it = consonantPairList.iterator();
+		while(it.hasNext()){
+			int randX = (int)(Math.random()*9);
+			MovingConsonants mc = new MovingConsonants(it.next(), this, 50-(int)(Math.random()*7)+randX%9*50, -50);
 			this.movingConsonantsList.add(mc);
+			((DoppelungGameView) view).showMovingConsonants(i, mc);
+			
+			if (it.hasNext()){
+				int randX2 = (int)(Math.random()*9);
+				while (randX2 == randX)
+					randX2 = (int)(Math.random()*9);
+				MovingConsonants mc2 = new MovingConsonants(it.next(), this, 50-(int)(Math.random()*7)+randX2%9*50, -50);
+				this.movingConsonantsList.add(mc2);
+				((DoppelungGameView) view).showMovingConsonants(i, mc2);
+			}
+			
 			i++;
 		}
+		
 	}
 
 

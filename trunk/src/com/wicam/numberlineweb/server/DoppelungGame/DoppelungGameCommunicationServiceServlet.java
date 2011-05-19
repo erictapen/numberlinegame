@@ -90,6 +90,10 @@ public class DoppelungGameCommunicationServiceServlet extends
 			else
 				g.setCorrectAnswered(false);
 		
+		// only add points if answered correctly in the first time
+		if (g.isCorrectAnswered() && g.getCurWord().getSoundTries() > 0)
+			g.setCorrectAnswered(false);
+		
 		Timer t = new Timer();
 		// next step if correct answer or already tried once
 		if (g.isCorrectAnswered() || g.getCurWord().getSoundTries() >= 1){

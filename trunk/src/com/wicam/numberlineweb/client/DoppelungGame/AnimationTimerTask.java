@@ -13,8 +13,7 @@ public class AnimationTimerTask {
 	private int delay = 0;
 
 	public void run() {
-		// TODO Auto-generated method stub
-
+		// TODO Auto-generated method stub	
 	}	
 
 	/**
