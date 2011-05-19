@@ -336,7 +336,7 @@ public class DoppelungGameView extends GameView {
 			imageX = imageX - 20;
 			break;
 		case 5:
-			feedback = "Gut gemacht, genau so schreibt man das \"" + word + "\"!";
+			feedback = "Gut gemacht, genau so schreibt man \"" + word + "\"!";
 			feedbackImage.setUrl("doppelungGame/feedback/smile_1.gif");
 			break;
 		case 6:
@@ -400,12 +400,10 @@ public class DoppelungGameView extends GameView {
 	// TODO: real implementation
 	public void showEndScreen(int points){
 		gamePanel.clear();
-		pointsText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Punkte: " + points + "</div>");
-		gamePanel.add(pointsText);
 	}
 
 	public void actualizePoints(int playerid, int p,String name) {
-		playerNamesFlexTable.setHTML(playerid+1, 1, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
+		playerNamesFlexTable.setHTML(playerid+1, 0, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
 	}
 	
 	public void deletePlayerFromPointList(int playerid) {
@@ -582,8 +580,8 @@ public class DoppelungGameView extends GameView {
 	public void showMovingConsonants(int offset, MovingConsonants mc) {
 		gamePanel.add(mc);
 		gamePanel.setWidgetPosition(mc, 50+offset%9*50, -50);
-		mc.startMoving(offset*2000);
-		mc.setSpeed(3);
+		mc.startMoving(offset*1000 - (int)(Math.random()*500));
+		mc.setSpeed(6);
 	}
 	
 	public void setMcPosition(MovingConsonants mc, int x, int y) {
