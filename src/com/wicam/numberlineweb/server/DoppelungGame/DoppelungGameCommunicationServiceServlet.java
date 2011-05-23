@@ -63,59 +63,61 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int bottonid = Integer.parseInt(ids.split(":")[2]);
 		
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		int feedbackTime = 0;
-		
-		if (g.getCurWord().getSoundTries() < 1){
-			// feedback
-			this.setGameState(g, 4);
-			this.setChanged(gameid);	
-			feedbackTime = 3000; // 3 sec feedback
-		}
-		else {
-			this.setGameState(g, 7);
-			this.setChanged(gameid);
-			feedbackTime = 500;
-		}
+		g.setShowSoundFeedback(playerid, true);
+		g.incSoundTries(playerid);
 		
 		// short vowel
 		if (g.getCurWord().isShortVowel())
 			if (bottonid == DoppelungGameController.SHORTVOWELBUTTON)
-				g.setCorrectAnswered(true);
+				g.setAnswer(playerid,true);
 			else
-				g.setCorrectAnswered(false);
+				g.setAnswer(playerid,false);
 		// long vowel
 		else 
 			if (bottonid == DoppelungGameController.LONGVOWELBUTTON)
-				g.setCorrectAnswered(true);
+				g.setAnswer(playerid,true);
 			else
-				g.setCorrectAnswered(false);
-		
-		// only add points if answered correctly in the first time
-		if (g.isCorrectAnswered() && g.getCurWord().getSoundTries() > 0)
-			g.setCorrectAnswered(false);
+				g.setAnswer(playerid,false);
 		
 		Timer t = new Timer();
+		
 		// next step if correct answer or already tried once
-		if (g.isCorrectAnswered() || g.getCurWord().getSoundTries() >= 1){
-			// short vowel: start short vowel sub game
-			if(g.getCurWord().isShortVowel())
-				t.schedule(new SetGameStateTask(gameid, 5, this), feedbackTime);
-			// long vowel: show next word if has next
-			else {
-				// points for correct answer
-				if (g.isCorrectAnswered())
-					g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 5);
-				if (this.hasNextWord(gameid))
-					t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), feedbackTime);
+		if (g.hasCorrectlyAnswered(playerid) || g.getSoundTries(playerid) >= 2){
+			// check if other player has already answered
+			if (g.getPlayerCount() == 1 ||
+					g.hasCorrectlyAnswered((playerid%2+1)) || g.getSoundTries((playerid%2+1)) >= 2){
+				int feedbackTime = 500;
+				if (g.getSoundTries(playerid) < 2)
+					feedbackTime = 3000;
+				
+				// short vowel: start short vowel sub game
+				if(g.getCurWord().isShortVowel())
+					t.schedule(new SetGameStateTask(gameid, 5, this), feedbackTime);
+				// long vowel: show next word if has next
 				else {
-					this.endGame(gameid);
+					// points for correct answer
+					if (g.hasCorrectlyAnswered(playerid) && g.getSoundTries(playerid) < 2)
+						g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 5);
+					if (this.hasNextWord(gameid)){
+						t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), feedbackTime);
+					}
+					else {
+						this.endGame(gameid);
+					}
+				}
+			}
+			// wait for other player
+			else {
+				// add points for correct answer
+				if (!g.getCurWord().isShortVowel()){
+					if (g.hasCorrectlyAnswered(playerid) && g.getSoundTries(playerid) < 2)
+						g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 5);
 				}
 			}
 		}
 		// retry
 		else{
-			g.getCurWord().incSoundTries();
-			t.schedule(new SetGameStateTask(gameid, 41, this), feedbackTime);
+			t.schedule(new ResetSoundFeedbackStateTask(gameid,playerid,3,this), 3000);
 		}
 		
 		return g;
@@ -132,7 +134,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 		
 		if (consonants.equals(g.getCurWord().getConsonantPair()))
-			points = g.isCorrectAnswered()?2:1;
+			points = g.hasCorrectlyAnswered(playerid)?2:1;
 		else
 			points = -1;
 		
@@ -152,38 +154,36 @@ public class DoppelungGameCommunicationServiceServlet extends
 		String enteredWord = word.split(":")[2];
 		
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		// feedback
-		int feedbackTime = 0;
-		if (g.getCurWord().getWordTries() < 1){
-			this.setGameState(g, 42);
-			this.setChanged(gameid);
-			feedbackTime = 3000;
-		}
-		else {
-			this.setGameState(g, 7);
-			this.setChanged(gameid);
-			feedbackTime = 500;
-		}
+		g.setShowWordFeedback(playerid, true);
+		g.incWordTries(playerid);
 		
 		if (enteredWord.equals(g.getCurWord().getWordString()))
-			g.setCorrectAnswered(true);
+			g.setAnswer(playerid, true);
 		else
-			g.setCorrectAnswered(false);
-		
+			g.setAnswer(playerid, false);
+
 		Timer t = new Timer();
-		if (g.isCorrectAnswered() || g.getCurWord().getWordTries() >= 1){
-			g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 2);
+		if (g.hasCorrectlyAnswered(playerid) || g.getWordTries(playerid) >= 2){
+			// add points for correct answer
+			if (g.getWordTries(playerid) <2)
+				g.setPlayerPoints(playerid, g.getPlayerPoints(playerid) + 2);
 			
-			if (this.hasNextWord(gameid))
-				// 3 sec feedback
-				t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), feedbackTime);
-			else
-				this.endGame(gameid);
+			// check if other player has already answered
+			if (g.getPlayerCount() == 1 ||
+					g.hasCorrectlyAnswered((playerid%2+1)) || g.getWordTries((playerid%2+1)) >= 2){
+				if (this.hasNextWord(gameid)){
+					int feedbackTime = 500;
+					if (g.getWordTries(playerid) < 2)
+						feedbackTime = 3000;
+					t.schedule(new SetDoppelungGameStateTask(gameid, 21, this), feedbackTime);
+				}
+				else
+					this.endGame(gameid);
+			}
 		}
 		// retry
 		else {
-			g.getCurWord().incWordTries();
-			t.schedule(new SetGameStateTask(gameid, 6, this), feedbackTime);
+			t.schedule(new ResetWordFeedbackStateTask(gameid, playerid, 6, this), 3000);
 		}
 		
 		return g;
@@ -235,6 +235,24 @@ public class DoppelungGameCommunicationServiceServlet extends
 		
 		this.setChanged(gameid);
 		return ((DoppelungGameState)this.getGameById(gameid));
+	}
+
+	@Override
+	public GameState enableWordInput(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		// reset answer of sound choice
+		g.setAnswer(playerid, false);
+		g.setEndedShortVowelGame(playerid, true);
+		
+		// wait for other player
+		if (g.isEndedShortVowelGame(playerid%2+1)){
+			Timer t = new Timer();
+			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
+			this.setChanged(gameid);
+		}
+		return g;
 	}
 
 }

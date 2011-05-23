@@ -148,47 +148,36 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			// word played and vowel choice
 		case 3:
-			feedbackNumberSet = false;
-			gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
-			gameView.showVowelChoice();
-			break;
+			if (!g.getShowSoundFeedback(playerID)){
+				feedbackNumberSet = false;
+				gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
+				gameView.showVowelChoice();
+			}
 			// sound feedback after choice
-		case 4:
-			if (!feedbackNumberSet){
-				if (g.isCorrectAnswered())
-					feedbackNumber = (int)(Math.random()*7);
-				else
-					feedbackNumber = (int)(Math.random()*4);
-				feedbackNumberSet = true;
-			}
-			gameView.showSoundFeedback(g.isCorrectAnswered(), g.getCurWord().isShortVowel(), feedbackNumber);
-			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
-			}
-			break;
-			// retry
-		case 41:
-			gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
-			gameView.showVowelChoice();
-			break;
-			// word feedback
-		case 42:
-			if (!feedbackNumberSet){
-				if (g.isCorrectAnswered())
-					feedbackNumber = (int)(Math.random()*7);
-				else
-					feedbackNumber = (int)(Math.random()*4);
-				feedbackNumberSet = true;
-			}
-			gameView.showWordFeedback(g.isCorrectAnswered(), g.getCurWord().getWordString(), feedbackNumber);
-			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			else {
+				if (g.getSoundTries(playerID) < 2){
+					if (!feedbackNumberSet){
+						if (g.hasCorrectlyAnswered(playerID))
+							feedbackNumber = (int)(Math.random()*7);
+						else
+							feedbackNumber = (int)(Math.random()*4);
+						feedbackNumberSet = true;
+					}
+					gameView.showSoundFeedback(g.hasCorrectlyAnswered(playerID), g.getCurWord().isShortVowel(), feedbackNumber);
+					for (int i = 0; i < g.getPlayers().size(); i++){
+						gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+					}
+				}
+				else {
+					gameView.clearGamePanel();
+				}
 			}
 			break;
 			// short vowel game
 		case 5:
 			feedbackNumberSet = false;
 			if (!shortVowelGameStarted){
+				this.controller.setArrowKeysEnabled(true);
 				shortVowelGameStarted = true;
 				t.cancel();
 				registerAniTask(updateTask);
@@ -202,13 +191,30 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
 			break;
-			// retry word enter
+			// word enter
 		case 6:
-			gameView.showUserWordInput();
-			break;
-			// clear game panel
-		case 7:
-			gameView.clearGamePanel();
+			if (!g.getShowWordFeedback(playerID)){
+				gameView.showUserWordInput();
+				feedbackNumberSet = false;
+			}
+			else {
+				if (g.getWordTries(playerID) < 2){
+					if (!feedbackNumberSet){
+						if (g.hasCorrectlyAnswered(playerID))
+							feedbackNumber = (int)(Math.random()*7);
+						else
+							feedbackNumber = (int)(Math.random()*4);
+						feedbackNumberSet = true;
+					}
+					gameView.showWordFeedback(g.hasCorrectlyAnswered(playerID), g.getCurWord().getWordString(), feedbackNumber);
+					for (int i = 0; i < g.getPlayers().size(); i++){
+						gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+					}
+				}
+				else
+					gameView.clearGamePanel();
+						
+			}
 			break;
 		case 97:
 			HighScoreView h = new HighScoreView(openGame.getPlayers(),DoppelungGameView.playerColors);
@@ -455,7 +461,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 	private void initializeMovingConsonantList(DoppelungGameWord word){
-		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),10,40);
+		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),1,4);
 		int i = 0;
 		Iterator<String> it = consonantPairList.iterator();
 		while(it.hasNext()){
@@ -496,9 +502,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		if (movingConsonantsList.isEmpty()){
 
 			//finished MovingConsonantsGame
-
+			this.controller.setArrowKeysEnabled(false);
 			endMovingConsonantsGame();
-			((DoppelungGameView) view).showUserWordInput();
+			((DoppelungGameCommunicationServiceAsync) commServ).enableWordInput(Integer.toString(openGame.getId()) + ":" +  this.playerID, updateCallback);
 		}
 	}
 

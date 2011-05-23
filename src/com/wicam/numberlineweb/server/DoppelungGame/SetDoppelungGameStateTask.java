@@ -16,8 +16,19 @@ public class SetDoppelungGameStateTask extends SetGameStateTask {
 		DoppelungGameWord word = doppelungServ.getNextWord(gameid);
 		((DoppelungGameState)s.getGameById(gameid)).setNextWord(word);
 		
-		// reset correct answered
-		((DoppelungGameState)s.getGameById(gameid)).setCorrectAnswered(false);
+		// reset everything
+		((DoppelungGameState)s.getGameById(gameid)).setShowSoundFeedback(1, false);
+		((DoppelungGameState)s.getGameById(gameid)).setShowSoundFeedback(2, false);
+		((DoppelungGameState)s.getGameById(gameid)).setShowWordFeedback(1, false);
+		((DoppelungGameState)s.getGameById(gameid)).setShowWordFeedback(2, false);
+		((DoppelungGameState)s.getGameById(gameid)).setEndedShortVowelGame(1, false);
+		((DoppelungGameState)s.getGameById(gameid)).setEndedShortVowelGame(2, false);
+		((DoppelungGameState)s.getGameById(gameid)).setAnswer(1, false);
+		((DoppelungGameState)s.getGameById(gameid)).setAnswer(2, false);
+		((DoppelungGameState)s.getGameById(gameid)).resetSoundTries(1);
+		((DoppelungGameState)s.getGameById(gameid)).resetWordTries(1);
+		((DoppelungGameState)s.getGameById(gameid)).resetSoundTries(2);
+		((DoppelungGameState)s.getGameById(gameid)).resetWordTries(2);
 	}
 	
 	public SetDoppelungGameStateTask(int gameid, int state,
