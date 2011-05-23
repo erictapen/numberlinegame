@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.server.DoppelungGame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
@@ -10,6 +11,7 @@ import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationSe
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
+import com.wicam.numberlineweb.client.DoppelungGame.Point2D;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.SetGameStateTask;
 
@@ -91,8 +93,10 @@ public class DoppelungGameCommunicationServiceServlet extends
 					feedbackTime = 3000;
 				
 				// short vowel: start short vowel sub game
-				if(g.getCurWord().isShortVowel())
+				if(g.getCurWord().isShortVowel()){
+					initializeMovingConsonantsPoints(gameid);
 					t.schedule(new SetGameStateTask(gameid, 5, this), feedbackTime);
+				}
 				// long vowel: show next word if has next
 				else {
 					// points for correct answer
@@ -122,6 +126,24 @@ public class DoppelungGameCommunicationServiceServlet extends
 		
 		return g;
 		
+	}
+	
+	private void initializeMovingConsonantsPoints(int gameid){
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		ArrayList<Point2D> movingConsonantsCoords = new ArrayList<Point2D>();
+		int oldX = -100;
+		for (int i = 0; i < g.getNumberOfConsonants(); i++){
+			Point2D point = new Point2D();
+			int newX = 50-(int)(Math.random()*7)+(int)(Math.random()*9)%9*50;
+			while (Math.abs(oldX-newX) < 50){
+				newX = 50-(int)(Math.random()*7)+(int)(Math.random()*9)%9*50;
+			}
+			point.setX(newX);
+			point.setY(-50);
+			movingConsonantsCoords.add(point);
+			oldX = newX;
+		}
+		g.setMovingConsonantsCoords(movingConsonantsCoords);
 	}
 
 	@Override
@@ -247,7 +269,8 @@ public class DoppelungGameCommunicationServiceServlet extends
 		g.setEndedShortVowelGame(playerid, true);
 		
 		// wait for other player
-		if (g.isEndedShortVowelGame(playerid%2+1)){
+		if (g.getPlayerCount() == 1 || 
+				g.isEndedShortVowelGame(playerid%2+1)){
 			Timer t = new Timer();
 			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
 			this.setChanged(gameid);

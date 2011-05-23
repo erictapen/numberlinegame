@@ -7,8 +7,6 @@ public class DoppelungGameWord implements IsSerializable{
 	private boolean shortVowel = false;
 	private String word = "";
 	private String consonantPair = "";
-	private int soundTries = 0;
-	private int wordTries = 0;
 
 	public void setShortVowel(boolean shortVowel) {
 		this.shortVowel = shortVowel;
@@ -32,21 +30,5 @@ public class DoppelungGameWord implements IsSerializable{
 
 	public String getConsonantPair() {
 		return consonantPair;
-	}
-	
-	public int getSoundTries(){
-		return soundTries;
-	}
-	
-	public void incSoundTries(){
-		soundTries++;
-	}
-	
-	public int getWordTries(){
-		return wordTries;
-	}
-	
-	public void incWordTries(){
-		wordTries++;
 	}
 }
