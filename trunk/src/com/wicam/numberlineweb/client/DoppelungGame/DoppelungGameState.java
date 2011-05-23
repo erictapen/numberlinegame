@@ -8,11 +8,11 @@ import com.wicam.numberlineweb.client.Player;
 public class DoppelungGameState extends GameState {
 
 	private DoppelungGameWord curWord = new DoppelungGameWord();
-	private ArrayList<Point2D> movingConsonantsCoords = new ArrayList<Point2D>();
+	private ArrayList<ConsonantPoint2D> movingConsonantsCoords = new ArrayList<ConsonantPoint2D>();
 	public String player1movingto;
 	public String player2movingto;
-	private int numberOfConsonants = 4;
-	private int numberOfCorrectConsonants = 1;
+	private int numberOfConsonants = 20;
+	private int numberOfCorrectConsonants = 5;
 	
 	public String enemyMovingTo(int playerid) {
 		
@@ -149,11 +149,11 @@ public class DoppelungGameState extends GameState {
 		return false;
 	}
 
-	public void setMovingConsonantsCoords(ArrayList<Point2D> movingConsonantsCoords) {
+	public void setMovingConsonantsCoords(ArrayList<ConsonantPoint2D> movingConsonantsCoords) {
 		this.movingConsonantsCoords = movingConsonantsCoords;
 	}
 
-	public ArrayList<Point2D> getMovingConsonantsCoords() {
+	public ArrayList<ConsonantPoint2D> getMovingConsonantsCoords() {
 		return movingConsonantsCoords;
 	}
 
@@ -171,5 +171,11 @@ public class DoppelungGameState extends GameState {
 
 	public int getNumberOfCorrectConsonants() {
 		return numberOfCorrectConsonants;
+	}
+
+	public ConsonantPoint2D getPlayerCoords(int playerid) {
+		if (playerid-1 < players.size())
+			return ((DoppelungGamePlayer)players.get(playerid-1)).getPlayerCoords();
+		return null;
 	}
 }

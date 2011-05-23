@@ -29,6 +29,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 	private AnimationTimer aniTimer = new AnimationTimer();
 	private SoundController soundController = new SoundController();
+	private ConsonantPoint2D playerCoords = new ConsonantPoint2D();
 
 
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -134,6 +135,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
+			if (g.isPlayerReady(this.playerID)){
+				// other player ready ?
+				if (g.getPlayerCount() > 1 && !g.isPlayerReady(this.playerID%2+1)){
+					gameView.clearGamePanel();
+					gameView.showWaitingForOtherPlayer();
+				}
+			}
 			setRefreshRate(1000);
 			break;
 
@@ -144,6 +152,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (!openGame.isPlayerReady(this.playerID)) {
 				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			}
+			
 			break;
 
 			// word played and vowel choice
@@ -172,6 +181,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 					gameView.clearGamePanel();
 				}
 			}
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			}
 			break;
 			// short vowel game
 		case 5:
@@ -185,8 +197,18 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				startShortVowelGame(g.getCurWord(), g);
 			}
 		
+			//((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerCoords(Integer.toString(openGame.getId()) + ":" +  
+			//																			this.playerID + ":" +
+			//																			this.playerCoords.getX() + ":" +
+			//																			this.playerCoords.getY(), 
+			//																		dummyCallback);
+			
+			//if (g.getPlayerCount() > 1)
+			//	makeEnemyMove(g.getPlayerCoords(playerID%2+1).getX(),g.getPlayerCoords(playerID%2+1).getY());
+			
 			makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
-
+			removeMarkedMc(g);
+			
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
@@ -246,7 +268,19 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 
 	}
-
+	
+	private void removeMarkedMc(DoppelungGameState g){
+		if (movingConsonantsList != null){
+			for (MovingConsonants mc: this.movingConsonantsList){
+				ArrayList<ConsonantPoint2D> mcCoordsList = g.getMovingConsonantsCoords();
+				if (mcCoordsList.get(mc.getId()).isRemoved()){
+					mc.setRemoved(true);
+					removeMovingConsonants(mc);
+				}
+			}
+		}
+	}
+	
 	public void registerAniTask(AnimationTimerTask t) {
 		aniTimer.registerTask(t);
 	}
@@ -269,7 +303,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		@Override
 		public void run() {
-
 			((DoppelungGameView)view).moveStepLeft(true);
 		}
 
@@ -300,7 +333,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		@Override
 		public void run() {
-			((DoppelungGameView)view).moveStepDown(true);
+			
+			playerCoords.setY(((DoppelungGameView)view).moveStepDown(true));
 
 		}
 
@@ -311,7 +345,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepLeft(false);
+			playerCoords.setX(((DoppelungGameView)view).moveStepLeft(false));
 		}
 
 	};
@@ -321,7 +355,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepRight(false);
+			playerCoords.setX(((DoppelungGameView)view).moveStepRight(false));
 		}
 
 	};
@@ -331,7 +365,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 
-			((DoppelungGameView)view).moveStepUp(false);
+			playerCoords.setY(((DoppelungGameView)view).moveStepUp(false));
 
 		}
 
@@ -346,8 +380,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 
 	};
-
-
+	
 	/**
 	 * We only want a click to be registered ONCE.
 	 * TODO: an array would be nice here
@@ -461,27 +494,28 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 	private void initializeMovingConsonantList(DoppelungGameWord word, DoppelungGameState g){
-		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(
-												word.getConsonantPair(),
-												g.getNumberOfCorrectConsonants(),
-												g.getNumberOfConsonants());
+		
 		int i = 0;
-		Iterator<String> it = consonantPairList.iterator();
+		Iterator<ConsonantPoint2D> it = g.getMovingConsonantsCoords().iterator();
 		while(it.hasNext()){
+			ConsonantPoint2D cp2D = it.next();
 			MovingConsonants mc = new MovingConsonants(
-										it.next(), 
+										cp2D.getConsonant(), 
 										this, 
-										g.getMovingConsonantsCoords().get(i*2).getX(), 
-										g.getMovingConsonantsCoords().get(i*2).getY());
+										cp2D.getX(), 
+										cp2D.getY(),
+										i*2);
 			this.movingConsonantsList.add(mc);
 			((DoppelungGameView) view).showMovingConsonants(i, mc);
 			
 			if (it.hasNext()){
+				cp2D = it.next();
 				MovingConsonants mc2 = new MovingConsonants(
-										it.next(), 
+										cp2D.getConsonant(), 
 										this, 
-										g.getMovingConsonantsCoords().get(i*2+1).getX(), 
-										g.getMovingConsonantsCoords().get(i*2+1).getY());
+										cp2D.getX(), 
+										cp2D.getY(),
+										i*2+1);
 				this.movingConsonantsList.add(mc2);
 				((DoppelungGameView) view).showMovingConsonants(i, mc2);
 			}
@@ -505,9 +539,14 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	public void removeMovingConsonants(MovingConsonants mc){
 		((DoppelungGameView) view).hideMovingConsonant(mc);
-		movingConsonantsList.remove(mc);
-		if (movingConsonantsList.isEmpty()){
-
+		// because of concurrent modification do not remove them
+		//movingConsonantsList.remove(mc);
+		boolean allRemoved = true;
+		for (MovingConsonants mc2: movingConsonantsList)
+			if (!mc2.removed())
+				allRemoved = false;
+		if (allRemoved){
+			movingConsonantsList = null;
 			//finished MovingConsonantsGame
 			this.controller.setArrowKeysEnabled(false);
 			endMovingConsonantsGame();
@@ -535,6 +574,18 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	}
 
+	public void makeEnemyMove(final int x, final int y) {
+		AnimationTimerTask moveTaskEnemy = new AnimationTimerTask() {
+
+			@Override
+			public void run() {
+				((DoppelungGameView)view).moveTo(x, y);
+			}
+
+		};
+		this.registerAniTask(moveTaskEnemy);
+	}
+	
 	public void makeEnemyMove(String to) {
 		
 		if (to == null) to="stop";
@@ -573,7 +624,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 
 
-
 	}
 
 
@@ -597,7 +647,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		int posYDiff = Math.abs(imgPosition[1] - mc.getY());
 
 		if (posXDiff < imgWidth/2+mcWidth/2 && posYDiff < imgHeight/2+mcHeight/2){
-			updatePoints(mc.getConsonants());
+			((DoppelungGameCommunicationServiceAsync) commServ).updatePoints(
+					openGame.getId() + ":" + 
+					Integer.toString(playerID) + ":" + 
+					mc.getConsonants() + ":" + 
+					mc.getId(), 
+					updateCallback);
 			mc.setRemoved(true);
 			removeMovingConsonants(mc);
 		}
@@ -605,8 +660,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 
 	public void startShortVowelGame(DoppelungGameWord word, DoppelungGameState g){
-
-		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers);
+		this.playerCoords.setX(270);
+		this.playerCoords.setY(330);
+		
+		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers, 
+														playerCoords.getX(), 
+														playerCoords.getY());
 		
 		initializeMovingConsonantList(word, g);
 
@@ -624,11 +683,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		((DoppelungGameCommunicationServiceAsync)commServ).buttonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
 				+ Integer.toString(buttonid), updateCallback);
 	}
-
-	public void updatePoints(String consonants){
-		((DoppelungGameCommunicationServiceAsync) commServ).updatePoints(openGame.getId() + ":" + Integer.toString(playerID) + ":" + consonants, updateCallback);
-	}
-
+	
 	public void wordEntered(String word){
 		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}

@@ -11,7 +11,11 @@ public class AnimationTimerTask {
 
 	private boolean deletionMark = false;
 	private int delay = 0;
+	protected int taskX;
+	protected int taskY;
 
+	AnimationTimerTask(){};
+	
 	public void run() {
 		// TODO Auto-generated method stub	
 	}	

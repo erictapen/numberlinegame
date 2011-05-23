@@ -11,8 +11,9 @@ public class MovingConsonants extends Image{
 	private int x;
 	private int y;
 	private boolean removed = false;
+	private int id;
 	
-	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y){
+	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y, int id){
 		super("doppelungGame/coins/coin_" + consonants + ".png");
 		
 		GWT.log(consonants);
@@ -21,6 +22,7 @@ public class MovingConsonants extends Image{
 		this.coordinator = coordinator;
 		this.x = x;
 		this.y = y;
+		this.id = id;
 		move = new Move(this);
 	}
 	
@@ -60,6 +62,15 @@ public class MovingConsonants extends Image{
 	}
 
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+
 	class Move extends AnimationTimerTask{
 		
 		MovingConsonants mc;
@@ -77,9 +88,11 @@ public class MovingConsonants extends Image{
 		}
 		@Override
 		public void run() {
-			y = y + spaceSpeed;
-			coordinator.setMovingConsonantsPosition(mc, x, y);
-			coordinator.checkForCollision(mc);
+			if (!removed){
+				y = y + spaceSpeed;
+				coordinator.setMovingConsonantsPosition(mc, x, y);
+				coordinator.checkForCollision(mc);
+			}
 			
 			if (removed){
 				this.markForDelete();

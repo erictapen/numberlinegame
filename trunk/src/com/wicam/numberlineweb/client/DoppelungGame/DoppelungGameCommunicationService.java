@@ -18,4 +18,6 @@ public interface DoppelungGameCommunicationService extends
 	public DoppelungGameState keyEvent(String ids);
 	
 	public GameState enableWordInput(String ids);
+	
+	public Boolean updatePlayerCoords(String ids);
 }

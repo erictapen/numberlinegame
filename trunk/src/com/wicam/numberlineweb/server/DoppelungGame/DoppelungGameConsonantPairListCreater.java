@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.client.DoppelungGame;
+package com.wicam.numberlineweb.server.DoppelungGame;
 
 import java.util.ArrayList;
 

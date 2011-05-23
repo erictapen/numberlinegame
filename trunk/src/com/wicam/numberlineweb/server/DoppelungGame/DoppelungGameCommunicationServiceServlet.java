@@ -11,7 +11,7 @@ import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationSe
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameWord;
-import com.wicam.numberlineweb.client.DoppelungGame.Point2D;
+import com.wicam.numberlineweb.client.DoppelungGame.ConsonantPoint2D;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.SetGameStateTask;
 
@@ -130,16 +130,21 @@ public class DoppelungGameCommunicationServiceServlet extends
 	
 	private void initializeMovingConsonantsPoints(int gameid){
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		ArrayList<Point2D> movingConsonantsCoords = new ArrayList<Point2D>();
+		ArrayList<ConsonantPoint2D> movingConsonantsCoords = new ArrayList<ConsonantPoint2D>();
+		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(
+				g.getCurWord().getConsonantPair(),
+				g.getNumberOfCorrectConsonants(),
+				g.getNumberOfConsonants());
 		int oldX = -100;
 		for (int i = 0; i < g.getNumberOfConsonants(); i++){
-			Point2D point = new Point2D();
+			ConsonantPoint2D point = new ConsonantPoint2D();
 			int newX = 50-(int)(Math.random()*7)+(int)(Math.random()*9)%9*50;
-			while (Math.abs(oldX-newX) < 50){
+			while (Math.abs(oldX-newX) < 100){
 				newX = 50-(int)(Math.random()*7)+(int)(Math.random()*9)%9*50;
 			}
 			point.setX(newX);
 			point.setY(-50);
+			point.setConsonant(consonantPairList.get(i));
 			movingConsonantsCoords.add(point);
 			oldX = newX;
 		}
@@ -151,6 +156,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		String consonants = ids.split(":")[2];
+		int mcid =  Integer.parseInt(ids.split(":")[3]);
 		
 		int points = 0;
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
@@ -165,7 +171,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 			newPoints = 0;
 		
 		g.setPlayerPoints(playerid, newPoints);
-		
+		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
 		return g;
 	}
 
@@ -276,6 +282,20 @@ public class DoppelungGameCommunicationServiceServlet extends
 			this.setChanged(gameid);
 		}
 		return g;
+	}
+
+	@Override
+	public Boolean updatePlayerCoords(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		int playerX =  Integer.parseInt(ids.split(":")[2]);
+		int playerY =  Integer.parseInt(ids.split(":")[3]);
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		g.getPlayerCoords(playerid).setX(playerX);
+		g.getPlayerCoords(playerid).setX(playerY);
+		
+		return true;
 	}
 
 }
