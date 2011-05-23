@@ -11,7 +11,8 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 
 	public static final int SHORTVOWELBUTTON = 0;
 	public static final int LONGVOWELBUTTON = 1;
-	
+	private boolean arrowKeysEnabled = false;
+
 	public DoppelungGameController(DoppelungGameCoordinator coordinator) {
 		super(coordinator);
 	}
@@ -58,14 +59,26 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
-		event.preventDefault();
-		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		if (arrowKeysEnabled){
+			event.preventDefault();
+			((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		}
 	}
 
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
-		event.preventDefault();
-		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		if (arrowKeysEnabled){
+			event.preventDefault();
+			((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(event);
+		}
+	}
+	
+	public boolean isArrowKeysEnabled() {
+		return arrowKeysEnabled;
+	}
+
+	public void setArrowKeysEnabled(boolean arrowKeysEnabled) {
+		this.arrowKeysEnabled = arrowKeysEnabled;
 	}
 
 }
