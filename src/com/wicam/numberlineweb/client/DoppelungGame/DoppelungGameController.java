@@ -52,10 +52,6 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 	public void wordEntered(String word){
 		((DoppelungGameCoordinator) coordinator).wordEntered(word);
 	}
-	
-	public void updatePoints(String consonants){
-		((DoppelungGameCoordinator) coordinator).updatePoints(consonants);
-	}
 
 	@Override
 	public void onKeyDown(KeyDownEvent event) {

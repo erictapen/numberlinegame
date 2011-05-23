@@ -288,6 +288,12 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
 	
+	public void showWaitingForOtherPlayer(){
+		feedBackText.setHTML("<div style='font-size:25px'>Warte auf anderen Spieler!</div>");
+		gamePanel.add(feedBackText);
+		gamePanel.setWidgetPosition(feedBackText, 150, 180);
+	}
+	
 	/**
 	 * Displays feedback after player has entered a word
 	 * 
@@ -410,25 +416,12 @@ public class DoppelungGameView extends GameView {
 		playerNamesFlexTable.clearCell(playerid, 1);
 		playerNamesFlexTable.removeCell(playerid, 1);
 	}
-	
-	// TODO: max points?
-	/*public void actualizePointsBar(int playerid, int points){
-		if (playerid == 1){
-			this.pointsBar.setHTML("<div id='canvas' style='width:25px;height:" + points + "px;background-color:" +  GameView.playerColors[0] + "'></div>");
-			pointsPanel.setWidgetPosition(pointsBar, 65, 60+pointsBarBorder.getOffsetHeight()-1-points);
-		}
 
-		if (playerid == 2){
-			// TODO: positioning
-			this.pointsBar2.setHTML("<div id='canvas' style='width:25px;height:" + points + "px;background-color:" +  GameView.playerColors[1] + "'></div>");
-			pointsPanel.setWidgetPosition(pointsBar2, 26, 60+pointsBar2Border.getOffsetHeight()-1-points);
-		}
-	}*/
 	
 	/**
 	 * Displays the short vowel image
 	 */
-	public void showShortVowelGame(int players) {
+	public void showShortVowelGame(int players, int startX, int startY) {
 		
 		
 		gamePanel.clear();
@@ -437,8 +430,8 @@ public class DoppelungGameView extends GameView {
 	
 		gamePanel.add(canvas);
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
-		shortVowelImage.setX(270);
-		shortVowelImage.setY(330);
+		shortVowelImage.setX(startX);
+		shortVowelImage.setY(startY);
 		
 		GWT.log(Integer.toString(players));
 		
@@ -447,17 +440,21 @@ public class DoppelungGameView extends GameView {
 			gamePanel.add(enemyShortVowelImage);
 			enemyShortVowelImage.setX(270);
 			enemyShortVowelImage.setY(330);
-			gamePanel.setWidgetPosition(enemyShortVowelImage, 270, 330);
+			gamePanel.setWidgetPosition(enemyShortVowelImage, startX, startY);
 						
 		}
-		gamePanel.setWidgetPosition(shortVowelImage, 270, 330);
+		gamePanel.setWidgetPosition(shortVowelImage, startX, startY);
 		focusPanel.setFocus(true);
 		
 	}
 	
 	
-
-	public void moveStepLeft(boolean own) {
+	/**
+	 * 
+	 * @param own   true if own image is moved
+	 * @return      new x-coordinate
+	 */
+	public int moveStepLeft(boolean own) {
 		
 	    ShortVowelImage image;
 		if (own) image = shortVowelImage;
@@ -470,12 +467,18 @@ public class DoppelungGameView extends GameView {
 			image.setX(0);
 		}
 
-		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
+		if (image.getParent() == gamePanel)
+			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
-
+		return image.getX();
 	}
 
-	public void moveStepUp(boolean own) {
+	/**
+	 * 
+	 * @param own   true if own image is moved
+	 * @return      new y-coordinate
+	 */
+	public int moveStepUp(boolean own) {
 		
 	    ShortVowelImage image;
 		if (own) image = shortVowelImage;
@@ -486,12 +489,18 @@ public class DoppelungGameView extends GameView {
 		else
 			image.setY(0);
 
-		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
+		if (image.getParent() == gamePanel)
+			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 
-
+		return image.getY();
 	}
 
-	public void moveStepRight(boolean own) {
+	/**
+	 * 
+	 * @param own   true if own image is moved
+	 * @return      new x-coordinate
+	 */
+	public int moveStepRight(boolean own) {
 		
 	    ShortVowelImage image;
 		if (own) image = shortVowelImage;
@@ -504,12 +513,18 @@ public class DoppelungGameView extends GameView {
 		else
 			image.setX(canvas.getOffsetWidth() - 1 - imgWidth);
 
-		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
-
-
+		if (image.getParent() == gamePanel)
+			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
+		
+		return image.getX();
 	}
 
-	public void moveStepDown(boolean own) {
+	/**
+	 * 
+	 * @param own   true if own image is moved
+	 * @return      new y-coordinate
+	 */
+	public int moveStepDown(boolean own) {
 		
 	    ShortVowelImage image;
 		if (own) image = shortVowelImage;
@@ -521,7 +536,17 @@ public class DoppelungGameView extends GameView {
 		else
 			image.setY(canvas.getOffsetHeight() - imgHeight);
 
-		gamePanel.setWidgetPosition(image, image.getX(), image.getY());
+		if (image.getParent() == gamePanel)
+			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
+		return image.getY();
+	}
+	
+	public void moveTo(int x, int y) {
+		
+	    ShortVowelImage image = enemyShortVowelImage;
+
+		if (image.getParent() == gamePanel)
+			gamePanel.setWidgetPosition(image, x, y);
 
 	}
 	
@@ -579,7 +604,7 @@ public class DoppelungGameView extends GameView {
 	
 	public void showMovingConsonants(int offset, MovingConsonants mc) {
 		gamePanel.add(mc);
-		gamePanel.setWidgetPosition(mc, 50+offset%9*50, -50);
+		gamePanel.setWidgetPosition(mc, mc.getX(), mc.getY());
 		mc.startMoving(offset*1000 - (int)(Math.random()*500));
 		mc.setSpeed(6);
 	}
