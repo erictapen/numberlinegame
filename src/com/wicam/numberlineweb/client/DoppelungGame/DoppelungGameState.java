@@ -1,13 +1,18 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import java.util.ArrayList;
+
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 
 public class DoppelungGameState extends GameState {
 
 	private DoppelungGameWord curWord = new DoppelungGameWord();
+	private ArrayList<Point2D> movingConsonantsCoords = new ArrayList<Point2D>();
 	public String player1movingto;
 	public String player2movingto;
+	private int numberOfConsonants = 4;
+	private int numberOfCorrectConsonants = 1;
 	
 	public String enemyMovingTo(int playerid) {
 		
@@ -142,5 +147,29 @@ public class DoppelungGameState extends GameState {
 		if (playerid-1 < players.size())
 			return ((DoppelungGamePlayer)players.get(playerid-1)).isEndedShortVowelGame();
 		return false;
+	}
+
+	public void setMovingConsonantsCoords(ArrayList<Point2D> movingConsonantsCoords) {
+		this.movingConsonantsCoords = movingConsonantsCoords;
+	}
+
+	public ArrayList<Point2D> getMovingConsonantsCoords() {
+		return movingConsonantsCoords;
+	}
+
+	public void setNumberOfConsonants(int numberOfConsonants) {
+		this.numberOfConsonants = numberOfConsonants;
+	}
+
+	public int getNumberOfConsonants() {
+		return numberOfConsonants;
+	}
+
+	public void setNumberOfCorrectConsonants(int numberOfCorrectConsonants) {
+		this.numberOfCorrectConsonants = numberOfCorrectConsonants;
+	}
+
+	public int getNumberOfCorrectConsonants() {
+		return numberOfCorrectConsonants;
 	}
 }

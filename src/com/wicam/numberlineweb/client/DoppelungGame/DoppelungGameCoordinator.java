@@ -182,7 +182,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				t.cancel();
 				registerAniTask(updateTask);
 
-				startShortVowelGame(g.getCurWord());
+				startShortVowelGame(g.getCurWord(), g);
 			}
 		
 			makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
@@ -460,21 +460,28 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	}
 
-	private void initializeMovingConsonantList(DoppelungGameWord word){
-		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(word.getConsonantPair(),1,4);
+	private void initializeMovingConsonantList(DoppelungGameWord word, DoppelungGameState g){
+		ArrayList<String> consonantPairList = DoppelungGameConsonantPairListCreater.createConsonantPairList(
+												word.getConsonantPair(),
+												g.getNumberOfCorrectConsonants(),
+												g.getNumberOfConsonants());
 		int i = 0;
 		Iterator<String> it = consonantPairList.iterator();
 		while(it.hasNext()){
-			int randX = (int)(Math.random()*9);
-			MovingConsonants mc = new MovingConsonants(it.next(), this, 50-(int)(Math.random()*7)+randX%9*50, -50);
+			MovingConsonants mc = new MovingConsonants(
+										it.next(), 
+										this, 
+										g.getMovingConsonantsCoords().get(i*2).getX(), 
+										g.getMovingConsonantsCoords().get(i*2).getY());
 			this.movingConsonantsList.add(mc);
 			((DoppelungGameView) view).showMovingConsonants(i, mc);
 			
 			if (it.hasNext()){
-				int randX2 = (int)(Math.random()*9);
-				while (randX2 == randX)
-					randX2 = (int)(Math.random()*9);
-				MovingConsonants mc2 = new MovingConsonants(it.next(), this, 50-(int)(Math.random()*7)+randX2%9*50, -50);
+				MovingConsonants mc2 = new MovingConsonants(
+										it.next(), 
+										this, 
+										g.getMovingConsonantsCoords().get(i*2+1).getX(), 
+										g.getMovingConsonantsCoords().get(i*2+1).getY());
 				this.movingConsonantsList.add(mc2);
 				((DoppelungGameView) view).showMovingConsonants(i, mc2);
 			}
@@ -597,11 +604,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 
-	public void startShortVowelGame(DoppelungGameWord word){
+	public void startShortVowelGame(DoppelungGameWord word, DoppelungGameState g){
 
 		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers);
 		
-		initializeMovingConsonantList(word);
+		initializeMovingConsonantList(word, g);
 
 
 
