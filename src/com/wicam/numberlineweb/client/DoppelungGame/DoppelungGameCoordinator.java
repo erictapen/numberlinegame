@@ -138,7 +138,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			break;
 
 		case 21:
-			shortVowelGameStarted = false; // reset
 			setRefreshRate(200);
 			//start is pending. I am ready!
 			if (!openGame.isPlayerReady(this.playerID)) {
@@ -149,6 +148,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			// word played and vowel choice
 		case 3:
+			shortVowelGameStarted = false; // reset
 			if (!g.getShowSoundFeedback(playerID)){
 				feedbackNumberSet = false;
 				gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
