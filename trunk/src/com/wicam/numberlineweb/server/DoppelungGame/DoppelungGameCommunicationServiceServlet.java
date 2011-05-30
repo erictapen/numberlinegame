@@ -23,6 +23,9 @@ public class DoppelungGameCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
 	
+	private int TIMER_SPEED = 40;
+	private int SPACE_SPEED = 6;
+	private Timer mcTimer = null;
 	HashMap<Integer,Iterator<DoppelungGameWord>> wordLists = new HashMap<Integer,Iterator<DoppelungGameWord>>();
 	
 	@Override
@@ -82,6 +85,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 				g.setAnswer(playerid,false);
 		
 		Timer t = new Timer();
+		mcTimer = new Timer();
 		
 		// next step if correct answer or already tried once
 		if (g.hasCorrectlyAnswered(playerid) || g.getSoundTries(playerid) >= 2){
@@ -96,6 +100,9 @@ public class DoppelungGameCommunicationServiceServlet extends
 				if(g.getCurWord().isShortVowel()){
 					initializeMovingConsonantsPoints(gameid);
 					t.schedule(new SetGameStateTask(gameid, 5, this), feedbackTime);
+					
+					// initialize moving consonants timer
+					mcTimer.schedule(new UpdateMcCoordsTimerTask(g.getId(), SPACE_SPEED, this), feedbackTime, TIMER_SPEED);
 				}
 				// long vowel: show next word if has next
 				else {
@@ -143,7 +150,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 				newX = 50-(int)(Math.random()*7)+(int)(Math.random()*9)%9*50;
 			}
 			point.setX(newX);
-			point.setY(-50);
+			point.setY(-i*50-50);
 			point.setConsonant(consonantPairList.get(i));
 			movingConsonantsCoords.add(point);
 			oldX = newX;
@@ -277,6 +284,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		// wait for other player
 		if (g.getPlayerCount() == 1 || 
 				g.isEndedShortVowelGame(playerid%2+1)){
+			mcTimer.cancel();
 			Timer t = new Timer();
 			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
 			this.setChanged(gameid);
@@ -285,17 +293,14 @@ public class DoppelungGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public Boolean updatePlayerCoords(String ids) {
+	public Boolean updatePlayerPos(String ids) {
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = Integer.parseInt(ids.split(":")[1]);
-		int playerX =  Integer.parseInt(ids.split(":")[2]);
-		int playerY =  Integer.parseInt(ids.split(":")[3]);
+		int x = Integer.parseInt(ids.split(":")[2]);
+		int y = Integer.parseInt(ids.split(":")[3]);
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		
-		g.getPlayerCoords(playerid).setX(playerX);
-		g.getPlayerCoords(playerid).setX(playerY);
-		
+		g.setPlayerPosX(playerid, x);
+		g.setPlayerPosY(playerid, y);
 		return true;
 	}
-
 }

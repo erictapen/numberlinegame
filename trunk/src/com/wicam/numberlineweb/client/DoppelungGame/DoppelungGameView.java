@@ -41,7 +41,10 @@ public class DoppelungGameView extends GameView {
 	
 	protected final Button startGameButton = new Button("Spiel Starten");
 	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.jpg", 270, 330);
-	protected final ShortVowelImage enemyShortVowelImage = new ShortVowelImage("doppelungGame/knall_small.jpg", 270, 330);
+	protected ShortVowelImage movingShortVowelImage;
+	protected ShortVowelImage enemyMovingShortVowelImage;
+	
+	
 	protected final Image feedbackImage = new Image("doppelungGame/beide_daumen.gif");
 	
 	protected final Image longVowelImage = new Image("doppelungGame/ziehen1.jpg");
@@ -86,7 +89,7 @@ public class DoppelungGameView extends GameView {
 				doppelungGameController.onLongVowelButtonClick();
 			}
 		});
-
+		
 		gamePanel.add(startGameButton);
 		gamePanel.setWidgetPosition(startGameButton, 480, 350);
 		gamePanel.add(explanationText);
@@ -114,27 +117,7 @@ public class DoppelungGameView extends GameView {
 		pointsPanel.add(pointsText);
 		pointsPanel.setWidgetPosition(pointsText, 27, 10);
 		pointsPanel.add(canvasScore);
-		
-		/*int top = 60;
-		pointsPanel.add(pointsBarBorder, 64, top);
-		pointsPanel.add(pointsBar, 65, top);
-		final HTML htmlSpieler1 = new HTML();
-		playerNames.add(htmlSpieler1);
-		pointsPanel.add(htmlSpieler1, 55, 355);
 
-		if (numberOfPlayers == 2){
-			// TODO: positioning
-			pointsPanel.add(pointsBar2Border, 100, top);
-			pointsPanel.add(pointsBar2, 101, top);
-			pointsBar2Border.setSize("25", "330");
-			final HTML htmlSpieler2 = new HTML();
-			playerNames.add(htmlSpieler2);
-			pointsPanel.add(htmlSpieler2, 89, 355);
-		}
-
-		final HTML htmlPunkte = new HTML("<div style='font-size:14px'>Punkte</div>");
-		pointsPanel.add(htmlPunkte, 58, 21);
-		*/
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
 		
@@ -146,6 +129,17 @@ public class DoppelungGameView extends GameView {
 		
 		motherPanel.add(gamePanel);
 		motherPanel.add(pointsPanel);
+	}
+	
+	public void initializeMovingShortVowelImages(int playerid){
+		if (playerid == 1){
+			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.jpg", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.jpg", 270, 330);
+		}
+		if (playerid == 2){
+			movingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.jpg", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.jpg", 270, 330);
+		}
 	}
 
 	/**
@@ -421,29 +415,27 @@ public class DoppelungGameView extends GameView {
 	/**
 	 * Displays the short vowel image
 	 */
-	public void showShortVowelGame(int players, int startX, int startY) {
-		
-		
+	public void showShortVowelGame(int playerid, int players, int startX, int startY) {
 		gamePanel.clear();
 		textBox.setText("");
-		gamePanel.add(shortVowelImage);
+		gamePanel.add(movingShortVowelImage);
 	
 		gamePanel.add(canvas);
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
-		shortVowelImage.setX(startX);
-		shortVowelImage.setY(startY);
+		movingShortVowelImage.setX(startX);
+		movingShortVowelImage.setY(startY);
 		
 		GWT.log(Integer.toString(players));
 		
 		if (players ==2) {
 			
-			gamePanel.add(enemyShortVowelImage);
-			enemyShortVowelImage.setX(270);
-			enemyShortVowelImage.setY(330);
-			gamePanel.setWidgetPosition(enemyShortVowelImage, startX, startY);
+			gamePanel.add(enemyMovingShortVowelImage);
+			enemyMovingShortVowelImage.setX(270);
+			enemyMovingShortVowelImage.setY(330);
+			gamePanel.setWidgetPosition(enemyMovingShortVowelImage, startX, startY);
 						
 		}
-		gamePanel.setWidgetPosition(shortVowelImage, startX, startY);
+		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
 		focusPanel.setFocus(true);
 		
 	}
@@ -457,8 +449,8 @@ public class DoppelungGameView extends GameView {
 	public int moveStepLeft(boolean own) {
 		
 	    ShortVowelImage image;
-		if (own) image = shortVowelImage;
-		else  image = enemyShortVowelImage;
+		if (own) image = movingShortVowelImage;
+		else  image = enemyMovingShortVowelImage;
 		
 
 		if (image.getX()-30 > 0) {
@@ -481,8 +473,8 @@ public class DoppelungGameView extends GameView {
 	public int moveStepUp(boolean own) {
 		
 	    ShortVowelImage image;
-		if (own) image = shortVowelImage;
-		else  image = enemyShortVowelImage;
+		if (own) image = movingShortVowelImage;
+		else  image = enemyMovingShortVowelImage;
 
 		if (image.getY()-30 > 0)
 			image.setY(image.getY()-30);
@@ -503,8 +495,8 @@ public class DoppelungGameView extends GameView {
 	public int moveStepRight(boolean own) {
 		
 	    ShortVowelImage image;
-		if (own) image = shortVowelImage;
-		else  image = enemyShortVowelImage;
+		if (own) image = movingShortVowelImage;
+		else  image = enemyMovingShortVowelImage;
 
 		int imgWidth = image.getOffsetWidth();
 
@@ -527,8 +519,8 @@ public class DoppelungGameView extends GameView {
 	public int moveStepDown(boolean own) {
 		
 	    ShortVowelImage image;
-		if (own) image = shortVowelImage;
-		else  image = enemyShortVowelImage;
+		if (own) image = movingShortVowelImage;
+		else  image = enemyMovingShortVowelImage;
 		int imgHeight = image.getOffsetHeight();
 
 		if (image.getY()+30+imgHeight < canvas.getOffsetHeight())
@@ -541,9 +533,9 @@ public class DoppelungGameView extends GameView {
 		return image.getY();
 	}
 	
-	public void moveTo(int x, int y) {
+	public void moveEnemyTo(int x, int y) {
 		
-	    ShortVowelImage image = enemyShortVowelImage;
+	    ShortVowelImage image = enemyMovingShortVowelImage;
 
 		if (image.getParent() == gamePanel)
 			gamePanel.setWidgetPosition(image, x, y);
@@ -578,8 +570,8 @@ public class DoppelungGameView extends GameView {
 		
 		int[] ret = new int[2];
 		
-		ret[0] = shortVowelImage.getOffsetWidth();
-		ret[1] = shortVowelImage.getOffsetHeight();
+		ret[0] = movingShortVowelImage.getOffsetWidth();
+		ret[1] = movingShortVowelImage.getOffsetHeight();
 		
 		return ret;
 		
@@ -594,19 +586,15 @@ public class DoppelungGameView extends GameView {
 		
 		int[] ret = new int[2];
 		
-		ret[0] = shortVowelImage.getX();
-		ret[1] = shortVowelImage.getY();
+		ret[0] = movingShortVowelImage.getX();
+		ret[1] = movingShortVowelImage.getY();
 		
 		return ret;
 		
 	}
 	
-	
-	public void showMovingConsonants(int offset, MovingConsonants mc) {
+	public void showMovingConsonants(MovingConsonants mc) {
 		gamePanel.add(mc);
-		gamePanel.setWidgetPosition(mc, mc.getX(), mc.getY());
-		mc.startMoving(offset*1000 - (int)(Math.random()*500));
-		mc.setSpeed(6);
 	}
 	
 	public void setMcPosition(MovingConsonants mc, int x, int y) {

@@ -11,7 +11,8 @@ public class DoppelungGamePlayer extends Player {
 	private boolean showSoundFeedback = false;
 	private boolean showWordFeedback = false;
 	private boolean endedShortVowelGame = false;
-	private ConsonantPoint2D playerCoords = new ConsonantPoint2D();
+	private int posX = 0;
+	private int posY = 0;
 
 	public void setStartButtonClicked(boolean startButtonClicked) {
 		this.startButtonClicked = startButtonClicked;
@@ -77,7 +78,19 @@ public class DoppelungGamePlayer extends Player {
 		return endedShortVowelGame;
 	}
 
-	public ConsonantPoint2D getPlayerCoords() {
-		return playerCoords;
+	public int getXPos(){
+		return posX;
+	}
+	
+	public int getYPos(){
+		return posY;
+	}
+	
+	public void setXPos(int x){
+		this.posX = x;
+	}
+	
+	public void setYPos(int y){
+		this.posY = y;
 	}
 }

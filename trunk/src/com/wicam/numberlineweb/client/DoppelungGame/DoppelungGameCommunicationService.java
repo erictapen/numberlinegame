@@ -19,5 +19,5 @@ public interface DoppelungGameCommunicationService extends
 	
 	public GameState enableWordInput(String ids);
 	
-	public Boolean updatePlayerCoords(String ids);
+	public Boolean updatePlayerPos(String ids);
 }

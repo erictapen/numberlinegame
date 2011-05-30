@@ -1,8 +1,5 @@
 package com.wicam.numberlineweb.client;
 
-
-import java.util.ArrayList;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,9 +11,11 @@ import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGamePlayer;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.factsGame.FactsGameCommunicationService;
+import com.wicam.numberlineweb.client.factsGame.FactsGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.factsGame.FactsGameCoordinator;
 
 
 
@@ -54,7 +53,7 @@ public class NumberLineWeb implements EntryPoint {
 	 */
 
 	public void showGameTypeSelector() {
-		boolean numberLineGame = false;
+		//boolean numberLineGame = false;
 
 		//adds the numberlinegame
 		gts.addGame("NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new ClickHandler() {
@@ -71,7 +70,7 @@ public class NumberLineWeb implements EntryPoint {
 		});
 
 		//adds the doppelung game
-		gts.addGame("DoppelungGame", "", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
+		gts.addGame("Doppelungspiel", "", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -84,6 +83,20 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 	
+		//adds the facts game
+		gts.addGame("Faktenspiel", "", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				commService = (FactsGameCommunicationServiceAsync) GWT.create(FactsGameCommunicationService.class);
+				coordinator = new FactsGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
 

@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.Event;
@@ -12,9 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
-import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.MouseHandler;
-import com.wicam.numberlineweb.client.Player;
 
 /**
  * The game view.
@@ -68,7 +65,7 @@ public class NumberLineView extends GameView  {
 		// initialize pointers
 		int numberOfPointers = numberOfPlayers+numberOfNPCs;
 		for (int i = 0; i < numberOfPointers; i++){
-			final NumberLineGamePointer pointer = new NumberLineGamePointer(2,this.playerColors[i]);
+			final NumberLineGamePointer pointer = new NumberLineGamePointer(2,GameView.playerColors[i]);
 			pointerList.add(pointer);
 		}
 

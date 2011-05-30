@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
+import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
@@ -236,7 +237,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			break;
 		case 97:
 			// TODO: winner screen
-			HighScoreView h = new HighScoreView(openGame.getPlayers(),gameView.playerColors);
+			HighScoreView h = new HighScoreView(openGame.getPlayers(),GameView.playerColors);
 			rootPanel.clear();
 			h.init(rootPanel);
 			break;

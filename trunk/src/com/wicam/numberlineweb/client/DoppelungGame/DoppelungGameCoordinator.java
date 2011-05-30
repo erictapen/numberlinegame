@@ -30,6 +30,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private AnimationTimer aniTimer = new AnimationTimer();
 	private SoundController soundController = new SoundController();
 	private ConsonantPoint2D playerCoords = new ConsonantPoint2D();
+	private int enemyImageX = 270;
+	private int enemyImageY = 330;
 
 
 	public DoppelungGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -65,14 +67,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 
 	@Override
-	public void openGame(GameState gameState) {
-		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
-		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
-		DoppelungGameState g = (DoppelungGameState) gameState;
-		commServ.openGame(g, gameOpenedCallBack);
-	}
-
-	@Override
 	protected void joinedGame(int playerID, int gameID) {
 		this.playerID = playerID;
 
@@ -80,9 +74,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		controller = new DoppelungGameController(this);
 		this.view = new DoppelungGameView(numberOfPlayers, controller);
 		DoppelungGameView gameView =  (DoppelungGameView) view;
-
-		// TODO: add controller
-
+		gameView.initializeMovingShortVowelImages(playerID);
 
 		//construct an empty game-state with the given information
 		DoppelungGameState g = new DoppelungGameState();
@@ -193,25 +185,40 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				shortVowelGameStarted = true;
 				t.cancel();
 				registerAniTask(updateTask);
+				enemyImageX = 270;
+				enemyImageY = 330;
+				
+				enemyMoveTask = new EnemyMoveTask(this);
+				registerAniTask(enemyMoveTask);
 
 				startShortVowelGame(g.getCurWord(), g);
 			}
-		
-			//((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerCoords(Integer.toString(openGame.getId()) + ":" +  
-			//																			this.playerID + ":" +
-			//																			this.playerCoords.getX() + ":" +
-			//																			this.playerCoords.getY(), 
-			//																		dummyCallback);
-			
-			//if (g.getPlayerCount() > 1)
-			//	makeEnemyMove(g.getPlayerCoords(playerID%2+1).getX(),g.getPlayerCoords(playerID%2+1).getY());
-			
-			makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
+			int timeInterval = 100;
+			updateMovingConsonantsPosition(gameView, 
+											this.movingConsonantsList, 
+											g.getMovingConsonantsCoords(), 
+											timeInterval);
+			if (g.getPlayerCount() > 1){
+				//makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
+				((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerPos(this.openGame.getId() + ":" + 
+																				this.playerID + ":" +
+																				gameView.getShortVowelImagePosition()[0] + ":" +
+																				gameView.getShortVowelImagePosition()[1],
+																				dummyCallback);
+				this.enemyMoveTask.setToX(g.getPlayerPosX(playerID%2+1));
+				this.enemyMoveTask.setToY(g.getPlayerPosY(playerID%2+1));
+				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/(timeInterval/(double)AnimationTimer.TIMER_SPEED));
+				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/(timeInterval/(double)AnimationTimer.TIMER_SPEED));
+				this.enemyMoveTask.setSpaceSpeed(speedX>speedY?speedX:speedY);
+			}
+				
 			removeMarkedMc(g);
 			
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
+			
+			setRefreshRate(timeInterval);
 			break;
 			// word enter
 		case 6:
@@ -281,6 +288,26 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 	}
 	
+	public void updateMovingConsonantsPosition(DoppelungGameView gameView, ArrayList<MovingConsonants> mcList, 
+												ArrayList<ConsonantPoint2D> coordList, int timeInterval){
+		int i = 0;
+		if (mcList != null){
+			for (MovingConsonants mc: mcList){
+				if (coordList.get(i).getY()+200 >= 0){
+					if (!mc.isStartedMoving()){
+						gameView.showMovingConsonants(mc);
+						gameView.setMcPosition(mc, coordList.get(i).getX(), coordList.get(i).getY());
+						mc.setStartedMoving(true);
+						mc.startMoving();
+					}
+					mc.setSpeed((int)((coordList.get(i).getY()-mc.getY())/(timeInterval/(double)AnimationTimer.TIMER_SPEED)));
+					mc.moveTo(coordList.get(i).getY());
+				}
+				i++;
+			}
+		}
+	}
+	
 	public void registerAniTask(AnimationTimerTask t) {
 		aniTimer.registerTask(t);
 	}
@@ -340,6 +367,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	};
 	
+	private EnemyMoveTask enemyMoveTask;
+	
+	
+	/*
 	private AnimationTimerTask moveLeftTaskEnemy = new AnimationTimerTask() {
 
 		@Override
@@ -379,7 +410,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		}
 
-	};
+	};*/
 	
 	/**
 	 * We only want a click to be registered ONCE.
@@ -504,22 +535,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 										this, 
 										cp2D.getX(), 
 										cp2D.getY(),
-										i*2);
+										i);
 			this.movingConsonantsList.add(mc);
-			((DoppelungGameView) view).showMovingConsonants(i, mc);
-			
-			if (it.hasNext()){
-				cp2D = it.next();
-				MovingConsonants mc2 = new MovingConsonants(
-										cp2D.getConsonant(), 
-										this, 
-										cp2D.getX(), 
-										cp2D.getY(),
-										i*2+1);
-				this.movingConsonantsList.add(mc2);
-				((DoppelungGameView) view).showMovingConsonants(i, mc2);
-			}
-			
 			i++;
 		}
 		
@@ -536,6 +553,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 	}
 
+	public void moveEnemyTo(int x, int y){
+		((DoppelungGameView) view).moveEnemyTo(x, y);
+	}
+	
 
 	public void removeMovingConsonants(MovingConsonants mc){
 		((DoppelungGameView) view).hideMovingConsonant(mc);
@@ -546,10 +567,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (!mc2.removed())
 				allRemoved = false;
 		if (allRemoved){
-			movingConsonantsList = null;
+			movingConsonantsList = new ArrayList<MovingConsonants>();
 			//finished MovingConsonantsGame
 			this.controller.setArrowKeysEnabled(false);
 			endMovingConsonantsGame();
+			this.enemyMoveTask.markForDelete();
 			((DoppelungGameCommunicationServiceAsync) commServ).enableWordInput(Integer.toString(openGame.getId()) + ":" +  this.playerID, updateCallback);
 		}
 	}
@@ -574,19 +596,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	}
 
-	public void makeEnemyMove(final int x, final int y) {
-		AnimationTimerTask moveTaskEnemy = new AnimationTimerTask() {
-
-			@Override
-			public void run() {
-				((DoppelungGameView)view).moveTo(x, y);
-			}
-
-		};
-		this.registerAniTask(moveTaskEnemy);
+	public void makeEnemyMove(int x, int y) {
+		this.enemyImageX = x;
+		this.enemyImageY = y;
+		((DoppelungGameView)view).moveEnemyTo(enemyImageX, enemyImageY);
 	}
 	
-	public void makeEnemyMove(String to) {
+	/*public void makeEnemyMove(String to) {
 		
 		if (to == null) to="stop";
 
@@ -624,7 +640,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 
 
-	}
+	}*/
 
 
 	/**
@@ -663,7 +679,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.playerCoords.setX(270);
 		this.playerCoords.setY(330);
 		
-		((DoppelungGameView)view).showShortVowelGame(this.numberOfPlayers, 
+		((DoppelungGameView)view).showShortVowelGame(this.playerID,
+														this.numberOfPlayers, 
 														playerCoords.getX(), 
 														playerCoords.getY());
 		
@@ -688,6 +705,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}
 
+	public int getEnemyImageX() {
+		return enemyImageX;
+	}
+
+	public int getEnemyImageY() {
+		return enemyImageY;
+	}
 
 	AsyncCallback<DoppelungGameState> keyEventCallback = new AsyncCallback<DoppelungGameState>() {
 

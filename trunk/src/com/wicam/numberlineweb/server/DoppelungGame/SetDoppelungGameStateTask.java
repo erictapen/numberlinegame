@@ -14,21 +14,26 @@ public class SetDoppelungGameStateTask extends SetGameStateTask {
 		// set next word
 		DoppelungGameCommunicationServiceServlet doppelungServ = (DoppelungGameCommunicationServiceServlet)s;
 		DoppelungGameWord word = doppelungServ.getNextWord(gameid);
-		((DoppelungGameState)s.getGameById(gameid)).setNextWord(word);
+		DoppelungGameState g = ((DoppelungGameState)s.getGameById(gameid));
+		g.setNextWord(word);
 		
 		// reset everything
-		((DoppelungGameState)s.getGameById(gameid)).setShowSoundFeedback(1, false);
-		((DoppelungGameState)s.getGameById(gameid)).setShowSoundFeedback(2, false);
-		((DoppelungGameState)s.getGameById(gameid)).setShowWordFeedback(1, false);
-		((DoppelungGameState)s.getGameById(gameid)).setShowWordFeedback(2, false);
-		((DoppelungGameState)s.getGameById(gameid)).setEndedShortVowelGame(1, false);
-		((DoppelungGameState)s.getGameById(gameid)).setEndedShortVowelGame(2, false);
-		((DoppelungGameState)s.getGameById(gameid)).setAnswer(1, false);
-		((DoppelungGameState)s.getGameById(gameid)).setAnswer(2, false);
-		((DoppelungGameState)s.getGameById(gameid)).resetSoundTries(1);
-		((DoppelungGameState)s.getGameById(gameid)).resetWordTries(1);
-		((DoppelungGameState)s.getGameById(gameid)).resetSoundTries(2);
-		((DoppelungGameState)s.getGameById(gameid)).resetWordTries(2);
+		g.setPlayerPosX(1, 270);
+		g.setPlayerPosY(1, 330);
+		g.setPlayerPosX(2, 270);
+		g.setPlayerPosY(2, 330);
+		g.setShowSoundFeedback(1, false);
+		g.setShowSoundFeedback(2, false);
+		g.setShowWordFeedback(1, false);
+		g.setShowWordFeedback(2, false);
+		g.setEndedShortVowelGame(1, false);
+		g.setEndedShortVowelGame(2, false);
+		g.setAnswer(1, false);
+		g.setAnswer(2, false);
+		g.resetSoundTries(1);
+		g.resetWordTries(1);
+		g.resetSoundTries(2);
+		g.resetWordTries(2);
 	}
 	
 	public SetDoppelungGameStateTask(int gameid, int state,
