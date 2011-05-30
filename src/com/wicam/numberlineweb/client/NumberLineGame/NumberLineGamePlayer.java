@@ -12,7 +12,6 @@ public class NumberLineGamePlayer extends Player implements Serializable{
 	private static final long serialVersionUID = 2437389490131688801L;
 	private boolean clicked = false;
 	private int actPos = Integer.MIN_VALUE;
-	private int colorId = 0;
 
 	public void setClicked(boolean clicked) {
 		this.clicked = clicked;

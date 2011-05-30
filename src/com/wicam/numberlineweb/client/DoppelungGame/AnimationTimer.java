@@ -23,7 +23,7 @@ public class AnimationTimer extends Timer {
 	//the global animation time is 30ms. Every animation has to set its
 	//animation according to this number. Performance is improved massivly this way,
 	//since concurring timers arent possible anymore.
-	private static final int TIMER_SPEED = 50;
+	public static final int TIMER_SPEED = 40;
 
 
 	/**

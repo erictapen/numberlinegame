@@ -65,8 +65,11 @@ public abstract class GameCoordinator {
 	 * @param name
 	 */
 
-	abstract public void openGame(GameState gameState);
-	
+	public void openGame(GameState gameState){
+		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
+		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
+		commServ.openGame(gameState, gameOpenedCallBack);
+	}
 	
 	/**
 	 * Returns the game's name. Must be overwritten.

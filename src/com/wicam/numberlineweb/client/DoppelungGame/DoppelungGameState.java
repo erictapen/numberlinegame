@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.DoppelungGame;
 import java.util.ArrayList;
 
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.Player;
 
 public class DoppelungGameState extends GameState {
 
@@ -37,18 +36,7 @@ public class DoppelungGameState extends GameState {
 	
 	@Override
 	public int addPlayer(String newName) {
-		int countSameName = 1;
-		for (Player player: players){
-			// to ensure different namesremovePlayer
-			if (newName.equals(player.getName())){
-				countSameName++;
-				// TODO: only a solution if number of players with same name < 10
-				if (countSameName > 2)
-					newName = newName.substring(0, newName.length()-2) + " " + countSameName;
-				else
-					newName = newName + " " + countSameName;
-			}
-		}
+		newName = checkDuplicateName(newName);
 		DoppelungGamePlayer newPlayer = new DoppelungGamePlayer();
 		newPlayer.setName(newName);
 		players.add(newPlayer);
@@ -173,9 +161,25 @@ public class DoppelungGameState extends GameState {
 		return numberOfCorrectConsonants;
 	}
 
-	public ConsonantPoint2D getPlayerCoords(int playerid) {
+	public int getPlayerPosX(int playerid) {
 		if (playerid-1 < players.size())
-			return ((DoppelungGamePlayer)players.get(playerid-1)).getPlayerCoords();
-		return null;
+			return ((DoppelungGamePlayer)players.get(playerid-1)).getXPos();
+		return -1;
+	}
+	
+	public int getPlayerPosY(int playerid) {
+		if (playerid-1 < players.size())
+			return ((DoppelungGamePlayer)players.get(playerid-1)).getYPos();
+		return -1;
+	}
+	
+	public void setPlayerPosY(int playerid, int y) {
+		if (playerid-1 < players.size())
+			((DoppelungGamePlayer)players.get(playerid-1)).setYPos(y);
+	}
+	
+	public void setPlayerPosX(int playerid, int x) {
+		if (playerid-1 < players.size())
+			((DoppelungGamePlayer)players.get(playerid-1)).setXPos(x);
 	}
 }

@@ -77,6 +77,22 @@ public abstract class GameState implements IsSerializable{
 
 	public abstract int addPlayer(String newName);
 	
+	protected String checkDuplicateName(String newName){
+		int countSameName = 1;
+		for (Player player: players){
+			// to ensure different namesremovePlayer
+			if (newName.equals(player.getName())){
+				countSameName++;
+				// TODO: only a solution if number of players with same name < 10
+				if (countSameName > 2)
+					newName = newName.substring(0, newName.length()-2) + " " + countSameName;
+				else
+					newName = newName + " " + countSameName;
+			}
+		}
+		return newName;
+	}
+	
 	public void setPlayerReady(int playerid, boolean playerReady) {
 		players.get(playerid-1).setReady(playerReady);
 	}

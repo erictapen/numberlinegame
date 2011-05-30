@@ -22,6 +22,10 @@
     <servlet-name>DoppelungGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.DoppelungGame.DoppelungGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>FactsGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.factsGame.FactsGameCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -38,6 +42,10 @@
   <servlet-mapping>
     <servlet-name>DoppelungGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/doppelungGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FactsGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/factsGameCommunication</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

@@ -10,8 +10,10 @@ public class MovingConsonants extends Image{
 	private String consonants;
 	private int x;
 	private int y;
+	private int toY;
 	private boolean removed = false;
 	private int id;
+	private boolean startedMoving = false;
 	
 	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y, int id){
 		super("doppelungGame/coins/coin_" + consonants + ".png");
@@ -37,8 +39,12 @@ public class MovingConsonants extends Image{
 	}
 	
 	public void startMoving(int delay){
-		move.setDelay(delay);
+		//move.setDelay(delay);
 		coordinator.registerAniTask(move);
+	}
+	
+	public void moveTo(int toY){
+		this.toY = toY;
 	}
 	
 	public boolean removed() {
@@ -71,6 +77,15 @@ public class MovingConsonants extends Image{
 	}
 
 
+	public void setStartedMoving(boolean startedMoving) {
+		this.startedMoving = startedMoving;
+	}
+
+	public boolean isStartedMoving() {
+		return startedMoving;
+	}
+
+
 	class Move extends AnimationTimerTask{
 		
 		MovingConsonants mc;
@@ -89,9 +104,13 @@ public class MovingConsonants extends Image{
 		@Override
 		public void run() {
 			if (!removed){
-				y = y + spaceSpeed;
+				if (y + spaceSpeed < toY)
+					y = y + spaceSpeed;
+				else
+					y = toY;
 				coordinator.setMovingConsonantsPosition(mc, x, y);
 				coordinator.checkForCollision(mc);
+				
 			}
 			
 			if (removed){
