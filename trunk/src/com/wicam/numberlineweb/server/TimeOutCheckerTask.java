@@ -76,7 +76,8 @@ public class TimeOutCheckerTask extends TimerTask {
 
 			EmptyGameTimeOutState current = i.next();
 
-			if (gameComm.getGameById(current.getGameId()).getPlayerCount() == 0 && !current.countDown()) {
+			if (gameComm.getGameById(current.getGameId()) != null && 
+					gameComm.getGameById(current.getGameId()).getPlayerCount() == 0 && !current.countDown()) {
 
 				emptyGameTimeOutStates.remove(current);
 				System.out.println("Empty game #" + current.getGameId() + " timed out.");
