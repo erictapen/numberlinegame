@@ -3,6 +3,13 @@ package com.wicam.numberlineweb.client.DoppelungGame;
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 
+/**
+ * Class for retrieving the wave-files
+ * 
+ * @author shuber
+ *
+ */
+
 public class SoundRetriever {
 
 	public static Sound getSound(SoundController sc, String word){
@@ -24,6 +31,8 @@ public class SoundRetriever {
 			return sc.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM, "doppelungGame/soundFiles/Kummer.wav");
 		if (word.equals("Riss"))
 			return sc.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM, "doppelungGame/soundFiles/Riss.wav");
+		if (word.equals("Frühling"))
+			return sc.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM, "doppelungGame/soundFiles/Fruehling.wav");
 		return null;
 	}
 }

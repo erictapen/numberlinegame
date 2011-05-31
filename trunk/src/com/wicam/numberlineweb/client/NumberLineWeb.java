@@ -70,7 +70,7 @@ public class NumberLineWeb implements EntryPoint {
 		});
 
 		//adds the doppelung game
-		gts.addGame("Doppelungspiel", "", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
+		gts.addGame("Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {

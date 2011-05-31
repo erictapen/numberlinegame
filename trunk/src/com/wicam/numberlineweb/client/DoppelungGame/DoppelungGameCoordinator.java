@@ -20,16 +20,29 @@ import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
+/**
+ * Coordinate of the doppelung game
+ * 
+ * @author shuber
+ *
+ */
+
 public class DoppelungGameCoordinator extends GameCoordinator{
 
 	private DoppelungGameController controller;
-	private boolean shortVowelGameStarted = false;
+	// boolean variable indicating if the short vowel game has been started
+	private boolean shortVowelGameStarted = false; 
+	// boolean variable to ensure that the feedback number will set only once
 	private boolean feedbackNumberSet = false;
+	// random number indicating which feedback should be drawn
 	private int feedbackNumber = 0;
+	// list of the current moving consonants
 	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 	private AnimationTimer aniTimer = new AnimationTimer();
+	// SoundController for playing sound files
 	private SoundController soundController = new SoundController();
-	private ConsonantPoint2D playerCoords = new ConsonantPoint2D();
+
+	// position of the enemy short vowel image
 	private int enemyImageX = 270;
 	private int enemyImageY = 330;
 
@@ -39,6 +52,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		super(commServ, chatServ, root,gs);
 	}
 
+	/**
+	 * returns the name of the game
+	 */
 	@Override
 	public String getGameName() {
 
@@ -97,7 +113,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	protected void updateGame(GameState gameState) {
 		DoppelungGameState g = (DoppelungGameState) gameState;
 		DoppelungGameView gameView =  (DoppelungGameView) view;
-
 		//we already have the lates state
 		if (g==null) return;
 
@@ -197,7 +212,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			updateMovingConsonantsPosition(gameView, 
 											this.movingConsonantsList, 
 											g.getMovingConsonantsCoords(), 
-											timeInterval);
+											(timeInterval+(int)latency));
 			if (g.getPlayerCount() > 1){
 				//makeEnemyMove(g.enemyMovingTo(((this.playerID) % 2)+1));
 				((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerPos(this.openGame.getId() + ":" + 
@@ -207,8 +222,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 																				dummyCallback);
 				this.enemyMoveTask.setToX(g.getPlayerPosX(playerID%2+1));
 				this.enemyMoveTask.setToY(g.getPlayerPosY(playerID%2+1));
-				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/(timeInterval/(double)AnimationTimer.TIMER_SPEED));
-				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/(timeInterval/(double)AnimationTimer.TIMER_SPEED));
+				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/((timeInterval+latency)/(double)AnimationTimer.TIMER_SPEED));
+				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/((timeInterval+latency)/(double)AnimationTimer.TIMER_SPEED));
 				this.enemyMoveTask.setSpaceSpeed(speedX>speedY?speedX:speedY);
 			}
 				
@@ -288,6 +303,14 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 	}
 	
+	/**
+	 * Updates the coordinates of the moving consonants to which they should move
+	 * 
+	 * @param gameView		view of the game
+	 * @param mcList		list of the moving consonants
+	 * @param coordList		new coordinates
+	 * @param timeInterval	refresh time intervall
+	 */
 	public void updateMovingConsonantsPosition(DoppelungGameView gameView, ArrayList<MovingConsonants> mcList, 
 												ArrayList<ConsonantPoint2D> coordList, int timeInterval){
 		int i = 0;
@@ -308,6 +331,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 	}
 	
+	/**
+	 * Registers a new AnimationTimerTask
+	 * 
+	 * @param t		the task to register
+	 */
 	public void registerAniTask(AnimationTimerTask t) {
 		aniTimer.registerTask(t);
 	}
@@ -361,12 +389,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 			
-			playerCoords.setY(((DoppelungGameView)view).moveStepDown(true));
+			((DoppelungGameView)view).moveStepDown(true);
 
 		}
 
 	};
 	
+	// task for the enemy image
 	private EnemyMoveTask enemyMoveTask;
 	
 	
@@ -542,7 +571,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		
 	}
 
-
+	/**
+	 * Sets a moving consonant to a new position
+	 * 
+	 * @param mc	the moving consonant
+	 * @param x		new x-coordinate
+	 * @param y		new y-coordinate
+	 */
 	public void setMovingConsonantsPosition(MovingConsonants mc, int x, int y){
 		if (((DoppelungGameView) view).isOnCanvas(y)){
 			((DoppelungGameView) view).setMcPosition(mc, x, y);
@@ -553,6 +588,12 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 	}
 
+	/**
+	 * Set enemy image to a new position
+	 * 
+	 * @param x		new x-coordinate
+	 * @param y		new y-coordinate
+	 */
 	public void moveEnemyTo(int x, int y){
 		((DoppelungGameView) view).moveEnemyTo(x, y);
 	}
@@ -676,13 +717,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 
 	public void startShortVowelGame(DoppelungGameWord word, DoppelungGameState g){
-		this.playerCoords.setX(270);
-		this.playerCoords.setY(330);
 		
 		((DoppelungGameView)view).showShortVowelGame(this.playerID,
 														this.numberOfPlayers, 
-														playerCoords.getX(), 
-														playerCoords.getY());
+														270, 
+														330);
 		
 		initializeMovingConsonantList(word, g);
 
