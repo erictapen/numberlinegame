@@ -30,6 +30,8 @@ public abstract class GameCoordinator {
 	protected GameTypeSelector gts;
 
 	private int refreshIntervall;
+	protected long latency = 0;
+	private long timeStamp = 0;
 	
 	
 	/**
@@ -155,7 +157,7 @@ public abstract class GameCoordinator {
 	 */
 
 	protected void update() {
-
+		timeStamp = System.currentTimeMillis();
 		if (this.view != null) {
 			commServ.update(Integer.toString(this.openGame.getId()) + ":" + Integer.toString(this.playerID), updateCallback);
 		}
@@ -240,15 +242,15 @@ public abstract class GameCoordinator {
 	};
 
 	protected AsyncCallback<GameState> updateCallback = new AsyncCallback<GameState>() {
-
+		
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			latency = System.currentTimeMillis() -  timeStamp;
 		}
 
 		@Override
 		public void onSuccess(GameState result) {
-
+			latency = System.currentTimeMillis() -  timeStamp;
 			updateGame(result);
 
 		}

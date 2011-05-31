@@ -4,6 +4,12 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
 
+/**
+ * Service interface for the doppelung game
+ * 
+ * @author shuber
+ *
+ */
 @RemoteServiceRelativePath("doppelungGameCommunication")
 
 public interface DoppelungGameCommunicationService extends
