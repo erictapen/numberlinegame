@@ -261,7 +261,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 			break;
 		case 97:
-			HighScoreView h = new HighScoreView(openGame.getPlayers(),DoppelungGameView.playerColors);
+			HighScoreView h = new HighScoreView(g.getPlayers(),DoppelungGameView.playerColors);
 			rootPanel.clear();
 			h.init(rootPanel);
 			break;

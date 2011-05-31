@@ -13,6 +13,7 @@ import com.allen_sauer.gwt.voices.client.SoundController;
 public class SoundRetriever {
 
 	public static Sound getSound(SoundController sc, String word){
+		sc.setDefaultVolume(100);
 		if (word.equals("Hammer"))
 			return sc.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM, "doppelungGame/soundFiles/Hammer.wav");
 		if (word.equals("Fehler"))

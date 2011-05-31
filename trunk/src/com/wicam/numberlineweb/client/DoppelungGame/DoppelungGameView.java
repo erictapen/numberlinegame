@@ -68,7 +68,15 @@ public class DoppelungGameView extends GameView {
 		//draw everthing
 		gamePanel.getElement().getStyle().setPosition(Position.RELATIVE);
 
-		explanationText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Erklärung</div>");
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
+								"<p>" + 
+								"<div style='padding:5px 20px;font-size:20px'>Im folgenden Spiel wirst du Wörter mit kurzem und langem Vokal hören. Deine Aufgabe" +
+								" besteht darin zu erkennen, ob das Wort einen kurzen oder langen Vokal hat. " +
+								"Wenn das Wort einen kurzen Vokal hat, dann drückst du mit der Maustaste auf das linke " +
+								"Symbol, wenn es einen langen Vokal hat, dann auf das rechte Symbol. Wenn das Wort einen " +
+								"kurzen Vokal hatte, folgt einen kleines Minispiel, in dem du die Konsonanten nach dem " +
+								" nach dem kurzem Vokal einsammeln sollst. Zum Beispiel bei Fluss, musst du \"ss\" einsammeln." +
+								" Das Symbol wird über die Pfeiltasten gesteuert.</div>");
 		startGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
