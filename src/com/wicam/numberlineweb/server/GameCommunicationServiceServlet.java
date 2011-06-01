@@ -344,12 +344,17 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 
 		final int player = Integer.parseInt(ids.split(":")[1]);
 		final int id = Integer.parseInt(ids.split(":")[0]);
+		final int pingid = Integer.parseInt(ids.split(":")[2]);
 
 		resetUpdateTimer(player, id);
 
 		//we only want to create network traffic is something has changes
 		if (!this.isUpToDate(id,player)) {
 			setUpToDate(id,player);
+			
+			GameState g = getGameById(id);
+			
+			g.setPingId(pingid);
 			return getGameById(id);
 		}else{
 			//otherwise, just send null

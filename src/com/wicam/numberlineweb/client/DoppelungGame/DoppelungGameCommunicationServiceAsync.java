@@ -18,9 +18,7 @@ public interface DoppelungGameCommunicationServiceAsync extends GameCommunicatio
 	public void updatePoints(String ids, AsyncCallback<GameState> callback);
 	
 	public void wordEntered(String ids, AsyncCallback<GameState> callback);
-	
-	public void keyEvent(String ids, AsyncCallback<DoppelungGameState> callback);
-	
+		
 	public void enableWordInput(String ids, AsyncCallback<GameState> callback);
 	
 	public void updatePlayerPos(String ids, AsyncCallback<Boolean> callback);

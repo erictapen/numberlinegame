@@ -1,19 +1,27 @@
 package com.wicam.numberlineweb.client.DoppelungGame;
 
+import com.google.gwt.core.client.GWT;
+
 public class EnemyMoveTask extends AnimationTimerTask {
 	
-	private int spaceSpeed;
+	private int spaceSpeedX;
+	private int spaceSpeedY;
 	private DoppelungGameCoordinator coordinator;
 	private int toX;
 	private int toY;
 	
 	public EnemyMoveTask(DoppelungGameCoordinator coordinator){
 		this.coordinator = coordinator;
-		this.spaceSpeed = 6;
+		this.spaceSpeedX = 6;
+		this.spaceSpeedY = 6;
 	}
 
-	public void setSpaceSpeed(int spaceSpeed){
-		this.spaceSpeed = spaceSpeed;
+	public void setSpaceSpeedX(int spaceSpeed){
+		this.spaceSpeedX = spaceSpeed;
+	}
+	
+	public void setSpaceSpeedY(int spaceSpeed){
+		this.spaceSpeedY = spaceSpeed;
 	}
 	
 	public void setToX(int x){
@@ -26,16 +34,25 @@ public class EnemyMoveTask extends AnimationTimerTask {
 	
 	@Override
 	public void run() {
+		
+		
+		
 		int x = coordinator.getEnemyImageX();
 		int y = coordinator.getEnemyImageY();
-		if (y + spaceSpeed < toY)
-			y = y + spaceSpeed;
+		if ((spaceSpeedY >= 0 && y + spaceSpeedY < (toY)) ||
+		(spaceSpeedY < 0 && y + spaceSpeedY > (toY)))
+			y = y + spaceSpeedY;
 		else
 			y = toY;	
-		if (x + spaceSpeed < toX)
-			x = x + spaceSpeed;
+		if ((spaceSpeedX >= 0 && x + spaceSpeedX < (toX)) ||
+				(spaceSpeedX < 0 && x + spaceSpeedX > (toX)))
+			x = x + spaceSpeedX;
 		else
 			x = toX;
+		
+		
 		coordinator.makeEnemyMove(x, y);
+		
+		if (x==toX && y==toY) this.markForDelete();
 	}
 }
