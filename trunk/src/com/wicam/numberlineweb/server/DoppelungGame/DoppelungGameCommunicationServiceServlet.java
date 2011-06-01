@@ -24,7 +24,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 	private static final long serialVersionUID = 7200332323767902482L;
 	
 	private int TIMER_SPEED = 40;
-	private int SPACE_SPEED = 6;
+	private int SPACE_SPEED = 2;
 	private Timer mcTimer = null;
 	HashMap<Integer,Iterator<DoppelungGameWord>> wordLists = new HashMap<Integer,Iterator<DoppelungGameWord>>();
 	
@@ -68,9 +68,24 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int bottonid = Integer.parseInt(ids.split(":")[2]);
 		
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		Timer t = new Timer();
+		mcTimer = new Timer();
+		
+		//TODO: TESTING
+		/**
+		initializeMovingConsonantsPoints(gameid);
+		t.schedule(new SetGameStateTask(gameid, 5, this), 3000);
+		
+		return g;
+		**/
+		//TODO: END TESTING
+		
+		
 		g.setShowSoundFeedback(playerid, true);
 		g.incSoundTries(playerid);
 		
+
 		// short vowel
 		if (g.getCurWord().isShortVowel())
 			if (bottonid == DoppelungGameController.SHORTVOWELBUTTON)
@@ -84,8 +99,6 @@ public class DoppelungGameCommunicationServiceServlet extends
 			else
 				g.setAnswer(playerid,false);
 		
-		Timer t = new Timer();
-		mcTimer = new Timer();
 		
 		// next step if correct answer or already tried once
 		if (g.hasCorrectlyAnswered(playerid) || g.getSoundTries(playerid) >= 2){
@@ -132,6 +145,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		}
 		
 		return g;
+	
 		
 	}
 	
@@ -224,54 +238,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		return g;
 	}
 
-	@Override
-	public DoppelungGameState keyEvent(String ids) {
-		int gameid = Integer.parseInt(ids.split(":")[0]);
-		int playerid = Integer.parseInt(ids.split(":")[1]);
-		String event = ids.split(":")[2];
-		int keyCode = Integer.parseInt( ids.split(":")[3]);
-		
-		if (event.equals("stop")) {
-			
-			((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "stop");
-			
-		}
-		
-		if (event.equals("down")) {
-		
-		switch(keyCode){
-
-			case KeyCodes.KEY_DOWN:
 	
-				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "down");
-				break;
-			case KeyCodes.KEY_RIGHT:
-			
-				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid, "right");
-	
-				break;
-			case KeyCodes.KEY_UP:
-		
-				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid,"up");
-	
-				break;
-			case KeyCodes.KEY_LEFT:
-			
-				((DoppelungGameState)this.getGameById(gameid)).setEnemyMovingTo(playerid,"left");
-	
-				break;
-			
-			}
-		}
-		
-		
-		
-		System.out.println("Player #" + playerid + " in game #" + gameid + " '" + event + "'ed " + keyCode);
-		
-		this.setChanged(gameid);
-		return ((DoppelungGameState)this.getGameById(gameid));
-	}
-
 	@Override
 	public GameState enableWordInput(String ids) {
 		int gameid = Integer.parseInt(ids.split(":")[0]);
@@ -298,9 +265,12 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int x = Integer.parseInt(ids.split(":")[2]);
 		int y = Integer.parseInt(ids.split(":")[3]);
+		
+		System.out.println("Player " + playerid + " says: i'm @ " + x +"," + y);
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 		g.setPlayerPosX(playerid, x);
 		g.setPlayerPosY(playerid, y);
+		this.setChanged(gameid);
 		return true;
 	}
 }

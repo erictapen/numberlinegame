@@ -1,6 +1,12 @@
 package com.wicam.numberlineweb.client;
 
+import java.util.AbstractQueue;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
@@ -31,7 +37,10 @@ public abstract class GameCoordinator {
 
 	private int refreshIntervall;
 	protected long latency = 0;
+	protected long averageLatency=0;
+	private Queue<Long> lastTenLatencies = new LinkedList<Long>();
 	private long timeStamp = 0;
+	private HashMap<Long,Long> pingTimes= new HashMap<Long,Long>();
 	
 	
 	/**
@@ -46,6 +55,7 @@ public abstract class GameCoordinator {
 		this.chatCommServ = chatCommServ;
 		this.rootPanel = root;
 		this.gts=gts;
+	
 
 	}
 	
@@ -157,9 +167,14 @@ public abstract class GameCoordinator {
 	 */
 
 	protected void update() {
+		
+		long id = (long) Math.random() * 500000;
+		
+		pingTimes.put(id, System.currentTimeMillis());
+		
 		timeStamp = System.currentTimeMillis();
 		if (this.view != null) {
-			commServ.update(Integer.toString(this.openGame.getId()) + ":" + Integer.toString(this.playerID), updateCallback);
+			commServ.update(Integer.toString(this.openGame.getId()) + ":" + Integer.toString(this.playerID) + ":" + id, updateCallback);
 		}
 	}
 	
@@ -212,6 +227,25 @@ public abstract class GameCoordinator {
 
 	}
 	
+	public void calcAverageLatency() {
+		
+		
+		Iterator<Long> it = lastTenLatencies.iterator();
+		
+		long temp= 0;
+		
+		while(it.hasNext()) {
+			
+			temp+=it.next();
+			
+		}
+		
+		averageLatency = temp / ((long) lastTenLatencies.size());
+		
+		GWT.log(Long.toString(averageLatency));
+		
+	}
+	
 	
 	public String escapeString(String str) {
 
@@ -245,13 +279,26 @@ public abstract class GameCoordinator {
 		
 		@Override
 		public void onFailure(Throwable caught) {
-			latency = System.currentTimeMillis() -  timeStamp;
+				
+			
 		}
 
 		@Override
 		public void onSuccess(GameState result) {
-			latency = System.currentTimeMillis() -  timeStamp;
-			updateGame(result);
+			
+			if (result != null) {
+			
+				if (pingTimes.containsKey(result.getPingId())) {
+					latency = System.currentTimeMillis() -  pingTimes.get(result.getPingId());
+					
+					GWT.log("ping: " + Long.toString(latency) + "ms (average: " + averageLatency + "ms)");
+				}
+				updateGame(result);
+				
+				lastTenLatencies.add(latency);
+				if (lastTenLatencies.size()>10) lastTenLatencies.poll();
+				calcAverageLatency();
+			}
 
 		}
 
