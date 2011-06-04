@@ -10,6 +10,8 @@ public abstract class GameState implements IsSerializable{
 	private int gameId;
 	private int state = -1;
 	
+	private long serverSendTime = 0;
+	
 	private long pingId = -1;
 
 
@@ -79,6 +81,14 @@ public abstract class GameState implements IsSerializable{
 		if (playerid-1 < players.size())
 			return players.get(playerid-1).getName();
 		return null;
+	}
+
+	public long getServerSendTime() {
+		return serverSendTime;
+	}
+
+	public void setServerSendTime(long serverSendTime) {
+		this.serverSendTime = serverSendTime;
 	}
 
 	public void setPlayerPoints(int playerid,int to) {

@@ -143,7 +143,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		else{
 			t.schedule(new ResetSoundFeedbackStateTask(gameid,playerid,3,this), 3000);
 		}
-		
+		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	
 		
@@ -193,6 +193,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		
 		g.setPlayerPoints(playerid, newPoints);
 		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
+		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
 
@@ -234,7 +235,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 		else {
 			t.schedule(new ResetWordFeedbackStateTask(gameid, playerid, 6, this), 3000);
 		}
-		
+		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
 
@@ -256,21 +257,32 @@ public class DoppelungGameCommunicationServiceServlet extends
 			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
 			this.setChanged(gameid);
 		}
+		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
 
 	@Override
-	public Boolean updatePlayerPos(String ids) {
+	public GameState updatePlayerPos(String ids) {
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int x = Integer.parseInt(ids.split(":")[2]);
 		int y = Integer.parseInt(ids.split(":")[3]);
+		int pingid = Integer.parseInt(ids.split(":")[4]);
 		
 		System.out.println("Player " + playerid + " says: i'm @ " + x +"," + y);
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 		g.setPlayerPosX(playerid, x);
 		g.setPlayerPosY(playerid, y);
 		this.setChanged(gameid);
-		return true;
+		g.setServerSendTime(System.currentTimeMillis());
+	
+		
+		g.setPingId(pingid);
+		
+		setUpToDate(gameid,playerid);
+		super.resetUpdateTimer(playerid, gameid);
+		
+		
+		return g;
 	}
 }

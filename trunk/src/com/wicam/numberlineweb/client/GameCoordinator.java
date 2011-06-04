@@ -34,13 +34,14 @@ public abstract class GameCoordinator {
 	protected int numberOfNPCs;
 	protected int playerID;
 	protected GameTypeSelector gts;
+	protected long lastServerSendTime=-1;
 
 	private int refreshIntervall;
 	protected long latency = 0;
 	protected long averageLatency=0;
-	private Queue<Long> lastTenLatencies = new LinkedList<Long>();
-	private long timeStamp = 0;
-	private HashMap<Long,Long> pingTimes= new HashMap<Long,Long>();
+	protected Queue<Long> lastTenLatencies = new LinkedList<Long>();
+	protected long timeStamp = 0;
+	protected HashMap<Long,Long> pingTimes= new HashMap<Long,Long>();
 	
 	
 	/**
@@ -179,7 +180,7 @@ public abstract class GameCoordinator {
 	}
 	
 	/**
-	 * refreshes the game list. Callback will redraw list
+	 * refreshes the game lis Callback will redraw list
 	 */
 
 	public void refreshGameList() {
@@ -269,7 +270,18 @@ public abstract class GameCoordinator {
 		public void onSuccess(GameState result) {
 
 			openedGame = result;
-			commServ.getOpenGames(openGamesAndJoinCallback);	
+			if (result.getServerSendTime() > lastServerSendTime) {
+				
+				lastServerSendTime = result.getServerSendTime();
+				commServ.getOpenGames(openGamesAndJoinCallback);	
+			
+			}else{
+				
+				GWT.log("Received an outlived game state, ignoring...");
+				return;
+				
+			}
+			
 
 		}
 
@@ -293,7 +305,20 @@ public abstract class GameCoordinator {
 					
 					GWT.log("ping: " + Long.toString(latency) + "ms (average: " + averageLatency + "ms)");
 				}
-				updateGame(result);
+				
+				if (result.getServerSendTime() >= lastServerSendTime) {
+					
+					updateGame(result);
+					lastServerSendTime = result.getServerSendTime();
+					
+				
+				}else{
+					
+					GWT.log("Received an outlived game state, ignoring...");
+									
+				}
+				
+				
 				
 				lastTenLatencies.add(latency);
 				if (lastTenLatencies.size()>10) lastTenLatencies.poll();
@@ -348,7 +373,6 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onSuccess(ArrayList<GameState> result) {
-
 
 			gameSelector.setGameList(result);
 		}

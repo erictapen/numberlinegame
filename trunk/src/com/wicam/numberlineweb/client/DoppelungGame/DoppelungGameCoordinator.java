@@ -41,6 +41,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private AnimationTimer aniTimer = new AnimationTimer();
 	// SoundController for playing sound files
 	private SoundController soundController = new SoundController();
+	private Timer updateMyPositionTimer;
+	
+	private static int POSITION_TIMER_INTERVALL = 150;
+	
 
 	// position of the enemy short vowel image
 	private int enemyImageX = 270;
@@ -115,7 +119,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		DoppelungGameView gameView =  (DoppelungGameView) view;
 		//we already have the lates state
 		if (g==null) return;
-
+		
+		
 		switch (g.getState()) {
 
 		//game closed
@@ -204,17 +209,15 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				enemyImageX = 270;
 				enemyImageY = 330;				
 				enemyMoveTask = new EnemyMoveTask(this);
-				updateMyPosition();
-
-			
+											
 				makeEnemyMove(enemyImageX, enemyImageY);
 			}
-			int timeInterval = 250;
-			setRefreshRate(timeInterval);
+			
+		
 			updateMovingConsonantsPosition(gameView, 
 											this.movingConsonantsList, 
 											g.getMovingConsonantsCoords(), 
-											(timeInterval+(int)averageLatency));
+											(POSITION_TIMER_INTERVALL+(int)averageLatency));
 		
 			if (g.getPlayerCount() > 1){
 				
@@ -223,8 +226,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				
 				this.enemyMoveTask.setToX(g.getPlayerPosX(playerID%2+1));
 				this.enemyMoveTask.setToY(g.getPlayerPosY(playerID%2+1));
-				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/((timeInterval+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
-				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/((timeInterval+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
+				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
+				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
 				this.enemyMoveTask.setSpaceSpeedX(speedX);
 				this.enemyMoveTask.setSpaceSpeedY(speedY);
 				registerAniTask(enemyMoveTask);
@@ -337,11 +340,19 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	
 	private void updateMyPosition() {
 		
+		
+		long id = (long) Math.random() * 500000;
+		
+		super.pingTimes.put(id, System.currentTimeMillis());
+		
+		super.timeStamp = System.currentTimeMillis();
+		
+		
 		((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerPos(this.openGame.getId() + ":" + 
 				this.playerID + ":" +
 				((DoppelungGameView)view).getShortVowelImagePosition()[0] + ":" +
-				((DoppelungGameView)view).getShortVowelImagePosition()[1],
-				dummyCallback);
+				((DoppelungGameView)view).getShortVowelImagePosition()[1] + ":" + id,
+				updateCallback);
 		
 		
 	}
@@ -359,11 +370,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	 * Animation tasks will later be registered in the animation timer.
 	 * a task exists for every direction the player can move.
 	 */
-	private AnimationTimerTask updateTask = new AnimationTimerTask() {
+	private AnimationTimerTask updatePositionTask = new AnimationTimerTask() {
 		
 		@Override
 		public void run() {
-			update();
+			updateMyPosition();
 		}
 		
 	};
@@ -374,7 +385,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		@Override
 		public void run() {
 			((DoppelungGameView)view).moveStepLeft(true);
-			updateMyPosition();
+			//updateMyPosition();
 		}
 
 	};
@@ -385,7 +396,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		public void run() {
 
 			((DoppelungGameView)view).moveStepRight(true);
-			updateMyPosition();
+			//updateMyPosition();
 		}
 
 	};
@@ -396,7 +407,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		public void run() {
 
 			((DoppelungGameView)view).moveStepUp(true);
-			updateMyPosition();
+			//updateMyPosition();
 
 		}
 
@@ -408,7 +419,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		public void run() {
 			
 			((DoppelungGameView)view).moveStepDown(true);
-			updateMyPosition();
+			//updateMyPosition();
 
 		}
 
@@ -643,13 +654,18 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		moveRightTask.markForDelete();
 		moveUpTask.markForDelete();
 		moveDownTask.markForDelete();
-		
+		updatePositionTask.markForDelete();
 		enemyMoveTask.markForDelete();
 				
 		keyUpDown = false;
 		keyDownDown = false;
 		keyLeftDown = false;
 		keyRightDown = false;
+		
+		GWT.log("canceled updateMyPositionTimer, started standard update timer again..");
+		updateMyPositionTimer.cancel();
+		t.scheduleRepeating(200);
+		
 
 	}
 
@@ -741,7 +757,17 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		
 		initializeMovingConsonantList(word, g);
 
-
+		GWT.log("cancelled normal timer, starded updateMyPositionTimer...");
+		
+		t.cancel();
+		
+		updateMyPositionTimer = new Timer() {
+			public void run() {
+				updateMyPosition();
+			}
+		};
+		
+		updateMyPositionTimer.scheduleRepeating(POSITION_TIMER_INTERVALL);
 
 	}
 

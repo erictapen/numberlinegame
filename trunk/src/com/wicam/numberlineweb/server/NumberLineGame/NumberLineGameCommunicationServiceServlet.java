@@ -161,6 +161,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 				this.startGame(gameid);
 		}
 
+		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
 
@@ -199,6 +200,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 
 		((NumberLineGameState) g).setPointerWidth(14);
 		
+		g.setServerSendTime(System.currentTimeMillis());
 		return super.openGame(g);
 		
 

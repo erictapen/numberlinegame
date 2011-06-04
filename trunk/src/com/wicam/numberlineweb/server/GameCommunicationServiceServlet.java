@@ -222,7 +222,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 	}
 
 
-	private void resetUpdateTimer(int player, int game) {
+	protected void resetUpdateTimer(int player, int game) {
 
 
 
@@ -348,14 +348,18 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 
 		resetUpdateTimer(player, id);
 
-		//we only want to create network traffic is something has changes
+		//we only want to create network traffic if something has changed
 		if (!this.isUpToDate(id,player)) {
 			setUpToDate(id,player);
 			
 			GameState g = getGameById(id);
 			
+			//tell the client when this state was sent to prevent asynchronous
+			//processing
+			g.setServerSendTime(System.currentTimeMillis());
+			
 			g.setPingId(pingid);
-			return getGameById(id);
+			return g;
 		}else{
 			//otherwise, just send null
 			return null;
@@ -378,6 +382,8 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 			if (!g.isPlayerReady(i+1))
 				allReady = false;
 		}
+		
+		if (g.getMaxNumberOfPlayers() > g.getPlayers().size()) allReady = false;
 		
 		if (allReady) setGameState(g, 3);
 
