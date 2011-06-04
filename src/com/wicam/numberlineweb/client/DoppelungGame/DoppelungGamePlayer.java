@@ -11,8 +11,8 @@ public class DoppelungGamePlayer extends Player {
 	private boolean showSoundFeedback = false;
 	private boolean showWordFeedback = false;
 	private boolean endedShortVowelGame = false;
-	private int posX = 0;
-	private int posY = 0;
+	private int posX = 270;
+	private int posY = 330;
 
 	public void setStartButtonClicked(boolean startButtonClicked) {
 		this.startButtonClicked = startButtonClicked;

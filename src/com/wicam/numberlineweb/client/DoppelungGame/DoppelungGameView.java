@@ -40,7 +40,7 @@ public class DoppelungGameView extends GameView {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	
 	protected final Button startGameButton = new Button("Spiel Starten");
-	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.jpg", 270, 330);
+	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.png", 270, 330);
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 	
@@ -141,12 +141,12 @@ public class DoppelungGameView extends GameView {
 	
 	public void initializeMovingShortVowelImages(int playerid){
 		if (playerid == 1){
-			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.jpg", 270, 330);
-			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.jpg", 270, 330);
+			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
 		}
 		if (playerid == 2){
-			movingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.jpg", 270, 330);
-			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.jpg", 270, 330);
+			movingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
 		}
 	}
 
@@ -432,6 +432,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
 		movingShortVowelImage.setX(startX);
 		movingShortVowelImage.setY(startY);
+
 		
 		GWT.log(Integer.toString(players));
 		
@@ -542,6 +543,8 @@ public class DoppelungGameView extends GameView {
 	}
 	
 	public void moveEnemyTo(int x, int y) {
+		
+		GWT.log("moving enemy to " + x + ":" + y);
 		
 	    ShortVowelImage image = enemyMovingShortVowelImage;
 
