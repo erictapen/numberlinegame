@@ -308,9 +308,9 @@ public abstract class GameCoordinator {
 				
 				if (result.getServerSendTime() >= lastServerSendTime) {
 					
-					updateGame(result);
 					lastServerSendTime = result.getServerSendTime();
-					
+					updateGame(result);
+									
 				
 				}else{
 					
