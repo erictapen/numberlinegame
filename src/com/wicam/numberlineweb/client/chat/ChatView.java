@@ -48,7 +48,7 @@ public class ChatView extends Composite{
 		tb.setWidth((boxWidth-100) + "px");
 		ta.setReadOnly(true);
 		ta.addStyleName("chatwindow");
-		
+				
 		ta.addClickHandler(new ClickHandler() {
 
 			@Override

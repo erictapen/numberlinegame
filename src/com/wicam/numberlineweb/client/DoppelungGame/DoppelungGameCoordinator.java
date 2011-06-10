@@ -43,7 +43,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private SoundController soundController = new SoundController();
 	private Timer updateMyPositionTimer;
 	
-	private static int POSITION_TIMER_INTERVALL = 150;
+	private static int POSITION_TIMER_INTERVALL = 50;
 	
 
 	// position of the enemy short vowel image
@@ -138,7 +138,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
-			// TODO: wait for second player
+			if (g.isPlayerReady(this.playerID)){
+				// other player ready ?
+				
+					gameView.clearGamePanel();
+					gameView.showWaitingForOtherPlayer("Warte auf zweiten Spieler...");
+				
+			}
 			break;
 			//awaiting start
 		case 2:
@@ -149,10 +155,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 			if (g.isPlayerReady(this.playerID)){
 				// other player ready ?
-				if (g.getPlayerCount() > 1 && !g.isPlayerReady(this.playerID%2+1)){
+				
 					gameView.clearGamePanel();
-					gameView.showWaitingForOtherPlayer();
-				}
+					gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
+				
 			}
 			setRefreshRate(1000);
 			break;
@@ -209,6 +215,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				enemyImageX = 270;
 				enemyImageY = 330;				
 				enemyMoveTask = new EnemyMoveTask(this);
+				registerAniTask(enemyMoveTask);
 											
 				makeEnemyMove(enemyImageX, enemyImageY);
 			}
@@ -221,17 +228,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		
 			if (g.getPlayerCount() > 1){
 				
-				enemyMoveTask.markForDelete();
-				enemyMoveTask = new EnemyMoveTask(this);
-				
 				this.enemyMoveTask.setToX(g.getPlayerPosX(playerID%2+1));
 				this.enemyMoveTask.setToY(g.getPlayerPosY(playerID%2+1));
 				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
 				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
 				this.enemyMoveTask.setSpaceSpeedX(speedX);
 				this.enemyMoveTask.setSpaceSpeedY(speedY);
-				registerAniTask(enemyMoveTask);
-				
+						
 			}
 				
 			removeMarkedMc(g);
@@ -773,7 +776,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	public void startButtonClicked(){
 		if (!openGame.isPlayerReady(this.playerID)) {
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
 	}
 

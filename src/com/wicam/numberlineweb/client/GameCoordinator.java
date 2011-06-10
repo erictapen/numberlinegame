@@ -243,7 +243,7 @@ public abstract class GameCoordinator {
 		
 		averageLatency = temp / ((long) lastTenLatencies.size());
 		
-		GWT.log(Long.toString(averageLatency));
+		RootPanel.get("ping_view").getElement().setInnerHTML("Latency: " + averageLatency + " ms");
 		
 	}
 	

@@ -290,8 +290,8 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
 	
-	public void showWaitingForOtherPlayer(){
-		feedBackText.setHTML("<div style='font-size:25px'>Warte auf anderen Spieler!</div>");
+	public void showWaitingForOtherPlayer(String msg){
+		feedBackText.setHTML("<div style='font-size:25px'>" + msg + "</div>");
 		gamePanel.add(feedBackText);
 		gamePanel.setWidgetPosition(feedBackText, 150, 180);
 	}

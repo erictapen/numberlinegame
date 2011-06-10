@@ -83,7 +83,7 @@ body {
 
 #chatwrap {
 	visibility: hidden;
-	margin-top: 20px :
+	margin-top: 10px !important ;
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
