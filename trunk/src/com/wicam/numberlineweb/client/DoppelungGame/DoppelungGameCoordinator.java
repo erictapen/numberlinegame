@@ -43,7 +43,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private SoundController soundController = new SoundController();
 	private Timer updateMyPositionTimer;
 	
-	private static int POSITION_TIMER_INTERVALL = 50;
+	private static int POSITION_TIMER_INTERVALL = 70;
 	
 
 	// position of the enemy short vowel image
