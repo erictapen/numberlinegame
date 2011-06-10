@@ -383,6 +383,7 @@ public class GameCommunicationServiceServlet extends RemoteServiceServlet implem
 				allReady = false;
 		}
 		
+		//we cant be ready if game isnt full yet
 		if (g.getMaxNumberOfPlayers() > g.getPlayers().size()) allReady = false;
 		
 		if (allReady) setGameState(g, 3);

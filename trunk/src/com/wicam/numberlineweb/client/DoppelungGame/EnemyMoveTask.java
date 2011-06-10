@@ -53,6 +53,5 @@ public class EnemyMoveTask extends AnimationTimerTask {
 		
 		coordinator.makeEnemyMove(x, y);
 		
-		if (x==toX && y==toY) this.markForDelete();
 	}
 }
