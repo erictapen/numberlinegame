@@ -70,13 +70,20 @@ public class DoppelungGameView extends GameView {
 
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
 								"<p>" + 
-								"<div style='padding:5px 20px;font-size:20px'>Im folgenden Spiel wirst du Wörter mit kurzem und langem Vokal hören. Deine Aufgabe" +
-								" besteht darin zu erkennen, ob das Wort einen kurzen oder langen Vokal hat. " +
-								"Wenn das Wort einen kurzen Vokal hat, dann drückst du mit der Maustaste auf das linke " +
-								"Symbol, wenn es einen langen Vokal hat, dann auf das rechte Symbol. Wenn das Wort einen " +
-								"kurzen Vokal hatte, folgt einen kleines Minispiel, in dem du die Konsonanten nach dem " +
-								" nach dem kurzem Vokal einsammeln sollst. Zum Beispiel bei Fluss, musst du \"ss\" einsammeln." +
-								" Das Symbol wird über die Pfeiltasten gesteuert.</div>");
+								"<div style='padding:5px 20px;font-size:18px'>" + "" +
+								"In diesem Spiel übst du die Doppelung von Konsonanten. " +
+								"Häufig wird ein Konsonant nach einem kurzen Vokal verdoppelt. " +
+								"Deshalb besteht deine Aufgabe erst einmal darin zu erkennen, " +
+								"ob sich ein Vokal lang oder kurz anhört. Um das zu tun, musst" +
+								" du gut zuhören, welches Wort der Computer abspielt. Wenn sich der " +
+								"Vokal lang anhört, klicke mit der Maus auf das rechte Symbol. " +
+								"Wenn sich der Vokal kurz anhört, klicke auf das linke Symbol. " +
+								"Nach kurzen Vokalen  öffnet sich ein Minispiel, in dem du die " +
+								"Konsonantenpaare einsammeln sollst, die in dem Wort, das du gerade " +
+								"gehört hast verdoppelt werden. Bei „Fluss“ sollst du zum Beispiel die " +
+								"„ss“ einsammeln. Pass gut auf, dass du keine anderen Konsonantenpaare " +
+								"berührst und steuere das Symbol mit den Pfeiltasten." + 
+								"</div>");
 		startGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
