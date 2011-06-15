@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class DoppelungGameView extends GameView {
 
-	private DoppelungGameController doppelungGameController;
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
 	private final AbsolutePanel gamePanel = new AbsolutePanel();
 	private final AbsolutePanel pointsPanel = new AbsolutePanel();
@@ -55,8 +54,7 @@ public class DoppelungGameView extends GameView {
 
 	
 	public DoppelungGameView(int numberOfPlayers, DoppelungGameController doppelungGameController) {
-		super(numberOfPlayers);
-		this.doppelungGameController = doppelungGameController;
+		super(numberOfPlayers, doppelungGameController);
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
@@ -65,6 +63,8 @@ public class DoppelungGameView extends GameView {
 
 	private void init() {
 
+		final DoppelungGameController doppelungGameController = (DoppelungGameController) gameController;
+		
 		//draw everthing
 		gamePanel.getElement().getStyle().setPosition(Position.RELATIVE);
 

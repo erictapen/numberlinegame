@@ -8,7 +8,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
 
-public class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
+public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
 	/**
 	 * 
