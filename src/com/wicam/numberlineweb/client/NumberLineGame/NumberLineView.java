@@ -38,7 +38,6 @@ public class NumberLineView extends GameView  {
 	final HTML infoText = new HTML();
 	final HTML exerciseText = new HTML();
 	final HTML infoBox = new HTML();
-	private MouseHandler mouseHandler;
 
 	private int leftNumber;
 	private int rightNumber;
@@ -55,7 +54,7 @@ public class NumberLineView extends GameView  {
 
 	public void addMouseHandler(MouseHandler h) {
 
-		this.mouseHandler = h;
+		this.gameController = (NumberLineController)h;
 
 	}
 
@@ -217,6 +216,7 @@ public class NumberLineView extends GameView  {
 
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
+		NumberLineController mouseHandler = (NumberLineController) gameController;
 		if (mouseHandler != null) {
 			int x = event.getClientX() - getAbsoluteLeft();
 			int y = event.getClientY() - getAbsoluteTop();
