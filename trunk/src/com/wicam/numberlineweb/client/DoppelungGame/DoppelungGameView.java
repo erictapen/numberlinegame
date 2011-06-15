@@ -44,7 +44,7 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 	
 	
-	protected final Image feedbackImage = new Image("doppelungGame/beide_daumen.gif");
+	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
 	
 	protected final Image longVowelImage = new Image("doppelungGame/ziehen1.jpg");
 	private final FocusPanel focusPanel = new FocusPanel();
