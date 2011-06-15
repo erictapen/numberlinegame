@@ -82,20 +82,6 @@ public class NumberLineWeb implements EntryPoint {
 				coordinator.init();
 			}
 		});
-	
-		//adds the facts game
-		gts.addGame("Faktenspiel", "", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-
-				commService = (FactsGameCommunicationServiceAsync) GWT.create(FactsGameCommunicationService.class);
-				coordinator = new FactsGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
