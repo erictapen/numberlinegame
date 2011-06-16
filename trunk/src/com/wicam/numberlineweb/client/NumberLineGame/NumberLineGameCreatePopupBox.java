@@ -18,7 +18,6 @@ public class NumberLineGameCreatePopupBox extends com.wicam.numberlineweb.client
 		
 		super(msg,def);
 		
-		playerCount.addItem("2");
 		playerCount.addItem("3");
 		playerCount.addItem("4");
 		playerCount.addItem("5");
@@ -52,13 +51,13 @@ public class NumberLineGameCreatePopupBox extends com.wicam.numberlineweb.client
 		possibleRanges.addItem("zweistellig");
 		possibleRanges.addItem("dreistellig");
 		
-		HorizontalPanel f = new HorizontalPanel();
+		/*HorizontalPanel f = new HorizontalPanel();
 		f.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		f.setSpacing(5);
 		f.add(new HTML("Anzahl Spieler: "));
 		f.add(playerCount);
 		
-		super.p.add(f);
+		super.p.add(f);*/
 		
 		HorizontalPanel g = new HorizontalPanel();
 		g.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
