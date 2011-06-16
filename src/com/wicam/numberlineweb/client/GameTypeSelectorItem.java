@@ -1,6 +1,8 @@
 package com.wicam.numberlineweb.client;
 
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTML;
 
 /**
@@ -14,6 +16,8 @@ public class GameTypeSelectorItem extends HTML{
 	private String img = "";
 	private String desc = "";
 	private String title = "";
+	
+	private GameItemStarter s;
 
 
 	private void builtHTML() {
@@ -45,6 +49,36 @@ public class GameTypeSelectorItem extends HTML{
 
 		this.title=title;
 		builtHTML();
+	}
+	
+	public String getTitle() {
+
+		return title;
+	}
+	
+	
+	public void setStarter(final GameItemStarter s) {
+		
+		this.s=s;
+		
+		this.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				start();
+				
+			}
+			
+		});
+		
+		
+	}
+	
+	public void start() {
+		
+		s.run();
+		
+		
 	}
 
 

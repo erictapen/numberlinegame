@@ -33,6 +33,11 @@ public class TextPopupBox extends DialogBox {
 	public TextPopupBox(String request, String value) {
 
 		this();
+		
+		super.setAnimationEnabled(true);
+		super.setAutoHideOnHistoryEventsEnabled(true);
+		
+		
 		setText(request);
 		text.setValue(value);	
 

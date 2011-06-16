@@ -28,7 +28,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 	@Override
 	public String getGameName() {
 
-		return "NumberLine";
+		return "NumberLineGame";
 
 	}
 	
@@ -79,6 +79,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 
 	protected void joinedGame(int playerID, int gameID) {
 
+		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
 
 		//construct game
@@ -243,7 +244,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 			break;
 			
 		case 98:
-			closeGame(g);
+			closeGame();
 			break;
 			
 		case 99:
@@ -255,7 +256,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 				
 				Player current = i.next();
 				
-				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
+				if (current.hasLeftGame()) {
 					
 					gameView.setInfoText(current.getName() + " hat das Spiel verlassen");
 					gameView.deletePlayerFromPointList(g.getPlayers().indexOf(current)+1);

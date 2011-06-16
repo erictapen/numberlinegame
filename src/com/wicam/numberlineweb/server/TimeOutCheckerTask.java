@@ -49,7 +49,7 @@ public class TimeOutCheckerTask extends TimerTask {
 
 			TimeOutState current = i.next();
 
-			if (!current.countDown()) {
+			if (!current.countDown() && !gameComm.getGameById(current.getGameId()).hasPlayerLeft(current.getPlayerId())) {
 
 				timeOutStates.remove(current);
 				gameComm.timeOutListUnLock();

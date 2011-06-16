@@ -36,7 +36,7 @@ public class NumberLineView extends GameView  {
 	ArrayList<NumberLineGamePointer> pointerList = new ArrayList<NumberLineGamePointer>();
 	final NumberLineGamePointer correctPositionPointer = new NumberLineGamePointer(6, 50,"Chartreuse");
 	final HTML infoText = new HTML();
-	final HTML exerciseText = new HTML();
+	final NumberLineExercise exerciseText = new NumberLineExercise();
 	final HTML infoBox = new HTML();
 
 	private int leftNumber;
@@ -78,15 +78,15 @@ public class NumberLineView extends GameView  {
 		p.add(new HTML("<div style='border:none; background-color:black;width:6px;height:28px;overflow:hidden;position:absolute;left:97px;top:181px'></div>"));
 		p.add(new HTML("<div style='border:none; background-color:black;width:6px;height:28px;overflow:hidden;position:absolute;left:497px;top:181px'></div>"));
 
-		exerciseText.setHTML("<div id='exercise' style='border:solid black 4px;padding:5px 20px;font-size:25px'>---</div>");
+	
 		infoBox.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Awaiting Signal...</div>");
 
 		HTML c = new HTML("<div id='canvas' style='width:600px;height:400px'></div>");
 
 		p.add(exerciseText);
-
-		p.setWidgetPosition(exerciseText, 260, 50);
-
+	
+		p.setWidgetPosition(exerciseText, 210, -10);
+		
 		p.add(infoBox);
 
 		p.setWidgetPosition(infoBox, 10, 290);
@@ -113,12 +113,13 @@ public class NumberLineView extends GameView  {
 		motherPanel.add(playerPanel);
 
 		RootPanel.get().add(motherPanel);
+		exerciseText.setText("---");
 	}
 
 	public void setExerciseNumber(int n) {
 
-		exerciseText.setHTML("<div id='exercise' style='border:solid black 4px;padding:5px 20px;font-size:25px'>" + 
-				Integer.toString(n) + "</div>");
+		exerciseText.setText(Integer.toString(n));
+		exerciseText.booooing();
 	}
 
 	public void setPoints(int playerid, int p,String name) {
