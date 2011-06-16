@@ -24,7 +24,7 @@ public class DoppelungGameCommunicationServiceServlet extends
 	private static final long serialVersionUID = 7200332323767902482L;
 	
 	private int TIMER_SPEED = 40;
-	private int SPACE_SPEED = 2;
+	private int SPACE_SPEED = 4;
 	private Timer mcTimer = null;
 	HashMap<Integer,Iterator<DoppelungGameWord>> wordLists = new HashMap<Integer,Iterator<DoppelungGameWord>>();
 	
@@ -71,16 +71,6 @@ public class DoppelungGameCommunicationServiceServlet extends
 		
 		Timer t = new Timer();
 		mcTimer = new Timer();
-		
-		//TODO: TESTING
-		/**
-		initializeMovingConsonantsPoints(gameid);
-		t.schedule(new SetGameStateTask(gameid, 5, this), 3000);
-		
-		return g;
-		**/
-		//TODO: END TESTING
-		
 		
 		g.setShowSoundFeedback(playerid, true);
 		g.incSoundTries(playerid);
@@ -269,7 +259,6 @@ public class DoppelungGameCommunicationServiceServlet extends
 		int y = Integer.parseInt(ids.split(":")[3]);
 		int pingid = Integer.parseInt(ids.split(":")[4]);
 		
-		System.out.println("Player " + playerid + " says: i'm @ " + x +"," + y);
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 		g.setPlayerPosX(playerid, x);
 		g.setPlayerPosY(playerid, y);

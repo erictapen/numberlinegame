@@ -65,8 +65,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
-		// close game
-		t.schedule(new SetGameStateTask(id, 98, this), 6000+15000);
+		
 
 
 	}

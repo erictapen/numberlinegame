@@ -3,6 +3,13 @@ package com.wicam.numberlineweb.client;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
+import com.google.gwt.dom.client.Style.Float;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -39,6 +46,22 @@ public class HighScoreView extends Composite {
 		highScoreScrollWrap.setHeight("300px");
 		highScoreScrollWrap.setWidth("400px");
 		
+		Button close = new Button("Schließen");
+		
+		
+		close.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				History.back();
+				
+			}
+			
+		});
+		
+
+		
+		
 		highScoreScrollWrap.addStyleName("highscore");
 		highScoreScrollWrap.add(highScoreList);
 
@@ -57,7 +80,10 @@ public class HighScoreView extends Composite {
 		}
 		
 		p.add(highScoreScrollWrap);
-
+		
+		close.getElement().getStyle().setFloat(Float.RIGHT);
+		close.getElement().getStyle().setPaddingBottom(20, Unit.PX);
+		p.add(close);
 		RootPanel.get().add(p);
 		this.initWidget(p);
 		panel.add(this);
