@@ -50,6 +50,12 @@ public abstract class GameState implements IsSerializable{
 
 	}
 
+	public boolean hasPlayerLeft(int pid) {
+		
+		return players.get(pid-1).hasLeftGame();
+		
+	}
+	
 	public String getName() {
 
 		return gameName;

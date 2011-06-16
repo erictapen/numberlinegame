@@ -62,7 +62,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	@Override
 	public String getGameName() {
 
-		return "Doppelung";
+		return "Doppelungspiel";
 
 	}
 
@@ -88,6 +88,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	@Override
 	protected void joinedGame(int playerID, int gameID) {
+		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
 
 		//construct game
@@ -166,9 +167,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 21:
 			setRefreshRate(200);
 			//start is pending. I am ready!
-			if (!openGame.isPlayerReady(this.playerID)) {
 				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-			}
+			
 			
 			break;
 
@@ -277,7 +277,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			break;
 
 		case 98:
-			closeGame(g);
+			closeGame();
 			break;
 
 		case 99:
@@ -288,9 +288,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			while (i.hasNext()) {
 
 				Player current = i.next();
+				
+				int pid = g.getPlayers().indexOf(current)+1;
+				GWT.log(Integer.toString(pid));
+				GWT.log(Integer.toString(openGame.getPlayers().size()));
 
-				if (current.hasLeftGame() && !openGame.getPlayers().get(g.getPlayers().indexOf(current)).hasLeftGame()) {
-					// TODO: view left game
+				if (current.hasLeftGame() && (openGame.getPlayers().size() >= pid &&!(openGame.getPlayers().get(pid-1).hasLeftGame()))) {
+					super.showPlayerLeft(current.getName());
 				}
 
 			}
@@ -298,6 +302,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			break;
 		}
+		
+		//openGame = g;
 
 	}
 	
@@ -485,93 +491,84 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private boolean keyRightDown = false;
 
 
-	public void moveImageOnGamePanel(KeyEvent<?> event){
-		int keyCode = event.getNativeEvent().getKeyCode();
+	public void moveImageOnGamePanel(boolean up, int key){
+		
 
-		if (event instanceof KeyDownEvent) {
+		if (!up) {
 
 
 
-			switch(keyCode){
+			switch(key){
 
-			case KeyCodes.KEY_DOWN:
+			case 1:
 
 				if (!keyDownDown) {
 					keyDownDown = true;
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":down:" + keyCode,keyEventCallback);
-
+					
 					registerAniTask(moveDownTask);
 
 				}
 
 				break;
-			case KeyCodes.KEY_RIGHT:
+			case 3:
 				if (!keyRightDown) {
 					keyRightDown = true;
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":down:" + keyCode,keyEventCallback);
-
+					
 					registerAniTask(moveRightTask);
 				}
 
 				break;
-			case KeyCodes.KEY_UP:
+			case 2:
 				if (!keyUpDown) {
 					keyUpDown = true;
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" + this.playerID + ":down:" + keyCode,keyEventCallback);
-
+					
 					registerAniTask(moveUpTask);
 				}
 
 				break;
-			case KeyCodes.KEY_LEFT:
+			case 4:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" + this.playerID + ":down:" + keyCode,keyEventCallback);
-
+					
 					registerAniTask(moveLeftTask);
 				}
 
 				break;
 			}
 		}
-		if (event instanceof KeyUpEvent) {
+		if (up) {
 
 
-			switch(keyCode){
+			switch(key){
 
-			case KeyCodes.KEY_DOWN:
+			case 1:
 
 				if (keyDownDown) {
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":up:" + keyCode,keyEventCallback);
-
+				
 					keyDownDown = false;
 					moveDownTask.markForDelete();
 				}
 
 				break;
-			case KeyCodes.KEY_RIGHT:
+			case 3:
 				if (keyRightDown) {
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" + this.playerID + ":up:" + keyCode,keyEventCallback);
-
+					
 					keyRightDown = false;
 					moveRightTask.markForDelete();
 				}
 
 				break;
-			case KeyCodes.KEY_UP:
+			case 2:
 				if (keyUpDown) {
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() +":" +  this.playerID + ":up:" + keyCode,keyEventCallback);
-
+					
 					keyUpDown = false;
-					GWT.log("gurr");
 					moveUpTask.markForDelete();
 				}
 
 				break;
-			case KeyCodes.KEY_LEFT:
+			case 4:
 				if (keyLeftDown) {
-					//((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":up:" + keyCode,keyEventCallback);
-
+					
 					keyLeftDown = false;
 					moveLeftTask.markForDelete();
 				}
@@ -579,8 +576,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			}
 			
-			//if (!keyDownDown && !keyUpDown && !keyLeftDown && !keyRightDown) ((DoppelungGameCommunicationServiceAsync) commServ).keyEvent(this.openGame.getId() + ":" +  this.playerID + ":stop:-1",keyEventCallback);
-
+			
 
 		}
 

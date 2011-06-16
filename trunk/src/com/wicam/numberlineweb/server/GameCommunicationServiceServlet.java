@@ -20,16 +20,16 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
 	GameCommunicationServiceServlet comm;
-	
+
 	boolean timeOutListLock = false;
 	private Timer timeOutTimer = new Timer();
 	protected int currentId=0;
 	int gamePending;
-	
+
 	public GameCommunicationServiceServlet (){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
 	}
-	
+
 	public ArrayList<GameState> getOpenGames() {
 		return openGames;		
 	}
@@ -42,20 +42,20 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//wait 6 seconds for users to be ready
 		t.schedule(new SetGameStateTask(id, 21, this), 6000);
 	}
-	
+
 	@Override
 	public GameState openGame(GameState g) {
 		currentId++;
 
 		g.setGameId(currentId);
-		
+
 		openGames.add(g);
 		//add game to empty game time out list
 		System.out.println("Added game #" + currentId + " to empty game timeouts.");
 		emptyGameTimeOutStates.add(new EmptyGameTimeOutState(currentId,20));
 
 		System.out.println("Opend Game " + Integer.toString(currentId));
-		
+
 		return g;
 	}
 
@@ -89,7 +89,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		GameState game = getGameById(id);
 
-		
+
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
 
@@ -107,13 +107,13 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			}
 
 			//add this user to the update-state list
-			
+
 			getUpdateStates().add(new UpdateState(playerid,game.getId(),false));
-			
+
 			//add this user to the timeout list
-		
+
 			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
-			
+
 			return game.getId() + ":" + playerid;
 
 		}
@@ -144,6 +144,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		return null;
 
 	}
+	
+	
 
 	/**
 	 * Set the status for a given game-ID to changed. 
@@ -152,7 +154,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public void setChanged(int gameID) {
 
-		
+
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
@@ -165,8 +167,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			}
 
 		}
-		
-		
+
+
 
 	}
 
@@ -181,7 +183,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public void setUpToDate(int id, int player) {
 
-		
+
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
 		while(i.hasNext()) {
@@ -204,7 +206,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public boolean isUpToDate(int id, int player) {
 
-		
+
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
@@ -217,7 +219,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			}
 
 		}
-		
+
 		return false;
 	}
 
@@ -245,21 +247,21 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 
 		}
-		
-	
+
+
 
 
 	}
 
 
 	protected void removeGame(int gameid) {
-		
-		
+
+
 		openGames.remove(getGameById(gameid));
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
-		
+
 
 		while (i.hasNext()) {
 
@@ -273,8 +275,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 
 		}
-		
-		
+
+
 
 		while (timeOutListLocked()) {
 
@@ -328,7 +330,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		if ((getGameById(gameid).getPlayerCount()-getGameById(gameid).getNumberOfMaxNPCs()) <= 0) {
 
 			removeGame(gameid);
-			
+
 
 		}
 
@@ -351,13 +353,13 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//we only want to create network traffic if something has changed
 		if (!this.isUpToDate(id,player)) {
 			setUpToDate(id,player);
-			
+
 			GameState g = getGameById(id);
-			
+
 			//tell the client when this state was sent to prevent asynchronous
 			//processing
 			g.setServerSendTime(System.currentTimeMillis());
-			
+
 			g.setPingId(pingid);
 			return g;
 		}else{
@@ -366,7 +368,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		}
 	}
-	
+
 	/**
 	 * <gameid>:<playerid>
 	 */
@@ -374,7 +376,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		GameState g = getGameById(gameid);
-		
+
 		g.setPlayerReady(playerid,true);
 
 		boolean allReady = true;
@@ -382,10 +384,10 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			if (!g.isPlayerReady(i+1))
 				allReady = false;
 		}
-		
+
 		//we cant be ready if game isnt full yet
 		if (g.getMaxNumberOfPlayers() > g.getPlayers().size()) allReady = false;
-		
+
 		if (allReady) setGameState(g, 3);
 
 
@@ -394,8 +396,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//we dont want a player to get the update sooner than the other
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Sets the game state and mark game as updated.
 	 * @param g
@@ -404,30 +406,33 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public void setGameState(GameState g, int state) {
 
-		g.setState(state);
-		setChanged(g.getId());
+		if (g != null) {
+			g.setState(state);
+			setChanged(g.getId());
+		}
 
 	}
-	
+
 	// TODO: comment it
 	public boolean leaveGame(String ids){
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		GameState g = getGameById(gameid);
-		
+
 		g.setHasLeftGame(playerid, true);
+		setGameState(getGameById(gameid),99);
 		setChanged(g.getId());
-		
+
 		boolean allLeft = true;
 		for (int i = 0; i < g.getPlayers().size()-g.getNumberOfMaxNPCs(); i++){
 			if (!g.getHasLeftGame(i+1))
 				allLeft = false;
 		}
-		
+
 		// remove game if all players left
 		if(allLeft)
 			this.removeGame(gameid);
-		
+
 		return true;
 	}
 
@@ -438,7 +443,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	public ArrayList<TimeOutState> getTimeOutStates() {
 		return timeOutStates;
 	}
-	
+
 	public ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
 		return emptyGameTimeOutStates;
 	}

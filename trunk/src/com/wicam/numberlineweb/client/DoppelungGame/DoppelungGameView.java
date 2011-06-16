@@ -16,8 +16,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.KeyboardDummy;
+import com.wicam.numberlineweb.client.MobileDeviceChecker;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
 
@@ -27,6 +30,7 @@ public class DoppelungGameView extends GameView {
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
 	private final AbsolutePanel gamePanel = new AbsolutePanel();
 	private final AbsolutePanel pointsPanel = new AbsolutePanel();
+	private KeyboardDummy kbd;
 
 	private final HTML explanationText = new HTML();
 	private final HTML feedBackText = new HTML();
@@ -37,22 +41,22 @@ public class DoppelungGameView extends GameView {
 	private final HTML pointsText = new HTML("<div style='font-size:30px;color:black'>Punkte</div>");
 	ArrayList<HTML> playerNames = new ArrayList<HTML>();
 	final FlexTable playerNamesFlexTable = new FlexTable();
-	
+
 	protected final Button startGameButton = new Button("Spiel Starten");
 	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.png", 270, 330);
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
-	
-	
+
+
 	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
-	
+
 	protected final Image longVowelImage = new Image("doppelungGame/ziehen1.jpg");
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
 
 
-	
+
 	public DoppelungGameView(int numberOfPlayers, DoppelungGameController doppelungGameController) {
 		super(numberOfPlayers, doppelungGameController);
 		init();
@@ -62,28 +66,31 @@ public class DoppelungGameView extends GameView {
 
 
 	private void init() {
+		
+		longVowelImage.addStyleName("vowel_img");
+		shortVowelImage.addStyleName("vowel_img");
 
 		final DoppelungGameController doppelungGameController = (DoppelungGameController) gameController;
-		
+
 		//draw everthing
 		gamePanel.getElement().getStyle().setPosition(Position.RELATIVE);
 
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
-								"<p>" + 
-								"<div style='padding:5px 20px;font-size:18px'>" + "" +
-								"In diesem Spiel übst du die Doppelung von Konsonanten. " +
-								"Häufig wird ein Konsonant nach einem kurzen Vokal verdoppelt. " +
-								"Deshalb besteht deine Aufgabe erst einmal darin zu erkennen, " +
-								"ob sich ein Vokal lang oder kurz anhört. Um das zu tun, musst" +
-								" du gut zuhören, welches Wort der Computer abspielt. Wenn sich der " +
-								"Vokal lang anhört, klicke mit der Maus auf das rechte Symbol. " +
-								"Wenn sich der Vokal kurz anhört, klicke auf das linke Symbol. " +
-								"Nach kurzen Vokalen  öffnet sich ein Minispiel, in dem du die " +
-								"Konsonantenpaare einsammeln sollst, die in dem Wort, das du gerade " +
-								"gehört hast verdoppelt werden. Bei „Fluss“ sollst du zum Beispiel die " +
-								"„ss“ einsammeln. Pass gut auf, dass du keine anderen Konsonantenpaare " +
-								"berührst und steuere das Symbol mit den Pfeiltasten." + 
-								"</div>");
+				"<p>" + 
+				"<div style='padding:5px 20px;font-size:18px'>" + "" +
+				"In diesem Spiel übst du die Doppelung von Konsonanten. " +
+				"Häufig wird ein Konsonant nach einem kurzen Vokal verdoppelt. " +
+				"Deshalb besteht deine Aufgabe erst einmal darin zu erkennen, " +
+				"ob sich ein Vokal lang oder kurz anhört. Um das zu tun, musst" +
+				" du gut zuhören, welches Wort der Computer abspielt. Wenn sich der " +
+				"Vokal lang anhört, klicke mit der Maus auf das rechte Symbol. " +
+				"Wenn sich der Vokal kurz anhört, klicke auf das linke Symbol. " +
+				"Nach kurzen Vokalen  öffnet sich ein Minispiel, in dem du die " +
+				"Konsonantenpaare einsammeln sollst, die in dem Wort, das du gerade " +
+				"gehört hast verdoppelt werden. Bei „Fluss“ sollst du zum Beispiel die " +
+				"„ss“ einsammeln. Pass gut auf, dass du keine anderen Konsonantenpaare " +
+				"berührst und steuere das Symbol mit den Pfeiltasten." + 
+		"</div>");
 		startGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -104,7 +111,7 @@ public class DoppelungGameView extends GameView {
 				doppelungGameController.onLongVowelButtonClick();
 			}
 		});
-		
+
 		gamePanel.add(startGameButton);
 		gamePanel.setWidgetPosition(startGameButton, 480, 350);
 		gamePanel.add(explanationText);
@@ -135,17 +142,17 @@ public class DoppelungGameView extends GameView {
 
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
-		
+
 
 		pointsPanel.add(playerNamesFlexTable);
-		
+
 		focusPanel.addKeyDownHandler(doppelungGameController);
 		focusPanel.addKeyUpHandler(doppelungGameController);
-		
+
 		motherPanel.add(gamePanel);
 		motherPanel.add(pointsPanel);
 	}
-	
+
 	public void initializeMovingShortVowelImages(int playerid){
 		if (playerid == 1){
 			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
@@ -185,7 +192,7 @@ public class DoppelungGameView extends GameView {
 			gamePanel.setWidgetPosition(wordText, 230, 33);
 		}
 	}
-	
+
 	/**
 	 * Displays feedback after player has clicked the short vowel or long vowel button
 	 * 
@@ -203,7 +210,7 @@ public class DoppelungGameView extends GameView {
 		else
 			showFalseSoundFeedback(randomNumberFeedback);
 	}
-	
+
 	private void showCorrectSoundFeedback(boolean isShortVowel, int randomNumberFeedback){
 		String vowelLength = isShortVowel?"kurz":"lang";
 		String feedback = "";
@@ -253,7 +260,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedBackText, feedbackX, 150);
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
-	
+
 	private void showFalseSoundFeedback(int randomNumberFeedback){
 		String feedback = "";
 		String feedback2 = "";
@@ -296,13 +303,13 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedBackText2, 30, 150);
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
-	
+
 	public void showWaitingForOtherPlayer(String msg){
 		feedBackText.setHTML("<div style='font-size:25px'>" + msg + "</div>");
 		gamePanel.add(feedBackText);
 		gamePanel.setWidgetPosition(feedBackText, 150, 180);
 	}
-	
+
 	/**
 	 * Displays feedback after player has entered a word
 	 * 
@@ -320,7 +327,7 @@ public class DoppelungGameView extends GameView {
 		else
 			showFalseWordFeedback(randomNumberFeedback, word);
 	}
-	
+
 	private void showCorrectWordFeedback(int randomNumberFeedback, String word){
 		String feedback = "";
 		int imageX = 0;
@@ -367,7 +374,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedBackText, 80, 150);
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
-	
+
 	private void showFalseWordFeedback(int randomNumberFeedback, String word){
 		String feedback = "";
 		String feedback2 = word;
@@ -403,7 +410,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(feedBackText2, 260, 150);
 		gamePanel.setWidgetPosition(feedbackImage, imageX, 230);
 	}
-	
+
 	/**
 	 * Clears the game panel
 	 */
@@ -420,13 +427,13 @@ public class DoppelungGameView extends GameView {
 	public void actualizePoints(int playerid, int p,String name) {
 		playerNamesFlexTable.setHTML(playerid+1, 0, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
 	}
-	
+
 	public void deletePlayerFromPointList(int playerid) {
 		playerNamesFlexTable.clearCell(playerid, 1);
 		playerNamesFlexTable.removeCell(playerid, 1);
 	}
 
-	
+
 	/**
 	 * Displays the short vowel image
 	 */
@@ -434,40 +441,45 @@ public class DoppelungGameView extends GameView {
 		gamePanel.clear();
 		textBox.setText("");
 		gamePanel.add(movingShortVowelImage);
-	
+
 		gamePanel.add(canvas);
+
 		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
 		movingShortVowelImage.setX(startX);
 		movingShortVowelImage.setY(startY);
 
-		
-		GWT.log(Integer.toString(players));
-		
+
 		if (players ==2) {
-			
+
 			gamePanel.add(enemyMovingShortVowelImage);
 			enemyMovingShortVowelImage.setX(270);
 			enemyMovingShortVowelImage.setY(330);
 			gamePanel.setWidgetPosition(enemyMovingShortVowelImage, startX, startY);
-						
+
 		}
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
+
+		if (MobileDeviceChecker.checkMobile()) {
+			kbd = new KeyboardDummy((DoppelungGameController)super.gameController);
+			gamePanel.add(kbd, 440, 240);
+		}
+
 		focusPanel.setFocus(true);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param own   true if own image is moved
 	 * @return      new x-coordinate
 	 */
 	public int moveStepLeft(boolean own) {
-		
-	    ShortVowelImage image;
+
+		ShortVowelImage image;
 		if (own) image = movingShortVowelImage;
 		else  image = enemyMovingShortVowelImage;
-		
+
 
 		if (image.getX()-30 > 0) {
 			image.setX(image.getX()-30);
@@ -487,8 +499,8 @@ public class DoppelungGameView extends GameView {
 	 * @return      new y-coordinate
 	 */
 	public int moveStepUp(boolean own) {
-		
-	    ShortVowelImage image;
+
+		ShortVowelImage image;
 		if (own) image = movingShortVowelImage;
 		else  image = enemyMovingShortVowelImage;
 
@@ -509,8 +521,8 @@ public class DoppelungGameView extends GameView {
 	 * @return      new x-coordinate
 	 */
 	public int moveStepRight(boolean own) {
-		
-	    ShortVowelImage image;
+
+		ShortVowelImage image;
 		if (own) image = movingShortVowelImage;
 		else  image = enemyMovingShortVowelImage;
 
@@ -523,7 +535,7 @@ public class DoppelungGameView extends GameView {
 
 		if (image.getParent() == gamePanel)
 			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
-		
+
 		return image.getX();
 	}
 
@@ -533,8 +545,8 @@ public class DoppelungGameView extends GameView {
 	 * @return      new y-coordinate
 	 */
 	public int moveStepDown(boolean own) {
-		
-	    ShortVowelImage image;
+
+		ShortVowelImage image;
 		if (own) image = movingShortVowelImage;
 		else  image = enemyMovingShortVowelImage;
 		int imgHeight = image.getOffsetHeight();
@@ -548,30 +560,30 @@ public class DoppelungGameView extends GameView {
 			gamePanel.setWidgetPosition(image, image.getX(), image.getY());
 		return image.getY();
 	}
-	
+
 	public void moveEnemyTo(int x, int y) {
-		
+
 		GWT.log("moving enemy to " + x + ":" + y);
-		
-	    ShortVowelImage image = enemyMovingShortVowelImage;
+
+		ShortVowelImage image = enemyMovingShortVowelImage;
 
 		if (image.getParent() == gamePanel)
 			gamePanel.setWidgetPosition(image, x, y);
 
 	}
-	
+
 	public boolean isOnCanvas(int y) {
-		
+
 		return y < gamePanel.getOffsetHeight();
-		
+
 	}
-	
+
 	public void hideMovingConsonant(MovingConsonants mc) {
-		
+
 		gamePanel.remove(mc);
-		
+
 	}
-	
+
 	public void showUserWordInput() {
 		// reset text
 		textBox.setText("");
@@ -583,42 +595,42 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(textBox, 230, 190);
 		textBox.setFocus(true);
 	}
-	
+
 	public int[] getShortVowelImageDimension() {
-		
+
 		int[] ret = new int[2];
-		
+
 		ret[0] = movingShortVowelImage.getOffsetWidth();
 		ret[1] = movingShortVowelImage.getOffsetHeight();
-		
+
 		return ret;
-		
+
 	}
-	
+
 	/**
 	 * TODO: the view should NOT return the position but get it
 	 * @return
 	 */
-	
+
 	public int[] getShortVowelImagePosition() {
-		
+
 		int[] ret = new int[2];
-		
+
 		ret[0] = movingShortVowelImage.getX();
 		ret[1] = movingShortVowelImage.getY();
-		
+
 		return ret;
-		
+
 	}
-	
+
 	public void showMovingConsonants(MovingConsonants mc) {
 		gamePanel.add(mc);
 	}
-	
+
 	public void setMcPosition(MovingConsonants mc, int x, int y) {
 		gamePanel.setWidgetPosition(mc, x, y);
 	}
 
 
-	
+
 }

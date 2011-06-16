@@ -10,10 +10,21 @@ import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
@@ -42,8 +53,8 @@ public abstract class GameCoordinator {
 	protected Queue<Long> lastTenLatencies = new LinkedList<Long>();
 	protected long timeStamp = 0;
 	protected HashMap<Long,Long> pingTimes= new HashMap<Long,Long>();
-	
-	
+
+
 	/**
 	 * Constructs the coordinator with comm-service and a rootPanel
 	 * @param commServ
@@ -56,23 +67,23 @@ public abstract class GameCoordinator {
 		this.chatCommServ = chatCommServ;
 		this.rootPanel = root;
 		this.gts=gts;
-	
+
 
 	}
-	
+
 	/**
 	 * Returns the instance of our current game type selector.
 	 */
 	public GameTypeSelector getGTS() {
 		return gts;
 	}
-	
+
 	/**
 	 * Initializes the coordinator
 	 */
 
 	abstract public void init();
-	
+
 	/**
 	 * Open a game name 'name'. Call back will get state of opened game
 	 * @param name
@@ -83,28 +94,27 @@ public abstract class GameCoordinator {
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
 		commServ.openGame(gameState, gameOpenedCallBack);
 	}
-	
+
 	/**
 	 * Returns the game's name. Must be overwritten.
 	 * @param name
 	 */
 
-	
+
 	public String getGameName() {
-		
+
 		return "Spiel";
-		
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Close a game
 	 * @param name
 	 */
 
-	public void closeGame(GameState g){
-		System.out.println(g.getPlayerName(this.playerID) + " closed Game");
+	public void closeGame(){
 		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		if (this.numberOfPlayers > 1){
 			RootPanel.get("chatwrap").getElement().getStyle().setVisibility(Visibility.HIDDEN);
@@ -114,7 +124,7 @@ public abstract class GameCoordinator {
 		this.view = null;
 		init();
 	}
-	
+
 	public void addChatView(){
 		/*
 		 * Optional: Add chat window from package "Chat"
@@ -127,58 +137,80 @@ public abstract class GameCoordinator {
 		ChatController chatContr = new ChatController(chatC);
 		chatView.addController(chatContr);
 		chatView.init();
-		
+
 		RootPanel.get("chat").add(chatView);
 		RootPanel.get("chatwrap").getElement().getStyle().setVisibility(Visibility.VISIBLE);
 	}
-	
+
 	/**
 	 * Called after our pĺayer joined the game.
 	 * @param playerID
 	 * @param gameID
 	 */
-	abstract protected void joinedGame(int playerID, int gameID);
-	
+	@SuppressWarnings("deprecation")
+	protected void joinedGame(int playerID, int gameID) {
+
+
+
+
+		History.newItem("game-" + getGameName(),false);
+		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
+
+
+			@Override
+			public void onHistoryChanged(String historyToken) {
+
+				if (historyToken.matches("gameSelector.*")) {
+					new GameCloseQuestion();
+				}
+
+
+			}
+		});
+
+
+	}
+
 	/**
 	 * Called after game state was received.
 	 * @param g
 	 */
 	abstract protected void updateGame(GameState gameState);
-	
+
 	/**
 	 * sets the refresh rate of the main loop timer
 	 */
-	
+
 	protected void setRefreshRate(int rate) {
-		
+
 		GWT.log("r-rate to " + rate);
-		
+
 		if (this.refreshIntervall != rate) {
-			
+
 			this.refreshIntervall = rate;
 			t.scheduleRepeating(rate);
-			
-			
+
+
 		}
-			
+
 	}
-	
+
 	/**
 	 * Make update-call to server
 	 */
 
 	protected void update() {
-		
+
 		long id = (long) Math.random() * 500000;
-		
+
 		pingTimes.put(id, System.currentTimeMillis());
-		
+
 		timeStamp = System.currentTimeMillis();
 		if (this.view != null) {
 			commServ.update(Integer.toString(this.openGame.getId()) + ":" + Integer.toString(this.playerID) + ":" + id, updateCallback);
 		}
 	}
-	
+
 	/**
 	 * refreshes the game lis Callback will redraw list
 	 */
@@ -198,7 +230,7 @@ public abstract class GameCoordinator {
 	public void joinGame(int id,String name, int numberOfPlayers, int numberOfNPCs) {
 		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfNPCs = numberOfNPCs;
-		
+
 		//we dont want anonymous players
 		if (name.equals("")) name="Spieler";
 
@@ -207,7 +239,7 @@ public abstract class GameCoordinator {
 		commServ.joinGame(Integer.toString(id) + ":" + name, gameJoinedCallback);
 
 	}
-	
+
 	/**
 	 * join game #id with username 'name'
 	 * for games without NPC
@@ -218,7 +250,7 @@ public abstract class GameCoordinator {
 	public void joinGame(int id,String name, int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfNPCs = 0;
-		
+
 		//we dont want anonymous players
 		if (name.equals("")) name="Spieler";
 
@@ -227,33 +259,33 @@ public abstract class GameCoordinator {
 		commServ.joinGame(Integer.toString(id) + ":" + name, gameJoinedCallback);
 
 	}
-	
+
 	public void calcAverageLatency() {
-		
-		
+
+
 		Iterator<Long> it = lastTenLatencies.iterator();
-		
+
 		long temp= 0;
-		
+
 		while(it.hasNext()) {
-			
+
 			temp+=it.next();
-			
+
 		}
-		
+
 		averageLatency = temp / ((long) lastTenLatencies.size());
-		
-		RootPanel.get("ping_view").getElement().setInnerHTML("Latency: " + averageLatency + " ms");
-		
+
+		RootPanel.get("ping_view").getElement().setInnerHTML("avg. latency: " + averageLatency + " ms");
+
 	}
-	
-	
+
+
 	public String escapeString(String str) {
 
 		return str.replace(":", " ");
 
 	}
-	
+
 	/**
 	 * CALLBACKS.
 	 * Callbacks are called after server-information was received
@@ -271,55 +303,55 @@ public abstract class GameCoordinator {
 
 			openedGame = result;
 			if (result.getServerSendTime() > lastServerSendTime) {
-				
+
 				lastServerSendTime = result.getServerSendTime();
 				commServ.getOpenGames(openGamesAndJoinCallback);	
-			
+
 			}else{
-				
+
 				GWT.log("Received an outlived game state, ignoring...");
 				return;
-				
+
 			}
-			
+
 
 		}
 
 	};
 
 	protected AsyncCallback<GameState> updateCallback = new AsyncCallback<GameState>() {
-		
+
 		@Override
 		public void onFailure(Throwable caught) {
-				
-			
+
+
 		}
 
 		@Override
 		public void onSuccess(GameState result) {
-			
+
 			if (result != null) {
-			
+
 				if (pingTimes.containsKey(result.getPingId())) {
 					latency = System.currentTimeMillis() -  pingTimes.get(result.getPingId());
-					
+
 					GWT.log("ping: " + Long.toString(latency) + "ms (average: " + averageLatency + "ms)");
 				}
-				
+
 				if (result.getServerSendTime() >= lastServerSendTime) {
-					
+
 					lastServerSendTime = result.getServerSendTime();
 					updateGame(result);
-									
-				
+
+
 				}else{
-					
+
 					GWT.log("Received an outlived game state, ignoring...");
-									
+
 				}
-				
-				
-				
+
+
+
 				lastTenLatencies.add(latency);
 				if (lastTenLatencies.size()>10) lastTenLatencies.poll();
 				calcAverageLatency();
@@ -398,5 +430,91 @@ public abstract class GameCoordinator {
 		}
 
 	};
+
+	private class GameCloseQuestion extends DialogBox {
+
+		public GameCloseQuestion() {
+			// Set the dialog box's caption.
+			setText("Möchtest du das Spiel wirklich verlassen?");
+
+			this.setAnimationEnabled(true);
+
+
+
+			// DialogBox is a SimplePanel, so you have to set its widget property to
+			// whatever you want its contents to be.
+			Button ok = new Button("Ja");
+			Button no = new Button("Nein");
+			ok.setWidth("60px");
+			no.setWidth("60px");
+			ok.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					GameCloseQuestion.this.hide();
+					closeGame();
+				}
+			});
+			no.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					History.newItem("game-" + getGameName(),false);
+					GameCloseQuestion.this.hide();
+
+				}
+			});
+
+			HorizontalPanel p = new HorizontalPanel();
+
+			p.setSize("230px", "40px");
 	
+			p.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			p.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+			
+			p.add(ok);
+			p.add(no);
+
+			this.setWidget(p);
+			this.center();
+			this.show();
+		}
+	}
+
+	public void showPlayerLeft(String playerName) {
+
+		new PlayerLeftInfo(playerName);
+
+	}
+
+	private class PlayerLeftInfo extends DialogBox {
+
+		public PlayerLeftInfo(String player) {
+
+			setText(player + " hat das Spiel verlassen.");
+
+
+			this.setAnimationEnabled(true);
+
+			Button ok = new Button("OK");
+			ok.setWidth("60px");
+
+			ok.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					
+					PlayerLeftInfo.this.hide();
+				}
+			});
+			HorizontalPanel p = new HorizontalPanel();
+
+			p.setSize("230px", "40px");
+			p.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			p.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+			p.add(ok);
+			
+			this.setWidget(p);
+			this.center();
+			this.show();
+		}
+	}
+	
+
+
+
 }

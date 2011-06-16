@@ -2,8 +2,10 @@ package com.wicam.numberlineweb.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationService;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationServiceAsync;
@@ -39,6 +41,13 @@ public class NumberLineWeb implements EntryPoint {
 	public void onModuleLoad() {
 
 
+		if (MobileDeviceChecker.checkMobile()) {
+			
+			RootPanel.getBodyElement().addClassName("mobile");
+			
+		}
+		
+		RootPanel.getBodyElement().removeClassName("hidden");
 		showGameTypeSelector();
 		
 		
@@ -56,10 +65,12 @@ public class NumberLineWeb implements EntryPoint {
 		//boolean numberLineGame = false;
 
 		//adds the numberlinegame
-		gts.addGame("NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new ClickHandler() {
+		gts.addGame("NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void run() {
+				
+				GWT.log("gurr");
 
 				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
 				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
@@ -70,10 +81,10 @@ public class NumberLineWeb implements EntryPoint {
 		});
 
 		//adds the doppelung game
-		gts.addGame("Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new ClickHandler() {
+		gts.addGame("Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void run() {
 
 				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
 				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
@@ -85,6 +96,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
+		
 
 	}
 

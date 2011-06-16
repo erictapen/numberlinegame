@@ -7,9 +7,13 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -29,7 +33,6 @@ public abstract class GameSelector extends Composite {
 	protected Timer t;
 	final TextCell textCell = new TextCell();
 	protected Button createGameButton;
-	protected Button backButton;
 	protected final SingleSelectionModel<GameState> selectionModel = new SingleSelectionModel<GameState>();
 	protected final GameCreatePopupBox gamePopUp = new GameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
 	protected final int boxWidth = 750;
@@ -63,12 +66,31 @@ public abstract class GameSelector extends Composite {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	protected void init() {
-
+	
 		RootPanel.get().add(motherPanel);
 
+		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
+
+	
+			@Override
+			public void onHistoryChanged(String historyToken) {
+
+				if (historyToken.equals("")) {
+					
+					coordinator.rootPanel.clear();
+					coordinator.getGTS().init(coordinator.rootPanel);
+					
+				}
+			}
+		});
+		
+		
+		History.newItem("gameSelector-" + coordinator.getGameName(),false);
+		
 		joinGameButton = new Button("Mitspielen");
-		backButton = new Button("Zurück");
+	
 		
 		joinGameButton.setEnabled(false);
 
@@ -111,18 +133,6 @@ public abstract class GameSelector extends Composite {
 			}
 		});
 		
-		backButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-
-				coordinator.rootPanel.clear();
-			
-				coordinator.getGTS().init(coordinator.rootPanel);
-				
-
-			}
-		});
 
 		addGameCreationHandler();
 
@@ -147,15 +157,11 @@ public abstract class GameSelector extends Composite {
 		joinGameButton.setHeight("30px");
 		joinGameButton.setWidth("220px");
 
-		backButton.setHeight("30px");
-		backButton.setWidth("120px");
-		
-		backButton.addStyleName("backButton");
 
 		motherPanel.add(createGameButton);
 
 		motherPanel.add(joinGameButton);
-		motherPanel.add(backButton);
+
 
 		motherPanel.setWidgetPosition(joinGameButton, boxWidth-250, 30);
 		//motherPanel.setWidgetPosition(refreshButton, 15, 340);
@@ -217,6 +223,7 @@ public abstract class GameSelector extends Composite {
 		});
 
 		gamePopUp.hide();
+		
 		b.show();
 	}
 	
@@ -318,7 +325,7 @@ public abstract class GameSelector extends Composite {
 		cellList.setFocus(true);
 
 	}
-
+	
 
 	protected int getMaxNumberOfPlayers() {
 		return selectionModel.getSelectedObject().getMaxNumberOfPlayers();
