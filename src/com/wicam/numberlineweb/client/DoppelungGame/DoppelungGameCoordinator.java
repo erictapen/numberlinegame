@@ -42,9 +42,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	// SoundController for playing sound files
 	private SoundController soundController = new SoundController();
 	private Timer updateMyPositionTimer;
-	
-	private static int POSITION_TIMER_INTERVALL = 70;
-	
+
+	private static int POSITION_TIMER_INTERVALL = 80;
+
 
 	// position of the enemy short vowel image
 	private int enemyImageX = 270;
@@ -120,8 +120,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		DoppelungGameView gameView =  (DoppelungGameView) view;
 		//we already have the lates state
 		if (g==null) return;
-		
-		
+
+
 		switch (g.getState()) {
 
 		//game closed
@@ -141,10 +141,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 			if (g.isPlayerReady(this.playerID)){
 				// other player ready ?
-				
-					gameView.clearGamePanel();
-					gameView.showWaitingForOtherPlayer("Warte auf zweiten Spieler...");
-				
+
+				gameView.clearGamePanel();
+				gameView.showWaitingForOtherPlayer("Warte auf zweiten Spieler...");
+
 			}
 			break;
 			//awaiting start
@@ -156,10 +156,10 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 			if (g.isPlayerReady(this.playerID)){
 				// other player ready ?
-				
-					gameView.clearGamePanel();
-					gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
-				
+
+				gameView.clearGamePanel();
+				gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
+
 			}
 			setRefreshRate(1000);
 			break;
@@ -167,9 +167,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		case 21:
 			setRefreshRate(200);
 			//start is pending. I am ready!
-				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-			
-			
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+
+
 			break;
 
 			// word played and vowel choice
@@ -206,44 +206,55 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			// short vowel game
 		case 5:
 			feedbackNumberSet = false;
+
+			if (g.getPlayerCount() > 1){
+				
+				POSITION_TIMER_INTERVALL = 80;
+				
+			}else{
+
+				POSITION_TIMER_INTERVALL = 300;
+
+			}
+
 			if (!shortVowelGameStarted){
 				this.controller.setArrowKeysEnabled(true);
 				shortVowelGameStarted = true;
-				
+
 				startShortVowelGame(g.getCurWord(), g);
-				
+
 				enemyImageX = 270;
 				enemyImageY = 330;				
 				enemyMoveTask = new EnemyMoveTask(this);
 				registerAniTask(enemyMoveTask);
-											
+
 				makeEnemyMove(enemyImageX, enemyImageY);
 			}
-			
-		
+
+
 			updateMovingConsonantsPosition(gameView, 
-											this.movingConsonantsList, 
-											g.getMovingConsonantsCoords(), 
-											(POSITION_TIMER_INTERVALL+(int)averageLatency));
-		
+					this.movingConsonantsList, 
+					g.getMovingConsonantsCoords(), 
+					(POSITION_TIMER_INTERVALL+(int)averageLatency));
+
 			if (g.getPlayerCount() > 1){
-				
+
 				this.enemyMoveTask.setToX(g.getPlayerPosX(playerID%2+1));
 				this.enemyMoveTask.setToY(g.getPlayerPosY(playerID%2+1));
 				int speedY = (int)((g.getPlayerPosY(playerID%2+1)-this.enemyImageY)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
 				int speedX = (int)((g.getPlayerPosX(playerID%2+1)-this.enemyImageX)/((POSITION_TIMER_INTERVALL+averageLatency)/(double)AnimationTimer.TIMER_SPEED));
 				this.enemyMoveTask.setSpaceSpeedX(speedX);
 				this.enemyMoveTask.setSpaceSpeedY(speedY);
-						
+
 			}
-				
+
 			removeMarkedMc(g);
-			
+
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 			}
-			
-			
+
+
 			break;
 			// word enter
 		case 6:
@@ -267,7 +278,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				}
 				else
 					gameView.clearGamePanel();
-						
+
 			}
 			break;
 		case 97:
@@ -288,7 +299,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			while (i.hasNext()) {
 
 				Player current = i.next();
-				
+
 				int pid = g.getPlayers().indexOf(current)+1;
 				GWT.log(Integer.toString(pid));
 				GWT.log(Integer.toString(openGame.getPlayers().size()));
@@ -302,11 +313,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			break;
 		}
-		
-		//openGame = g;
+
+		openGame = g;
 
 	}
-	
+
 	private void removeMarkedMc(DoppelungGameState g){
 		if (movingConsonantsList != null){
 			for (MovingConsonants mc: this.movingConsonantsList){
@@ -318,7 +329,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 		}
 	}
-	
+
 	/**
 	 * Updates the coordinates of the moving consonants to which they should move
 	 * 
@@ -328,7 +339,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	 * @param timeInterval	refresh time intervall
 	 */
 	public void updateMovingConsonantsPosition(DoppelungGameView gameView, ArrayList<MovingConsonants> mcList, 
-												ArrayList<ConsonantPoint2D> coordList, int timeInterval){
+			ArrayList<ConsonantPoint2D> coordList, int timeInterval){
 		int i = 0;
 		if (mcList != null){
 			for (MovingConsonants mc: mcList){
@@ -346,26 +357,26 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			}
 		}
 	}
-	
+
 	private void updateMyPosition() {
-		
-		
+
+
 		long id = (long) Math.random() * 500000;
-		
+
 		super.pingTimes.put(id, System.currentTimeMillis());
-		
+
 		super.timeStamp = System.currentTimeMillis();
-		
-		
+
+
 		((DoppelungGameCommunicationServiceAsync) commServ).updatePlayerPos(this.openGame.getId() + ":" + 
 				this.playerID + ":" +
 				((DoppelungGameView)view).getShortVowelImagePosition()[0] + ":" +
 				((DoppelungGameView)view).getShortVowelImagePosition()[1] + ":" + id,
 				updateCallback);
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Registers a new AnimationTimerTask
 	 * 
@@ -380,15 +391,15 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	 * a task exists for every direction the player can move.
 	 */
 	private AnimationTimerTask updatePositionTask = new AnimationTimerTask() {
-		
+
 		@Override
 		public void run() {
 			updateMyPosition();
 		}
-		
+
 	};
 
-	
+
 	private AnimationTimerTask moveLeftTask = new AnimationTimerTask() {
 
 		@Override
@@ -426,18 +437,18 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		@Override
 		public void run() {
-			
+
 			((DoppelungGameView)view).moveStepDown(true);
 			//updateMyPosition();
 
 		}
 
 	};
-	
+
 	// task for the enemy image
 	private EnemyMoveTask enemyMoveTask;
-	
-	
+
+
 	/*
 	private AnimationTimerTask moveLeftTaskEnemy = new AnimationTimerTask() {
 
@@ -479,7 +490,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		}
 
 	};*/
-	
+
 	/**
 	 * We only want a click to be registered ONCE.
 	 * TODO: an array would be nice here
@@ -492,7 +503,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 
 	public void moveImageOnGamePanel(boolean up, int key){
-		
+
 
 		if (!up) {
 
@@ -504,7 +515,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 				if (!keyDownDown) {
 					keyDownDown = true;
-					
+
 					registerAniTask(moveDownTask);
 
 				}
@@ -513,7 +524,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case 3:
 				if (!keyRightDown) {
 					keyRightDown = true;
-					
+
 					registerAniTask(moveRightTask);
 				}
 
@@ -521,7 +532,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case 2:
 				if (!keyUpDown) {
 					keyUpDown = true;
-					
+
 					registerAniTask(moveUpTask);
 				}
 
@@ -529,7 +540,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case 4:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
-					
+
 					registerAniTask(moveLeftTask);
 				}
 
@@ -544,7 +555,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			case 1:
 
 				if (keyDownDown) {
-				
+
 					keyDownDown = false;
 					moveDownTask.markForDelete();
 				}
@@ -552,7 +563,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case 3:
 				if (keyRightDown) {
-					
+
 					keyRightDown = false;
 					moveRightTask.markForDelete();
 				}
@@ -560,7 +571,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case 2:
 				if (keyUpDown) {
-					
+
 					keyUpDown = false;
 					moveUpTask.markForDelete();
 				}
@@ -568,36 +579,36 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 				break;
 			case 4:
 				if (keyLeftDown) {
-					
+
 					keyLeftDown = false;
 					moveLeftTask.markForDelete();
 				}
 
 				break;
 			}
-			
-			
+
+
 
 		}
 
 	}
 
 	private void initializeMovingConsonantList(DoppelungGameWord word, DoppelungGameState g){
-		
+
 		int i = 0;
 		Iterator<ConsonantPoint2D> it = g.getMovingConsonantsCoords().iterator();
 		while(it.hasNext()){
 			ConsonantPoint2D cp2D = it.next();
 			MovingConsonants mc = new MovingConsonants(
-										cp2D.getConsonant(), 
-										this, 
-										cp2D.getX(), 
-										cp2D.getY(),
-										i);
+					cp2D.getConsonant(), 
+					this, 
+					cp2D.getX(), 
+					cp2D.getY(),
+					i);
 			this.movingConsonantsList.add(mc);
 			i++;
 		}
-		
+
 	}
 
 	/**
@@ -626,7 +637,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	public void moveEnemyTo(int x, int y){
 		((DoppelungGameView) view).moveEnemyTo(x, y);
 	}
-	
+
 
 	public void removeMovingConsonants(MovingConsonants mc){
 		((DoppelungGameView) view).hideMovingConsonant(mc);
@@ -655,16 +666,16 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		moveDownTask.markForDelete();
 		updatePositionTask.markForDelete();
 		enemyMoveTask.markForDelete();
-				
+
 		keyUpDown = false;
 		keyDownDown = false;
 		keyLeftDown = false;
 		keyRightDown = false;
-		
+
 		GWT.log("canceled updateMyPositionTimer, started standard update timer again..");
 		updateMyPositionTimer.cancel();
 		t.scheduleRepeating(200);
-		
+
 
 	}
 
@@ -673,42 +684,42 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		this.enemyImageY = y;
 		((DoppelungGameView)view).moveEnemyTo(enemyImageX, enemyImageY);
 	}
-	
+
 	/*public void makeEnemyMove(String to) {
-		
+
 		if (to == null) to="stop";
 
 		if (to.equals("up")) {
 
 			this.registerAniTask(moveUpTaskEnemy);
-			
+
 		}
 
 		if (to.equals("down")) {
 
 			this.registerAniTask(moveDownTaskEnemy);
-			
+
 		}
 
 		if (to.equals("left")) {
-			
+
 			this.registerAniTask(moveLeftTaskEnemy);
 
 		}
 
 		if (to.equals("right")) {
-			
+
 			this.registerAniTask(moveRightTaskEnemy);
 
 		}
-		
+
 		if (to.equals("stop")) {
-			
+
 			moveUpTaskEnemy.markForDelete();
 			moveDownTaskEnemy.markForDelete();
 			moveLeftTaskEnemy.markForDelete();
 			moveRightTaskEnemy.markForDelete();
-			
+
 		}
 
 
@@ -748,31 +759,31 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 
 	public void startShortVowelGame(DoppelungGameWord word, DoppelungGameState g){
-		
+
 		((DoppelungGameView)view).showShortVowelGame(this.playerID,
-														this.numberOfPlayers, 
-														270, 
-														330);
-		
+				this.numberOfPlayers, 
+				270, 
+				330);
+
 		initializeMovingConsonantList(word, g);
 
 		GWT.log("cancelled normal timer, starded updateMyPositionTimer...");
-		
+
 		t.cancel();
-		
+
 		updateMyPositionTimer = new Timer() {
 			public void run() {
 				updateMyPosition();
 			}
 		};
-		
+
 		updateMyPositionTimer.scheduleRepeating(POSITION_TIMER_INTERVALL);
 
 	}
 
 	public void startButtonClicked(){
 		if (!openGame.isPlayerReady(this.playerID)) {
-				commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
 	}
 
@@ -780,7 +791,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		((DoppelungGameCommunicationServiceAsync)commServ).buttonClicked(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":"
 				+ Integer.toString(buttonid), updateCallback);
 	}
-	
+
 	public void wordEntered(String word){
 		((DoppelungGameCommunicationServiceAsync) commServ).wordEntered(openGame.getId() + ":" + Integer.toString(playerID) + ":" + word, updateCallback);
 	}
