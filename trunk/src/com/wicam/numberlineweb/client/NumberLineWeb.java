@@ -44,10 +44,12 @@ public class NumberLineWeb implements EntryPoint {
 		if (MobileDeviceChecker.checkMobile()) {
 			
 			RootPanel.getBodyElement().addClassName("mobile");
+			RootPanel.getBodyElement().getStyle().setBackgroundColor("#ffffff");
 			
 		}
 		
 		RootPanel.getBodyElement().removeClassName("hidden");
+		RootPanel.getBodyElement().addClassName("visible");
 		showGameTypeSelector();
 		
 		
