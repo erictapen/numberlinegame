@@ -82,7 +82,7 @@ public class HighScoreView extends Composite {
 		p.add(highScoreScrollWrap);
 		
 		close.getElement().getStyle().setFloat(Float.RIGHT);
-		close.getElement().getStyle().setPaddingBottom(20, Unit.PX);
+		close.getElement().getStyle().setMarginBottom(20, Unit.PX);
 		p.add(close);
 		RootPanel.get().add(p);
 		this.initWidget(p);

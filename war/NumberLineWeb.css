@@ -6,7 +6,7 @@
 	src: url(Ubuntu-Regular.ttf);
 }
 
-body,table td,select,.gwt-Button {
+body, body.visible,table td,select,.gwt-Button {
 	font-family: Ubuntu, Tahoma, Geneva, sans-serif !important;
 }
 
@@ -52,9 +52,9 @@ h1 {
 	font-size: 25px;
 }
 
-body {
+body,body.visible {
 	font-family: Ubuntu, Verdana, Helvetia, Arial, sans-serif;
-	background-color: #3D3D3D;
+	
 }
 
 .wrap {
@@ -75,7 +75,7 @@ body {
 }
 
 #game {
-	min-height: 400px;
+	
 	border: solid #333 1px;
 	width: 750px;
 	position: relative;
@@ -157,8 +157,8 @@ div.gametype div {
 	height: 425px;
 }
 
-body.mobile .gametypeselector {
-	background-image: url(uni3.png);
+body .gametypeselector {
+	background-image: url(wicam_f.png);
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
@@ -220,13 +220,13 @@ body.mobile #unilogo {
 }
 
 body.mobile {
-	height: 100%;
+	
 	background-color:white !important;
 }
 
-body, body.hidden {
-	height: 100%;
-	background-color:#3D3D3D !important;
+body.visible, body.hidden {
+	
+
 }
 
 body.mobile #chatwrap {
@@ -241,6 +241,7 @@ body.mobile #game {
 
 body.mobile .wrap {
 	margin: 0px;
+	margin-top:0px;
 	width: 100%;
 	height: 100%;
 	border: 0px;
@@ -252,7 +253,7 @@ body.mobile .wrap {
 	border-color: white;
 }
 
-#loading,#loading #msg {
+body.visible #loading, body.visible #loading #msg {
 	display: none;
 }
 
