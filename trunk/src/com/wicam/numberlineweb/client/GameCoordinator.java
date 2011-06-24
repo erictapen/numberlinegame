@@ -101,11 +101,7 @@ public abstract class GameCoordinator {
 	 */
 
 
-	public String getGameName() {
-
-		return "Spiel";
-
-	}
+	abstract public String getGameName();
 
 
 

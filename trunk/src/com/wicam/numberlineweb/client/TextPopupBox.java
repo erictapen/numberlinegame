@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 public class TextPopupBox extends DialogBox {
 
 
-	final TextBox text = new TextBox();
+	protected final TextBox text = new TextBox();
 	final Button ok = new Button("OK!");
 	final Button cancel = new Button("Abbrechen");
 	protected VerticalPanel p = new VerticalPanel();
