@@ -10,15 +10,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationService;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCoordinator;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.factsGame.FactsGameCommunicationService;
-import com.wicam.numberlineweb.client.factsGame.FactsGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.factsGame.FactsGameCoordinator;
-
 
 
 /**
@@ -90,6 +89,20 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
 				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		//adds the doppelung game
+		gts.addGame("Matheaufgaben", "Fragezeichen.gif", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
+				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

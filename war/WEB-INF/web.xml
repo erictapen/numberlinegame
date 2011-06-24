@@ -26,6 +26,10 @@
     <servlet-name>FactsGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.factsGame.FactsGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>MathDiagnosticsCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -47,6 +51,11 @@
     <servlet-name>FactsGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/factsGameCommunication</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MathDiagnosticsCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/mathDiagnosticsCommunication</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

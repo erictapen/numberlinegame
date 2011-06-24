@@ -39,7 +39,6 @@ public class DoppelungGameView extends GameView {
 	private final HTML canvas = new HTML("<div id='canvas' style='width:600px;height:400px;border-right:solid #333 1px'></div>");
 	private final HTML canvasScore = new HTML("<div id='canvas' style='width:150px;height:30px;'></div>");
 	private final HTML pointsText = new HTML("<div style='font-size:30px;color:black'>Punkte</div>");
-	ArrayList<HTML> playerNames = new ArrayList<HTML>();
 	final FlexTable playerNamesFlexTable = new FlexTable();
 
 	protected final Button startGameButton = new Button("Spiel Starten");
