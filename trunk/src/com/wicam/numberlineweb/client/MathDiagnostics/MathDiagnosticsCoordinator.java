@@ -23,6 +23,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	
 	private ArrayList<isItem> itemList = null;
 	private Iterator<isItem> itemListIterator;
+	private isItem curItem = null;
 	private ArrayList<ItemInformation> keyCodeList = new ArrayList<ItemInformation>();
 	private boolean started = false;
 	private final int timeBetweenTrials = 1000;
@@ -123,7 +124,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			break;
 			// performance
 		case 97:
-			HighScoreView h = new HighScoreView(g.getPlayers(),GameView.playerColors);
+			MathDiagnosticsHighScoreView h = new MathDiagnosticsHighScoreView(g.getPlayers(),GameView.playerColors, 500);
 			rootPanel.clear();
 			h.init(rootPanel);
 			break;
@@ -181,14 +182,16 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 
 	public void recordItemInformation(int keyCode){
 		ItemInformation itemInf = new ItemInformation();
-		itemInf.setItemInformation(true, duration.elapsedMillis());
+		boolean isCorrect = keyCode == curItem.getCorrectSolution();
+		itemInf.setItemInformation(isCorrect, duration.elapsedMillis());
 		keyCodeList.add(itemInf);
 	}
 	
 	public void presentNextItem(){
 		((MathDiagnosticsView) view).clearGamePanel();
 		if (itemListIterator.hasNext()){
-			ShowNextItemTask showNextItemTask = new ShowNextItemTask(this, (MathDiagnosticsView) view, itemListIterator.next());
+			curItem = itemListIterator.next();
+			ShowNextItemTask showNextItemTask = new ShowNextItemTask(this, (MathDiagnosticsView) view, curItem);
 			showNextItemTask.schedule(timeBetweenTrials);
 		}
 		else {

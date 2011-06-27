@@ -46,7 +46,7 @@ public class AdditionView extends MathDiagnosticsView {
 		gamePanel.add(itemString);
 		gamePanel.add(solution1);
 		gamePanel.add(solution2);
-		gamePanel.setWidgetPosition(itemString, 330, 75);
+		gamePanel.setWidgetPosition(itemString, 320, 75);
 		gamePanel.setWidgetPosition(solution1, 150, 250);
 		gamePanel.setWidgetPosition(solution2, 580, 250);
 		
@@ -58,7 +58,7 @@ public class AdditionView extends MathDiagnosticsView {
 	
 	private String addSpace(int number){
 		if (number < 10)
-			return " " + number;
+			return "&#160;" + number;
 		else
 			return "" + number;
 	}

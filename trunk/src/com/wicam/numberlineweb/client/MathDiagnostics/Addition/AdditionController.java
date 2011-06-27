@@ -17,9 +17,11 @@ public class AdditionController extends MathDiagnosticsController implements Key
 	public void onKeyDown(KeyDownEvent event) {
 		event.preventDefault();
 		MathDiagnosticsCoordinator mathCoordinator = (MathDiagnosticsCoordinator)coordinator;
-		if (event.getNativeKeyCode() == 89 || // 89 == y
-				event.getNativeKeyCode() == 77){ // 77 == m
-			mathCoordinator.recordItemInformation(event.getNativeKeyCode());
+		if (event.getNativeKeyCode() == 89 || event.getNativeKeyCode() == 77){ 
+			if (event.getNativeKeyCode() == 89) // 89 == y
+				mathCoordinator.recordItemInformation(MathDiagnosticsController.KEYLEFTSIDE);
+			if (event.getNativeKeyCode() == 77) // 77 == m
+				mathCoordinator.recordItemInformation(MathDiagnosticsController.KEYRIGHTSIDE);
 			mathCoordinator.presentNextItem();
 		}
 	}

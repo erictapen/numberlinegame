@@ -6,7 +6,7 @@ public abstract class ItemTypes {
 	
 	public static String getTypeString(int type){
 		if (type == ADDITIONITEM)
-			return "Addition";
+			return "addition";
 		return "";
 	}
 }
