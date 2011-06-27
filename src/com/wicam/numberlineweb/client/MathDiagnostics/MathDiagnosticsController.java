@@ -6,6 +6,9 @@ import com.wicam.numberlineweb.client.GameCoordinator;
 
 public class MathDiagnosticsController extends GameController {
 
+	public static final int KEYLEFTSIDE = 1;
+	public static final int KEYRIGHTSIDE = 2;
+	
 	public MathDiagnosticsController(GameCoordinator coordinator) {
 		super(coordinator);
 		// TODO Auto-generated constructor stub

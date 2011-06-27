@@ -5,12 +5,14 @@ import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 
 public class AdditionItem implements isItem, IsSerializable {
 
+	private int id = 0;
 	private int addend1 = 0;
 	private int addend2 = 0;
 	private int solution1 = 0;
 	private int solution2 = 0;
 	
-	public void setAdditionItem(int addend1, int addend2, int solution1, int solution2){
+	public void setAdditionItem(int id, int addend1, int addend2, int solution1, int solution2){
+		this.id = id;
 		this.addend1 = addend1;
 		this.addend2 = addend2;
 		this.solution1 = solution1;
@@ -49,4 +51,18 @@ public class AdditionItem implements isItem, IsSerializable {
 		return solution2;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	@Override
+	public int getCorrectSolution(){
+		if ((addend1 + addend2) == solution1)
+			return MathDiagnosticsController.KEYLEFTSIDE;
+		return MathDiagnosticsController.KEYRIGHTSIDE;
+	}
 }

@@ -23,5 +23,20 @@ public class MathDiagnosticsGameState extends GameState{
 	public int getTask() {
 		return task;
 	}
+	
+	public void setPlayerMeanRT(int playerid, int meanRT) {
+		if(playerid >= 1 && playerid-1 < players.size()){
+			MathDiagnosticsPlayer player = (MathDiagnosticsPlayer) players.get(playerid-1);
+			player.setMeanRT(meanRT);
+		}
+	}
+	
+	public int getPlayerMeanRT(int playerid) {
+		if(playerid >= 1 && playerid-1 < players.size()){
+			MathDiagnosticsPlayer player = (MathDiagnosticsPlayer) players.get(playerid-1);
+			return player.getMeanRT();
+		}
+		return -1;
+	}
 
 }

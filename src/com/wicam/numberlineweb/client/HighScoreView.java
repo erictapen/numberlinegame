@@ -21,13 +21,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class HighScoreView extends Composite {
 
 
-	private final VerticalPanel highScoreList = new VerticalPanel();
-	private final ScrollPanel highScoreScrollWrap = new ScrollPanel();
-	private final FlowPanel p = new FlowPanel();
+	protected final VerticalPanel highScoreList = new VerticalPanel();
+	protected final ScrollPanel highScoreScrollWrap = new ScrollPanel();
+	protected final FlowPanel p = new FlowPanel();
 
-	private ArrayList<? extends Player> playerList;
-	private String[] colorList;
-
+	protected ArrayList<? extends Player> playerList;
+	protected String[] colorList;
+	protected String width = "400px";
 
 
 	public HighScoreView(ArrayList<? extends Player> playerList, String[] colorList) {
@@ -44,7 +44,7 @@ public class HighScoreView extends Composite {
 		p.addStyleName("highscore-wrap");
 		
 		highScoreScrollWrap.setHeight("300px");
-		highScoreScrollWrap.setWidth("400px");
+		highScoreScrollWrap.setWidth(width);
 		
 		Button close = new Button("Schließen");
 		
@@ -60,24 +60,12 @@ public class HighScoreView extends Composite {
 		});
 		
 
-		
+		initilizeList();
 		
 		highScoreScrollWrap.addStyleName("highscore");
 		highScoreScrollWrap.add(highScoreList);
 
-		Collections.sort(playerList);
-
-		Iterator<? extends Player> i = playerList.iterator();
-
-		int n=0;
-
-		while (i.hasNext()) {
-
-			Player current=i.next();
-			n++;
-			highScoreList.add(new HTML("<div style='color:" + colorList[current.getColorId()]  +"'class='highscore-entry'><span class='highscore_pos'>"+n+". </span><span class='highscore_name'>"+current.getName()+" </span><span class='highscore_points'>"+current.getPoints()+"</span></div>"));
-
-		}
+		
 		
 		p.add(highScoreScrollWrap);
 		
@@ -91,4 +79,19 @@ public class HighScoreView extends Composite {
 	}
 
 
+	protected void initilizeList(){
+		Collections.sort(playerList);
+
+		Iterator<? extends Player> i = playerList.iterator();
+
+		int n=0;
+
+		while (i.hasNext()) {
+
+			Player current=i.next();
+			n++;
+			highScoreList.add(new HTML("<div style='color:" + colorList[current.getColorId()]  +"'class='highscore-entry'><span class='highscore_pos'>"+n+". </span><span class='highscore_name'>"+current.getName()+" </span><span class='highscore_points'>"+current.getPoints()+"</span></div>"));
+
+		}
+	}
 }
