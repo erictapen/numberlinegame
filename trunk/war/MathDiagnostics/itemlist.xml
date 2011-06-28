@@ -3,673 +3,673 @@
 <itemlist>
   <item type = "addition">
     <id>1</id>
-    <addend1>4</addend1>
-    <addend2>3</addend2>
+    <number1>4</number1>
+    <number2>3</number2>
     <solution1>9</solution1>
     <solution2>7</solution2>
   </item>
   <item type = "addition">
     <id>2</id>
-    <addend1>6</addend1>
-    <addend2>13</addend2>
+    <number1>6</number1>
+    <number2>13</number2>
     <solution1>19</solution1>
     <solution2>17</solution2>
   </item>
   <item type = "addition">
     <id>3</id>
-    <addend1>7</addend1>
-    <addend2>2</addend2>
+    <number1>7</number1>
+    <number2>2</number2>
     <solution1>19</solution1>
     <solution2>9</solution2>
   </item>
   <item type = "addition">
     <id>4</id>
-    <addend1>12</addend1>
-    <addend2>7</addend2>
+    <number1>12</number1>
+    <number2>7</number2>
     <solution1>19</solution1>
     <solution2>29</solution2>
   </item>
   <item type = "addition">
     <id>5</id>
-    <addend1>5</addend1>
-    <addend2>14</addend2>
+    <number1>5</number1>
+    <number2>14</number2>
     <solution1>29</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>6</id>
-    <addend1>12</addend1>
-    <addend2>13</addend2>
+    <number1>12</number1>
+    <number2>13</number2>
     <solution1>25</solution1>
     <solution2>35</solution2>
   </item>
   <item type = "addition">
     <id>7</id>
-    <addend1>16</addend1>
-    <addend2>12</addend2>
+    <number1>16</number1>
+    <number2>12</number2>
     <solution1>38</solution1>
     <solution2>28</solution2>
   </item>
   <item type = "addition">
     <id>8</id>
-    <addend1>4</addend1>
-    <addend2>13</addend2>
+    <number1>4</number1>
+    <number2>13</number2>
     <solution1>17</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>9</id>
-    <addend1>14</addend1>
-    <addend2>15</addend2>
+    <number1>14</number1>
+    <number2>15</number2>
     <solution1>27</solution1>
     <solution2>29</solution2>
   </item>
   <item type = "addition">
     <id>10</id>
-    <addend1>13</addend1>
-    <addend2>16</addend2>
+    <number1>13</number1>
+    <number2>16</number2>
     <solution1>29</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>11</id>
-    <addend1>5</addend1>
-    <addend2>3</addend2>
+    <number1>5</number1>
+    <number2>3</number2>
     <solution1>6</solution1>
     <solution2>8</solution2>
   </item>
   <item type = "addition">
     <id>12</id>
-    <addend1>12</addend1>
-    <addend2>15</addend2>
+    <number1>12</number1>
+    <number2>15</number2>
     <solution1>27</solution1>
     <solution2>29</solution2>
   </item>
   <item type = "addition">
     <id>13</id>
-    <addend1>14</addend1>
-    <addend2>12</addend2>
+    <number1>14</number1>
+    <number2>12</number2>
     <solution1>28</solution1>
     <solution2>26</solution2>
   </item>
   <item type = "addition">
     <id>14</id>
-    <addend1>15</addend1>
-    <addend2>13</addend2>
+    <number1>15</number1>
+    <number2>13</number2>
     <solution1>28</solution1>
     <solution2>18</solution2>
   </item>
   <item type = "addition">
     <id>15</id>
-    <addend1>13</addend1>
-    <addend2>14</addend2>
+    <number1>13</number1>
+    <number2>14</number2>
     <solution1>17</solution1>
     <solution2>27</solution2>
   </item>
   <item type = "addition">
     <id>16</id>
-    <addend1>4</addend1>
-    <addend2>15</addend2>
+    <number1>4</number1>
+    <number2>15</number2>
     <solution1>19</solution1>
     <solution2>29</solution2>
   </item>
   <item type = "addition">
     <id>17</id>
-    <addend1>2</addend1>
-    <addend2>13</addend2>
+    <number1>2</number1>
+    <number2>13</number2>
     <solution1>17</solution1>
     <solution2>15</solution2>
   </item>
   <item type = "addition">
     <id>18</id>
-    <addend1>2</addend1>
-    <addend2>17</addend2>
+    <number1>2</number1>
+    <number2>17</number2>
     <solution1>19</solution1>
     <solution2>29</solution2>
   </item>
   <item type = "addition">
     <id>19</id>
-    <addend1>14</addend1>
-    <addend2>4</addend2>
+    <number1>14</number1>
+    <number2>4</number2>
     <solution1>16</solution1>
     <solution2>18</solution2>
   </item>
   <item type = "addition">
     <id>20</id>
-    <addend1>12</addend1>
-    <addend2>5</addend2>
+    <number1>12</number1>
+    <number2>5</number2>
     <solution1>17</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>21</id>
-    <addend1>16</addend1>
-    <addend2>3</addend2>
+    <number1>16</number1>
+    <number2>3</number2>
     <solution1>17</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>22</id>
-    <addend1>5</addend1>
-    <addend2>13</addend2>
+    <number1>5</number1>
+    <number2>13</number2>
     <solution1>18</solution1>
     <solution2>16</solution2>
   </item>
   <item type = "addition">
     <id>23</id>
-    <addend1>14</addend1>
-    <addend2>3</addend2>
+    <number1>14</number1>
+    <number2>3</number2>
     <solution1>27</solution1>
     <solution2>17</solution2>
   </item>
   <item type = "addition">
     <id>24</id>
-    <addend1>17</addend1>
-    <addend2>12</addend2>
+    <number1>17</number1>
+    <number2>12</number2>
     <solution1>29</solution1>
     <solution2>19</solution2>
   </item>
   <item type = "addition">
     <id>25</id>
-    <addend1>5</addend1>
-    <addend2>7</addend2>
+    <number1>5</number1>
+    <number2>7</number2>
     <solution1>14</solution1>
     <solution2>12</solution2>
   </item>
   <item type = "addition">
     <id>26</id>
-    <addend1>13</addend1>
-    <addend2>8</addend2>
+    <number1>13</number1>
+    <number2>8</number2>
     <solution1>21</solution1>
     <solution2>23</solution2>
   </item>
   <item type = "addition">
     <id>27</id>
-    <addend1>8</addend1>
-    <addend2>6</addend2>
+    <number1>8</number1>
+    <number2>6</number2>
     <solution1>12</solution1>
     <solution2>14</solution2>
   </item>
   <item type = "addition">
     <id>28</id>
-    <addend1>9</addend1>
-    <addend2>4</addend2>
+    <number1>9</number1>
+    <number2>4</number2>
     <solution1>13</solution1>
     <solution2>23</solution2>
   </item>
   <item type = "addition">
     <id>29</id>
-    <addend1>8</addend1>
-    <addend2>7</addend2>
+    <number1>8</number1>
+    <number2>7</number2>
     <solution1>25</solution1>
     <solution2>15</solution2>
   </item>
   <item type = "addition">
     <id>30</id>
-    <addend1>17</addend1>
-    <addend2>6</addend2>
+    <number1>17</number1>
+    <number2>6</number2>
     <solution1>23</solution1>
     <solution2>21</solution2>
   </item>
   <item type = "addition">
     <id>31</id>
-    <addend1>7</addend1>
-    <addend2>17</addend2>
+    <number1>7</number1>
+    <number2>17</number2>
     <solution1>34</solution1>
     <solution2>24</solution2>
   </item>
   <item type = "addition">
     <id>32</id>
-    <addend1>19</addend1>
-    <addend2>5</addend2>
+    <number1>19</number1>
+    <number2>5</number2>
     <solution1>24</solution1>
     <solution2>34</solution2>
   </item>
   <item type = "addition">
     <id>33</id>
-    <addend1>6</addend1>
-    <addend2>15</addend2>
+    <number1>6</number1>
+    <number2>15</number2>
     <solution1>23</solution1>
     <solution2>21</solution2>
   </item>
   <item type = "addition">
     <id>34</id>
-    <addend1>4</addend1>
-    <addend2>17</addend2>
+    <number1>4</number1>
+    <number2>17</number2>
     <solution1>21</solution1>
     <solution2>31</solution2>
   </item>
   <item type = "addition">
     <id>35</id>
-    <addend1>7</addend1>
-    <addend2>6</addend2>
+    <number1>7</number1>
+    <number2>6</number2>
     <solution1>23</solution1>
     <solution2>13</solution2>
   </item>
   <item type = "addition">
     <id>36</id>
-    <addend1>13</addend1>
-    <addend2>18</addend2>
+    <number1>13</number1>
+    <number2>18</number2>
     <solution1>31</solution1>
     <solution2>21</solution2>
   </item>
   <item type = "addition">
     <id>37</id>
-    <addend1>9</addend1>
-    <addend2>5</addend2>
+    <number1>9</number1>
+    <number2>5</number2>
     <solution1>12</solution1>
     <solution2>14</solution2>
   </item>
   <item type = "addition">
     <id>38</id>
-    <addend1>5</addend1>
-    <addend2>16</addend2>
+    <number1>5</number1>
+    <number2>16</number2>
     <solution1>21</solution1>
     <solution2>23</solution2>
   </item>
   <item type = "addition">
     <id>39</id>
-    <addend1>5</addend1>
-    <addend2>8</addend2>
+    <number1>5</number1>
+    <number2>8</number2>
     <solution1>23</solution1>
     <solution2>13</solution2>
   </item>
   <item type = "addition">
     <id>40</id>
-    <addend1>7</addend1>
-    <addend2>9</addend2>
+    <number1>7</number1>
+    <number2>9</number2>
     <solution1>16</solution1>
     <solution2>14</solution2>
   </item>
   <item type = "addition">
     <id>41</id>
-    <addend1>18</addend1>
-    <addend2>7</addend2>
+    <number1>18</number1>
+    <number2>7</number2>
     <solution1>27</solution1>
     <solution2>25</solution2>
   </item>
   <item type = "addition">
     <id>42</id>
-    <addend1>17</addend1>
-    <addend2>19</addend2>
+    <number1>17</number1>
+    <number2>19</number2>
     <solution1>36</solution1>
     <solution2>26</solution2>
   </item>
   <item type = "addition">
     <id>43</id>
-    <addend1>14</addend1>
-    <addend2>17</addend2>
+    <number1>14</number1>
+    <number2>17</number2>
     <solution1>21</solution1>
     <solution2>31</solution2>
   </item>
   <item type = "addition">
     <id>44</id>
-    <addend1>19</addend1>
-    <addend2>15</addend2>
+    <number1>19</number1>
+    <number2>15</number2>
     <solution1>34</solution1>
     <solution2>24</solution2>
   </item>
   <item type = "addition">
     <id>45</id>
-    <addend1>15</addend1>
-    <addend2>8</addend2>
+    <number1>15</number1>
+    <number2>8</number2>
     <solution1>21</solution1>
     <solution2>23</solution2>
   </item>
   <item type = "addition">
     <id>46</id>
-    <addend1>8</addend1>
-    <addend2>9</addend2>
+    <number1>8</number1>
+    <number2>9</number2>
     <solution1>17</solution1>
     <solution2>27</solution2>
   </item>
   <item type = "addition">
     <id>47</id>
-    <addend1>9</addend1>
-    <addend2>14</addend2>
+    <number1>9</number1>
+    <number2>14</number2>
     <solution1>21</solution1>
     <solution2>23</solution2>
   </item>
   <item type = "addition">
     <id>48</id>
-    <addend1>7</addend1>
-    <addend2>4</addend2>
+    <number1>7</number1>
+    <number2>4</number2>
     <solution1>11</solution1>
     <solution2>13</solution2>
   </item>
   <item type = "addition">
     <id>49</id>
-    <addend1>25</addend1>
-    <addend2>62</addend2>
+    <number1>25</number1>
+    <number2>62</number2>
     <solution1>87</solution1>
     <solution2>89</solution2>
   </item>
   <item type = "addition">
     <id>50</id>
-    <addend1>37</addend1>
-    <addend2>41</addend2>
+    <number1>37</number1>
+    <number2>41</number2>
     <solution1>76</solution1>
     <solution2>78</solution2>
   </item>
   <item type = "addition">
     <id>51</id>
-    <addend1>24</addend1>
-    <addend2>62</addend2>
+    <number1>24</number1>
+    <number2>62</number2>
     <solution1>86</solution1>
     <solution2>96</solution2>
   </item>
   <item type = "addition">
     <id>52</id>
-    <addend1>42</addend1>
-    <addend2>34</addend2>
+    <number1>42</number1>
+    <number2>34</number2>
     <solution1>86</solution1>
     <solution2>76</solution2>
   </item>
   <item type = "addition">
     <id>53</id>
-    <addend1>21</addend1>
-    <addend2>74</addend2>
+    <number1>21</number1>
+    <number2>74</number2>
     <solution1>95</solution1>
     <solution2>93</solution2>
   </item>
   <item type = "addition">
     <id>54</id>
-    <addend1>24</addend1>
-    <addend2>45</addend2>
+    <number1>24</number1>
+    <number2>45</number2>
     <solution1>79</solution1>
     <solution2>69</solution2>
   </item>
   <item type = "addition">
     <id>55</id>
-    <addend1>24</addend1>
-    <addend2>71</addend2>
+    <number1>24</number1>
+    <number2>71</number2>
     <solution1>95</solution1>
     <solution2>97</solution2>
   </item>
   <item type = "addition">
     <id>56</id>
-    <addend1>41</addend1>
-    <addend2>35</addend2>
+    <number1>41</number1>
+    <number2>35</number2>
     <solution1>74</solution1>
     <solution2>76</solution2>
   </item>
   <item type = "addition">
     <id>57</id>
-    <addend1>65</addend1>
-    <addend2>32</addend2>
+    <number1>65</number1>
+    <number2>32</number2>
     <solution1>97</solution1>
     <solution2>95</solution2>
   </item>
   <item type = "addition">
     <id>58</id>
-    <addend1>43</addend1>
-    <addend2>25</addend2>
+    <number1>43</number1>
+    <number2>25</number2>
     <solution1>78</solution1>
     <solution2>68</solution2>
   </item>
   <item type = "addition">
     <id>59</id>
-    <addend1>65</addend1>
-    <addend2>21</addend2>
+    <number1>65</number1>
+    <number2>21</number2>
     <solution1>86</solution1>
     <solution2>96</solution2>
   </item>
   <item type = "addition">
     <id>60</id>
-    <addend1>42</addend1>
-    <addend2>32</addend2>
+    <number1>42</number1>
+    <number2>32</number2>
     <solution1>76</solution1>
     <solution2>74</solution2>
   </item>
   <item type = "addition">
     <id>61</id>
-    <addend1>41</addend1>
-    <addend2>38</addend2>
+    <number1>41</number1>
+    <number2>38</number2>
     <solution1>79</solution1>
     <solution2>89</solution2>
   </item>
   <item type = "addition">
     <id>62</id>
-    <addend1>74</addend1>
-    <addend2>23</addend2>
+    <number1>74</number1>
+    <number2>23</number2>
     <solution1>87</solution1>
     <solution2>97</solution2>
   </item>
   <item type = "addition">
     <id>63</id>
-    <addend1>31</addend1>
-    <addend2>45</addend2>
+    <number1>31</number1>
+    <number2>45</number2>
     <solution1>76</solution1>
     <solution2>78</solution2>
   </item>
   <item type = "addition">
     <id>64</id>
-    <addend1>65</addend1>
-    <addend2>31</addend2>
+    <number1>65</number1>
+    <number2>31</number2>
     <solution1>98</solution1>
     <solution2>96</solution2>
   </item>
   <item type = "addition">
     <id>65</id>
-    <addend1>24</addend1>
-    <addend2>43</addend2>
+    <number1>24</number1>
+    <number2>43</number2>
     <solution1>67</solution1>
     <solution2>69</solution2>
   </item>
   <item type = "addition">
     <id>66</id>
-    <addend1>61</addend1>
-    <addend2>32</addend2>
+    <number1>61</number1>
+    <number2>32</number2>
     <solution1>91</solution1>
     <solution2>93</solution2>
   </item>
   <item type = "addition">
     <id>67</id>
-    <addend1>32</addend1>
-    <addend2>47</addend2>
+    <number1>32</number1>
+    <number2>47</number2>
     <solution1>79</solution1>
     <solution2>89</solution2>
   </item>
   <item type = "addition">
     <id>68</id>
-    <addend1>53</addend1>
-    <addend2>36</addend2>
+    <number1>53</number1>
+    <number2>36</number2>
     <solution1>79</solution1>
     <solution2>89</solution2>
   </item>
   <item type = "addition">
     <id>69</id>
-    <addend1>28</addend1>
-    <addend2>51</addend2>
+    <number1>28</number1>
+    <number2>51</number2>
     <solution1>79</solution1>
     <solution2>69</solution2>
   </item>
   <item type = "addition">
     <id>70</id>
-    <addend1>36</addend1>
-    <addend2>43</addend2>
+    <number1>36</number1>
+    <number2>43</number2>
     <solution1>89</solution1>
     <solution2>79</solution2>
   </item>
   <item type = "addition">
     <id>71</id>
-    <addend1>67</addend1>
-    <addend2>32</addend2>
+    <number1>67</number1>
+    <number2>32</number2>
     <solution1>99</solution1>
     <solution2>89</solution2>
   </item>
   <item type = "addition">
     <id>72</id>
-    <addend1>26</addend1>
-    <addend2>43</addend2>
+    <number1>26</number1>
+    <number2>43</number2>
     <solution1>67</solution1>
     <solution2>69</solution2>
   </item>
   <item type = "addition">
     <id>73</id>
-    <addend1>47</addend1>
-    <addend2>38</addend2>
+    <number1>47</number1>
+    <number2>38</number2>
     <solution1>85</solution1>
     <solution2>83</solution2>
   </item>
   <item type = "addition">
     <id>74</id>
-    <addend1>26</addend1>
-    <addend2>65</addend2>
+    <number1>26</number1>
+    <number2>65</number2>
     <solution1>93</solution1>
     <solution2>91</solution2>
   </item>
   <item type = "addition">
     <id>75</id>
-    <addend1>29</addend1>
-    <addend2>48</addend2>
+    <number1>29</number1>
+    <number2>48</number2>
     <solution1>77</solution1>
     <solution2>87</solution2>
   </item>
   <item type = "addition">
     <id>76</id>
-    <addend1>39</addend1>
-    <addend2>26</addend2>
+    <number1>39</number1>
+    <number2>26</number2>
     <solution1>63</solution1>
     <solution2>65</solution2>
   </item>
   <item type = "addition">
     <id>77</id>
-    <addend1>37</addend1>
-    <addend2>46</addend2>
+    <number1>37</number1>
+    <number2>46</number2>
     <solution1>83</solution1>
     <solution2>73</solution2>
   </item>
   <item type = "addition">
     <id>78</id>
-    <addend1>46</addend1>
-    <addend2>35</addend2>
+    <number1>46</number1>
+    <number2>35</number2>
     <solution1>91</solution1>
     <solution2>81</solution2>
   </item>
   <item type = "addition">
     <id>79</id>
-    <addend1>34</addend1>
-    <addend2>57</addend2>
+    <number1>34</number1>
+    <number2>57</number2>
     <solution1>91</solution1>
     <solution2>93</solution2>
   </item>
   <item type = "addition">
     <id>80</id>
-    <addend1>36</addend1>
-    <addend2>47</addend2>
+    <number1>36</number1>
+    <number2>47</number2>
     <solution1>93</solution1>
     <solution2>83</solution2>
   </item>
   <item type = "addition">
     <id>81</id>
-    <addend1>52</addend1>
-    <addend2>29</addend2>
+    <number1>52</number1>
+    <number2>29</number2>
     <solution1>81</solution1>
     <solution2>71</solution2>
   </item>
   <item type = "addition">
     <id>82</id>
-    <addend1>34</addend1>
-    <addend2>49</addend2>
+    <number1>34</number1>
+    <number2>49</number2>
     <solution1>81</solution1>
     <solution2>83</solution2>
   </item>
   <item type = "addition">
     <id>83</id>
-    <addend1>27</addend1>
-    <addend2>45</addend2>
+    <number1>27</number1>
+    <number2>45</number2>
     <solution1>72</solution1>
     <solution2>82</solution2>
   </item>
   <item type = "addition">
     <id>84</id>
-    <addend1>38</addend1>
-    <addend2>25</addend2>
+    <number1>38</number1>
+    <number2>25</number2>
     <solution1>73</solution1>
     <solution2>63</solution2>
   </item>
   <item type = "addition">
     <id>85</id>
-    <addend1>25</addend1>
-    <addend2>67</addend2>
+    <number1>25</number1>
+    <number2>67</number2>
     <solution1>92</solution1>
     <solution2>94</solution2>
   </item>
   <item type = "addition">
     <id>86</id>
-    <addend1>65</addend1>
-    <addend2>28</addend2>
+    <number1>65</number1>
+    <number2>28</number2>
     <solution1>91</solution1>
     <solution2>93</solution2>
   </item>
   <item type = "addition">
     <id>87</id>
-    <addend1>35</addend1>
-    <addend2>27</addend2>
+    <number1>35</number1>
+    <number2>27</number2>
     <solution1>62</solution1>
     <solution2>72</solution2>
   </item>
   <item type = "addition">
     <id>88</id>
-    <addend1>45</addend1>
-    <addend2>39</addend2>
+    <number1>45</number1>
+    <number2>39</number2>
     <solution1>94</solution1>
     <solution2>84</solution2>
   </item>
   <item type = "addition">
     <id>89</id>
-    <addend1>46</addend1>
-    <addend2>36</addend2>
+    <number1>46</number1>
+    <number2>36</number2>
     <solution1>82</solution1>
     <solution2>92</solution2>
   </item>
   <item type = "addition">
     <id>90</id>
-    <addend1>29</addend1>
-    <addend2>67</addend2>
+    <number1>29</number1>
+    <number2>67</number2>
     <solution1>94</solution1>
     <solution2>96</solution2>
   </item>
   <item type = "addition">
     <id>91</id>
-    <addend1>39</addend1>
-    <addend2>28</addend2>
+    <number1>39</number1>
+    <number2>28</number2>
     <solution1>67</solution1>
     <solution2>65</solution2>
   </item>
   <item type = "addition">
     <id>92</id>
-    <addend1>49</addend1>
-    <addend2>32</addend2>
+    <number1>49</number1>
+    <number2>32</number2>
     <solution1>83</solution1>
     <solution2>81</solution2>
   </item>
   <item type = "addition">
     <id>93</id>
-    <addend1>64</addend1>
-    <addend2>28</addend2>
+    <number1>64</number1>
+    <number2>28</number2>
     <solution1>92</solution1>
     <solution2>82</solution2>
   </item>
   <item type = "addition">
     <id>94</id>
-    <addend1>24</addend1>
-    <addend2>68</addend2>
+    <number1>24</number1>
+    <number2>68</number2>
     <solution1>94</solution1>
     <solution2>92</solution2>
   </item>
   <item type = "addition">
     <id>95</id>
-    <addend1>29</addend1>
-    <addend2>38</addend2>
+    <number1>29</number1>
+    <number2>38</number2>
     <solution1>67</solution1>
     <solution2>69</solution2>
   </item>
   <item type = "addition">
     <id>96</id>
-    <addend1>28</addend1>
-    <addend2>69</addend2>
+    <number1>28</number1>
+    <number2>69</number2>
     <solution1>87</solution1>
     <solution2>97</solution2>
   </item>
@@ -1368,5 +1368,741 @@
     <id>120</id>
     <numberTop>43</numberTop>
     <numberBottom>41</numberBottom>
+  </item>
+  <item type = "subtraction">
+    <id>1</id>
+    <number1>53</number1>
+    <number2>27</number2>
+    <solution1>26</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>2</id>
+    <number1>32</number1>
+    <number2>17</number2>
+    <solution1>13</solution1>
+    <solution2>15</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>3</id>
+    <number1>41</number1>
+    <number2>25</number2>
+    <solution1>16</solution1>
+    <solution2>26</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>4</id>
+    <number1>51</number1>
+    <number2>37</number2>
+    <solution1>16</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>5</id>
+    <number1>41</number1>
+    <number2>17</number2>
+    <solution1>24</solution1>
+    <solution2>34</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>6</id>
+    <number1>52</number1>
+    <number2>27</number2>
+    <solution1>23</solution1>
+    <solution2>25</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>7</id>
+    <number1>33</number1>
+    <number2>18</number2>
+    <solution1>15</solution1>
+    <solution2>17</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>8</id>
+    <number1>41</number1>
+    <number2>18</number2>
+    <solution1>13</solution1>
+    <solution2>23</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>9</id>
+    <number1>54</number1>
+    <number2>28</number2>
+    <solution1>26</solution1>
+    <solution2>28</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>10</id>
+    <number1>45</number1>
+    <number2>29</number2>
+    <solution1>14</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>11</id>
+    <number1>91</number1>
+    <number2>67</number2>
+    <solution1>24</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>12</id>
+    <number1>94</number1>
+    <number2>69</number2>
+    <solution1>15</solution1>
+    <solution2>25</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>13</id>
+    <number1>95</number1>
+    <number2>69</number2>
+    <solution1>26</solution1>
+    <solution2>36</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>14</id>
+    <number1>81</number1>
+    <number2>65</number2>
+    <solution1>14</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>15</id>
+    <number1>91</number1>
+    <number2>79</number2>
+    <solution1>12</solution1>
+    <solution2>22</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>16</id>
+    <number1>92</number1>
+    <number2>76</number2>
+    <solution1>18</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>17</id>
+    <number1>83</number1>
+    <number2>67</number2>
+    <solution1>16</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>18</id>
+    <number1>93</number1>
+    <number2>67</number2>
+    <solution1>24</solution1>
+    <solution2>26</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>19</id>
+    <number1>92</number1>
+    <number2>68</number2>
+    <solution1>24</solution1>
+    <solution2>26</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>20</id>
+    <number1>91</number1>
+    <number2>76</number2>
+    <solution1>17</solution1>
+    <solution2>15</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>21</id>
+    <number1>47</number1>
+    <number2>23</number2>
+    <solution1>24</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>22</id>
+    <number1>37</number1>
+    <number2>12</number2>
+    <solution1>15</solution1>
+    <solution2>25</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>23</id>
+    <number1>35</number1>
+    <number2>21</number2>
+    <solution1>14</solution1>
+    <solution2>12</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>24</id>
+    <number1>57</number1>
+    <number2>32</number2>
+    <solution1>35</solution1>
+    <solution2>25</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>25</id>
+    <number1>48</number1>
+    <number2>32</number2>
+    <solution1>16</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>26</id>
+    <number1>39</number1>
+    <number2>11</number2>
+    <solution1>38</solution1>
+    <solution2>28</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>27</id>
+    <number1>45</number1>
+    <number2>31</number2>
+    <solution1>14</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>28</id>
+    <number1>56</number1>
+    <number2>41</number2>
+    <solution1>17</solution1>
+    <solution2>15</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>29</id>
+    <number1>27</number1>
+    <number2>13</number2>
+    <solution1>14</solution1>
+    <solution2>12</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>30</id>
+    <number1>49</number1>
+    <number2>24</number2>
+    <solution1>27</solution1>
+    <solution2>25</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>31</id>
+    <number1>86</number1>
+    <number2>62</number2>
+    <solution1>24</solution1>
+    <solution2>22</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>32</id>
+    <number1>96</number1>
+    <number2>72</number2>
+    <solution1>34</solution1>
+    <solution2>24</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>33</id>
+    <number1>89</number1>
+    <number2>73</number2>
+    <solution1>16</solution1>
+    <solution2>18</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>34</id>
+    <number1>98</number1>
+    <number2>74</number2>
+    <solution1>26</solution1>
+    <solution2>24</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>35</id>
+    <number1>95</number1>
+    <number2>71</number2>
+    <solution1>24</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>36</id>
+    <number1>76</number1>
+    <number2>62</number2>
+    <solution1>12</solution1>
+    <solution2>14</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>37</id>
+    <number1>99</number1>
+    <number2>81</number2>
+    <solution1>18</solution1>
+    <solution2>28</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>38</id>
+    <number1>78</number1>
+    <number2>63</number2>
+    <solution1>13</solution1>
+    <solution2>15</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>39</id>
+    <number1>97</number1>
+    <number2>71</number2>
+    <solution1>26</solution1>
+    <solution2>16</solution2>
+  </item>
+  <item type = "subtraction">
+    <id>40</id>
+    <number1>87</number1>
+    <number2>72</number2>
+    <solution1>17</solution1>
+    <solution2>15</solution2>
+  </item>
+    <item type = "multiplication">
+    <id>1</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>18</result>
+  </item>
+  <item type = "multiplication">
+    <id>2</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>20</result>
+  </item>
+  <item type = "multiplication">
+    <id>3</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>4</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>30</result>
+  </item>
+  <item type = "multiplication">
+    <id>5</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>32</result>
+  </item>
+  <item type = "multiplication">
+    <id>6</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>35</result>
+  </item>
+  <item type = "multiplication">
+    <id>7</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>48</result>
+  </item>
+  <item type = "multiplication">
+    <id>8</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>9</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>10</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>42</result>
+  </item>
+  <item type = "multiplication">
+    <id>11</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>18</result>
+  </item>
+  <item type = "multiplication">
+    <id>12</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>20</result>
+  </item>
+  <item type = "multiplication">
+    <id>13</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>14</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>30</result>
+  </item>
+  <item type = "multiplication">
+    <id>15</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>32</result>
+  </item>
+  <item type = "multiplication">
+    <id>16</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>35</result>
+  </item>
+  <item type = "multiplication">
+    <id>17</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>48</result>
+  </item>
+  <item type = "multiplication">
+    <id>18</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>19</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>20</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>42</result>
+  </item>
+  <item type = "multiplication">
+    <id>21</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>18</result>
+  </item>
+  <item type = "multiplication">
+    <id>22</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>20</result>
+  </item>
+  <item type = "multiplication">
+    <id>23</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>24</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>30</result>
+  </item>
+  <item type = "multiplication">
+    <id>25</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>32</result>
+  </item>
+  <item type = "multiplication">
+    <id>26</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>35</result>
+  </item>
+  <item type = "multiplication">
+    <id>27</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>48</result>
+  </item>
+  <item type = "multiplication">
+    <id>28</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>29</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>30</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>42</result>
+  </item>
+  <item type = "multiplication">
+    <id>31</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>18</result>
+  </item>
+  <item type = "multiplication">
+    <id>32</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>20</result>
+  </item>
+  <item type = "multiplication">
+    <id>33</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>34</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>30</result>
+  </item>
+  <item type = "multiplication">
+    <id>35</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>32</result>
+  </item>
+  <item type = "multiplication">
+    <id>36</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>35</result>
+  </item>
+  <item type = "multiplication">
+    <id>37</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>48</result>
+  </item>
+  <item type = "multiplication">
+    <id>38</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>39</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>40</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>42</result>
+  </item>
+  <item type = "multiplication">
+    <id>41</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>21</result>
+  </item>
+  <item type = "multiplication">
+    <id>42</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>25</result>
+  </item>
+  <item type = "multiplication">
+    <id>43</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>32</result>
+  </item>
+  <item type = "multiplication">
+    <id>44</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>36</result>
+  </item>
+  <item type = "multiplication">
+    <id>45</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>36</result>
+  </item>
+  <item type = "multiplication">
+    <id>46</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>40</result>
+  </item>
+  <item type = "multiplication">
+    <id>47</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>54</result>
+  </item>
+  <item type = "multiplication">
+    <id>48</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>49</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>24</result>
+  </item>
+  <item type = "multiplication">
+    <id>50</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>49</result>
+  </item>
+  <item type = "multiplication">
+    <id>51</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>15</result>
+  </item>
+  <item type = "multiplication">
+    <id>52</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>15</result>
+  </item>
+  <item type = "multiplication">
+    <id>53</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>24</result>
+  </item>
+  <item type = "multiplication">
+    <id>54</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>24</result>
+  </item>
+  <item type = "multiplication">
+    <id>55</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>28</result>
+  </item>
+  <item type = "multiplication">
+    <id>56</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>30</result>
+  </item>
+  <item type = "multiplication">
+    <id>57</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>42</result>
+  </item>
+  <item type = "multiplication">
+    <id>58</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>14</result>
+  </item>
+  <item type = "multiplication">
+    <id>59</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>18</result>
+  </item>
+  <item type = "multiplication">
+    <id>60</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>35</result>
+  </item>
+  <item type = "multiplication">
+    <id>61</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>26</result>
+  </item>
+  <item type = "multiplication">
+    <id>62</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>29</result>
+  </item>
+  <item type = "multiplication">
+    <id>63</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>31</result>
+  </item>
+  <item type = "multiplication">
+    <id>64</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>38</result>
+  </item>
+  <item type = "multiplication">
+    <id>65</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>38</result>
+  </item>
+  <item type = "multiplication">
+    <id>66</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>43</result>
+  </item>
+  <item type = "multiplication">
+    <id>67</id>
+    <number1>8</number1>
+    <number2>6</number2>
+    <result>51</result>
+  </item>
+  <item type = "multiplication">
+    <id>68</id>
+    <number1>7</number1>
+    <number2>3</number2>
+    <result>29</result>
+  </item>
+  <item type = "multiplication">
+    <id>69</id>
+    <number1>3</number1>
+    <number2>7</number2>
+    <result>23</result>
+  </item>
+  <item type = "multiplication">
+    <id>70</id>
+    <number1>7</number1>
+    <number2>6</number2>
+    <result>47</result>
+  </item>
+  <item type = "multiplication">
+    <id>71</id>
+    <number1>6</number1>
+    <number2>3</number2>
+    <result>13</result>
+  </item>
+  <item type = "multiplication">
+    <id>72</id>
+    <number1>5</number1>
+    <number2>4</number2>
+    <result>13</result>
+  </item>
+  <item type = "multiplication">
+    <id>73</id>
+    <number1>4</number1>
+    <number2>7</number2>
+    <result>26</result>
+  </item>
+  <item type = "multiplication">
+    <id>74</id>
+    <number1>6</number1>
+    <number2>5</number2>
+    <result>26</result>
+  </item>
+  <item type = "multiplication">
+    <id>75</id>
+    <number1>8</number1>
+    <number2>4</number2>
+    <result>23</result>
+  </item>
+  <item type = "multiplication">
+    <id>76</id>
+    <number1>7</number1>
+    <number2>5</number2>
+    <result>31</result>
   </item>
 </itemlist>
