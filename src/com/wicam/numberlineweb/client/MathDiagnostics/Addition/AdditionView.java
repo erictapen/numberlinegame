@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.MathDiagnostics.Addition;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.wicam.numberlineweb.client.GameController;
-import com.wicam.numberlineweb.client.MathDiagnostics.AdditionItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsView;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 
@@ -16,7 +15,6 @@ public class AdditionView extends MathDiagnosticsView {
 	
 	public AdditionView(int numberOfPlayers, GameController gameController) {
 		super(numberOfPlayers, gameController);
-		setExplanationText();
 		addFocusPanel();
 	}
 	
@@ -25,11 +23,13 @@ public class AdditionView extends MathDiagnosticsView {
 		focusPanel.setSize("750px", "400px");
 	}
 	
-	protected void setExplanationText(){
+	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Addition - Beschreibung</b></div>" +
 				"<p>" + 
-				"<div style='padding:5px 20px;font-size:18px'>" + "" +
-				"Erklärung" + 
+				"<div style='padding:5px 20px;font-size:18px; line-height: 1.5'>" +
+				"Du siehst gleich eine Additionsaufgabe.<br />" + 
+				"Wenn die linke Zahl richtig ist, drücke \"Y\",<br />" +
+				"wenn die rechte Zahl richtig, drücke \"M\"!" +
 				"</div>");
 	}
 
@@ -39,7 +39,7 @@ public class AdditionView extends MathDiagnosticsView {
 		AdditionItem addItem = ((AdditionItem)item);
 		String addend1 = addSpace(addItem.getAddend1());
 		String addend2 = addSpace(addItem.getAddend2());
-		String addition = addend1 + " + " + addend2;
+		String addition = addend1 + "&#160;+&#160;" + addend2;
 		itemString.setHTML("<span style='font-size:30px'>" + addition + "</span>");
 		solution1.setHTML("<span style='font-size:30px'>" + addSpace(addItem.getSolution1()) + "</span>");
 		solution2.setHTML("<span style='font-size:30px'>" + addSpace(addItem.getSolution2()) + "</span>");

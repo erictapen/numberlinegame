@@ -1,6 +1,7 @@
-package com.wicam.numberlineweb.client.MathDiagnostics;
+package com.wicam.numberlineweb.client.MathDiagnostics.Addition;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsController;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 
 public class AdditionItem implements isItem, IsSerializable {

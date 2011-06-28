@@ -8,6 +8,8 @@ public class MathDiagnosticsController extends GameController {
 
 	public static final int KEYLEFTSIDE = 1;
 	public static final int KEYRIGHTSIDE = 2;
+	public static final int KEYTOP = 3;
+	public static final int KEYBOTTOM = 4;
 	
 	public MathDiagnosticsController(GameCoordinator coordinator) {
 		super(coordinator);

@@ -673,4 +673,700 @@
     <solution1>87</solution1>
     <solution2>97</solution2>
   </item>
+   <item type = "numberline">
+    <id>1</id>
+    <leftNumber>387</leftNumber>
+    <rightNumber>813</rightNumber>
+    <exerciseNumber>759</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>2</id>
+    <leftNumber>287</leftNumber>
+    <rightNumber>513</rightNumber>
+    <exerciseNumber>396</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>3</id>
+    <leftNumber>216</leftNumber>
+    <rightNumber>984</rightNumber>
+    <exerciseNumber>367</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>4</id>
+    <leftNumber>121</leftNumber>
+    <rightNumber>479</rightNumber>
+    <exerciseNumber>315</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>5</id>
+    <leftNumber>126</leftNumber>
+    <rightNumber>674</rightNumber>
+    <exerciseNumber>363</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>6</id>
+    <leftNumber>469</leftNumber>
+    <rightNumber>931</rightNumber>
+    <exerciseNumber>874</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>7</id>
+    <leftNumber>179</leftNumber>
+    <rightNumber>421</rightNumber>
+    <exerciseNumber>285</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>8</id>
+    <leftNumber>369</leftNumber>
+    <rightNumber>831</rightNumber>
+    <exerciseNumber>598</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>9</id>
+    <leftNumber>179</leftNumber>
+    <rightNumber>421</rightNumber>
+    <exerciseNumber>237</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>10</id>
+    <leftNumber>343</leftNumber>
+    <rightNumber>857</rightNumber>
+    <exerciseNumber>564</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>11</id>
+    <leftNumber>217</leftNumber>
+    <rightNumber>583</rightNumber>
+    <exerciseNumber>359</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>12</id>
+    <leftNumber>432</leftNumber>
+    <rightNumber>968</rightNumber>
+    <exerciseNumber>715</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>13</id>
+    <leftNumber>284</leftNumber>
+    <rightNumber>516</rightNumber>
+    <exerciseNumber>435</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>14</id>
+    <leftNumber>536</leftNumber>
+    <rightNumber>864</rightNumber>
+    <exerciseNumber>679</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>15</id>
+    <leftNumber>458</leftNumber>
+    <rightNumber>942</rightNumber>
+    <exerciseNumber>535</exerciseNumber>
+  </item>
+  <item type = "numberline">
+    <id>16</id>
+    <leftNumber>139</leftNumber>
+    <rightNumber>461</rightNumber>
+    <exerciseNumber>278</exerciseNumber>
+  </item>
+    <item type = "numbercomparison">
+    <id>1</id>
+    <numberTop>21</numberTop>
+    <numberBottom>67</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>2</id>
+    <numberTop>78</numberTop>
+    <numberBottom>21</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>3</id>
+    <numberTop>23</numberTop>
+    <numberBottom>78</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>4</id>
+    <numberTop>68</numberTop>
+    <numberBottom>24</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>5</id>
+    <numberTop>25</numberTop>
+    <numberBottom>69</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>6</id>
+    <numberTop>78</numberTop>
+    <numberBottom>31</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>7</id>
+    <numberTop>42</numberTop>
+    <numberBottom>97</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>8</id>
+    <numberTop>86</numberTop>
+    <numberBottom>32</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>9</id>
+    <numberTop>34</numberTop>
+    <numberBottom>79</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>10</id>
+    <numberTop>85</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>11</id>
+    <numberTop>41</numberTop>
+    <numberBottom>98</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>12</id>
+    <numberTop>96</numberTop>
+    <numberBottom>42</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>13</id>
+    <numberTop>43</numberTop>
+    <numberBottom>89</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>14</id>
+    <numberTop>96</numberTop>
+    <numberBottom>51</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>15</id>
+    <numberTop>52</numberTop>
+    <numberBottom>97</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>16</id>
+    <numberTop>79</numberTop>
+    <numberBottom>25</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>17</id>
+    <numberTop>32</numberTop>
+    <numberBottom>76</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>18</id>
+    <numberTop>86</numberTop>
+    <numberBottom>42</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>19</id>
+    <numberTop>52</numberTop>
+    <numberBottom>98</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>20</id>
+    <numberTop>89</numberTop>
+    <numberBottom>34</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>21</id>
+    <numberTop>25</numberTop>
+    <numberBottom>81</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>22</id>
+    <numberTop>91</numberTop>
+    <numberBottom>27</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>23</id>
+    <numberTop>29</numberTop>
+    <numberBottom>81</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>24</id>
+    <numberTop>81</numberTop>
+    <numberBottom>35</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>25</id>
+    <numberTop>36</numberTop>
+    <numberBottom>91</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>26</id>
+    <numberTop>91</numberTop>
+    <numberBottom>37</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>27</id>
+    <numberTop>38</numberTop>
+    <numberBottom>91</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>28</id>
+    <numberTop>94</numberTop>
+    <numberBottom>38</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>29</id>
+    <numberTop>47</numberTop>
+    <numberBottom>92</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>30</id>
+    <numberTop>73</numberTop>
+    <numberBottom>28</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>31</id>
+    <numberTop>45</numberTop>
+    <numberBottom>81</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>32</id>
+    <numberTop>93</numberTop>
+    <numberBottom>47</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>33</id>
+    <numberTop>56</numberTop>
+    <numberBottom>92</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>34</id>
+    <numberTop>64</numberTop>
+    <numberBottom>28</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>35</id>
+    <numberTop>27</numberTop>
+    <numberBottom>93</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>36</id>
+    <numberTop>82</numberTop>
+    <numberBottom>36</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>37</id>
+    <numberTop>26</numberTop>
+    <numberBottom>71</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>38</id>
+    <numberTop>84</numberTop>
+    <numberBottom>39</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>39</id>
+    <numberTop>29</numberTop>
+    <numberBottom>84</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>40</id>
+    <numberTop>83</numberTop>
+    <numberBottom>27</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>41</id>
+    <numberTop>21</numberTop>
+    <numberBottom>39</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>42</id>
+    <numberTop>49</numberTop>
+    <numberBottom>25</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>43</id>
+    <numberTop>32</numberTop>
+    <numberBottom>47</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>44</id>
+    <numberTop>58</numberTop>
+    <numberBottom>34</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>45</id>
+    <numberTop>41</numberTop>
+    <numberBottom>56</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>46</id>
+    <numberTop>59</numberTop>
+    <numberBottom>42</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>47</id>
+    <numberTop>43</numberTop>
+    <numberBottom>58</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>48</id>
+    <numberTop>69</numberTop>
+    <numberBottom>45</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>49</id>
+    <numberTop>51</numberTop>
+    <numberBottom>86</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>50</id>
+    <numberTop>78</numberTop>
+    <numberBottom>52</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>51</id>
+    <numberTop>42</numberTop>
+    <numberBottom>67</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>52</id>
+    <numberTop>79</numberTop>
+    <numberBottom>62</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>53</id>
+    <numberTop>64</numberTop>
+    <numberBottom>79</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>54</id>
+    <numberTop>86</numberTop>
+    <numberBottom>72</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>55</id>
+    <numberTop>71</numberTop>
+    <numberBottom>95</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>56</id>
+    <numberTop>87</numberTop>
+    <numberBottom>62</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>57</id>
+    <numberTop>72</numberTop>
+    <numberBottom>96</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>58</id>
+    <numberTop>96</numberTop>
+    <numberBottom>82</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>59</id>
+    <numberTop>34</numberTop>
+    <numberBottom>59</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>60</id>
+    <numberTop>57</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>61</id>
+    <numberTop>26</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>62</id>
+    <numberTop>51</numberTop>
+    <numberBottom>38</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>63</id>
+    <numberTop>39</numberTop>
+    <numberBottom>64</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>64</id>
+    <numberTop>71</numberTop>
+    <numberBottom>46</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>65</id>
+    <numberTop>48</numberTop>
+    <numberBottom>73</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>66</id>
+    <numberTop>65</numberTop>
+    <numberBottom>39</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>67</id>
+    <numberTop>49</numberTop>
+    <numberBottom>75</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>68</id>
+    <numberTop>82</numberTop>
+    <numberBottom>56</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>69</id>
+    <numberTop>58</numberTop>
+    <numberBottom>73</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>70</id>
+    <numberTop>83</numberTop>
+    <numberBottom>59</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>71</id>
+    <numberTop>67</numberTop>
+    <numberBottom>81</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>72</id>
+    <numberTop>94</numberTop>
+    <numberBottom>68</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>73</id>
+    <numberTop>39</numberTop>
+    <numberBottom>54</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>74</id>
+    <numberTop>61</numberTop>
+    <numberBottom>49</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>75</id>
+    <numberTop>28</numberTop>
+    <numberBottom>54</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>76</id>
+    <numberTop>93</numberTop>
+    <numberBottom>78</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>77</id>
+    <numberTop>47</numberTop>
+    <numberBottom>63</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>78</id>
+    <numberTop>84</numberTop>
+    <numberBottom>59</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>79</id>
+    <numberTop>29</numberTop>
+    <numberBottom>53</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>80</id>
+    <numberTop>82</numberTop>
+    <numberBottom>67</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>81</id>
+    <numberTop>62</numberTop>
+    <numberBottom>68</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>82</id>
+    <numberTop>21</numberTop>
+    <numberBottom>28</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>83</id>
+    <numberTop>28</numberTop>
+    <numberBottom>23</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>84</id>
+    <numberTop>59</numberTop>
+    <numberBottom>54</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>85</id>
+    <numberTop>25</numberTop>
+    <numberBottom>29</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>86</id>
+    <numberTop>98</numberTop>
+    <numberBottom>91</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>87</id>
+    <numberTop>61</numberTop>
+    <numberBottom>67</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>88</id>
+    <numberTop>36</numberTop>
+    <numberBottom>32</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>89</id>
+    <numberTop>84</numberTop>
+    <numberBottom>89</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>90</id>
+    <numberTop>45</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>91</id>
+    <numberTop>71</numberTop>
+    <numberBottom>78</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>92</id>
+    <numberTop>56</numberTop>
+    <numberBottom>52</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>93</id>
+    <numberTop>43</numberTop>
+    <numberBottom>49</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>94</id>
+    <numberTop>56</numberTop>
+    <numberBottom>52</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>95</id>
+    <numberTop>42</numberTop>
+    <numberBottom>47</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>96</id>
+    <numberTop>69</numberTop>
+    <numberBottom>65</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>97</id>
+    <numberTop>31</numberTop>
+    <numberBottom>37</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>98</id>
+    <numberTop>46</numberTop>
+    <numberBottom>42</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>99</id>
+    <numberTop>53</numberTop>
+    <numberBottom>58</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>100</id>
+    <numberTop>39</numberTop>
+    <numberBottom>34</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>101</id>
+    <numberTop>42</numberTop>
+    <numberBottom>43</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>102</id>
+    <numberTop>27</numberTop>
+    <numberBottom>25</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>103</id>
+    <numberTop>32</numberTop>
+    <numberBottom>34</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>104</id>
+    <numberTop>35</numberTop>
+    <numberBottom>34</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>105</id>
+    <numberTop>47</numberTop>
+    <numberBottom>48</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>106</id>
+    <numberTop>42</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>107</id>
+    <numberTop>45</numberTop>
+    <numberBottom>46</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>108</id>
+    <numberTop>47</numberTop>
+    <numberBottom>45</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>109</id>
+    <numberTop>51</numberTop>
+    <numberBottom>52</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>110</id>
+    <numberTop>54</numberTop>
+    <numberBottom>52</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>111</id>
+    <numberTop>54</numberTop>
+    <numberBottom>56</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>112</id>
+    <numberTop>63</numberTop>
+    <numberBottom>62</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>113</id>
+    <numberTop>64</numberTop>
+    <numberBottom>65</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>114</id>
+    <numberTop>74</numberTop>
+    <numberBottom>72</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>115</id>
+    <numberTop>71</numberTop>
+    <numberBottom>73</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>116</id>
+    <numberTop>68</numberTop>
+    <numberBottom>67</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>117</id>
+    <numberTop>73</numberTop>
+    <numberBottom>74</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>118</id>
+    <numberTop>84</numberTop>
+    <numberBottom>82</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>119</id>
+    <numberTop>34</numberTop>
+    <numberBottom>36</numberBottom>
+  </item>
+  <item type = "numbercomparison">
+    <id>120</id>
+    <numberTop>43</numberTop>
+    <numberBottom>41</numberBottom>
+  </item>
 </itemlist>

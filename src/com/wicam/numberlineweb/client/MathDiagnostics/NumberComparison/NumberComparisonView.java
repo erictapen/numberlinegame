@@ -1,0 +1,61 @@
+package com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison;
+
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.wicam.numberlineweb.client.GameController;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsView;
+import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
+
+public class NumberComparisonView extends MathDiagnosticsView {
+
+	private final HTML numberTop = new HTML();
+	private final HTML numberBottom = new HTML();
+	private final FocusPanel focusPanel = new FocusPanel();
+	
+	public NumberComparisonView(int numberOfPlayers, GameController gameController) {
+		super(numberOfPlayers, gameController);
+		addFocusPanel();
+	}
+	
+	private void addFocusPanel(){
+		focusPanel.addKeyDownHandler((NumberComparisonController) gameController);
+		focusPanel.setSize("750px", "400px");
+	}
+	
+	public void setExplanationText(){
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Größenvergleich - Beschreibung</b></div>" +
+				"<p>" + 
+				"<div style='padding:5px 20px;font-size:18px; line-height: 1.5'>" +
+				"Du siehst gleich eine Zahlenvergleichsaufgabe,<br />" +
+				"Wenn die obere Zahl größer ist, drücke \"Z\",<br />" +
+				"wenn die untere Zahl größer, drücke \"B\"!" +
+				"</div>");
+	}
+
+	public void showItem (isItem item){
+		
+		// show item
+		NumberComparisonItem numberComparisonItem = ((NumberComparisonItem)item);
+		numberTop.setHTML("<span style='font-size:30px'>" + addSpace(numberComparisonItem.getNumberTop()) + "</span>");
+		numberBottom.setHTML("<span style='font-size:30px'>" + addSpace(numberComparisonItem.getNumberBottom()) + "</span>");
+		gamePanel.add(numberTop);
+		gamePanel.add(numberBottom);
+		gamePanel.setWidgetPosition(numberTop, 355, 85);
+		gamePanel.setWidgetPosition(numberBottom, 355, 285);
+		
+		// add focus panel
+		gamePanel.add(focusPanel);
+		gamePanel.setWidgetPosition(focusPanel, 0, 0);
+		focusPanel.setFocus(true);
+	}
+	
+	private String addSpace(int number){
+		if (number < 10)
+			return "&#160;&#160;" + number;
+		else
+			if (number < 100)
+				return "&#160;" + number;
+			else
+				return "" + number;
+	}
+}

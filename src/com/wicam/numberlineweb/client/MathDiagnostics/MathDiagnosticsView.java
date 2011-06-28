@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.wicam.numberlineweb.client.GameController;
 import com.wicam.numberlineweb.client.GameView;
 
-public abstract class MathDiagnosticsView extends GameView{
+public abstract class MathDiagnosticsView extends GameView implements MathDiagnosticsPresentation{
 
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
 	protected final AbsolutePanel gamePanel = new AbsolutePanel();
@@ -28,7 +28,7 @@ public abstract class MathDiagnosticsView extends GameView{
 		super(numberOfPlayers, gameController);
 		this.gameController = gameController;
 		init();
-		//sinkEvents(Event.MOUSEEVENTS);
+		setExplanationText();
 		this.initWidget(motherPanel);
 	}
 
@@ -53,18 +53,19 @@ public abstract class MathDiagnosticsView extends GameView{
 		motherPanel.add(gamePanel);
 	}
 	
-	abstract protected void setExplanationText();
+	@Override
+	abstract public void setExplanationText();
 	
+	@Override
 	abstract public void showItem (isItem item);
 	
-	/**
-	 * Clears the game panel
-	 */
+	@Override
 	public void clearGamePanel(){
 		gamePanel.clear();
 		gamePanel.add(this.canvas);
 	}
 	
+	@Override
 	public void showCalculatingResult(){
 		resultScreen.setHTML("<span style='font-size:30px'>Berechne Ergebnis...</span>");
 		gamePanel.add(resultScreen);
