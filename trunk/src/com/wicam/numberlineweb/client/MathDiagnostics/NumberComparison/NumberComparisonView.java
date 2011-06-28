@@ -23,7 +23,7 @@ public class NumberComparisonView extends MathDiagnosticsView {
 	}
 	
 	public void setExplanationText(){
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Größenvergleich - Beschreibung</b></div>" +
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Zahlenvergleich - Beschreibung</b></div>" +
 				"<p>" + 
 				"<div style='padding:5px 20px;font-size:18px; line-height: 1.5'>" +
 				"Du siehst gleich eine Zahlenvergleichsaufgabe,<br />" +

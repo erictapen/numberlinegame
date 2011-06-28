@@ -15,7 +15,6 @@ public class NumberComparisonController extends MathDiagnosticsController implem
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		event.preventDefault();
-		System.out.println(event.getNativeKeyCode());
 		MathDiagnosticsCoordinator mathCoordinator = (MathDiagnosticsCoordinator)coordinator;
 		if (event.getNativeKeyCode() == 90 || event.getNativeKeyCode() == 66){ 
 			if (event.getNativeKeyCode() == 90) // 90 == z
