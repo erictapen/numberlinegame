@@ -11,9 +11,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.wicam.numberlineweb.client.MathDiagnostics.Addition.AdditionItem;
+import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.ChoiceReactionTaskItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison.NumberComparisonItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItem;
+import com.wicam.numberlineweb.client.MathDiagnostics.VerificationTask.VerificationTaskItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.ItemTypes;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 
@@ -62,7 +63,7 @@ public class ItemListReader {
 				if (itemType == ItemTypes.ADDITIONITEM &&
 						elem.getAttributeValue("type").equals(ItemTypes.getTypeString(ItemTypes.ADDITIONITEM))){
 					if (Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText()) <= 10) // for testing purpose
-						itemList.add(createAdditionItem(elem));
+						itemList.add(createChoiceReactionItem(elem, "+"));
 				}
 				if (itemType == ItemTypes.NUMBERLINEITEM &&
 						elem.getAttributeValue("type").equals(ItemTypes.getTypeString(ItemTypes.NUMBERLINEITEM))){
@@ -72,7 +73,17 @@ public class ItemListReader {
 						elem.getAttributeValue("type").equals(ItemTypes.getTypeString(ItemTypes.NUMBERCOMPARISON))){
 					if (Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText()) <= 10) // for testing purpose
 						itemList.add(createNumberComparisonItem(elem));
-				}		
+				}
+				if (itemType == ItemTypes.SUBTRACTIONITEM &&
+						elem.getAttributeValue("type").equals(ItemTypes.getTypeString(ItemTypes.SUBTRACTIONITEM))){
+					if (Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText()) <= 10) // for testing purpose
+						itemList.add(createChoiceReactionItem(elem, "-"));
+				}
+				if (itemType == ItemTypes.MULTIPLICATIONITEM &&
+						elem.getAttributeValue("type").equals(ItemTypes.getTypeString(ItemTypes.MULTIPLICATIONITEM))){
+					if (Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText()) <= 10) // for testing purpose
+						itemList.add(createVerificiationTaskItem(elem, "x"));
+				}
 			}
 		}
 		// randomize order
@@ -82,19 +93,35 @@ public class ItemListReader {
 	
 	
 	/**
-	 * Reads the information from an element which is needed to create an addition item
+	 * Reads the information from an element which is needed to create a choice reaction task item
 	 * 
 	 * @param elem	element identified by the tag item
-	 * @return		returns an addition item
+	 * @return		returns a choice reaction task item
 	 */
-	private isItem createAdditionItem(Element elem){
-		AdditionItem item = new AdditionItem();
+	private isItem createChoiceReactionItem(Element elem, String operation){
+		ChoiceReactionTaskItem item = new ChoiceReactionTaskItem();
 		int id = Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText());
-		int addend1 = Integer.valueOf(((Element) elem.getChildren("addend1").get(0)).getText());
-		int addend2 = Integer.valueOf(((Element) elem.getChildren("addend2").get(0)).getText());
+		int number1 = Integer.valueOf(((Element) elem.getChildren("number1").get(0)).getText());
+		int number2 = Integer.valueOf(((Element) elem.getChildren("number2").get(0)).getText());
 		int solution1 = Integer.valueOf(((Element) elem.getChildren("solution1").get(0)).getText());
 		int solution2 = Integer.valueOf(((Element) elem.getChildren("solution2").get(0)).getText());
-		item.setAdditionItem(id, addend1, addend2, solution1, solution2);
+		item.setArithmeticItem(operation, id, number1, number2, solution1, solution2);
+		return item;
+	}
+	
+	/**
+	 * Reads the information from an element which is needed to create a verification task item
+	 * 
+	 * @param elem	element identified by the tag item
+	 * @return		returns a verification task item
+	 */
+	private isItem createVerificiationTaskItem(Element elem, String operator){
+		VerificationTaskItem item = new VerificationTaskItem();
+		int id = Integer.valueOf(((Element) elem.getChildren("id").get(0)).getText());
+		int number1 = Integer.valueOf(((Element) elem.getChildren("number1").get(0)).getText());
+		int number2 = Integer.valueOf(((Element) elem.getChildren("number2").get(0)).getText());
+		int result = Integer.valueOf(((Element) elem.getChildren("result").get(0)).getText());
+		item.setVerificationTaskItem(operator, id, number1, number2, result);
 		return item;
 	}
 	
