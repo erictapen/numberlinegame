@@ -2,29 +2,22 @@ package com.wicam.numberlineweb.client.MathDiagnostics;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/**
+ * Class which contains information about the response of an user to an item
+ * 
+ * @author shuber
+ *
+ */
+
 public class ItemInformation implements IsSerializable{
 
-	private boolean correct = false;
-	private int rt = 0;
-	
-	public void setItemInformation(boolean correct, int rt){
-		this.setCorrect(correct);
-		this.rt = rt;
-	}
-	
+	private int rt = 0; // reaction times
+
 	public void setRt(int rt) {
 		this.rt = rt;
 	}
 	
 	public int getRt() {
 		return rt;
-	}
-
-	public void setCorrect(boolean correct) {
-		this.correct = correct;
-	}
-
-	public boolean isCorrect() {
-		return correct;
 	}
 }

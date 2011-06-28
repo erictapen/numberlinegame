@@ -13,10 +13,16 @@ import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.GameView;
-import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.MathDiagnostics.Addition.AdditionController;
+import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.Addition.AdditionView;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison.NumberComparisonController;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison.NumberComparisonView;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItem;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItemInformation;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineTaskController;
+import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineTaskView;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class MathDiagnosticsCoordinator extends GameCoordinator {
@@ -24,6 +30,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	private ArrayList<isItem> itemList = null;
 	private Iterator<isItem> itemListIterator;
 	private isItem curItem = null;
+	private int itemType;
 	private ArrayList<ItemInformation> keyCodeList = new ArrayList<ItemInformation>();
 	private boolean started = false;
 	private final int timeBetweenTrials = 1000;
@@ -57,12 +64,9 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	protected void joinedGame(int playerID, int gameID) {
 		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
-
-		//construct game
-		if (((MathDiagnosticsSelector)gameSelector).getTask() == ItemTypes.ADDITIONITEM){
-			AdditionController controller = new AdditionController(this);
-			this.view = new AdditionView(numberOfPlayers, controller);
-		}
+		itemType = ((MathDiagnosticsSelector)gameSelector).getTask();
+			
+		constructControllerAndView();
 		
 		//construct an empty game-state with the given information
 		MathDiagnosticsGameState g = new MathDiagnosticsGameState();
@@ -78,7 +82,22 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 		rootPanel.add(gameView);
 		
 		// retrieve items
-		((MathDiagnosticsCommonicationServiceAsync) commServ).retrieveItemList(gameID, ItemTypes.ADDITIONITEM, retrieveItemsCallback);
+		((MathDiagnosticsCommonicationServiceAsync) commServ).retrieveItemList(gameID, itemType, retrieveItemsCallback);
+	}
+	
+	private void constructControllerAndView(){
+		if (itemType == ItemTypes.ADDITIONITEM){
+			AdditionController controller = new AdditionController(this);
+			this.view = new AdditionView(numberOfPlayers, controller);
+		}
+		if (itemType == ItemTypes.NUMBERLINEITEM){
+			NumberLineTaskController controller = new NumberLineTaskController(this);
+			this.view = new NumberLineTaskView(numberOfPlayers, controller);
+		}
+		if (itemType == ItemTypes.NUMBERCOMPARISON){
+			NumberComparisonController controller = new NumberComparisonController(this);
+			this.view = new NumberComparisonView(numberOfPlayers, controller);
+		}
 	}
 	
 	@Override
@@ -165,6 +184,50 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
 	}
+
+	public void recordItemInformation(int response){
+		ItemInformation itemInf = new ItemInformation();
+		if (itemType == ItemTypes.ADDITIONITEM || itemType == ItemTypes.NUMBERCOMPARISON){
+			itemInf = new ChoiceTaskItemInformation();
+			((ChoiceTaskItemInformation)itemInf).setCorrect(response == curItem.getCorrectSolution());
+		}
+		if (itemType == ItemTypes.NUMBERLINEITEM){
+			NumberLineItem item = (NumberLineItem)curItem;
+			itemInf = new NumberLineItemInformation();
+			int realPos = item.getLeftNumber() + (int) ((response) *  ((double)(item.getRightNumber() - item.getLeftNumber())/400));
+			int deviation = Math.abs(item.getCorrectSolution() - realPos);
+			((NumberLineItemInformation)itemInf).setDeviation(deviation);
+			((NumberLineItemInformation)itemInf).setRelDeviation((double)deviation/(item.getRightNumber()-item.getLeftNumber()));
+		}
+		itemInf.setRt(duration.elapsedMillis());
+		keyCodeList.add(itemInf);
+	}
+	
+	public void presentNextItem(){
+		((MathDiagnosticsPresentation) view).clearGamePanel();
+		if (itemListIterator.hasNext()){
+			curItem = itemListIterator.next();
+			ShowNextItemTask showNextItemTask = new ShowNextItemTask(this, (MathDiagnosticsPresentation) view, curItem);
+			showNextItemTask.schedule(timeBetweenTrials);
+		}
+		else {
+			setRefreshRate(1000);
+			ShowResultTask showResultTask = new ShowResultTask((MathDiagnosticsPresentation) view);
+			showResultTask.schedule(timeBetweenTrials);
+			((MathDiagnosticsCommonicationServiceAsync)commServ).sendKeyCodeList(openGame.getId(), keyCodeList, dummyCallback);
+		}
+	}
+	
+	public void createNewDuration (){
+		duration = new Duration();
+	}
+
+	public void mouseMovedTo(int x, int y) {
+		if (view instanceof NumberLineTaskView)
+			if (x>=175 && x<=575)	
+				((NumberLineTaskView)view).setPointer(playerID, x-175);
+		
+	}
 	
 	AsyncCallback<ArrayList<isItem>> retrieveItemsCallback = new AsyncCallback<ArrayList<isItem>>() {
 
@@ -179,30 +242,4 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 		}
 
 	};
-
-	public void recordItemInformation(int keyCode){
-		ItemInformation itemInf = new ItemInformation();
-		boolean isCorrect = keyCode == curItem.getCorrectSolution();
-		itemInf.setItemInformation(isCorrect, duration.elapsedMillis());
-		keyCodeList.add(itemInf);
-	}
-	
-	public void presentNextItem(){
-		((MathDiagnosticsView) view).clearGamePanel();
-		if (itemListIterator.hasNext()){
-			curItem = itemListIterator.next();
-			ShowNextItemTask showNextItemTask = new ShowNextItemTask(this, (MathDiagnosticsView) view, curItem);
-			showNextItemTask.schedule(timeBetweenTrials);
-		}
-		else {
-			setRefreshRate(1000);
-			ShowResultTask showResultTask = new ShowResultTask((MathDiagnosticsView) view);
-			showResultTask.schedule(timeBetweenTrials);
-			((MathDiagnosticsCommonicationServiceAsync)commServ).sendKeyCodeList(openGame.getId(), keyCodeList, dummyCallback);
-		}
-	}
-	
-	public void createNewDuration (){
-		duration = new Duration();
-	}
 }

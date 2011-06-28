@@ -4,9 +4,9 @@ import com.google.gwt.user.client.Timer;
 
 public class ShowResultTask extends Timer {
 
-	private MathDiagnosticsView view;
+	private MathDiagnosticsPresentation view;
 	
-	ShowResultTask(MathDiagnosticsView view){
+	ShowResultTask(MathDiagnosticsPresentation view){
 		this.view = view;
 	}
 	

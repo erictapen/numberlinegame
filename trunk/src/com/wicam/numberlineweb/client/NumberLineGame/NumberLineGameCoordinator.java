@@ -13,7 +13,7 @@ import com.wicam.numberlineweb.client.HighScoreView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
-public class NumberLineGameCoordinator extends GameCoordinator{
+public class NumberLineGameCoordinator extends GameCoordinator {
 	
 	private NumberLineController controller;
 	private boolean sessionClicked = false;
@@ -83,10 +83,10 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 		this.playerID = playerID;
 
 		//construct game
-		this.view = new NumberLineView(numberOfPlayers, numberOfNPCs);
-		NumberLineView gameView = (NumberLineView) view;
 		controller = new NumberLineController(this);
-		gameView.addMouseHandler(controller);
+		this.view = new NumberLineGameView(controller, numberOfPlayers, numberOfNPCs);
+		
+		NumberLineGameView gameView = (NumberLineGameView) view;
 
 		//construct an empty game-state with the given information
 		NumberLineGameState g = new NumberLineGameState();
@@ -112,7 +112,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 	protected void updateGame(GameState gameState) {
 
 		NumberLineGameState g = (NumberLineGameState) gameState;
-		NumberLineView gameView = (NumberLineView) view;
+		NumberLineGameView gameView = (NumberLineGameView) view;
 		//we already have the lates state
 		if (g==null) return;
 
@@ -301,7 +301,7 @@ public class NumberLineGameCoordinator extends GameCoordinator{
 		if (((openGame.getState() == 3 ) ||
 				(openGame.getState() == 4 && !sessionClicked))&&
 				!sessionClicked) {
-			NumberLineView gameView = (NumberLineView) view;
+			NumberLineGameView gameView = (NumberLineGameView) view;
 			//x = gameView.rawPosToReal(x);
 			if (x>=100 && x<=500)	gameView.setPointer(playerID, x-100);
 		}
