@@ -16,8 +16,10 @@ public class MathDiagnosticsCreatePopupBox extends com.wicam.numberlineweb.clien
 		
 		p.remove(1);
 		tasks.addItem("Addition");
+		tasks.addItem("Multiplikation");
+		tasks.addItem("Subtraktion");
 		tasks.addItem("Zahlenstrahl");
-		tasks.addItem("Größenvergleich");
+		tasks.addItem("Zahlenvergleich");
 		
 		HorizontalPanel g = new HorizontalPanel();
 		g.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -31,9 +33,13 @@ public class MathDiagnosticsCreatePopupBox extends com.wicam.numberlineweb.clien
 	public int getTask() {
 		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Addition"))
 			return ItemTypes.ADDITIONITEM;
+		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Multiplikation"))
+			return ItemTypes.MULTIPLICATIONITEM;
+		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Subtraktion"))
+			return ItemTypes.SUBTRACTIONITEM;
 		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Zahlenstrahl"))
 			return ItemTypes.NUMBERLINEITEM;
-		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Größenvergleich"))
+		if (tasks.getItemText(tasks.getSelectedIndex()).equals("Zahlenvergleich"))
 			return ItemTypes.NUMBERCOMPARISON;
 		// is not possible
 		return -1;
