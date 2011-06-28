@@ -69,7 +69,7 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	 * are calculated
 	 */
 	@Override
-	public Boolean sendKeyCodeList(int gameId, ArrayList<ItemInformation> itemInformationList) {
+	public Boolean sendItemInformationList(int gameId, ArrayList<ItemInformation> itemInformationList) {
 		GameState g = this.getGameById(gameId);
 		Iterator<ItemInformation> it = itemInformationList.iterator();
 		int meanRT = 0;
@@ -101,7 +101,7 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	 */
 	private void addPoints(ItemInformation inf, GameState g){
 		if (inf instanceof ChoiceTaskItemInformation){
-			if (((ChoiceTaskItemInformation)inf).isCorrect());
+			if (((ChoiceTaskItemInformation)inf).isCorrect())
 				g.setPlayerPoints(1, g.getPlayerPoints(1)+1);
 		}
 		if (inf instanceof NumberLineItemInformation){
