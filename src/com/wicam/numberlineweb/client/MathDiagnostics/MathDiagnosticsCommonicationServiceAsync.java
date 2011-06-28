@@ -10,5 +10,5 @@ public interface MathDiagnosticsCommonicationServiceAsync extends
 
 	
 	public void retrieveItemList(int gamedId, int itemType,AsyncCallback<ArrayList<isItem>> callback);
-	public void sendKeyCodeList(int gameId, ArrayList<ItemInformation> itemInformationList,AsyncCallback<Boolean> callback);
+	public void sendItemInformationList(int gameId, ArrayList<ItemInformation> itemInformationList,AsyncCallback<Boolean> callback);
 }

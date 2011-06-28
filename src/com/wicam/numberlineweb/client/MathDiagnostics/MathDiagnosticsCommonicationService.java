@@ -11,5 +11,5 @@ public interface MathDiagnosticsCommonicationService extends
 		GameCommunicationService {
 
 	public ArrayList<isItem> retrieveItemList(int gameId, int itemType);	
-	public Boolean sendKeyCodeList(int gameId, ArrayList<ItemInformation> itemInformationList);	
+	public Boolean sendItemInformationList(int gameId, ArrayList<ItemInformation> itemInformationList);	
 }

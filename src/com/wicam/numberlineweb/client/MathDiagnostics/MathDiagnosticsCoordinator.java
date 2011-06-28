@@ -14,15 +14,17 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.MathDiagnostics.Addition.AdditionController;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
-import com.wicam.numberlineweb.client.MathDiagnostics.Addition.AdditionView;
+import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.AdditionView;
+import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.ChoiceReactionTaskController;
+import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.SubtractionView;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison.NumberComparisonController;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberComparison.NumberComparisonView;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineTaskController;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineTaskView;
+import com.wicam.numberlineweb.client.MathDiagnostics.VerificationTask.MultiplicationView;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class MathDiagnosticsCoordinator extends GameCoordinator {
@@ -86,14 +88,25 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	}
 	
 	private void constructControllerAndView(){
-		if (itemType == ItemTypes.ADDITIONITEM){
-			AdditionController controller = new AdditionController(this);
-			this.view = new AdditionView(numberOfPlayers, controller);
+		if (itemType == ItemTypes.ADDITIONITEM || 
+				itemType == ItemTypes.SUBTRACTIONITEM || 
+				itemType == ItemTypes.MULTIPLICATIONITEM){
+			
+			ChoiceReactionTaskController controller = new ChoiceReactionTaskController(this);
+			
+			if (itemType == ItemTypes.ADDITIONITEM)
+				this.view = new AdditionView(numberOfPlayers, controller);
+			if (itemType == ItemTypes.SUBTRACTIONITEM)
+				this.view = new SubtractionView(numberOfPlayers, controller);
+			if (itemType == ItemTypes.MULTIPLICATIONITEM)
+				this.view = new MultiplicationView(numberOfPlayers, controller);
 		}
+		
 		if (itemType == ItemTypes.NUMBERLINEITEM){
 			NumberLineTaskController controller = new NumberLineTaskController(this);
 			this.view = new NumberLineTaskView(numberOfPlayers, controller);
 		}
+		
 		if (itemType == ItemTypes.NUMBERCOMPARISON){
 			NumberComparisonController controller = new NumberComparisonController(this);
 			this.view = new NumberComparisonView(numberOfPlayers, controller);
@@ -187,10 +200,15 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 
 	public void recordItemInformation(int response){
 		ItemInformation itemInf = new ItemInformation();
-		if (itemType == ItemTypes.ADDITIONITEM || itemType == ItemTypes.NUMBERCOMPARISON){
+		
+		if (itemType == ItemTypes.ADDITIONITEM || 
+				itemType == ItemTypes.NUMBERCOMPARISON ||
+				itemType == ItemTypes.SUBTRACTIONITEM ||
+				itemType == ItemTypes.MULTIPLICATIONITEM){
 			itemInf = new ChoiceTaskItemInformation();
 			((ChoiceTaskItemInformation)itemInf).setCorrect(response == curItem.getCorrectSolution());
 		}
+		
 		if (itemType == ItemTypes.NUMBERLINEITEM){
 			NumberLineItem item = (NumberLineItem)curItem;
 			itemInf = new NumberLineItemInformation();
@@ -199,6 +217,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			((NumberLineItemInformation)itemInf).setDeviation(deviation);
 			((NumberLineItemInformation)itemInf).setRelDeviation((double)deviation/(item.getRightNumber()-item.getLeftNumber()));
 		}
+		
 		itemInf.setRt(duration.elapsedMillis());
 		keyCodeList.add(itemInf);
 	}
@@ -214,7 +233,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			setRefreshRate(1000);
 			ShowResultTask showResultTask = new ShowResultTask((MathDiagnosticsPresentation) view);
 			showResultTask.schedule(timeBetweenTrials);
-			((MathDiagnosticsCommonicationServiceAsync)commServ).sendKeyCodeList(openGame.getId(), keyCodeList, dummyCallback);
+			((MathDiagnosticsCommonicationServiceAsync)commServ).sendItemInformationList(openGame.getId(), keyCodeList, dummyCallback);
 		}
 	}
 	
