@@ -230,7 +230,7 @@ body.visible, body.hidden {
 }
 
 body.mobile #chatwrap {
-	display: none;
+	
 }
 
 body.mobile #game {
@@ -290,4 +290,23 @@ img.vowel_img:hover {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+}
+
+.homebutton {
+
+position:absolute;
+right:30px;
+bottom:30px;
+height:60px;
+width:60px;
+background-image:url(home.png) !important;
+background-repeat:no-repeat !important;
+background-position:center !important;
+background-color:#EEE !important;
+
+}
+
+.homebutton:hover {
+background-color:#F6F6F6 !important;
+
 }

@@ -95,7 +95,8 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
-		//adds the doppelung game
+		
+		//adds the mathe game
 		gts.addGame("Matheaufgaben", "Fragezeichen.gif", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override
@@ -108,6 +109,7 @@ public class NumberLineWeb implements EntryPoint {
 				coordinator.init();
 			}
 		});
+		
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
