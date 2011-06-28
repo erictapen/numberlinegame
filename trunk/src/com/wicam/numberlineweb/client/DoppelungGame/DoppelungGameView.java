@@ -458,7 +458,7 @@ public class DoppelungGameView extends GameView {
 		}
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
 
-		if (MobileDeviceChecker.checkMobile()) {
+		if (MobileDeviceChecker.checkForKeyboard()) {
 			kbd = new KeyboardDummy((DoppelungGameController)super.gameController);
 			gamePanel.add(kbd, 440, 240);
 		}
