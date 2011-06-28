@@ -28,7 +28,7 @@ public class NumberLineTaskView extends MathDiagnosticsView implements MathDiagn
 				"Du siehst gleich eine Zahlenstrahlaufgabe.<br />" +
 				"Bewege den roten Zeiger mit der Maus zu<br />" +
 				"der Position, wo die eingekreiste Zahl liegt und<br />" +
-				" drücke dann die linke Maustaste!" +
+				"drücke dann die linke Maustaste!" +
 				"</div>");
 		
 	}
