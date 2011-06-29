@@ -44,7 +44,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		if (game.getNumberRange().isRandom()){
 			// not the full range for minNumber
 			leftNumber = game.getNumberRange().getMinNumber() + (int) (Math.random() * (game.getNumberRange().getMaxNumber()*9/10 - game.getNumberRange().getMinNumber()));
-			rightNumber = (int) (Math.random() * (game.getNumberRange().getMaxNumber()-leftNumber)) + leftNumber;
+			rightNumber = (int) (Math.random() * (game.getNumberRange().getMaxNumber()*9/10-leftNumber)) + game.getNumberRange().getMaxNumber()/10 + leftNumber;
 		}
 		else {
 			leftNumber = game.getNumberRange().getMinNumber();
