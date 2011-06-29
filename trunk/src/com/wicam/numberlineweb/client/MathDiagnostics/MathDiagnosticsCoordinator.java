@@ -112,7 +112,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			NumberComparisonController controller = new NumberComparisonController(this);
 			this.view = new NumberComparisonView(numberOfPlayers, controller);
 		}
-		((MathDiagnosticsView)view).setHasKeyboard(MobileDeviceChecker.checkForKeyboard());
+		((MathDiagnosticsView)view).setHasKeyboard(!MobileDeviceChecker.checkForKeyboard());
 	}
 	
 	@Override
