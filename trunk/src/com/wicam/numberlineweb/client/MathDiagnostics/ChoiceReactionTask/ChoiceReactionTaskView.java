@@ -1,8 +1,11 @@
 package com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.wicam.numberlineweb.client.GameController;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsController;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsView;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 
@@ -15,7 +18,30 @@ public abstract class ChoiceReactionTaskView extends MathDiagnosticsView {
 	
 	public ChoiceReactionTaskView(int numberOfPlayers, GameController gameController) {
 		super(numberOfPlayers, gameController);
-		addFocusPanel();
+		
+		if (hasKeyboard)
+			addFocusPanel();
+		else {
+			final MathDiagnosticsController controller = (MathDiagnosticsController)gameController;
+			
+			solution1.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					controller.onClick(event, MathDiagnosticsController.KEYLEFTSIDE);
+				}
+				
+			});
+			solution2.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					controller.onClick(event, MathDiagnosticsController.KEYRIGHTSIDE);
+				}
+				
+			});
+		}
+			
 	}
 	
 	private void addFocusPanel(){
@@ -40,10 +66,13 @@ public abstract class ChoiceReactionTaskView extends MathDiagnosticsView {
 		gamePanel.setWidgetPosition(solution1, 150, 250);
 		gamePanel.setWidgetPosition(solution2, 580, 250);
 		
-		// add focus panel
-		gamePanel.add(focusPanel);
-		gamePanel.setWidgetPosition(focusPanel, 0, 0);
-		focusPanel.setFocus(true);
+		
+		if (hasKeyboard){
+			// add focus panel
+			gamePanel.add(focusPanel);
+			gamePanel.setWidgetPosition(focusPanel, 0, 0);
+			focusPanel.setFocus(true);
+		}
 	}
 	
 	private String addSpace(int number){

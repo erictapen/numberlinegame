@@ -19,7 +19,7 @@ public abstract class MathDiagnosticsView extends GameView implements MathDiagno
 	private final HTML resultScreen = new HTML();
 	private final Button startGameButton = new Button("Spiel Starten");
 	final FlexTable playerNamesFlexTable = new FlexTable();
-	
+	protected boolean hasKeyboard = false;
 	
 	private final HTML canvas = new HTML("<div id='canvas' style='width:750px;height:400px;'></div>");
 	
@@ -30,6 +30,10 @@ public abstract class MathDiagnosticsView extends GameView implements MathDiagno
 		init();
 		setExplanationText();
 		this.initWidget(motherPanel);
+	}
+	
+	public void setHasKeyboard(boolean hasKeyboard){
+		this.hasKeyboard = hasKeyboard;
 	}
 
 	protected void init() {

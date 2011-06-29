@@ -13,6 +13,7 @@ import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.MobileDeviceChecker;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.AdditionView;
@@ -111,6 +112,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 			NumberComparisonController controller = new NumberComparisonController(this);
 			this.view = new NumberComparisonView(numberOfPlayers, controller);
 		}
+		((MathDiagnosticsView)view).setHasKeyboard(MobileDeviceChecker.checkForKeyboard());
 	}
 	
 	@Override
@@ -247,7 +249,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 				((NumberLineTaskView)view).setPointer(playerID, x-175);
 		
 	}
-	
+
 	AsyncCallback<ArrayList<isItem>> retrieveItemsCallback = new AsyncCallback<ArrayList<isItem>>() {
 
 		@Override

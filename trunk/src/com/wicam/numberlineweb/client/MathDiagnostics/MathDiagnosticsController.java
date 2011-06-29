@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.MathDiagnostics;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.GameController;
 import com.wicam.numberlineweb.client.GameCoordinator;
@@ -36,6 +37,14 @@ public class MathDiagnosticsController extends GameController {
 	public void onMouseMove(Widget who, int x, int y) {
 		// TODO Auto-generated method stub
 
+	}
+	
+
+	public void onClick(ClickEvent event, int side) {
+		MathDiagnosticsCoordinator mathCoordinator = (MathDiagnosticsCoordinator)coordinator;
+		mathCoordinator.recordItemInformation(side);
+		mathCoordinator.presentNextItem();
+		
 	}
 
 }

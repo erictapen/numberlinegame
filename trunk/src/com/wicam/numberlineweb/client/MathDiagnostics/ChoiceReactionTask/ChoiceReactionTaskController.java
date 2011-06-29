@@ -24,4 +24,5 @@ public class ChoiceReactionTaskController extends MathDiagnosticsController impl
 			mathCoordinator.presentNextItem();
 		}
 	}
+
 }
