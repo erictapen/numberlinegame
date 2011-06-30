@@ -28,12 +28,12 @@ public abstract class MathDiagnosticsView extends GameView implements MathDiagno
 		super(numberOfPlayers, gameController);
 		this.gameController = gameController;
 		init();
-		setExplanationText();
 		this.initWidget(motherPanel);
 	}
 	
-	public void setHasKeyboard(boolean hasKeyboard){
+	public void initKeyboardDependentElements(boolean hasKeyboard){
 		this.hasKeyboard = hasKeyboard;
+		setExplanationText();
 	}
 
 	protected void init() {

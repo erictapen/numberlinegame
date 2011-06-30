@@ -97,7 +97,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the mathe game
-		gts.addGame("Matheaufgaben", "Fragezeichen.gif", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+		gts.addGame("Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override
 			public void run() {
