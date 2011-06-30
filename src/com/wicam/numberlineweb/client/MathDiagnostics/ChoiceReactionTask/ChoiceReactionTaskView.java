@@ -18,9 +18,15 @@ public abstract class ChoiceReactionTaskView extends MathDiagnosticsView {
 	
 	public ChoiceReactionTaskView(int numberOfPlayers, GameController gameController) {
 		super(numberOfPlayers, gameController);
-		
-		if (hasKeyboard)
-			addFocusPanel();
+	}
+	
+	@Override
+	public void setHasKeyboard(boolean hasKeyboard){
+		super.setHasKeyboard(hasKeyboard);
+		if (hasKeyboard){
+			focusPanel.addKeyDownHandler((ChoiceReactionTaskController) gameController);
+			focusPanel.setSize("750px", "400px");
+		}
 		else {
 			final MathDiagnosticsController controller = (MathDiagnosticsController)gameController;
 			
@@ -41,12 +47,6 @@ public abstract class ChoiceReactionTaskView extends MathDiagnosticsView {
 				
 			});
 		}
-			
-	}
-	
-	private void addFocusPanel(){
-		focusPanel.addKeyDownHandler((ChoiceReactionTaskController) gameController);
-		focusPanel.setSize("750px", "400px");
 	}
 
 	public void showItem (isItem item){

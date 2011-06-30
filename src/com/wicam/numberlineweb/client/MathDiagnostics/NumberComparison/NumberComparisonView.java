@@ -17,8 +17,15 @@ public class NumberComparisonView extends MathDiagnosticsView {
 	
 	public NumberComparisonView(int numberOfPlayers, GameController gameController) {
 		super(numberOfPlayers, gameController);
-		if (hasKeyboard)
-			addFocusPanel();
+	}
+	
+	@Override
+	public void setHasKeyboard(boolean hasKeyboard){
+		super.setHasKeyboard(hasKeyboard);
+		if (hasKeyboard){
+			focusPanel.addKeyDownHandler((NumberComparisonController) gameController);
+			focusPanel.setSize("750px", "400px");
+		}
 		else {
 			final MathDiagnosticsController controller = (MathDiagnosticsController)gameController;
 			numberTop.addClickHandler(new ClickHandler(){
@@ -41,11 +48,6 @@ public class NumberComparisonView extends MathDiagnosticsView {
 				
 			});
 		}
-	}
-	
-	private void addFocusPanel(){
-		focusPanel.addKeyDownHandler((NumberComparisonController) gameController);
-		focusPanel.setSize("750px", "400px");
 	}
 	
 	public void setExplanationText(){
