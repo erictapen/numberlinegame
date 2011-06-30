@@ -23,8 +23,8 @@ public abstract class VerificationTaskView extends MathDiagnosticsView {
 	}
 	
 	@Override
-	public void setHasKeyboard(boolean hasKeyboard){
-		super.setHasKeyboard(hasKeyboard);
+	public void initKeyboardDependentElements(boolean hasKeyboard){
+		super.initKeyboardDependentElements(hasKeyboard);
 		if (hasKeyboard){
 			focusPanel.addKeyDownHandler((ChoiceReactionTaskController) gameController);
 			focusPanel.setSize("750px", "400px");

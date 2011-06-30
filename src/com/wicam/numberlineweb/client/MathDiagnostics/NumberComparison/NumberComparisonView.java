@@ -20,8 +20,8 @@ public class NumberComparisonView extends MathDiagnosticsView {
 	}
 	
 	@Override
-	public void setHasKeyboard(boolean hasKeyboard){
-		super.setHasKeyboard(hasKeyboard);
+	public void initKeyboardDependentElements(boolean hasKeyboard){
+		super.initKeyboardDependentElements(hasKeyboard);
 		if (hasKeyboard){
 			focusPanel.addKeyDownHandler((NumberComparisonController) gameController);
 			focusPanel.setSize("750px", "400px");
