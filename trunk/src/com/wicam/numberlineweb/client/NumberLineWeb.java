@@ -7,9 +7,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationService;
-import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.DoppelungGame.DoppelungGameCoordinator;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinator;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
@@ -110,6 +113,20 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
+		
+		//adds the doppelung game
+		gts.addGame("Dehnungspiel", "pre_dehnung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (DehnungGameCommunicationServiceAsync) GWT.create(DehnungGameCommunicationService.class);
+				coordinator = new DehnungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));

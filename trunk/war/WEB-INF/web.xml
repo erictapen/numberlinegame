@@ -20,7 +20,7 @@
   </servlet>
   <servlet>
     <servlet-name>DoppelungGameCommunicationServiceServlet</servlet-name>
-    <servlet-class>com.wicam.numberlineweb.server.DoppelungGame.DoppelungGameCommunicationServiceServlet</servlet-class>
+    <servlet-class>com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>FactsGameCommunicationServiceServlet</servlet-name>
@@ -29,6 +29,10 @@
   <servlet>
     <servlet-name>MathDiagnosticsCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DehnungGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunicationServiceServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -54,6 +58,10 @@
   <servlet-mapping>
     <servlet-name>MathDiagnosticsCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/mathDiagnosticsCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DehnungGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/dehnungGameCommunication</url-pattern>
   </servlet-mapping>
   
   
