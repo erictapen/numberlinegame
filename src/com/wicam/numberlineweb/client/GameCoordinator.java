@@ -1,12 +1,10 @@
 package com.wicam.numberlineweb.client;
 
-import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
@@ -23,8 +21,6 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
@@ -90,6 +86,8 @@ public abstract class GameCoordinator {
 	 */
 
 	public void openGame(GameState gameState){
+		GWT.log("opening!");
+		
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
 		commServ.openGame(gameState, gameOpenedCallBack);
@@ -110,7 +108,7 @@ public abstract class GameCoordinator {
 	 * @param name
 	 */
 
-	public void closeGame(){
+	public void handleCloseGameState(){
 		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		if (this.numberOfPlayers > 1){
 			RootPanel.get("chatwrap").getElement().getStyle().setVisibility(Visibility.HIDDEN);
@@ -171,7 +169,105 @@ public abstract class GameCoordinator {
 	 * Called after game state was received.
 	 * @param g
 	 */
-	abstract protected void updateGame(GameState gameState);
+	protected void updateGame(GameState gameState){
+		// handle basic cases
+		switch (gameState.getState()){
+		// game closed
+		case -1:
+			handleGameClosedState(gameState);
+			break;
+		// awaiting players
+		case 0:
+			handleWaitingForPlayersState();
+			break;
+		// awaiting other players
+		case 1:
+			handleWaitingForOtherPlayersState(gameState);
+			break;
+		// awaiting start 
+		case 2:
+			handleAwaitingStartState(gameState);
+			break;
+		// performance
+		case 97:
+			handlePerformanceState(gameState);
+			break;
+		// close game
+		case 98:
+			handleCloseGameState();
+			break;
+		// player left
+		case 99:
+			handlePlayerLeftState(gameState);
+			break;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param gameState
+	 */
+	abstract protected void handleAwaitingStartState(GameState gameState);
+
+	/**
+	 * game state "waiting for players" has to be handled in this method
+	 */
+	abstract protected void handleWaitingForPlayersState();
+
+	
+	/**
+	 * game state "waiting for other players" has to be handled in this method
+	 */
+	abstract protected void handleWaitingForOtherPlayersState(GameState g);
+	
+	
+	/**
+	 * basic implementation for game closed state
+	 * 
+	  * @param gameState		current game state
+	 */
+	protected void handleGameClosedState(GameState gameState) {
+		setRefreshRate(2000);
+		//TODO: close game
+	}
+
+	
+	/**
+	 * basic implementation for showing the highscore
+	 * 
+	 * @param gameState		current game state
+	 */
+	protected void handlePerformanceState(GameState gameState){
+		HighScoreView h = new HighScoreView(openGame.getPlayers(),GameView.playerColors);
+		rootPanel.clear();
+		h.init(rootPanel);
+	}
+	
+	
+	/**
+	 * basic implementation for player left case
+	 * 
+	 * @param g		current game state
+	 */
+	protected void handlePlayerLeftState(GameState g){
+		// player has left the game
+
+		Iterator<? extends Player> i = g.getPlayers().iterator();
+
+		while (i.hasNext()) {
+
+			Player current = i.next();
+
+			int pid = g.getPlayers().indexOf(current)+1;
+			GWT.log(Integer.toString(pid));
+			GWT.log(Integer.toString(openGame.getPlayers().size()));
+
+			if (current.hasLeftGame() && (openGame.getPlayers().size() >= pid &&!(openGame.getPlayers().get(pid-1).hasLeftGame()))) {
+				showPlayerLeft(current.getName());
+			}
+
+		}
+	}
 
 	/**
 	 * sets the refresh rate of the main loop timer
@@ -446,7 +542,7 @@ public abstract class GameCoordinator {
 			ok.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					GameCloseQuestion.this.hide();
-					closeGame();
+					handleCloseGameState();
 				}
 			});
 			no.addClickHandler(new ClickHandler() {

@@ -60,10 +60,6 @@ public class DoppelungGameCommunicationServiceServlet extends
 		else
 			return null;
 	}
-	
-	// we do not need startGame because we have start buttons
-	@Override
-	public void startGame(int id) {}
 
 	@Override
 	public GameState buttonClicked(String ids) {

@@ -1,7 +1,5 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;

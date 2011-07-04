@@ -34,15 +34,6 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		return openGames;		
 	}
 
-
-	public void startGame(int id) {
-
-		Timer t = new Timer();
-
-		//wait 6 seconds for users to be ready
-		t.schedule(new SetGameStateTask(id, 21, this), 6000);
-	}
-
 	@Override
 	public GameState openGame(GameState g) {
 		currentId++;
@@ -102,7 +93,6 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 				for (int i = 0; i < game.getNumberOfMaxNPCs(); i++)
 					addNPC(game);
 				setGameState(getGameById(game.getId()),2);
-				startGame(id);
 			}
 
 			//add this user to the update-state list
@@ -374,6 +364,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	synchronized public boolean updateReadyness(String ids) {
 		int playerid = Integer.parseInt(ids.split(":")[1]);
 		int gameid = Integer.parseInt(ids.split(":")[0]);
+		System.out.println(gameid + "\t" + playerid);
 		GameState g = getGameById(gameid);
 
 		g.setPlayerReady(playerid,true);

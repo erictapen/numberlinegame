@@ -1,16 +1,11 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
-import java.util.Iterator;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
-import com.wicam.numberlineweb.client.GameView;
-import com.wicam.numberlineweb.client.HighScoreView;
-import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class NumberLineGameCoordinator extends GameCoordinator {
@@ -110,6 +105,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	 */
 
 	protected void updateGame(GameState gameState) {
+		super.updateGame(gameState);
 
 		NumberLineGameState g = (NumberLineGameState) gameState;
 		NumberLineGameView gameView = (NumberLineGameView) view;
@@ -124,47 +120,6 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 		}
 		
 		switch (g.getState()) {
-
-		//game closed
-		case -1:
-			setRefreshRate(2000);
-			//TODO: close game
-			break;
-			//awaiting players
-		case 0:
-			setRefreshRate(2000);
-			gameView.setInfoText("Warte auf Spieler...");
-			break;
-			//awaiting 2nd player
-		case 1:
-			setRefreshRate(2000);
-			for (int i = 0; i < g.getPlayers().size(); i++)
-				gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
-			if (g.getMaxNumberOfPlayers() <= 2)
-				gameView.setInfoText("Warte auf zweiten Spieler...");
-			else
-				gameView.setInfoText("Warte auf andere Spieler...");
-			break;
-			//awaiting start
-		case 2:
-
-			setRefreshRate(1000);
-			if (this.numberOfPlayers > 1)
-				chatC.setUserName(g.getPlayerName(this.playerID));
-			for (int i = 0; i < g.getPlayers().size(); i++)
-				gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
-			gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
-			break;
-
-		case 21:
-
-			setRefreshRate(200);
-			//start is pending. I am ready!
-			if (!openGame.isPlayerReady(this.playerID)) {
-				  commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-			}
-			break;
-
 			//started
 		case 3:
 			gameView.clear();
@@ -236,39 +191,12 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 			}
 
 			break;
-		case 97:
-			// TODO: winner screen
-			HighScoreView h = new HighScoreView(openGame.getPlayers(),GameView.playerColors);
-			rootPanel.clear();
-			h.init(rootPanel);
+			// for synchronization
+		case 6:
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			break;
-			
-		case 98:
-			closeGame();
-			break;
-			
-		case 99:
-			// player has left the game
-			
-			Iterator<? extends Player> i = g.getPlayers().iterator();
-			
-			while (i.hasNext()) {
-				
-				Player current = i.next();
-				
-				if (current.hasLeftGame()) {
-					
-					gameView.setInfoText(current.getName() + " hat das Spiel verlassen");
-					gameView.deletePlayerFromPointList(g.getPlayers().indexOf(current)+1);
-				}
-				
-				
-			}
-			
-			
-			break;
-			
-		}	
+		}
+		
 
 
 
@@ -276,7 +204,51 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 
 
 	}
+	
+	
+	/**
+	 * Sets user name in chat and sets points
+	 * info text: "Das Spiel beginnt in wenigen Sekunden"
+	 */
+	@Override
+	protected void handleAwaitingStartState(GameState g){
+		NumberLineGameView gameView = (NumberLineGameView) view;
+		setRefreshRate(1000);
+		if (this.numberOfPlayers > 1)
+			chatC.setUserName(g.getPlayerName(this.playerID));
+		for (int i = 0; i < g.getPlayers().size(); i++)
+			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
+		gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
+		if (!g.isPlayerReady(playerID))
+			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+	}
+	
+	
+	/**
+	 * "Warte auf Spieler..." is displayed on the view
+	 * and refresh rate is increased to 2000 ms
+	 */
+	@Override
+	protected void handleWaitingForPlayersState(){
+		setRefreshRate(2000);
+		((NumberLineGameView) view).setInfoText("Warte auf Spieler...");
+	}
 
+	/**
+	 * Points are displayed and "Warte auf zweiten/andere Spieler..."
+	 */
+	@Override
+	protected void handleWaitingForOtherPlayersState(GameState g){
+		NumberLineGameView gameView = (NumberLineGameView) view;
+		setRefreshRate(2000);
+		for (int i = 0; i < g.getPlayers().size(); i++)
+			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
+		if (g.getMaxNumberOfPlayers() <= 2)
+			gameView.setInfoText("Warte auf zweiten Spieler...");
+		else
+			gameView.setInfoText("Warte auf andere Spieler...");
+	}
+	
 	/**
 	 * Clicked at position x on the bar
 	 * @param x
