@@ -116,6 +116,7 @@ public abstract class GameCoordinator {
 		}
 		rootPanel.clear();
 		this.view = null;
+		lastServerSendTime = -1;
 		init();
 	}
 
