@@ -3,13 +3,15 @@ package com.wicam.numberlineweb.client.chat;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * A chat message. Holds username, id and the msg itself.
  * @author patrick
  *
  */
 
-public class ChatMsg implements  Serializable{
+public class ChatMsg implements IsSerializable{
 
 	/**
 	 * Again, this needs to be serialized for GWT to transfer

@@ -51,12 +51,13 @@ public class NumberLineGameCommunicationServiceServlet extends
 	}
 
 	/**
-	 * User has clicked. Again, the format for clicked ist
+	 * User has clicked. Again, the format for clicked is
 	 * <gameid>:<playerid>:<clickPosition>
 	 */
 	synchronized public NumberLineGameState clickedAt(String clicked) {
 
-		int playerid = Integer.parseInt(clicked.split(":")[1]);
+		int playerid = Integer.parseInt(clicked.split(":")[1]);// getPlayerId();
+		System.out.println("pid sent: " + clicked.split(":")[1] + " pid sessioned: " + playerid);
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);

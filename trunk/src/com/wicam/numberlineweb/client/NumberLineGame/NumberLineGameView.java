@@ -45,7 +45,8 @@ public class NumberLineGameView extends GameView  {
 
 
 	private void init() {
-		p.init(gameController,numberOfNPCs+numberOfNPCs);
+		
+		p.init(gameController,numberOfPlayers+numberOfNPCs);
 
 		motherPanel.add(p);
 
