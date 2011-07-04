@@ -12,6 +12,13 @@ public class FactsGameCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 1765772725542837585L;
 
+	
+	public FactsGameCommunicationServiceServlet() {
+		
+		super("factsgame");
+		
+	}
+	
 	@Override
 	public GameState openGame(GameState g) {
 		

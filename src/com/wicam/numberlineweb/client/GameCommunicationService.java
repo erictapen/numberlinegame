@@ -13,7 +13,7 @@ public interface GameCommunicationService extends  RemoteService {
 
 	public GameState openGame(GameState g);
 	
-	public String joinGame(String id);
+	public String joinGame(String id) throws GameJoinException;
 	
 	public boolean leaveGame(String id);
 	

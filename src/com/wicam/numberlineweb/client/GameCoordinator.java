@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -87,7 +88,7 @@ public abstract class GameCoordinator {
 
 	public void openGame(GameState gameState){
 		GWT.log("opening!");
-		
+
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
 		commServ.openGame(gameState, gameOpenedCallBack);
@@ -177,33 +178,42 @@ public abstract class GameCoordinator {
 		case -1:
 			handleGameClosedState(gameState);
 			break;
-		// awaiting players
+			// awaiting players
 		case 0:
 			handleWaitingForPlayersState();
 			break;
-		// awaiting other players
+			// awaiting other players
 		case 1:
 			handleWaitingForOtherPlayersState(gameState);
 			break;
-		// awaiting start 
+			// awaiting start 
 		case 2:
 			handleAwaitingStartState(gameState);
 			break;
-		// performance
+			//awaiting start confirmation
+		case 21:
+			handleAwaitingReadyConfirm();
+			break;
+			// performance
 		case 97:
 			handlePerformanceState(gameState);
 			break;
-		// close game
+			// close game
 		case 98:
 			handleCloseGameState();
 			break;
-		// player left
+			// player left
 		case 99:
 			handlePlayerLeftState(gameState);
 			break;
 		}
 	}
-	
+
+	private void handleAwaitingReadyConfirm() {
+		setRefreshRate(200);
+		commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+	}
+
 	/**
 	 * 
 	 * @param gameState
@@ -215,24 +225,24 @@ public abstract class GameCoordinator {
 	 */
 	abstract protected void handleWaitingForPlayersState();
 
-	
+
 	/**
 	 * game state "waiting for other players" has to be handled in this method
 	 */
 	abstract protected void handleWaitingForOtherPlayersState(GameState g);
-	
-	
+
+
 	/**
 	 * basic implementation for game closed state
 	 * 
-	  * @param gameState		current game state
+	 * @param gameState		current game state
 	 */
 	protected void handleGameClosedState(GameState gameState) {
 		setRefreshRate(2000);
 		//TODO: close game
 	}
 
-	
+
 	/**
 	 * basic implementation for showing the highscore
 	 * 
@@ -243,8 +253,8 @@ public abstract class GameCoordinator {
 		rootPanel.clear();
 		h.init(rootPanel);
 	}
-	
-	
+
+
 	/**
 	 * basic implementation for player left case
 	 * 
@@ -458,7 +468,7 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
 		}
 
 		@Override
@@ -557,10 +567,10 @@ public abstract class GameCoordinator {
 			HorizontalPanel p = new HorizontalPanel();
 
 			p.setSize("230px", "40px");
-	
+
 			p.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 			p.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-			
+
 			p.add(ok);
 			p.add(no);
 
@@ -590,7 +600,7 @@ public abstract class GameCoordinator {
 
 			ok.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					
+
 					PlayerLeftInfo.this.hide();
 				}
 			});
@@ -600,13 +610,13 @@ public abstract class GameCoordinator {
 			p.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 			p.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 			p.add(ok);
-			
+
 			this.setWidget(p);
 			this.center();
 			this.show();
 		}
 	}
-	
+
 
 
 

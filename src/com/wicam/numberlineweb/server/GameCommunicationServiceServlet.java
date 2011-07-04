@@ -1,13 +1,17 @@
 package com.wicam.numberlineweb.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
+import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
@@ -27,9 +31,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	private Timer timeOutTimer = new Timer();
 	protected int currentId=0;
 	int gamePending;
+	protected String internalName;
 
-	public GameCommunicationServiceServlet (){
+	public GameCommunicationServiceServlet (String internalName){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
+		this.internalName=internalName;
 	}
 
 	public ArrayList<GameState> getOpenGames() {
@@ -72,7 +78,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	 * 
 	 */
 
-	public String joinGame(String ids) {
+	public String joinGame(String ids) throws GameJoinException {
 
 		String player = ids.split(":")[1];
 		int id = Integer.parseInt(ids.split(":")[0]);
@@ -80,11 +86,37 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
 
 		GameState game = getGameById(id);
-
+		
+		
+		HttpServletRequest request = this.getThreadLocalRequest();
+		HashMap<String,HashMap<Integer,Integer>> games;
+		HashMap<Integer,Integer> pids;
+		
+		if (request.getSession(true).getAttribute("pids") == null) {
+			games = new HashMap<String,HashMap<Integer,Integer>>();
+			pids = new HashMap<Integer,Integer>();
+			games.put(internalName, pids);
+		}else if (((HashMap<String,HashMap<Integer,Integer>>)request.getSession(true).getAttribute("pids")).get(internalName)!= null) {
+			games = (HashMap<String,HashMap<Integer,Integer>>) request.getSession(true).getAttribute("pids");
+			pids = (HashMap<Integer,Integer>) ((HashMap<String,HashMap<Integer,Integer>>)request.getSession(true).getAttribute("pids")).get(internalName);
+		}else{
+			
+			games = (HashMap<String,HashMap<Integer,Integer>>) request.getSession(true).getAttribute("pids");
+			pids = new HashMap<Integer,Integer>();
+			games.put(internalName, pids);
+			
+		}
+		
+		//we dont want the same human player to play multiple players
+		if (pids.containsKey(id)) {
+			throw new GameJoinException("Du bist bereits in diesem Spiel!");
+		}
+		
+		
 
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
-
+			
 			int playerid = game.addPlayer(player);
 
 			if (game.isFree()) {
@@ -96,6 +128,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 					addNPC(game);
 				setGameState(getGameById(game.getId()),2);
 			}
+			
+			pids.put(id, playerid);
+			request.getSession(true).setAttribute("pids", games);
 
 			//add this user to the update-state list
 
@@ -105,15 +140,13 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
 			
-			HttpServletRequest request = this.getThreadLocalRequest();
 			
-			request.getSession(true).setAttribute("pid", playerid);
 			
 			return game.getId() + ":" + playerid;
 
 		}
 
-		return "Game full.";
+		throw new GameJoinException("Das Spiel ist voll.");
 
 	}
 
@@ -256,7 +289,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
-
+		removePlayerId(gameid);
 
 		while (i.hasNext()) {
 
@@ -339,9 +372,10 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	 */
 	public GameState update(String ids) {
 
-		final int player = Integer.parseInt(ids.split(":")[1]);
+	
 		final int id = Integer.parseInt(ids.split(":")[0]);
 		final int pingid = Integer.parseInt(ids.split(":")[2]);
+		final int player = getPlayerId(id);
 
 		resetUpdateTimer(player, id);
 
@@ -368,8 +402,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	 * <gameid>:<playerid>
 	 */
 	synchronized public boolean updateReadyness(String ids) {
-		int playerid = Integer.parseInt(ids.split(":")[1]);
+		
 		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = getPlayerId(gameid);
 		System.out.println(gameid + "\t" + playerid);
 		GameState g = getGameById(gameid);
 
@@ -411,13 +446,16 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	// TODO: comment it
 	public boolean leaveGame(String ids){
-		int playerid = Integer.parseInt(ids.split(":")[1]);
+		
 		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = getPlayerId(gameid);
 		GameState g = getGameById(gameid);
 
 		g.setHasLeftGame(playerid, true);
+		
 		setGameState(getGameById(gameid),99);
 		setChanged(g.getId());
+		removePlayerId(gameid);
 
 		boolean allLeft = true;
 		for (int i = 0; i < g.getPlayers().size()-g.getNumberOfMaxNPCs(); i++){
@@ -444,12 +482,22 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		return emptyGameTimeOutStates;
 	}
 	
-	protected int getPlayerId() {
+	protected int getPlayerId(int gameid) {
 		
 		HttpServletRequest request = this.getThreadLocalRequest();
 		
-		return (Integer) request.getSession().getAttribute("pid");
+		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
+		return idMap.get(internalName).get(gameid);
 		
+	}
+	
+	protected void removePlayerId(int gameid) {
+		
+		HttpServletRequest request = this.getThreadLocalRequest();
+		
+		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
+		idMap.get(internalName).remove(gameid);
+		request.setAttribute("pids", idMap);
 		
 	}
 }

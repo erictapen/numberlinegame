@@ -16,6 +16,12 @@ public class NumberLineGameCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
 	
+	public NumberLineGameCommunicationServiceServlet() {
+		
+		super("numerlinegame");
+		
+	}
+	
 	@Override
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC");
@@ -56,9 +62,9 @@ public class NumberLineGameCommunicationServiceServlet extends
 	 */
 	synchronized public NumberLineGameState clickedAt(String clicked) {
 
-		int playerid = Integer.parseInt(clicked.split(":")[1]);// getPlayerId();
-		System.out.println("pid sent: " + clicked.split(":")[1] + " pid sessioned: " + playerid);
+	
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
+		int playerid = getPlayerId(gameid);
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);
 
