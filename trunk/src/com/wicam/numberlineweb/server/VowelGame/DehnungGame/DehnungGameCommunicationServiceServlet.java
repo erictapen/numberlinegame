@@ -14,6 +14,12 @@ public class DehnungGameCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 5110227034606661459L;
 	
+	public DehnungGameCommunicationServiceServlet() {
+		
+		super("dehnungsgame");
+		
+	}
+	
 	@Override
 	public GameState openGame(GameState g) {
 		

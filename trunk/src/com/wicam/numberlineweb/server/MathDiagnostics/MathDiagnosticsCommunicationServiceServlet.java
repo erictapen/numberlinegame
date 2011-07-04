@@ -29,6 +29,15 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 1718259689021463189L;
 
+	
+	
+	public MathDiagnosticsCommunicationServiceServlet() {
+		
+		super("mathdiagnostics");
+		
+	}
+	
+	
 	/**
 	 * basic implementation of openGame
 	 */
