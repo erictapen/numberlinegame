@@ -14,7 +14,6 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
-import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.AdditionView;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceReactionTask.ChoiceReactionTaskController;
@@ -124,23 +123,14 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	
 	@Override
 	protected void updateGame(GameState gameState) {
+		super.updateGame(gameState);
 		MathDiagnosticsGameState g = (MathDiagnosticsGameState) gameState;
 		//we already have the lates state
 		if (g==null) return;
 
 
 		switch (g.getState()) {
-
-		//game closed
-		case -1:
-			setRefreshRate(2000);
-			//TODO: close game
-			break;
-			//awaiting start
-		case 1: case 2:
-			setRefreshRate(1000);
-			break;
-			// present item
+		// present item
 		case 3:
 			if (itemList != null){
 				if (!started){
@@ -156,43 +146,38 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 				setRefreshRate(100);
 			}
 			break;
-			// performance
-		case 97:
-			MathDiagnosticsHighScoreView h = new MathDiagnosticsHighScoreView(g.getPlayers(),GameView.playerColors, 500);
-			rootPanel.clear();
-			h.init(rootPanel);
-			break;
-
-		case 98:
-			closeGame();
-			break;
-
-		case 99:
-			// player has left the game
-
-			Iterator<? extends Player> i = g.getPlayers().iterator();
-
-			while (i.hasNext()) {
-
-				Player current = i.next();
-
-				int pid = g.getPlayers().indexOf(current)+1;
-				GWT.log(Integer.toString(pid));
-				GWT.log(Integer.toString(openGame.getPlayers().size()));
-
-				if (current.hasLeftGame() && (openGame.getPlayers().size() >= pid &&!(openGame.getPlayers().get(pid-1).hasLeftGame()))) {
-					super.showPlayerLeft(current.getName());
-				}
-
-			}
-
-
-			break;
 		}
 
 		openGame = g;
 
 	}
+	
+	
+	/**
+	 * empty since there are no other players
+	 */
+	@Override
+	protected void handleWaitingForPlayersState(){}
+	protected void handleAwaitingStartState(GameState gameState){}
+	
+	
+	/**
+	 * we don't need to wait for other players
+	 * just increase refresh rate
+	 */
+	@Override
+	protected void handleWaitingForOtherPlayersState(GameState g){
+		setRefreshRate(1000);
+	}
+	
+	
+	@Override
+	protected void handlePerformanceState(GameState gameState){
+		MathDiagnosticsHighScoreView h = new MathDiagnosticsHighScoreView(gameState.getPlayers(),GameView.playerColors, 500);
+		rootPanel.clear();
+		h.init(rootPanel);
+	}
+	
 	
 	public void startButtonClicked(){
 		if (!openGame.isPlayerReady(this.playerID)) {

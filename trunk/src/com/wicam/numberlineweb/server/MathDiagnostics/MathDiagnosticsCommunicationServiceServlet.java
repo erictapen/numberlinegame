@@ -44,12 +44,6 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 
 	}
 
-	/**
-	 * startGame is not needed
-	 */
-	@Override
-	public void startGame(int id) {}
-
 	
 	/**
 	 * function for retrieving the item list from the server

@@ -75,4 +75,22 @@ public class FactsGameCoordinator extends GameCoordinator {
 
 	}
 
+	@Override
+	protected void handleWaitingForPlayersState() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleWaitingForOtherPlayersState(GameState g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleAwaitingStartState(GameState gameState) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

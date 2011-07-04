@@ -39,8 +39,6 @@ public class NumberLineGameNPC {
 					case 1:
 					case 2:
 						time = 1000;
-					break;
-					case 21:
 						if (!game.isPlayerReady(playerid))
 							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid));
 					break;
@@ -72,6 +70,10 @@ public class NumberLineGameNPC {
 					break;
 					case 5:
 						makeClick = false;
+					break;
+					case 6:
+						if (!game.isPlayerReady(playerid))
+							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid));
 					break;
 				}
 				

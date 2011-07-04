@@ -23,9 +23,4 @@ public class FactsGameCommunicationServiceServlet extends
 		
 
 	}
-
-	@Override
-	public void startGame(int id) {
-		
-	}
 }

@@ -6,7 +6,6 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.wicam.numberlineweb.client.GameController;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.MouseHandler;
 

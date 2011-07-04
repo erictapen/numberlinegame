@@ -12,8 +12,6 @@ import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
-import com.wicam.numberlineweb.client.HighScoreView;
-import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.VowelGame.AnimationTimer;
 import com.wicam.numberlineweb.client.VowelGame.AnimationTimerTask;
 import com.wicam.numberlineweb.client.VowelGame.ConsonantPoint2D;
@@ -123,6 +121,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	@Override
 	protected void updateGame(GameState gameState) {
+		super.updateGame(gameState);
 		DoppelungGameState g = (DoppelungGameState) gameState;
 		DoppelungGameView gameView =  (DoppelungGameView) view;
 		//we already have the lates state
@@ -130,55 +129,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 
 		switch (g.getState()) {
-
-		//game closed
-		case -1:
-			setRefreshRate(2000);
-			//TODO: close game
-			break;
-			//awaiting players
-		case 0:
-			setRefreshRate(2000);
-			break;
-			//awaiting 2nd player
-		case 1:
-			setRefreshRate(2000);
-			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
-			}
-			if (g.isPlayerReady(this.playerID)){
-				// other player ready ?
-
-				gameView.clearGamePanel();
-				gameView.showWaitingForOtherPlayer("Warte auf zweiten Spieler...");
-
-			}
-			break;
-			//awaiting start
-		case 2:
-			if (this.numberOfPlayers > 1)
-				chatC.setUserName(g.getPlayerName(this.playerID));
-			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
-			}
-			if (g.isPlayerReady(this.playerID)){
-				// other player ready ?
-
-				gameView.clearGamePanel();
-				gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
-
-			}
-			setRefreshRate(1000);
-			break;
-
-		case 21:
-			setRefreshRate(200);
-			//start is pending. I am ready!
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-
-
-			break;
-
 			// word played and vowel choice
 		case 3:
 			shortVowelGameStarted = false; // reset
@@ -288,43 +238,65 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 			}
 			break;
-		case 97:
-			HighScoreView h = new HighScoreView(g.getPlayers(),DoppelungGameView.playerColors);
-			rootPanel.clear();
-			h.init(rootPanel);
-			break;
-
-		case 98:
-			closeGame();
-			break;
-
-		case 99:
-			// player has left the game
-
-			Iterator<? extends Player> i = g.getPlayers().iterator();
-
-			while (i.hasNext()) {
-
-				Player current = i.next();
-
-				int pid = g.getPlayers().indexOf(current)+1;
-				GWT.log(Integer.toString(pid));
-				GWT.log(Integer.toString(openGame.getPlayers().size()));
-
-				if (current.hasLeftGame() && (openGame.getPlayers().size() >= pid &&!(openGame.getPlayers().get(pid-1).hasLeftGame()))) {
-					super.showPlayerLeft(current.getName());
-				}
-
-			}
-
-
-			break;
 		}
 
 		openGame = g;
 
 	}
+	
+	
+	/**
+	 * Sets user name in chat and sets points
+	 * "Warte auf [other player name] is displayed
+	 * 
+	 */
+	@Override
+	protected void handleAwaitingStartState(GameState g){
+		DoppelungGameView gameView =  (DoppelungGameView) view;
+		if (this.numberOfPlayers > 1)
+			chatC.setUserName(g.getPlayerName(this.playerID));
+		for (int i = 0; i < g.getPlayers().size(); i++){
+			gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+		}
+		if (g.isPlayerReady(this.playerID)){
+			// other player ready ?
 
+			gameView.clearGamePanel();
+			gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
+
+		}
+		setRefreshRate(1000);
+	}
+	
+	
+	/**
+	 * the refresh set is increased since the description is displayed
+	 */
+	@Override
+	protected void handleWaitingForPlayersState(){
+		setRefreshRate(2000);
+	}
+	
+	
+	/**
+	 * points are displayed and "Warte auf zweiten Spieler..." is shown
+	 */
+	@Override
+	protected void handleWaitingForOtherPlayersState(GameState g){
+		DoppelungGameView gameView =  (DoppelungGameView) view;
+		setRefreshRate(2000);
+		for (int i = 0; i < g.getPlayers().size(); i++){
+			gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+		}
+		if (g.isPlayerReady(this.playerID)){
+			// other player ready ?
+
+			gameView.clearGamePanel();
+			gameView.showWaitingForOtherPlayer("Warte auf zweiten Spieler...");
+
+		}
+	}
+	
 	private void removeMarkedMc(DoppelungGameState g){
 		if (movingConsonantsList != null){
 			for (MovingConsonants mc: this.movingConsonantsList){

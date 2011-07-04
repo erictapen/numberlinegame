@@ -15,15 +15,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 	 * 
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
-
-	@Override
-	public void startGame(int id) {
-
-		Timer t = new Timer();
-
-		//wait 6 seconds for users to be ready
-		t.schedule(new SetNumberLineGameStateTask(id, 21, this), 6000);
-	}
 	
 	@Override
 	protected void addNPC(GameState game){
@@ -158,7 +149,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 				this.endGame(gameid);
 			}
 			else
-				this.startGame(gameid);
+				this.showNextItem(gameid);
 		}
 
 		g.setServerSendTime(System.currentTimeMillis());
@@ -197,7 +188,10 @@ public class NumberLineGameCommunicationServiceServlet extends
 	@Override
 	public GameState openGame(GameState g) {
 		
-
+		//initialize first item
+		newNumbers((NumberLineGameState) g);
+		
+		// initialize pointerwidth
 		((NumberLineGameState) g).setPointerWidth(14);
 		
 		g.setServerSendTime(System.currentTimeMillis());
@@ -205,5 +199,10 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 
 	}
-
+	
+	public void showNextItem(int id) {
+		
+		Timer t = new Timer();
+		t.schedule(new SetNumberLineGameStateTask(id, 6, this), 6000);
+	}
 }
