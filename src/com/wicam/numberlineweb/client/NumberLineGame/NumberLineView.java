@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -21,6 +22,8 @@ public class NumberLineView extends AbsolutePanel {
 	private int pointerWidth;
 	
 	public void init(MouseHandler mouseHandler, int numberOfPlayers){
+		
+		GWT.log("call to init with " + Integer.toString(numberOfPlayers)+ " players.");
 		this.mouseHandler = mouseHandler;
 		// initialize pointers
 		int numberOfPointers = numberOfPlayers;

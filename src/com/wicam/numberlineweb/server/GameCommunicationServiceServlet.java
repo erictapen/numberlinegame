@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
@@ -102,7 +104,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			//add this user to the timeout list
 
 			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
-
+			
+			HttpServletRequest request = this.getThreadLocalRequest();
+			
+			request.getSession(true).setAttribute("pid", playerid);
+			
 			return game.getId() + ":" + playerid;
 
 		}
@@ -436,5 +442,14 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
 		return emptyGameTimeOutStates;
+	}
+	
+	protected int getPlayerId() {
+		
+		HttpServletRequest request = this.getThreadLocalRequest();
+		
+		return (Integer) request.getSession().getAttribute("pid");
+		
+		
 	}
 }

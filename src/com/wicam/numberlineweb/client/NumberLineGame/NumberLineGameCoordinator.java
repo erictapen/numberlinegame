@@ -62,6 +62,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
+		
 		((NumberLineGameCommunicationServiceAsync)commServ).openGame(gameState, gameOpenedCallBack);
 
 	}
@@ -79,6 +80,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 
 		//construct game
 		controller = new NumberLineController(this);
+		
 		this.view = new NumberLineGameView(controller, numberOfPlayers, numberOfNPCs);
 		
 		NumberLineGameView gameView = (NumberLineGameView) view;
