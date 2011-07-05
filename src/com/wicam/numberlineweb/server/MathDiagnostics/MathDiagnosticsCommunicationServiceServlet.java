@@ -60,7 +60,7 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	@Override
 	public ArrayList<isItem> retrieveItemList(int gameId, int itemType) {
 		ArrayList<isItem> itemList = new ArrayList<isItem>();
-		ItemListReader itemListReader = new ItemListReader("MathDiagnostics/itemlist.xml");
+		ItemListReader itemListReader = new ItemListReader(getServletContext().getRealPath("/") + "MathDiagnostics/itemlist.xml");
 		itemList = itemListReader.getList(itemType);
 		return itemList;
 	}

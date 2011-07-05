@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
@@ -83,8 +84,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		String player = ids.split(":")[1];
 		int id = Integer.parseInt(ids.split(":")[0]);
 
-		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
-
+		
 		GameState game = getGameById(id);
 		
 		
@@ -92,18 +92,25 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		HashMap<String,HashMap<Integer,Integer>> games;
 		HashMap<Integer,Integer> pids;
 		
-		if (request.getSession(true).getAttribute("pids") == null) {
+		HttpSession session = request.getSession(true);
+		
+		if (session.isNew()) {
 			games = new HashMap<String,HashMap<Integer,Integer>>();
 			pids = new HashMap<Integer,Integer>();
 			games.put(internalName, pids);
-		}else if (((HashMap<String,HashMap<Integer,Integer>>)request.getSession(true).getAttribute("pids")).get(internalName)!= null) {
-			games = (HashMap<String,HashMap<Integer,Integer>>) request.getSession(true).getAttribute("pids");
-			pids = (HashMap<Integer,Integer>) ((HashMap<String,HashMap<Integer,Integer>>)request.getSession(true).getAttribute("pids")).get(internalName);
+			session.setAttribute("pids",games);
+	
 		}else{
 			
-			games = (HashMap<String,HashMap<Integer,Integer>>) request.getSession(true).getAttribute("pids");
-			pids = new HashMap<Integer,Integer>();
-			games.put(internalName, pids);
+			games = (HashMap<String,HashMap<Integer,Integer>>) session.getAttribute("pids");
+			pids = games.get(internalName);
+			
+			if (pids == null) {
+				
+				pids = new HashMap<Integer,Integer>();
+				games.put(internalName,pids);
+				
+			}
 			
 		}
 		
@@ -112,7 +119,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			throw new GameJoinException("Du bist bereits in diesem Spiel!");
 		}
 		
-		
+		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
+
 
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
@@ -151,6 +159,10 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	}
 
 	protected void addNPC(GameState game){}
+	
+	protected boolean isNPC(int playerId){
+		return false;
+	}
 
 	/**
 	 * get a gamestate by its game-ID
@@ -397,14 +409,21 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		}
 	}
+	
+	synchronized public boolean updateReadyness(String ids) {
+		
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		return updateReadyness(ids,getPlayerId(gameid));
+		
+	}
 
 	/**
 	 * <gameid>:<playerid>
 	 */
-	synchronized public boolean updateReadyness(String ids) {
+	synchronized public boolean updateReadyness(String ids, int playerid) {
 		
 		int gameid = Integer.parseInt(ids.split(":")[0]);
-		int playerid = getPlayerId(gameid);
+	
 		System.out.println(gameid + "\t" + playerid);
 		GameState g = getGameById(gameid);
 
@@ -444,18 +463,26 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 
-	// TODO: comment it
 	public boolean leaveGame(String ids){
-		
+			
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = getPlayerId(gameid);
+		return leaveGame(ids,playerid);
+		
+	}
+	
+	
+	public boolean leaveGame(String ids, int playerid){
+		
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		
 		GameState g = getGameById(gameid);
 
 		g.setHasLeftGame(playerid, true);
 		
 		setGameState(getGameById(gameid),99);
 		setChanged(g.getId());
-		removePlayerId(gameid);
+		if (!isNPC(playerid)) removePlayerId(gameid);
 
 		boolean allLeft = true;
 		for (int i = 0; i < g.getPlayers().size()-g.getNumberOfMaxNPCs(); i++){
@@ -484,6 +511,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	
 	protected int getPlayerId(int gameid) {
 		
+		
+		
 		HttpServletRequest request = this.getThreadLocalRequest();
 		
 		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
@@ -496,7 +525,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		HttpServletRequest request = this.getThreadLocalRequest();
 		
 		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
-		idMap.get(internalName).remove(gameid);
+		if (idMap.get(internalName) != null) idMap.get(internalName).remove(gameid);
 		request.setAttribute("pids", idMap);
 		
 	}

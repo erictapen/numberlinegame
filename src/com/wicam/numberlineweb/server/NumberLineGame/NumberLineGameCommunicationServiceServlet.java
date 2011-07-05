@@ -15,6 +15,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 	 * 
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
+	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
 	
 	public NumberLineGameCommunicationServiceServlet() {
 		
@@ -25,7 +26,12 @@ public class NumberLineGameCommunicationServiceServlet extends
 	@Override
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC");
+		npcIds.add(playerid);
 		new NumberLineGameNPC(this, game.getId(), playerid);
+	}
+	
+	protected boolean isNPC(int playerId){
+		return npcIds.contains(playerId);
 	}
 	
 	/**
@@ -55,16 +61,26 @@ public class NumberLineGameCommunicationServiceServlet extends
 		game.setExerciseNumber(exerciseNumber);
 
 	}
+	
+	
+	synchronized public NumberLineGameState clickedAt(String clicked) {
+		
+		int gameid = Integer.parseInt(clicked.split(":")[0]);
+		return clickedAt(clicked,getPlayerId(gameid));
+		
+	}
+
+		
 
 	/**
 	 * User has clicked. Again, the format for clicked is
 	 * <gameid>:<playerid>:<clickPosition>
 	 */
-	synchronized public NumberLineGameState clickedAt(String clicked) {
+	synchronized public NumberLineGameState clickedAt(String clicked, int playerid) {
 
 	
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
-		int playerid = getPlayerId(gameid);
+
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);
 
