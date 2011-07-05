@@ -40,7 +40,7 @@ public class NumberLineGameNPC {
 					case 2:
 						time = 1000;
 						if (!game.isPlayerReady(playerid))
-							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid));
+							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid),playerid);
 					break;
 					case 3:
 					case 4:
@@ -58,7 +58,7 @@ public class NumberLineGameNPC {
 									x = 0;
 								if (x > 400)
 									x = 400;
-								NumberLineGameState g = comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x));
+								NumberLineGameState g = comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x),playerid);
 								if (!g.isPlayerClicked(playerid)){
 									// position was not available => retry
 									time = 700 + (int)(new Random().nextGaussian()*100);
@@ -73,12 +73,12 @@ public class NumberLineGameNPC {
 					break;
 					case 6:
 						if (!game.isPlayerReady(playerid))
-							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid));
+							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid),playerid);
 					break;
 				}
 				
 				if (state == 7 || state == 99){
-					comm.leaveGame(game.getId() + ":" + Integer.toString(playerid));
+					comm.leaveGame(game.getId() + ":" + Integer.toString(playerid),playerid);
 				}
 				else {
 					t.schedule(new CPUBehavior(), time);
