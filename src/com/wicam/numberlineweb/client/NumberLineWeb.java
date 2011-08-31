@@ -50,7 +50,7 @@ public class NumberLineWeb implements EntryPoint {
 			RootPanel.get("game").getElement().getStyle().setBorderStyle(BorderStyle.NONE);
 			RootPanel.get("unilogo").getElement().getStyle().setDisplay(Display.NONE);
 			RootPanel.getBodyElement().addClassName("embedded");
-			RootPanel.getBodyElement().getStyle().setBackgroundColor("white");
+			
 		}
 
 		if (MobileDeviceChecker.checkMobile()) {

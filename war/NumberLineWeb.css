@@ -10,6 +10,21 @@ body, body.visible,table td,select,.gwt-Button {
 	font-family: Ubuntu, Tahoma, Geneva, sans-serif !important;
 }
 
+body {
+	
+	background-color: #3D3D3D !important;	
+	
+}
+
+.gwt-Button {
+	
+	background-color: #3D3D3D;
+}
+
+body.embedded {
+	background:transparent !important;	
+}
+
 .gwt-Button {
 	font-size: 14px !important;
 }
@@ -80,6 +95,11 @@ body,body.visible {
 	width: 750px;
 	position: relative;
 	background-color: white;
+}
+
+.embedded #game {
+
+	background: transparent;
 }
 
 #exercise {
