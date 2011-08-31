@@ -310,3 +310,19 @@ background-color:#EEE !important;
 background-color:#F6F6F6 !important;
 
 }
+
+.embedded .wrap {
+	
+	border:none;
+	border-radius:0px;
+	border-width:0px;
+	padding:0px;
+	background:transparent;
+	width:auto;
+	margin:0px;
+	}
+	
+.embedded .pinger {
+	display:none;
+	
+}
