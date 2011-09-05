@@ -39,9 +39,9 @@ public abstract class GameSelector extends Composite {
 	protected final GameCreatePopupBox gamePopUp = new GameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
 	protected final int boxWidth = 750;
 	protected Button joinGameButton;
-	
+
 	protected final ArrayList<GameState> openGames = new ArrayList<GameState>();
-	
+
 	/**
 	 * keyProvider, which simply uses the game id of a game state as key
 	 */
@@ -52,50 +52,50 @@ public abstract class GameSelector extends Composite {
 			return (game == null) ? null : game.getId();
 		}
 	};
-	
+
 	protected final CellList<GameState> cellList = new CellList<GameState>(new GameCell(),keyProvider);
-	
+
 	public GameSelector(GameCoordinator coordinator) {
-		
+
 		this.coordinator = coordinator;
-		
+
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
-		
-		
+
+
 
 	}
-	
-	
+
+
 	@SuppressWarnings("deprecation")
 	protected void init() {
-	
+
 		RootPanel.get().add(motherPanel);
 
 		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
 
-	
+
 			@Override
 			public void onHistoryChanged(String historyToken) {
 
 				if (historyToken.equals("")) {
-					
+
 					coordinator.rootPanel.clear();
 					coordinator.getGTS().init(coordinator.rootPanel);
-					
+
 				}
 			}
 		});
-		
-		
+
+
 		History.newItem("gameSelector-" + coordinator.getGameName(),false);
-		
+
 		joinGameButton = new Button("Mitspielen");
-	
-		
+
+
 		joinGameButton.setEnabled(false);
-		
+
 		PushButton homeButton = new PushButton("");
 		homeButton.addStyleName("homebutton");
 
@@ -103,22 +103,22 @@ public abstract class GameSelector extends Composite {
 
 		cellList.setSelectionModel(selectionModel);
 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-		
+
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler(){
 
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				// TODO Auto-generated method stub
 				if (selectionModel.getSelectedObject() != null) {
-					
+
 					joinGameButton.setEnabled(true);
-					
+
 				}else{
 					joinGameButton.setEnabled(false);
 				}
 			}
-			
-			
+
+
 		});
 
 		ScrollPanel s = new ScrollPanel(cellList);
@@ -127,7 +127,7 @@ public abstract class GameSelector extends Composite {
 		s.setHeight("300px");
 
 
-	
+
 		joinGameButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -137,12 +137,12 @@ public abstract class GameSelector extends Composite {
 
 			}
 		});
-		
+
 		homeButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-			
+
 				History.back();
 			}
 		});
@@ -197,9 +197,9 @@ public abstract class GameSelector extends Composite {
 		t.scheduleRepeating(2000);
 
 	}
-	
+
 	abstract protected void addGameCreationHandler();
-	
+
 	protected GameState getGameById(int id, ArrayList<GameState> games) {
 
 		Iterator<GameState> i = games.iterator();
@@ -215,32 +215,43 @@ public abstract class GameSelector extends Composite {
 		return null;
 
 	}
-	
+
 	public void joinGame() {
 
 		if (this.getSelectedGameId() < 0) return;
 
-		final TextPopupBox b = new TextPopupBox("Bitte gib deinen Namen ein", "Spieler");
+		if (NumberLineWeb.USERID == -1) {
 
-		b.addClickHandler(new ClickHandler() {
+			final TextPopupBox b = new TextPopupBox("Bitte gib deinen Namen ein", "Spieler");
 
-			@Override
-			public void onClick(ClickEvent event) {
+			b.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
 
 
-				b.hide();
-				coordinator.joinGame(GameSelector.this.getSelectedGameId(), b.getTextValue(),getMaxNumberOfPlayers(),
-											getMaxNumberOfNPCs());
-				t.cancel();
-			}
+					b.hide();
+					coordinator.joinGame(GameSelector.this.getSelectedGameId(), b.getTextValue(),getMaxNumberOfPlayers(),
+							getMaxNumberOfNPCs());
+					t.cancel();
+				}
 
-		});
+			});
+			b.show();
+
+		}else{
+
+			coordinator.joinGame(GameSelector.this.getSelectedGameId(), "___ID/" + NumberLineWeb.USERID,getMaxNumberOfPlayers(),
+					getMaxNumberOfNPCs());
+			t.cancel();
+
+		}
 
 		gamePopUp.hide();
-		
-		b.show();
-	}
+
 	
+	}
+
 
 
 	public void setGameList(ArrayList<? extends GameState> result) {
@@ -293,7 +304,7 @@ public abstract class GameSelector extends Composite {
 
 
 	}
-	
+
 	private boolean gameInList(GameState g, ArrayList<? extends GameState> games) {
 
 		Iterator<? extends GameState> it = games.iterator();
@@ -310,7 +321,7 @@ public abstract class GameSelector extends Composite {
 		return false;
 
 	}
-	
+
 	public int getSelectedGameId() {
 
 		if (selectionModel.getSelectedObject()!=null) {
@@ -320,7 +331,7 @@ public abstract class GameSelector extends Composite {
 			return -1;
 		}
 	}
-	
+
 	public void clearGameList() {
 
 		openGames.clear();
@@ -339,7 +350,7 @@ public abstract class GameSelector extends Composite {
 		cellList.setFocus(true);
 
 	}
-	
+
 
 	protected int getMaxNumberOfPlayers() {
 		return selectionModel.getSelectedObject().getMaxNumberOfPlayers();

@@ -14,6 +14,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
+import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -65,7 +67,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
-		
+
 
 
 	}
@@ -84,47 +86,60 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		String player = ids.split(":")[1];
 		int id = Integer.parseInt(ids.split(":")[0]);
 
-		
+		if (player.split("/")[0].equals("___ID")) {
+
+			int uid = Integer.parseInt(player.split("/")[1]);
+			if (uid == -2) player = "Gast"; else{
+				DrupalCommunicator dc = new DrupalCommunicator();
+				try {
+					player = dc.getUser(uid).getUname();
+				} catch (UserNotFoundException e) {
+					throw new GameJoinException("User with id =" + uid + " could not be found.");
+				}
+			}
+
+		}
+
 		GameState game = getGameById(id);
-		
-		
+
+
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HashMap<String,HashMap<Integer,Integer>> games;
 		HashMap<Integer,Integer> pids;
-		
+
 		HttpSession session = request.getSession(true);
-		
+
 		if (session.isNew()) {
 			games = new HashMap<String,HashMap<Integer,Integer>>();
 			pids = new HashMap<Integer,Integer>();
 			games.put(internalName, pids);
 			session.setAttribute("pids",games);
-	
+
 		}else{
-			
+
 			games = (HashMap<String,HashMap<Integer,Integer>>) session.getAttribute("pids");
 			pids = games.get(internalName);
-			
+
 			if (pids == null) {
-				
+
 				pids = new HashMap<Integer,Integer>();
 				games.put(internalName,pids);
-				
+
 			}
-			
+
 		}
-		
+
 		//we dont want the same human player to play multiple players
 		if (pids.containsKey(id)) {
 			throw new GameJoinException("Du bist bereits in diesem Spiel!");
 		}
-		
+
 		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
 
 
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
-			
+
 			int playerid = game.addPlayer(player);
 
 			if (game.isFree()) {
@@ -136,7 +151,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 					addNPC(game);
 				setGameState(getGameById(game.getId()),2);
 			}
-			
+
 			pids.put(id, playerid);
 			request.getSession(true).setAttribute("pids", games);
 
@@ -147,9 +162,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			//add this user to the timeout list
 
 			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
-			
-			
-			
+
+
+
 			return game.getId() + ":" + playerid;
 
 		}
@@ -159,7 +174,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	}
 
 	protected void addNPC(GameState game){}
-	
+
 	protected boolean isNPC(int playerId){
 		return false;
 	}
@@ -184,8 +199,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		return null;
 
 	}
-	
-	
+
+
 
 	/**
 	 * Set the status for a given game-ID to changed. 
@@ -384,7 +399,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	 */
 	public GameState update(String ids) {
 
-	
+
 		final int id = Integer.parseInt(ids.split(":")[0]);
 		final int pingid = Integer.parseInt(ids.split(":")[2]);
 		final int player = getPlayerId(id);
@@ -409,21 +424,21 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		}
 	}
-	
+
 	synchronized public boolean updateReadyness(String ids) {
-		
+
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		return updateReadyness(ids,getPlayerId(gameid));
-		
+
 	}
 
 	/**
 	 * <gameid>:<playerid>
 	 */
 	synchronized public boolean updateReadyness(String ids, int playerid) {
-		
+
 		int gameid = Integer.parseInt(ids.split(":")[0]);
-	
+
 		System.out.println(gameid + "\t" + playerid);
 		GameState g = getGameById(gameid);
 
@@ -464,22 +479,22 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	}
 
 	public boolean leaveGame(String ids){
-			
+
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = getPlayerId(gameid);
 		return leaveGame(ids,playerid);
-		
+
 	}
-	
-	
+
+
 	public boolean leaveGame(String ids, int playerid){
-		
+
 		int gameid = Integer.parseInt(ids.split(":")[0]);
-		
+
 		GameState g = getGameById(gameid);
 
 		g.setHasLeftGame(playerid, true);
-		
+
 		setGameState(getGameById(gameid),99);
 		setChanged(g.getId());
 		if (!isNPC(playerid)) removePlayerId(gameid);
@@ -508,25 +523,25 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	public ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
 		return emptyGameTimeOutStates;
 	}
-	
+
 	protected int getPlayerId(int gameid) {
-		
-		
-		
+
+
+
 		HttpServletRequest request = this.getThreadLocalRequest();
-		
+
 		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
 		return idMap.get(internalName).get(gameid);
-		
+
 	}
-	
+
 	protected void removePlayerId(int gameid) {
-		
+
 		HttpServletRequest request = this.getThreadLocalRequest();
-		
+
 		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
 		if (idMap.get(internalName) != null) idMap.get(internalName).remove(gameid);
 		request.setAttribute("pids", idMap);
-		
+
 	}
 }
