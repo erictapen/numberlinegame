@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
@@ -38,18 +39,21 @@ public class NumberLineWeb implements EntryPoint {
 	protected ChatCommunicationServiceAsync chatCommService = (ChatCommunicationServiceAsync) GWT.create(ChatCommunicationService.class);
 	protected GameCoordinator coordinator;
 	protected GameTypeSelector gts = new GameTypeSelector();
+	
+	public static int USERID = -1;
 
 	/**
 	 * Everything starts here...
 	 */
 	public void onModuleLoad() {
 		
-		
 		if (Window.Location.getParameter("embedded") != null) {
 			
 			RootPanel.get("game").getElement().getStyle().setBorderStyle(BorderStyle.NONE);
 			RootPanel.get("unilogo").getElement().getStyle().setDisplay(Display.NONE);
 			RootPanel.getBodyElement().addClassName("embedded");
+			
+			NumberLineWeb.USERID = Integer.parseInt(Window.Location.getParameter("uid"));
 			
 		}
 
@@ -78,6 +82,23 @@ public class NumberLineWeb implements EntryPoint {
 	public void showGameTypeSelector() {
 		//boolean numberLineGame = false;
 
+		final AsyncCallback<Boolean> dummyCallback = new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+
+
+			}
+
+		};
+		
+		final String logging = Window.Location.getParameter("logging");
+		
 		//adds the numberlinegame
 		gts.addGame("NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
 
@@ -89,6 +110,19 @@ public class NumberLineWeb implements EntryPoint {
 				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
 				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
@@ -103,6 +137,20 @@ public class NumberLineWeb implements EntryPoint {
 				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
 				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
+					
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
@@ -118,6 +166,20 @@ public class NumberLineWeb implements EntryPoint {
 				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
 				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
+					
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
@@ -133,6 +195,20 @@ public class NumberLineWeb implements EntryPoint {
 				commService = (DehnungGameCommunicationServiceAsync) GWT.create(DehnungGameCommunicationService.class);
 				coordinator = new DehnungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
+					
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
