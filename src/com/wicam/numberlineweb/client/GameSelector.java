@@ -215,7 +215,8 @@ public abstract class GameSelector extends Composite {
 		return null;
 
 	}
-
+	
+	
 	public void joinGame() {
 
 		if (this.getSelectedGameId() < 0) return;
@@ -251,7 +252,7 @@ public abstract class GameSelector extends Composite {
 
 	
 	}
-
+	
 
 
 	public void setGameList(ArrayList<? extends GameState> result) {
