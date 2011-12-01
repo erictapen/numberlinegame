@@ -13,7 +13,8 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	private NumberLineController controller;
 	private boolean sessionClicked = false;
 	private boolean triedToClick = false; // indicates if players has already tried to click at a position which was not available
-
+	
+	
 	public NumberLineGameCoordinator(NumberLineGameCommunicationServiceAsync commServ,
 			ChatCommunicationServiceAsync chatCommServ, 
 			Panel root, GameTypeSelector gts) {
@@ -127,7 +128,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 			gameView.clear();
 			sessionClicked=false;
 			triedToClick=false;
-
+			
 			gameView.setLeftNumber(g.getLeftNumber());
 			gameView.setRightNumber(g.getRightNumber());
 			gameView.setExerciseNumber(g.getExerciseNumber());
@@ -135,7 +136,6 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 			
 			//kritischer moment, setze refreshrate nach oben
 			setRefreshRate(200);
-			
 			
 			break;
 
@@ -150,6 +150,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 						gameView.setPointer(i+1, g.getPlayerActPos(i+1));
 			}
 			if (g.isPlayerClicked(this.playerID)){
+				
 				// if server has been asked, if the position is available, pointer has not been drawn
 				if (g.getPlayers().size() > 2)
 					gameView.setInfoText("Warte auf andere Spieler!");
@@ -191,7 +192,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 					if (g.getWinnerOfLastRound() == i+1)
 						gameView.setInfoText(g.getPlayerName(i+1) + " hat gewonnen.");
 			}
-
+			
 			break;
 			// for synchronization
 		case 6:
