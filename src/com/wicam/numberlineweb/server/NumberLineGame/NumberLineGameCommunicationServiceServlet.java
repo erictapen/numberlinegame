@@ -6,6 +6,7 @@ import java.util.Timer;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
+import com.wicam.numberlineweb.client.logging.Logger.LogGame;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 
 public class NumberLineGameCommunicationServiceServlet extends
@@ -59,7 +60,10 @@ public class NumberLineGameCommunicationServiceServlet extends
 		game.setLeftNumber(leftNumber);
 		game.setRightNumber(rightNumber);
 		game.setExerciseNumber(exerciseNumber);
-
+		
+		//Log beginning of round
+		this.logRoundStarted();
+		
 	}
 	
 	
@@ -87,6 +91,11 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 		
 		if (!g.isPlayerClicked(playerid)){
+			
+			//Log player click if player is not a NPC 
+			if(!this.isNPC(playerid))
+				this.logUserMadeMove();
+			
 			boolean posIsFree = true;
 			for (int i = 0; i < g.getPlayers().size(); i++){
 				if (i+1 != playerid){
@@ -125,6 +134,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 				allPlayersClicked = false;
 		
 		if (allPlayersClicked){
+			
 			this.setGameState(this.getGameById(gameid),5);
 
 			// reset clicked state
@@ -166,6 +176,9 @@ public class NumberLineGameCommunicationServiceServlet extends
 				this.getGameById(gameid).setPlayerPoints(playersWithMinDiff.get(0),this.getGameById(gameid).getPlayerPoints(playersWithMinDiff.get(0)) +1);
 				System.out.println(this.getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
 			}
+			
+			//Log round end
+			this.logRoundEnded();
 
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
@@ -173,6 +186,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 			}
 			else
 				this.showNextItem(gameid);
+
 		}
 
 		g.setServerSendTime(System.currentTimeMillis());
@@ -211,15 +225,18 @@ public class NumberLineGameCommunicationServiceServlet extends
 	@Override
 	public GameState openGame(GameState g) {
 		
-		//initialize first item
-		newNumbers((NumberLineGameState) g);
-		
 		// initialize pointerwidth
 		((NumberLineGameState) g).setPointerWidth(14);
 		
 		g.setServerSendTime(System.currentTimeMillis());
-		return super.openGame(g);
 		
+		GameState retGameState = super.openGame(g);
+		
+		//initialize first item
+		newNumbers((NumberLineGameState) g);
+		
+		//return super.openGame(g);
+		return retGameState;
 
 	}
 	

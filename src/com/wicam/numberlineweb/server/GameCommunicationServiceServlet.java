@@ -14,6 +14,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
+import com.wicam.numberlineweb.client.logging.Logger;
+import com.wicam.numberlineweb.client.logging.Logger.LogGame;
+import com.wicam.numberlineweb.client.logging.Logger.LoggingActive;
+import com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 
@@ -28,6 +35,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
+	protected Logger logger = new Logger();
 	GameCommunicationServiceServlet comm;
 
 	boolean timeOutListLock = false;
@@ -56,7 +64,29 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		System.out.println("Added game #" + currentId + " to empty game timeouts.");
 		emptyGameTimeOutStates.add(new EmptyGameTimeOutState(currentId,20));
 
-		System.out.println("Opend Game " + Integer.toString(currentId));
+		System.out.println("Opened Game " + Integer.toString(currentId));
+		
+		if(this instanceof NumberLineGameCommunicationService)
+			this.logger.setLogGame(LogGame.NUMBER_LINE_GAME);
+		else{
+			//It is important that the check for DehnungGameCommunicationServlet
+			//comes first because this class is derived 
+			//from DoppelungGameCommunicationServlet
+			if(this instanceof DehnungGameCommunicationServiceServlet)
+				this.logger.setLogGame(LogGame.DEHNUNG_GAME);
+			else{
+				if(this instanceof DoppelungGameCommunicationServiceServlet)
+					this.logger.setLogGame(LogGame.DOPPELUNG_GAME);
+				else{
+					if(this instanceof MathDiagnosticsCommunicationServiceServlet)
+						this.logger.setLogGame(LogGame.MATH_DIAGNOSTICS);
+				}
+			}
+		}
+		
+		
+		this.logger.setGameStartTime(System.currentTimeMillis());
+		this.logger.writeGameStartEntry();
 
 		return g;
 	}
@@ -65,10 +95,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		Timer t = new Timer();
 
+		this.logger.setGameEndTime(System.currentTimeMillis());
+		this.logger.writeGameEndEntry();
+		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
-
-
 
 	}
 
@@ -84,11 +115,12 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	public String joinGame(String ids) throws GameJoinException {
 
 		String player = ids.split(":")[1];
+		int uid;
 		int id = Integer.parseInt(ids.split(":")[0]);
 
 		if (player.split("/")[0].equals("___ID")) {
 
-			int uid = Integer.parseInt(player.split("/")[1]);
+			uid = Integer.parseInt(player.split("/")[1]);
 			if (uid == -2) player = "Gast"; else{
 				DrupalCommunicator dc = new DrupalCommunicator();
 				try {
@@ -136,7 +168,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
 
-
+		
+		
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
 
@@ -459,9 +492,39 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		setChanged(g.getId());
 
 		//we dont want a player to get the update sooner than the other
+		
 		return true;
 	}
 
+	synchronized public boolean logRoundStarted() {
+		
+		this.logger.setRoundStartTime(System.currentTimeMillis());
+		this.logger.writeRoundStartEntry();
+		return true;
+	}
+	
+	synchronized public boolean logRoundEnded() {
+		
+		this.logger.setRoundEndTime(System.currentTimeMillis());
+		this.logger.writeRoundEndEntry();
+		return true;
+	}
+	
+	synchronized public boolean logUserMadeMove() {
+		
+		this.logger.setMoveTime(System.currentTimeMillis());
+		this.logger.writeMoveEntry();
+		return true;
+		
+	}
+	
+	synchronized public boolean loggingOn(boolean b){
+		if(b)
+			Logger.loggingActive = LoggingActive.ON;
+		else
+			Logger.loggingActive = LoggingActive.OFF;
+		return true;
+	}
 
 	/**
 	 * Sets the game state and mark game as updated.
@@ -472,6 +535,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	public void setGameState(GameState g, int state) {
 
 		if (g != null) {
+			
 			g.setState(state);
 			setChanged(g.getId());
 		}

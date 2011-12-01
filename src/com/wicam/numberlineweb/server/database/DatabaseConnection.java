@@ -2,12 +2,12 @@ package com.wicam.numberlineweb.server.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
-
 
 public class DatabaseConnection {
 
@@ -30,6 +30,23 @@ public class DatabaseConnection {
 
 		return res;
 	}
-
+	
+	public PreparedStatement prepareStmt(String stmt) throws SQLException{
+		
+		conn.setAutoCommit(false);
+		
+		return conn.prepareStatement(stmt);
+			
+	}
+	
+	public void commit(){
+		
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
