@@ -20,12 +20,7 @@ public interface GameCommunicationService extends  RemoteService {
 	public boolean updateReadyness(String s);
 
 	public GameState update(String ids);
-	
-	public boolean logRoundStarted();
-
-	public boolean logRoundEnded();
-	
-	public boolean logUserMadeMove();
 
 	public boolean loggingOn(boolean b);
+	
 }

@@ -18,12 +18,6 @@ public interface GameCommunicationServiceAsync {
 
 	public void update(String ids, AsyncCallback<GameState> callback);
 
-	public void logRoundStarted(AsyncCallback<Boolean> callback);
-	
-	public void logRoundEnded(AsyncCallback<Boolean> callback);
-	
-	public void logUserMadeMove(AsyncCallback<Boolean> callback);
-
 	public void loggingOn(boolean b, AsyncCallback<Boolean> callback);
 
 	

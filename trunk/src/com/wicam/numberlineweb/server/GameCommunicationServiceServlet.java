@@ -16,6 +16,8 @@ import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.logging.Logger;
+import com.wicam.numberlineweb.client.logging.Logger.LogActionTrigger;
+import com.wicam.numberlineweb.client.logging.Logger.LogActionType;
 import com.wicam.numberlineweb.client.logging.Logger.LogGame;
 import com.wicam.numberlineweb.client.logging.Logger.LoggingActive;
 import com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet;
@@ -66,28 +68,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		System.out.println("Opened Game " + Integer.toString(currentId));
 		
-		if(this instanceof NumberLineGameCommunicationService)
-			this.logger.setLogGame(LogGame.NUMBER_LINE_GAME);
-		else{
-			//It is important that the check for DehnungGameCommunicationServlet
-			//comes first because this class is derived 
-			//from DoppelungGameCommunicationServlet
-			if(this instanceof DehnungGameCommunicationServiceServlet)
-				this.logger.setLogGame(LogGame.DEHNUNG_GAME);
-			else{
-				if(this instanceof DoppelungGameCommunicationServiceServlet)
-					this.logger.setLogGame(LogGame.DOPPELUNG_GAME);
-				else{
-					if(this instanceof MathDiagnosticsCommunicationServiceServlet)
-						this.logger.setLogGame(LogGame.MATH_DIAGNOSTICS);
-				}
-			}
-		}
+		this.logger.log(System.currentTimeMillis(), LogActionType.GAME_STARTED, "", this.getClass().getName(), 
+				LogActionTrigger.APPLICATION);
 		
-		
-		this.logger.setGameStartTime(System.currentTimeMillis());
-		this.logger.writeGameStartEntry();
-
 		return g;
 	}
 
@@ -95,8 +78,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		Timer t = new Timer();
 
-		this.logger.setGameEndTime(System.currentTimeMillis());
-		this.logger.writeGameEndEntry();
+		this.logger.log(System.currentTimeMillis(), LogActionType.GAME_ENDED, "", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
@@ -112,10 +94,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	 * 
 	 */
 
+	@SuppressWarnings("unchecked")
 	public String joinGame(String ids) throws GameJoinException {
 
 		String player = ids.split(":")[1];
-		int uid;
+		int uid = -2;
 		int id = Integer.parseInt(ids.split(":")[0]);
 
 		if (player.split("/")[0].equals("___ID")) {
@@ -131,32 +114,41 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			}
 
 		}
-
+		
 		GameState game = getGameById(id);
-
 
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HashMap<String,HashMap<Integer,Integer>> games;
 		HashMap<Integer,Integer> pids;
+		HashMap<Integer, Integer> pid2uid;
 
 		HttpSession session = request.getSession(true);
 
 		if (session.isNew()) {
 			games = new HashMap<String,HashMap<Integer,Integer>>();
 			pids = new HashMap<Integer,Integer>();
+			pid2uid = new HashMap<Integer, Integer>();
 			games.put(internalName, pids);
 			session.setAttribute("pids",games);
+			session.setAttribute("pid2uid", pid2uid);
 
 		}else{
 
 			games = (HashMap<String,HashMap<Integer,Integer>>) session.getAttribute("pids");
 			pids = games.get(internalName);
+			pid2uid = (HashMap<Integer,Integer>) session.getAttribute("pid2uid");
 
 			if (pids == null) {
 
 				pids = new HashMap<Integer,Integer>();
 				games.put(internalName,pids);
 
+			}
+			
+			if (pid2uid == null){
+				
+				pid2uid = new HashMap<Integer, Integer>();
+				
 			}
 
 		}
@@ -174,6 +166,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		if (game.isFree() && game.getState() < 2) {
 
 			int playerid = game.addPlayer(player);
+			
 
 			if (game.isFree()) {
 				setGameState(getGameById(game.getId()),1);
@@ -188,6 +181,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			pids.put(id, playerid);
 			request.getSession(true).setAttribute("pids", games);
 
+			pid2uid.put(playerid, uid);
+			request.getSession(true).setAttribute("pid2uid", pid2uid);
+			
 			//add this user to the update-state list
 
 			getUpdateStates().add(new UpdateState(playerid,game.getId(),false));
@@ -195,8 +191,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			//add this user to the timeout list
 
 			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
-
-
+			
+			if(pid2uid.get(playerid) != -2){
+				this.logger.log(uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
+						"", this.getClass().getName(), LogActionTrigger.USER);
+			}
 
 			return game.getId() + ":" + playerid;
 
@@ -494,28 +493,6 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//we dont want a player to get the update sooner than the other
 		
 		return true;
-	}
-
-	synchronized public boolean logRoundStarted() {
-		
-		this.logger.setRoundStartTime(System.currentTimeMillis());
-		this.logger.writeRoundStartEntry();
-		return true;
-	}
-	
-	synchronized public boolean logRoundEnded() {
-		
-		this.logger.setRoundEndTime(System.currentTimeMillis());
-		this.logger.writeRoundEndEntry();
-		return true;
-	}
-	
-	synchronized public boolean logUserMadeMove() {
-		
-		this.logger.setMoveTime(System.currentTimeMillis());
-		this.logger.writeMoveEntry();
-		return true;
-		
 	}
 	
 	synchronized public boolean loggingOn(boolean b){
