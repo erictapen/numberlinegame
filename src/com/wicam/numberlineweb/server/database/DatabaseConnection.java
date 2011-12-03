@@ -11,13 +11,15 @@ import org.apache.commons.dbutils.QueryRunner;
 
 public class DatabaseConnection {
 
-	private static Connection conn = null;
+	private Connection conn = null;
 
 	public DatabaseConnection(String dbHost, String dbPort, String db, String dbUser, String dbPassword) throws ClassNotFoundException, SQLException  {
 
 		Class.forName("org.postgresql.Driver");
 		conn = DriverManager.getConnection("jdbc:postgresql://" + dbHost
 				+ ":" + dbPort + "/" + db, dbUser, dbPassword);
+		
+		conn.setAutoCommit(false);
 
 	}
 

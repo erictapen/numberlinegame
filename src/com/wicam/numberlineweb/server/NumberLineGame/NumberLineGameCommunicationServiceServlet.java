@@ -61,8 +61,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 		game.setRightNumber(rightNumber);
 		game.setExerciseNumber(exerciseNumber);
 		
-		//Log beginning of round
-		this.logRoundStarted();
 		
 	}
 	
@@ -94,7 +92,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 			
 			//Log player click if player is not a NPC 
 			if(!this.isNPC(playerid))
-				this.logUserMadeMove();
+				//this.logger.log(logUserID, logActionTime, logActionType, actionParams, logGame, logActionTrigger);
+				;
 			
 			boolean posIsFree = true;
 			for (int i = 0; i < g.getPlayers().size(); i++){
@@ -177,9 +176,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 				System.out.println(this.getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
 			}
 			
-			//Log round end
-			this.logRoundEnded();
-
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
 				this.endGame(gameid);
