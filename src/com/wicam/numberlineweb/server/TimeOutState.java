@@ -3,7 +3,7 @@ package com.wicam.numberlineweb.server;
 public class TimeOutState {
 	
 	
-	
+	int uid;
 	int playerID;
 	int gameID;
 	int secsLeft;
@@ -11,8 +11,9 @@ public class TimeOutState {
 	int timeOut;
 	
 	
-	public TimeOutState(int playerID, int gameID, int timeOut) {
+	public TimeOutState(int uid, int playerID, int gameID, int timeOut) {
 		
+		this.uid = uid;
 		this.playerID = playerID;
 		this.gameID = gameID;
 		this.secsLeft = timeOut;
@@ -46,6 +47,11 @@ public class TimeOutState {
 	
 		this.secsLeft = timeOut;
 		
+	}
+
+	public int getUid() {
+		
+		return uid;
 	}
 	
 

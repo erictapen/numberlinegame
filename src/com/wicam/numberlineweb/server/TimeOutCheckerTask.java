@@ -54,7 +54,7 @@ public class TimeOutCheckerTask extends TimerTask {
 				timeOutStates.remove(current);
 				gameComm.timeOutListUnLock();
 				System.out.println("player " + current.getPlayerId() + " timed out.");
-				gameComm.leavePlayer(current.getPlayerId(), current.getGameId());
+				gameComm.leavePlayer(current.getUid(), current.getPlayerId(), current.getGameId());
 
 				break;
 			}

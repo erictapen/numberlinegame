@@ -15,16 +15,16 @@ import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
-import com.wicam.numberlineweb.client.logging.Logger;
-import com.wicam.numberlineweb.client.logging.Logger.LogActionTrigger;
-import com.wicam.numberlineweb.client.logging.Logger.LogActionType;
-import com.wicam.numberlineweb.client.logging.Logger.LogGame;
-import com.wicam.numberlineweb.client.logging.Logger.LoggingActive;
 import com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
+import com.wicam.numberlineweb.server.logging.Logger;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
+import com.wicam.numberlineweb.server.logging.Logger.LogGame;
+import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -120,23 +120,29 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HashMap<String,HashMap<Integer,Integer>> games;
 		HashMap<Integer,Integer> pids;
-		HashMap<Integer, Integer> pid2uid;
+		HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> game2pid2uid;
 
 		HttpSession session = request.getSession(true);
 
 		if (session.isNew()) {
 			games = new HashMap<String,HashMap<Integer,Integer>>();
 			pids = new HashMap<Integer,Integer>();
-			pid2uid = new HashMap<Integer, Integer>();
+			game2pid2uid = new HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>();
+			
 			games.put(internalName, pids);
+			
+			game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
+			game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
+			
 			session.setAttribute("pids",games);
-			session.setAttribute("pid2uid", pid2uid);
+			session.setAttribute("game2pid2uid", game2pid2uid);
 
 		}else{
 
 			games = (HashMap<String,HashMap<Integer,Integer>>) session.getAttribute("pids");
 			pids = games.get(internalName);
-			pid2uid = (HashMap<Integer,Integer>) session.getAttribute("pid2uid");
+			
+			game2pid2uid = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) session.getAttribute("game2pid2uid");
 
 			if (pids == null) {
 
@@ -145,10 +151,23 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 			}
 			
-			if (pid2uid == null){
+			if (game2pid2uid == null){
 				
-				pid2uid = new HashMap<Integer, Integer>();
+				game2pid2uid = new HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>();
+				game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
+				game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
 				
+			}
+			
+			if (game2pid2uid.get(internalName) == null){
+				
+				game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
+				
+			}
+			
+			if (game2pid2uid.get(internalName).get(id) == null){
+				
+				game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
 			}
 
 		}
@@ -181,8 +200,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			pids.put(id, playerid);
 			request.getSession(true).setAttribute("pids", games);
 
-			pid2uid.put(playerid, uid);
-			request.getSession(true).setAttribute("pid2uid", pid2uid);
+			game2pid2uid.get(internalName).get(id).put(playerid, uid);
+			request.getSession(true).setAttribute("game2pid2uid", game2pid2uid);
 			
 			//add this user to the update-state list
 
@@ -190,9 +209,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 			//add this user to the timeout list
 
-			getTimeOutStates().add(new TimeOutState(playerid, game.getId(),5));
+			getTimeOutStates().add(new TimeOutState(uid, playerid, game.getId(),5));
 			
-			if(pid2uid.get(playerid) != -2){
+			if(uid != -2){
 				this.logger.log(uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
 						"", this.getClass().getName(), LogActionTrigger.USER);
 			}
@@ -407,7 +426,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 
-	void leavePlayer(int playerid, int gameid) {
+	void leavePlayer(int uid, int playerid, int gameid) {
 
 
 
@@ -423,7 +442,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 
 		this.setChanged(gameid);
-
+		
+		if(uid != -2)
+			this.logger.log(uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
+					"", this.getClass().getName(), LogActionTrigger.USER);
+		
 	}
 
 	/**
@@ -579,10 +602,14 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	protected void removePlayerId(int gameid) {
 
 		HttpServletRequest request = this.getThreadLocalRequest();
+		
+		if(request != null){
 
-		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
-		if (idMap.get(internalName) != null) idMap.get(internalName).remove(gameid);
-		request.setAttribute("pids", idMap);
+			HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
+			if (idMap.get(internalName) != null) idMap.get(internalName).remove(gameid);
+			request.setAttribute("pids", idMap);
+			
+		}
 
 	}
 }
