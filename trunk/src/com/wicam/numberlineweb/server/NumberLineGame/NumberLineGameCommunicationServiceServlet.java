@@ -1,13 +1,18 @@
 package com.wicam.numberlineweb.server.NumberLineGame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
-import com.wicam.numberlineweb.client.logging.Logger.LogGame;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
+import com.wicam.numberlineweb.server.logging.Logger.LogGame;
 
 public class NumberLineGameCommunicationServiceServlet extends
 		GameCommunicationServiceServlet implements NumberLineGameCommunicationService {
@@ -61,6 +66,9 @@ public class NumberLineGameCommunicationServiceServlet extends
 		game.setRightNumber(rightNumber);
 		game.setExerciseNumber(exerciseNumber);
 		
+		this.logger.log(System.currentTimeMillis(), LogActionType.NUMBERLINE_NUMBER_PRESENTED, 
+				"{\"number\" : " + exerciseNumber + "}", this.getClass().getName(), LogActionTrigger.APPLICATION);
+		
 		
 	}
 	
@@ -86,14 +94,26 @@ public class NumberLineGameCommunicationServiceServlet extends
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);
 
-		
+		HttpServletRequest request = this.getThreadLocalRequest();
+		int uid = -2;
+		if(request != null){
+			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
+					request.getSession().getAttribute("game2pid2uid");
+			uid = map.get(internalName).get(gameid).get(playerid);
+		}
 		
 		if (!g.isPlayerClicked(playerid)){
 			
-			//Log player click if player is not a NPC 
-			if(!this.isNPC(playerid))
-				//this.logger.log(logUserID, logActionTime, logActionType, actionParams, logGame, logActionTrigger);
-				;
+			int number = this.rawPosToReal(clickedAt, g);
+			if(!this.isNPC(playerid)){
+				if(uid != -2)
+					this.logger.log(uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_SUCCESSFUL_CLICK,
+							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
+			}
+			else
+				this.logger.log(System.currentTimeMillis(), LogActionType.NUMBERLINE_NPC_GUESS, 
+						"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.NPC);
+				
 			
 			boolean posIsFree = true;
 			for (int i = 0; i < g.getPlayers().size(); i++){
@@ -124,6 +144,10 @@ public class NumberLineGameCommunicationServiceServlet extends
 			else {
 				this.setGameState(this.getGameById(gameid),4);
 				this.setChanged(gameid);
+				
+				if(uid != -2)
+					this.logger.log(uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
+							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
 			}
 		}
 
