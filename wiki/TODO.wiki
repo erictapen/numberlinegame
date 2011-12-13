@@ -16,7 +16,7 @@ Open questions:
   * Only use results for single player games (user vs. NPC)?
   * Default handicap value?
   * For the numberline game:
-    - How does a suitable mapping of handicap value to pointer width look like? 
+     * How does a suitable mapping of handicap value to pointer width look like? 
 
 == Logging == 
 
