@@ -10,3 +10,8 @@ Goals:
 Considerations:
   * Generic interface for all games; each game will must implement a method for calculating the handicap and for adjusting the game settings
   * Normalized handicap value for all games (e.g. a value between 0.0 and 1.0 where 0.0 is the best possible and 1.0 the worst possible value)
+
+Open questions:
+  * Rely on order of log IDs to determine which log entries belong to one game?
+  * Only use results for single player games (user vs. NPC)?
+  * Default handicap value?
