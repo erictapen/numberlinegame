@@ -5,8 +5,8 @@
 Goals:
   * Calculate handicap for user when opening new game
   * Handicap should be based on log entries
-  * Adjust game settings to user handicap (i.e., more skilled users will be )
+  * Adjust game settings to user handicap (i.e., increased level of difficulty for skilled users)
 
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Considerations:
+  * Generic interface for all games; each game will must implement a method for calculating the handicap and for adjusting the game settings
+  * Normalized handicap value for all games (e.g. a value between 0.0 and 1.0 where 0.0 is the best possible and 1.0 the worst possible value)
