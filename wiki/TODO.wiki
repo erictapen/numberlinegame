@@ -15,3 +15,7 @@ Open questions:
   * Rely on order of log IDs to determine which log entries belong to one game?
   * Only use results for single player games (user vs. NPC)?
   * Default handicap value?
+
+== Logging == 
+
+Consider new table game_properties. A log entry will refer to this table via a foreign key constraint. This would allow for determining which users took part in one specific game.
