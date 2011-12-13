@@ -1,11 +1,6 @@
-#summary Tracker of open tasks.
+#summary Tracker of open tasks
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
+= Handicap calculation and evaluation =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
