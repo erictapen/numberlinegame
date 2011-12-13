@@ -1,6 +1,4 @@
-#summary Tracker of open tasks
-
-= TODO =
+= Tasks =
 
 == Handicap calculation and evaluation ==
 
