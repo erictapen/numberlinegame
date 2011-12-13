@@ -12,10 +12,11 @@ Considerations:
   * Normalized handicap value for all games (e.g. a value between 0.0 and 1.0 where 0.0 is the best possible and 1.0 the worst possible value)
 
 Open questions:
-  * How does a suitable mapping of handicap value to pointer width look like (in the case of NumberLineGame)? 
   * Rely on order of log IDs to determine which log entries belong to one game?
   * Only use results for single player games (user vs. NPC)?
   * Default handicap value?
+  * For NumberLineGame:
+    - How does a suitable mapping of handicap value to pointer width look like? 
 
 == Logging == 
 
