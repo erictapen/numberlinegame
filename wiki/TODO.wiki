@@ -2,7 +2,11 @@
 
 = Handicap calculation and evaluation =
 
-Add your content here.  Format your content with:
+Goals:
+  * Calculate handicap for user when opening new game
+  * Handicap should be based on log entries
+  * Adjust game settings to user handicap (i.e., more skilled users will be )
+
   * Text in *bold* or _italic_
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
