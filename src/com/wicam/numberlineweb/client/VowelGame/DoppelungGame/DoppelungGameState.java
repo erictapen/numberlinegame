@@ -37,10 +37,11 @@ public class DoppelungGameState extends GameState {
 	}
 	
 	@Override
-	public int addPlayer(String newName) {
+	public int addPlayer(String newName, int uid) {
 		newName = checkDuplicateName(newName);
 		DoppelungGamePlayer newPlayer = new DoppelungGamePlayer();
 		newPlayer.setName(newName);
+		newPlayer.setUid(uid);
 		players.add(newPlayer);
 		return players.size();
 	}
