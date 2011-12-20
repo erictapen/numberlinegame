@@ -8,10 +8,11 @@ public class MathDiagnosticsGameState extends GameState{
 	private int task = 0;
 	
 	@Override
-	public int addPlayer(String newName) {
+	public int addPlayer(String newName, int uid) {
 		newName = checkDuplicateName(newName);
 		MathDiagnosticsPlayer newPlayer = new MathDiagnosticsPlayer();
 		newPlayer.setName(newName);
+		newPlayer.setUid(uid);
 		players.add(newPlayer);
 		return players.size();
 	}

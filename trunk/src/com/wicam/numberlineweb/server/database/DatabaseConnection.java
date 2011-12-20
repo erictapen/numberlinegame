@@ -29,24 +29,29 @@ public class DatabaseConnection {
 
 		conn.createStatement();
 		res = qrun.query(conn, qry, new SerializableHandler());
-
+		
 		return res;
 	}
 	
-	public PreparedStatement prepareStmt(String stmt) throws SQLException{
+	public PreparedStatement prepareStmtReturnKeys(String stmt) throws SQLException{
 		
-		conn.setAutoCommit(false);
+		return conn.prepareStatement(stmt, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+	}
+	
+	
+	public PreparedStatement prepareStmt(String stmt) throws SQLException{
 		
 		return conn.prepareStatement(stmt);
 			
 	}
+	
 	
 	public void commit(){
 		
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

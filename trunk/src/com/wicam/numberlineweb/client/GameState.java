@@ -103,7 +103,7 @@ public abstract class GameState implements IsSerializable{
 
 	}
 
-	public abstract int addPlayer(String newName);
+	public abstract int addPlayer(String newName, int uid);
 	
 	protected String checkDuplicateName(String newName){
 		int countSameName = 1;

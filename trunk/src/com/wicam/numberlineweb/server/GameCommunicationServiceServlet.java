@@ -20,11 +20,13 @@ import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunica
 import com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
+import com.wicam.numberlineweb.server.logging.IHandicap;
 import com.wicam.numberlineweb.server.logging.Logger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
 import com.wicam.numberlineweb.server.logging.Logger.LogGame;
 import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
+import com.wicam.numberlineweb.server.logging.NoHandicapDataException;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -38,6 +40,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
 	protected Logger logger = new Logger();
+	protected IHandicap handicapAdjustment;
 	GameCommunicationServiceServlet comm;
 
 	boolean timeOutListLock = false;
@@ -68,7 +71,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		System.out.println("Opened Game " + Integer.toString(currentId));
 		
-		this.logger.log(System.currentTimeMillis(), LogActionType.GAME_STARTED, "", this.getClass().getName(), 
+		this.logger.log(g.getId(), System.currentTimeMillis(), LogActionType.GAME_STARTED, "", this.getClass().getName(), 
 				LogActionTrigger.APPLICATION);
 		
 		return g;
@@ -78,7 +81,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		Timer t = new Timer();
 
-		this.logger.log(System.currentTimeMillis(), LogActionType.GAME_ENDED, "", this.getClass().getName(), LogActionTrigger.APPLICATION);
+		this.logger.log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
@@ -184,7 +187,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//only join if free and not yet started...
 		if (game.isFree() && game.getState() < 2) {
 
-			int playerid = game.addPlayer(player);
+			int playerid = game.addPlayer(player, uid);
 			
 
 			if (game.isFree()) {
@@ -212,8 +215,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			getTimeOutStates().add(new TimeOutState(uid, playerid, game.getId(),5));
 			
 			if(uid != -2){
-				this.logger.log(uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
+				this.logger.log(game.getId(), uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
 						"", this.getClass().getName(), LogActionTrigger.USER);
+				
+				//Adjust game to user's handicap
+				this.adjustToHandicap(uid, game);
 			}
 
 			return game.getId() + ":" + playerid;
@@ -444,7 +450,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		this.setChanged(gameid);
 		
 		if(uid != -2)
-			this.logger.log(uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
+			this.logger.log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
 					"", this.getClass().getName(), LogActionTrigger.USER);
 		
 	}
@@ -611,5 +617,15 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			
 		}
 
+	}
+	
+	private void adjustToHandicap(int uid, GameState game){
+		double handicap;
+		try {
+			handicap = this.handicapAdjustment.calculcateUserHandicap(uid);
+			this.handicapAdjustment.adjustGameSetting(handicap, game);
+		} catch (NoHandicapDataException e) {
+			//If not handicap data could be found, there will be no pointer width adjustment.
+		}
 	}
 }
