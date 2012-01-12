@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
+import com.wicam.numberlineweb.server.logging.DehnungGameHandicap;
 
 public class DehnungGameCommunicationServiceServlet extends
 		com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet implements DehnungGameCommunicationService{
@@ -17,6 +18,7 @@ public class DehnungGameCommunicationServiceServlet extends
 	public DehnungGameCommunicationServiceServlet() {
 		
 		super("dehnungsgame");
+		this.handicapAdjustment = new DehnungGameHandicap();
 		
 	}
 	

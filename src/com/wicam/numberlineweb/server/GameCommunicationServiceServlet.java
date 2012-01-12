@@ -625,7 +625,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			handicap = this.handicapAdjustment.calculcateUserHandicap(uid);
 			this.handicapAdjustment.adjustGameSetting(handicap, game);
 		} catch (NoHandicapDataException e) {
-			//If not handicap data could be found, there will be no pointer width adjustment.
+			//If not handicap data could be found, default values will be used. The minimal and maximal value a handicap value can be mapped
+			//to should be adjusted so that a handicap value of 0.5 yields the arithmetic mean between minimum and maximum.
 		}
 	}
 }

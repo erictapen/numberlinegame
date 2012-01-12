@@ -1,11 +1,14 @@
 package com.wicam.numberlineweb.server.VowelGame.DoppelungGame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
 
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.Player;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
@@ -17,6 +20,11 @@ import com.wicam.numberlineweb.server.VowelGame.ResetSoundFeedbackStateTask;
 import com.wicam.numberlineweb.server.VowelGame.ResetWordFeedbackStateTask;
 import com.wicam.numberlineweb.server.VowelGame.SetDoppelungGameStateTask;
 import com.wicam.numberlineweb.server.VowelGame.UpdateMcCoordsTimerTask;
+import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameWordList;
+import com.wicam.numberlineweb.server.logging.DehnungGameHandicap;
+import com.wicam.numberlineweb.server.logging.DoppelungGameHandicap;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
 
 public class DoppelungGameCommunicationServiceServlet extends
 GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
@@ -35,13 +43,15 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 	public DoppelungGameCommunicationServiceServlet() {
 
 		super("doppelunggame");
+		this.handicapAdjustment = new DoppelungGameHandicap();
 
 	}
 
 	public DoppelungGameCommunicationServiceServlet(String internalName) {
 
 		super(internalName);
-
+		this.handicapAdjustment = new DoppelungGameHandicap();
+		
 	}
 
 
@@ -131,6 +141,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 					}
 					else {
 						this.endGame(gameid);
+						this.handicapAction(gameid);
 					}
 				}
 			}
@@ -297,4 +308,60 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 	public void setMiniGameStartsWhenShortVowel(boolean miniGameStartsWhenShortVowel) {
 		this.miniGameStartsWhenShortVowel = miniGameStartsWhenShortVowel;
 	}
+	
+	private void handicapAction(int gameid) {
+		
+		DoppelungGameState doppelungGameState = (DoppelungGameState) this.getGameById(gameid);
+		
+		ArrayList<? extends Player> players = doppelungGameState.getPlayers();
+		
+		double minimalScore = 0;
+		double maximalScore = this.getDoppelungGameMaxPoints(gameid, this.internalName);
+		
+		for (Player player : players){
+			
+			if (player.getUid() != -2) {
+		
+				int userScore = player.getPoints();
+				
+				/*
+				 * Normalize score to get handicap.
+				 */
+				double userHandicapNormalized = (userScore - minimalScore) / (maximalScore - minimalScore);
+				
+				this.logger.log(gameid, player.getUid(), System.currentTimeMillis(), LogActionType.DOPPELUNG_GAME_HANDICAP,
+					"{\"handicap\" :" + userHandicapNormalized + "}", this.getClass().getName(), LogActionTrigger.USER);
+			
+			}
+			
+		}
+		
+	}
+		
+	private int getDoppelungGameMaxPoints(int gameid, String gameType){
+		
+		DoppelungGameState doppelungGameState = (DoppelungGameState) this.getGameById(gameid);
+		
+		ArrayList<VowelGameWord> wordList = DoppelungGameWordList.createWordList();
+		int numWordsWithShortVowels = 0;
+		
+		for (VowelGameWord vowelGameWord : wordList)
+			if (vowelGameWord.isShortVowel())
+				numWordsWithShortVowels++;
+			
+		int numWordsWithLongVowels = wordList.size() - numWordsWithShortVowels;
+		
+		int maxPoints;
+		
+		if (gameType.equals("doppelunggame"))
+			maxPoints = 5 * numWordsWithLongVowels + 2 * numWordsWithShortVowels 
+					+ 2 * doppelungGameState.getNumberOfCorrectConsonants();
+		else
+			maxPoints = 5 * numWordsWithShortVowels + 2 * numWordsWithLongVowels 
+					+ 2 * doppelungGameState.getNumberOfCorrectConsonants();
+		
+		return maxPoints;
+	
+	}
+	
 }
