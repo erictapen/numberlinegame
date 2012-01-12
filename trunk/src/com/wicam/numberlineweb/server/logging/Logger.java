@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.user.client.rpc.core.java.util.Collections;
 import com.wicam.numberlineweb.server.database.DatabaseConnection;
 
 public class Logger {
@@ -92,7 +91,7 @@ public class Logger {
 	
 	public enum LogActionType {GAME_STARTED, GAME_ENDED, JOINED_GAME, LEFT_GAME,
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
-		NUMBERLINE_NUMBER_PRESENTED, NUMBERLINE_HANDICAP;
+		NUMBERLINE_NUMBER_PRESENTED, NUMBERLINE_HANDICAP, DOPPELUNG_GAME_HANDICAP;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -117,6 +116,8 @@ public class Logger {
 					return 8;
 				case NUMBERLINE_HANDICAP:
 					return 9;
+				case DOPPELUNG_GAME_HANDICAP:
+					return 10;
 				default:
 					//Should not occur
 					return -1;
@@ -169,10 +170,8 @@ public class Logger {
 			this.preparedStatementGameProperty = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_PROPERTY);
 			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

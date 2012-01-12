@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.ItemInformation;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
@@ -11,6 +12,7 @@ import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsGameState;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItemInformation;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.logging.MathDiagnosticsHandicap;
 
 /**
  * Class for the math diagnostic experiments
@@ -34,6 +36,7 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	public MathDiagnosticsCommunicationServiceServlet() {
 		
 		super("mathdiagnostics");
+		this.handicapAdjustment = new MathDiagnosticsHandicap();
 		
 	}
 	
@@ -92,6 +95,7 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 		
 		((MathDiagnosticsGameState)g).setPlayerMeanRT(1, meanRT); // playerid = 1 because we have only one player
 		endGame(gameId);
+		this.handicapAction(gameId);
 		return true;
 	}
 	
@@ -116,5 +120,19 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 			else if (relDeviation < .10)
 				g.setPlayerPoints(1, g.getPlayerPoints(1)+1);
 		}
+	}
+	
+	private void handicapAction(int gameid){
+		
+		MathDiagnosticsGameState mathDiagnosticsGameState = (MathDiagnosticsGameState) this.getGameById(gameid);
+		
+		Player player = mathDiagnosticsGameState.getPlayers().get(0);
+		
+		if (player.getUid() != -2) {
+			
+			System.out.println("User with id " + player.getUid() + " scored " + player.getPoints());
+			
+		}
+		
 	}
 }

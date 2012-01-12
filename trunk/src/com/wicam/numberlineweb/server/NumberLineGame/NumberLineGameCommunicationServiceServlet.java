@@ -221,7 +221,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 
 	private void handicapAction(int gameid) {
 		
-		//TODO At the moment, this formula will produce bad handicaps for
+		//TODO The current formula is just a proof of concept. 
+		//At the moment, it will produce bad handicaps for
 		//simpler games (e.g., when there are only few players and rounds) and good handicaps
 		//for more complex games. 
 		
@@ -237,10 +238,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		 * 3) Number of points (0 - 30)
 		 *    Weight: 10
 		 * 
-		 * 4) Number range: A smaller number range makes increases handicap.
-		 *    Weight: 1
-		 * 
-		 * 5) The user gets 30 points if he won the game.
+		 * 4) The user gets 30 points if he won the game.
 		 * 
 		 * 
 		 * ==> This results in a minimal score of 20 and a maximal score of 415 points. Normalizing this value yields
@@ -253,13 +251,15 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 		int winnerUid = players.get(0).getUid();
 		
-		int numRange = (numberlineGameState.getNumberRange().getMaxNumber() - numberlineGameState.getNumberRange().getMinNumber());
+		//TODO Find a reasonable use for number range.
+		//int numRange = (numberlineGameState.getNumberRange().getMaxNumber() - numberlineGameState.getNumberRange().getMinNumber());
+		
 		int numPlayers = numberlineGameState.getPlayerCount();
 		int numRounds = numberlineGameState.getMaxItems(); //Number of items equals number of rounds
 		
-		//General game properties that are not influenced by user's performance
+		//General game properties that are not influenced by user performance
 		//but contribute to the score
-		double gamePropertyScore = 5*numPlayers + 2*numRounds + (1 / numRange);
+		double gamePropertyScore = 5*numPlayers + 2*numRounds;
 		
 		for(Player player : numberlineGameState.getPlayers()){
 			if(player.getUid() != -2){
