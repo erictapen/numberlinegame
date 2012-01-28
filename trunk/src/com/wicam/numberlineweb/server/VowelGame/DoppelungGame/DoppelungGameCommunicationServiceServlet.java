@@ -363,5 +363,11 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		return maxPoints;
 	
 	}
+
+	@Override
+	public String getGameProperties(GameState g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

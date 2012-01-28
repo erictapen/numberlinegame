@@ -20,5 +20,7 @@ public interface GameCommunicationServiceAsync {
 
 	public void loggingOn(boolean b, AsyncCallback<Boolean> callback);
 
+	void getGameProperties(GameState g, AsyncCallback<String> callback);
+
 	
 }

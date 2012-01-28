@@ -8,23 +8,16 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
-import com.wicam.numberlineweb.server.MathDiagnostics.MathDiagnosticsCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 import com.wicam.numberlineweb.server.logging.IHandicap;
 import com.wicam.numberlineweb.server.logging.Logger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
-import com.wicam.numberlineweb.server.logging.Logger.LogGame;
 import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
 import com.wicam.numberlineweb.server.logging.NoHandicapDataException;
 
@@ -71,8 +64,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 		System.out.println("Opened Game " + Integer.toString(currentId));
 		
-		this.logger.log(g.getId(), System.currentTimeMillis(), LogActionType.GAME_STARTED, "", this.getClass().getName(), 
-				LogActionTrigger.APPLICATION);
+		this.logger.log(currentId, System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
+				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		return g;
 	}
@@ -80,12 +73,14 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	public void endGame(int id) {
 
 		Timer t = new Timer();
-
-		this.logger.log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
+		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
+		
+		this.logger.updateGameProperties(id, this.getClass().getName(), gamePropertiesStr);
+
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
-
+		
 	}
 
 	/**
