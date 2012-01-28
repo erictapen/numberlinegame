@@ -23,4 +23,6 @@ public interface GameCommunicationService extends  RemoteService {
 
 	public boolean loggingOn(boolean b);
 	
+	public String getGameProperties(GameState g);
+	
 }

@@ -135,4 +135,12 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 		}
 		
 	}
+
+
+	@Override
+	public String getGameProperties(GameState g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

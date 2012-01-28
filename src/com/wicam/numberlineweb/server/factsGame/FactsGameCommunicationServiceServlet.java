@@ -30,4 +30,10 @@ public class FactsGameCommunicationServiceServlet extends
 		
 
 	}
+
+	@Override
+	public String getGameProperties(GameState g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

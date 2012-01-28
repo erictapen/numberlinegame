@@ -24,13 +24,9 @@ public class Logger {
 	private PreparedStatement preparedStatementLogs;
 	
 	private static final String STATEMENT_GAME_INSTANCE = "INSERT INTO game_instances (game_id," +
-			"game_property_id)" +
+			"game_property)" +
 			" VALUES (?, ?)";
 	private PreparedStatement preparedStatementGameInstance;
-	
-	//TODO Statement needs to be changed when more columns are added to table game_properties
-	private static final String STATEMENT_GAME_PROPERTY = "INSERT INTO game_properties DEFAULT VALUES";
-	private PreparedStatement preparedStatementGameProperty;
 
 	private boolean userIDProvided = false;
 	
@@ -167,8 +163,6 @@ public class Logger {
 			
 			this.preparedStatementGameInstance = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_INSTANCE);
 			
-			this.preparedStatementGameProperty = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_PROPERTY);
-			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -210,16 +204,14 @@ public class Logger {
 					this.gameId2internalId.put(getLogGameByClass(logGameClassName), new HashMap<Integer, Integer>());
 				this.gameId2internalId.get(getLogGameByClass(logGameClassName)).put(gameId, internalGameId);
 				
-				//Create new game property entry
-				
-				int gamePropertyId = this.writeToTableGameProperties();
-
 				//Create new game instance entry
 				
 				LogGame game = getLogGameByClass(logGameClassName);
+				
 				this.preparedStatementGameInstance.setInt(1, LogGame.getIndex(game));
 				
-				this.preparedStatementGameInstance.setInt(2, gamePropertyId);
+				this.preparedStatementGameInstance.setString(2, "");
+				
 				gameInstanceId = this.writeToTableGameInstances();
 				
 				if(this.gameId2internalId.get(getLogGameByClass(logGameClassName)) == null)
@@ -245,7 +237,7 @@ public class Logger {
 	public void log(int gameID, long logUserID, long logActionTime, LogActionType logActionType, String actionParams,
 			String logGameClassName, LogActionTrigger logActionTrigger){
 		
-		if(loggingActive == LoggingActive.OFF)
+		if (loggingActive == LoggingActive.OFF)
 			return;
 		
 		try {
@@ -256,6 +248,30 @@ public class Logger {
 		}
 			
 		this.log(gameID, logActionTime, logActionType, actionParams, logGameClassName, logActionTrigger);
+		
+	}
+	
+	public void updateGameProperties(int gameId, String logGameClassName, String gamePropertiesStr){
+		
+		int gameInstanceId = this.gameId2internalId.get(getLogGameByClass(logGameClassName)).get(gameId);
+		
+		String sql = "UPDATE game_instances SET game_property = ? WHERE game_instances_id=?";
+		
+		try {
+			
+			PreparedStatement preparedStatement =  this.databaseConnection.prepareStmt(sql);
+			
+			preparedStatement.setString(1, gamePropertiesStr);
+			
+			preparedStatement.setInt(2, gameInstanceId);
+			
+			preparedStatement.executeUpdate();
+			
+			this.databaseConnection.commit();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -284,22 +300,7 @@ public class Logger {
 	
 		return id;
 	}
-	
-	private int writeToTableGameProperties() throws SQLException{
 
-		this.preparedStatementGameProperty.executeUpdate();
-		this.databaseConnection.commit();
-		
-		ResultSet rs = this.preparedStatementGameProperty.getGeneratedKeys();
-		int id = -1;
-		if(rs.next())
-			id = rs.getInt("game_properties_id");
-		
-		this.preparedStatementGameProperty = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_PROPERTY);
-	
-		return id;
-	}
-	
 	//Get log game type for a given fully specified class name.
 	private static LogGame getLogGameByClass(String className){
 		

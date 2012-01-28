@@ -14,7 +14,6 @@ import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
-import com.wicam.numberlineweb.server.logging.Logger.LogGame;
 import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
 
 public class NumberLineGameCommunicationServiceServlet extends
@@ -335,5 +334,27 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 		Timer t = new Timer();
 		t.schedule(new SetNumberLineGameStateTask(id, 6, this), 6000);
+	}
+
+	public String getGameProperties(GameState gameState) {
+		
+		NumberLineGameState numberlineGameState = (NumberLineGameState) gameState;
+		
+		String gamePropertiesStr = "{";
+				
+		gamePropertiesStr += "num_players : " + numberlineGameState.getPlayerCount() + ", ";
+		
+		gamePropertiesStr += "pointer_width : " + numberlineGameState.getPointerWidth() + ", ";
+		
+		gamePropertiesStr += "item_count : " + numberlineGameState.getItemCount() + ", ";
+		
+		gamePropertiesStr += "min_number : " + numberlineGameState.getNumberRange().getMinNumber() + ", ";
+		
+		gamePropertiesStr += "max_number : " + numberlineGameState.getNumberRange().getMaxNumber();
+		
+		gamePropertiesStr += "}";
+		
+		return gamePropertiesStr;
+		
 	}
 }
