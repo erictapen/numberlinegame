@@ -1,5 +1,19 @@
 = Tasks =
 
+== ELO rating ==
+
+Goals:
+
+  * Implement ELO rating for registered users 
+  * Create NPCs with different skill and ELO number (for NumberLineGame)
+  * Adjust game settings to ELO rating (pointer width (for NumberLineGame),
+    reaction delay, NPC skill level)
+
+Open questions:
+
+  * Handle multiplayer games
+  * Define initial ELO number and account for inflation when new players are added -> This can be done by using provisional ELO numbers for new users (see http://stackoverflow.com/questions/1881310/elo-rating-system-start-value)
+
 == Handicap calculation and evaluation ==
 
 Goals:
