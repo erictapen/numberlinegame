@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.wicam.numberlineweb.server.database.DatabaseConnection;
@@ -275,6 +276,76 @@ public class Logger {
 		
 	}
 	
+	public EloNumber getEloRating(int uid) {
+		
+		String stmt = "SELECT * FROM elo_rating WHERE user_id=" + uid;
+		EloNumber eloNumber = new EloNumber();
+		
+		try {
+			List<Map<String, String>> result = this.databaseConnection.eval(stmt);
+			
+			//Try to retrieve ELO number for user
+			if (result.size() > 0) {
+				
+				int number = Integer.parseInt(result.get(0).get("elo_number"));
+				boolean isProvisional = result.get(0).get("is_provisional").equals("t") ? true : false;
+				
+				eloNumber.setNumber(number);
+				eloNumber.setProvisonal(isProvisional);
+				
+			}
+			
+			//If no ELO number was found, the user will be assigned a provisional initial
+			//ELO number (see class EloNumber)
+			else {
+				
+				//If the player is a NPC, abort
+				if (uid != -5){
+
+					stmt = "INSERT INTO elo_rating VALUES (?, ?, ?)";
+					
+					PreparedStatement preparedStmt = this.databaseConnection.prepareStmt(stmt);
+					preparedStmt.setInt(1, uid);
+					preparedStmt.setInt(2, eloNumber.getNumber());
+					preparedStmt.setBoolean(3, true);
+					
+					preparedStmt.executeUpdate();
+					this.databaseConnection.commit();
+				
+				}
+				
+			}
+			
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+		
+		return eloNumber;
+		
+	}
+	
+	public void updateEloRating(int uid, int eloNumber) {
+		
+		try {
+	
+
+			String stmt = "UPDATE elo_rating SET elo_number=? WHERE user_id=?";
+			
+			PreparedStatement preparedStmt = this.databaseConnection.prepareStmt(stmt);
+			preparedStmt.setInt(1, eloNumber);
+			preparedStmt.setInt(2, uid);
+			
+			preparedStmt.executeUpdate();
+			this.databaseConnection.commit();
+				
+			
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+		
+		
+	}
+	
 	private void writeToTableLogs() throws SQLException{
 
 		this.preparedStatementLogs.executeUpdate();
@@ -305,6 +376,32 @@ public class Logger {
 	private static LogGame getLogGameByClass(String className){
 		
 		return className2GameType.get(className);
+		
+	}
+	
+	public class EloNumber {
+		
+		//If no ELO number has been found in the table, a provisional ELO number 
+		//will be used
+		private int number = 1000;
+		private boolean isProvisional = true;
+		
+		public int getNumber() {
+			return number;
+		}
+		
+		public void setNumber(int number) {
+			this.number = number;
+		}
+
+		public boolean isProvisional() {
+			return isProvisional;
+		}
+
+		public void setProvisonal(boolean isProvisional) {
+			this.isProvisional = isProvisional;
+		}
+		
 		
 	}
 }
