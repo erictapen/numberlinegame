@@ -11,12 +11,29 @@ public class NumberLineGameNPC {
 	private NumberLineGameCommunicationServiceServlet comm;
 	private int gameid;
 	private int playerid;
+	private int eloNumber;
+	
 	boolean makeClick = false;
+	
+	double accuracyRange = 50;
+	double reactionTimeRange = 500;
 	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
+		new CPUBehavior().run();
+	}
+	
+	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid, int eloNumber){
+		this.comm = comm;
+		this.gameid = gameid;
+		this.playerid = playerid;
+		this.eloNumber = eloNumber;
+		
+		accuracyRange = 10 + 0.04 * this.eloNumber;
+		reactionTimeRange = 900 - 0.04 * this.eloNumber;
+		
 		new CPUBehavior().run();
 	}
 	
@@ -46,14 +63,14 @@ public class NumberLineGameNPC {
 					case 4:
 						if (!game.isPlayerClicked(playerid)){
 							if (!makeClick){
-								time = 2500 + (int)(new Random().nextGaussian()*500);
+								time = 2500 + (int)(new Random().nextGaussian() * reactionTimeRange);
 								if (time < 1500)
 									time = 1500;
 								makeClick = true;
 							}
 							else{
 								int x = realPosToRaw(game.getExerciseNumber(), game.getLeftNumber(), game.getRightNumber());
-								x = (int)(x +  new Random().nextGaussian()*50);
+								x = (int)(x +  new Random().nextGaussian() * accuracyRange);
 								if (x < 0)
 									x = 0;
 								if (x > 400)
