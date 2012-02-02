@@ -11,6 +11,9 @@ Goals:
 
 Open questions:
 
+  * How to decide which ELO number the NPC should have (randomized or adjusted to player's skill)
+  * Discrete number of NPCs with different ELO numbers? 
+  * Should the NPC's ELO number also be adjusted depending on the outcome of the game?
   * Handle multiplayer games
   * Define initial ELO number and account for inflation when new players are added -> This can be done by using provisional ELO numbers for new users (see http://stackoverflow.com/questions/1881310/elo-rating-system-start-value)
 
