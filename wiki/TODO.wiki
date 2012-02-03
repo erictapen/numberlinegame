@@ -1,21 +1,27 @@
 = Tasks =
 
+== Web interface for accessing log data ==
+
+  * Overview of relevant tables in browser and CSV download option (generated CSV files will be removed from server once they have been downloaded)
+  * Allow for formulating SQL queries and generating SQL queries from user input
+  * Create a new tab in the Drupal CMS for authorized users; the web interface can be embedded there
+  * Consider that user information is stored in the Drupal database ("drupal_wiscam") whereas all logging related data is located in the database "logging"; is it possible to run SQL queries on each database and then run a query on the results?
+
 == ELO rating ==
 
 Goals:
 
-  * Implement ELO rating for registered users 
+  * Implement ELO rating for registered users
   * Create NPCs with different skill and ELO number (for NumberLineGame)
   * Adjust game settings to ELO rating (pointer width (for NumberLineGame),
     reaction delay, NPC skill level)
 
-Open questions:
+Details:
 
-  * How to decide which ELO number the NPC should have (randomized or adjusted to player's skill)
-  * Discrete number of NPCs with different ELO numbers? 
-  * Should the NPC's ELO number also be adjusted depending on the outcome of the game?
-  * Handle multiplayer games
-  * Define initial ELO number and account for inflation when new players are added -> This can be done by using provisional ELO numbers for new users (see http://stackoverflow.com/questions/1881310/elo-rating-system-start-value)
+  * Create classes of NPC with different ELO numbers 
+  * Do not adjust the ELO number of NPC depending on the outcome
+  * The ELO number of each player in multiplayer games can be updated by comparison with the best player or the average value of all other players 
+  * Use 1000 as an initial ELO number. Inflation and deflation phenomena are not relevant for now. The maximal ELO number is 2500.
 
 == Handicap calculation and evaluation ==
 
@@ -39,3 +45,8 @@ Open questions:
 == Logging == 
 
 Consider new table game_properties. A log entry will refer to this table via a foreign key constraint. This would allow for determining which users took part in one specific game.
+
+== Outlook == 
+
+    * Web interface for finding opponents who will match the user's skill
+    * Team games where the ELO number of each team is the average of the ELO numbers of its players
