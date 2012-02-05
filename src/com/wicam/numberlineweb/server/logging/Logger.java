@@ -276,38 +276,31 @@ public class Logger {
 		
 	}
 	
-	public EloNumber getEloRating(int uid) {
+	public int getEloRating(int uid) {
 		
 		String stmt = "SELECT * FROM elo_rating WHERE user_id=" + uid;
-		EloNumber eloNumber = new EloNumber();
+		
+		//Initial value for ELO - will be returned in case no ELO number is
+		//found for the user in the database
+		int eloNumber = 1000;
 		
 		try {
 			List<Map<String, String>> result = this.databaseConnection.eval(stmt);
 			
 			//Try to retrieve ELO number for user
-			if (result.size() > 0) {
-				
-				int number = Integer.parseInt(result.get(0).get("elo_number"));
-				boolean isProvisional = result.get(0).get("is_provisional").equals("t") ? true : false;
-				
-				eloNumber.setNumber(number);
-				eloNumber.setProvisonal(isProvisional);
-				
-			}
+			if (result.size() > 0) 
+				eloNumber = Integer.parseInt(result.get(0).get("elo_number"));
 			
-			//If no ELO number was found, the user will be assigned a provisional initial
-			//ELO number (see class EloNumber)
 			else {
 				
-				//If the player is a NPC, abort
+				//If the player is not a NPC
 				if (uid != -5){
-
-					stmt = "INSERT INTO elo_rating VALUES (?, ?, ?)";
+					
+					stmt = "INSERT INTO elo_rating VALUES (?, ?)";
 					
 					PreparedStatement preparedStmt = this.databaseConnection.prepareStmt(stmt);
 					preparedStmt.setInt(1, uid);
-					preparedStmt.setInt(2, eloNumber.getNumber());
-					preparedStmt.setBoolean(3, true);
+					preparedStmt.setInt(2, 1000);
 					
 					preparedStmt.executeUpdate();
 					this.databaseConnection.commit();
@@ -378,30 +371,5 @@ public class Logger {
 		return className2GameType.get(className);
 		
 	}
-	
-	public class EloNumber {
-		
-		//If no ELO number has been found in the table, a provisional ELO number 
-		//will be used
-		private int number = 1000;
-		private boolean isProvisional = true;
-		
-		public int getNumber() {
-			return number;
-		}
-		
-		public void setNumber(int number) {
-			this.number = number;
-		}
 
-		public boolean isProvisional() {
-			return isProvisional;
-		}
-
-		public void setProvisonal(boolean isProvisional) {
-			this.isProvisional = isProvisional;
-		}
-		
-		
-	}
 }
