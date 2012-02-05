@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server.NumberLineGame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.logging.Logger.EloNumber;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
 import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
@@ -25,6 +25,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
+	private Map<Integer, Integer> npcId2Elo = new HashMap<Integer, Integer>();
 	
 	public NumberLineGameCommunicationServiceServlet() {
 		
@@ -43,11 +44,15 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 		npcIds.add(playerid);
 		
-		//TODO NPC will have an ELO number of 1000 if no value is passed
-		//in the constructor. We should allow for NPCs with different ELO numbers and
-		//perhaps an adjustment after each game
+		int[] eloNumbers = {500, 750, 1000, 1250, 1500};
 		
-		new NumberLineGameNPC(this, game.getId(), playerid);
+		int npcEloNumber  = eloNumbers[(int) (Math.random() * eloNumbers.length)];
+		
+		npcId2Elo.put(playerid, npcEloNumber);
+		
+		new NumberLineGameNPC(this, game.getId(), playerid, npcEloNumber);
+		
+		System.out.println("NPC with ELO " + npcEloNumber + " was selected.");
 	}
 	
 	protected boolean isNPC(int playerId){
@@ -308,13 +313,21 @@ public class NumberLineGameCommunicationServiceServlet extends
 		Player player1 = players.get(0);
 		Player player2 = players.get(1);
 		
-		EloNumber player1Elo = this.logger.getEloRating(player1.getUid());
-		System.out.println("Player 1 (uid: " + player1.getUid() + ", elo: " + player1Elo.getNumber() +
-				", provisional: " + player1Elo.isProvisional() + ")");
+		int player1Elo;
+		if (!this.isNPC(player1.getColorId() + 1))
+			player1Elo = this.logger.getEloRating(player1.getUid());
+		else
+			player1Elo = this.npcId2Elo.get(player1.getColorId() + 1);
+		
+		System.out.println("Player 1 (uid: " + player1.getUid() + ", elo: " + player1Elo + ")");
 
-		EloNumber player2Elo = this.logger.getEloRating(player2.getUid());
-		System.out.println("Player 2 (uid: " + player2.getUid() + ", elo: " + player2Elo.getNumber() +
-				", provisional: " + player2Elo.isProvisional() + ")");
+		int player2Elo;
+		if (!this.isNPC(player2.getColorId() + 1))
+			player2Elo = this.logger.getEloRating(player2.getUid());
+		else
+			player2Elo = this.npcId2Elo.get(player2.getColorId() + 1);
+		
+		System.out.println("Player 2 (uid: " + player2.getUid() + ", elo: " + player2Elo + ")");
 		
 		/* 
 		 * Computation of new ELO numbers according to http://en.wikipedia.org/wiki/Elo_rating_system
@@ -325,7 +338,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		int k = 15;
 		
 		//Expected score for first player
-		double exp1 = player2Elo.getNumber() - player1Elo.getNumber();
+		double exp1 = player2Elo - player1Elo;
 		double player1ExpectedScore = 1 / (1 + Math.pow(10, exp1));
 		
 		double player1GameOutcome;
@@ -339,7 +352,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 			
 		}
 		
-		int player1NewEloNumber = (int) (player1Elo.getNumber() + k * (player1GameOutcome - player1ExpectedScore));
+		int player1NewEloNumber = (int) (player1Elo + k * (player1GameOutcome - player1ExpectedScore));
 		
 		System.out.println("Expected score for first player with user ID " + player1.getUid() + ": "
 				+ player1ExpectedScore);
@@ -347,12 +360,12 @@ public class NumberLineGameCommunicationServiceServlet extends
 		System.out.println("Updated ELO value for first player: " + player1NewEloNumber);
 		
 		//Expected score for second player
-		double exp2 = player1Elo.getNumber() - player2Elo.getNumber();
+		double exp2 = player1Elo - player2Elo;
 		double player2ExpectedScore = 1 / (1 + Math.pow(10, exp2));
 
 		double player2GameOutcome = 1.0 - player1GameOutcome;
 		
-		int player2NewEloNumber = (int) (player2Elo.getNumber() + k * (player2GameOutcome - player2ExpectedScore));
+		int player2NewEloNumber = (int) (player2Elo + k * (player2GameOutcome - player2ExpectedScore));
 		
 		System.out.println("Expected score for second player with user ID " + player2.getUid() + ": "
 				+ player2ExpectedScore);

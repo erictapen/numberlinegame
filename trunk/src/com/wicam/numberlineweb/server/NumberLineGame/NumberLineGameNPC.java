@@ -16,7 +16,7 @@ public class NumberLineGameNPC {
 	boolean makeClick = false;
 	
 	double accuracyRange = 50;
-	double reactionTimeRange = 500;
+	double reactionTimeRange = 1000;
 	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
@@ -31,8 +31,9 @@ public class NumberLineGameNPC {
 		this.playerid = playerid;
 		this.eloNumber = eloNumber;
 		
-		accuracyRange = 10 + 0.04 * this.eloNumber;
-		reactionTimeRange = 900 - 0.04 * this.eloNumber;
+		accuracyRange = 90 - 0.04 * this.eloNumber;
+		
+		reactionTimeRange = 1800 - 0.8 * this.eloNumber;
 		
 		new CPUBehavior().run();
 	}
@@ -63,9 +64,11 @@ public class NumberLineGameNPC {
 					case 4:
 						if (!game.isPlayerClicked(playerid)){
 							if (!makeClick){
-								time = 2500 + (int)(new Random().nextGaussian() * reactionTimeRange);
+								time = 1500 + ((int) reactionTimeRange) + (int)(new Random().nextGaussian() * 500);
+								
 								if (time < 1500)
 									time = 1500;
+								
 								makeClick = true;
 							}
 							else{
