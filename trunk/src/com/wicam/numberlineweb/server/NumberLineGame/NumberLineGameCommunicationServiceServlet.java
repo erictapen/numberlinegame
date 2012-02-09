@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGamePlayer;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
@@ -165,7 +166,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 				this.setChanged(gameid);
 				
 				if(uid != -2)
-					this.logger.log(uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
+					this.logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
 							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
 			}
 		}
@@ -222,7 +223,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
 				this.endGame(gameid);
-				this.handicapAction(gameid);
+//				this.handicapAction(gameid); 
 				this.updateEloRating(gameid);
 			}
 			else
@@ -306,29 +307,92 @@ public class NumberLineGameCommunicationServiceServlet extends
 		NumberLineGameState numberlineGameState = (NumberLineGameState) this.getGameById(gameid);
 		ArrayList<? extends Player> players = numberlineGameState.getPlayers();
 		
-		//TODO At the moment, ELO values are only calculated for two player games (player vs. player or player vs. NPC)
-		if (players.size() > 2 || players.get(0).getUid() == -2 || players.get(1).getUid() == -2)
-			return;
+		//Two players
+		if (players.size() == 2){
 		
-		Player player1 = players.get(0);
-		Player player2 = players.get(1);
+			Player player1 = players.get(0);
+			Player player2 = players.get(1);
+			
+			int player1Elo;
+			if (!this.isNPC(player1.getColorId() + 1))
+				player1Elo = this.logger.getEloRating(player1.getUid());
+			else
+				player1Elo = this.npcId2Elo.get(player1.getColorId() + 1);
+			
+			System.out.println("Player 1 (uid: " + player1.getUid() + ", elo: " + player1Elo + ")");
+	
+			int player2Elo;
+			if (!this.isNPC(player2.getColorId() + 1))
+				player2Elo = this.logger.getEloRating(player2.getUid());
+			else
+				player2Elo = this.npcId2Elo.get(player2.getColorId() + 1);
+			
+			System.out.println("Player 2 (uid: " + player2.getUid() + ", elo: " + player2Elo + ")");
+			
+			this.calculateElo(player1, player2, player1Elo, player2Elo, false);
 		
-		int player1Elo;
-		if (!this.isNPC(player1.getColorId() + 1))
-			player1Elo = this.logger.getEloRating(player1.getUid());
-		else
-			player1Elo = this.npcId2Elo.get(player1.getColorId() + 1);
+		}
+		//More than two players
+		else {
+			
+			//Compute the arithmetic mean of ELO values of all other players
+			
+			double sumEloValues = 0.0;
+			double sumPoints = 0.0;
+			int averageElo = 0; 
+			double averagePoints = 0.0;
+			
+			//Create a dummy player
+			Player dummyPlayer = new NumberLineGamePlayer();
+			dummyPlayer.setUid(-5);
+			
+			//Copy list of players to avoid concurrent modification exception
+			ArrayList<Player> playersCopy = (ArrayList<Player>) players.clone();
+			
+			for (Player player : players) {
+				
+				//If player is not NPC
+				if (player.getUid() != -5) {
+				
+					playersCopy.remove(player);
+					
+					for (Player otherPlayer : playersCopy) {
+						if (!this.isNPC(otherPlayer.getColorId() + 1))
+							sumEloValues += this.logger.getEloRating(otherPlayer.getUid());
+						else
+							sumEloValues += this.npcId2Elo.get(otherPlayer.getColorId() + 1);
+						sumPoints += otherPlayer.getPoints();
+					}
+					
+					averageElo = (int) (sumEloValues / (double) playersCopy.size()); 
+					averagePoints = sumPoints / (double) playersCopy.size();
+					
+					dummyPlayer.setPoints((int) averagePoints);
+					
+					int playerElo = this.logger.getEloRating(player.getUid());
+					
+					System.out.println("Player with user id: " + player.getUid() + " and ELO: " + playerElo);
+					System.out.println("Average ELO: " + averageElo + ", average points: " + averagePoints +  
+							" (players: " + playersCopy.size() + ")");
+						
+					this.calculateElo(player, dummyPlayer, playerElo, averageElo, true);
+					
+					playersCopy.add(player);
+					
+					sumEloValues = 0.0;
+					sumPoints = 0.0;
+					averageElo = 0; 
+					averagePoints = 0.0;
+				
+				}
+				
+			}
+				
+		}
 		
-		System.out.println("Player 1 (uid: " + player1.getUid() + ", elo: " + player1Elo + ")");
-
-		int player2Elo;
-		if (!this.isNPC(player2.getColorId() + 1))
-			player2Elo = this.logger.getEloRating(player2.getUid());
-		else
-			player2Elo = this.npcId2Elo.get(player2.getColorId() + 1);
-		
-		System.out.println("Player 2 (uid: " + player2.getUid() + ", elo: " + player2Elo + ")");
-		
+	}
+	
+	private void calculateElo(Player player1, Player player2, int player1Elo, int player2Elo, boolean isMultiplayer){
 		/* 
 		 * Computation of new ELO numbers according to http://en.wikipedia.org/wiki/Elo_rating_system
 		 * 
@@ -362,7 +426,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		//Expected score for second player
 		double exp2 = player1Elo - player2Elo;
 		double player2ExpectedScore = 1 / (1 + Math.pow(10, exp2));
-
+	
 		double player2GameOutcome = 1.0 - player1GameOutcome;
 		
 		int player2NewEloNumber = (int) (player2Elo + k * (player2GameOutcome - player2ExpectedScore));
@@ -372,13 +436,13 @@ public class NumberLineGameCommunicationServiceServlet extends
 		System.out.println("Game outcome for second player: " + player2GameOutcome);
 		System.out.println("Updated ELO value for second player: " + player2NewEloNumber);
 		
-		
 		if (!this.isNPC(player1.getColorId() + 1))
 			this.logger.updateEloRating(player1.getUid(), player1NewEloNumber);
 		
-		if (!this.isNPC(player2.getColorId() + 1))
+		//By default, the second player in a multiplayer game is a dummy player
+		if (!this.isNPC(player2.getColorId() + 1) && !isMultiplayer)
 			this.logger.updateEloRating(player2.getUid(), player2NewEloNumber);
-		
+	
 	}
 
 	/**

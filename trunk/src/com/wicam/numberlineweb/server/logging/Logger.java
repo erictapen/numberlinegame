@@ -31,8 +31,6 @@ public class Logger {
 
 	private boolean userIDProvided = false;
 	
-	private static int internalGameId = 0;
-	
 	private static final Map<String, LogGame> className2GameType;
 	
 	private Map<LogGame, Map<Integer, Integer>> gameId2internalId = new HashMap<LogGame, Map<Integer, Integer>>();
@@ -200,10 +198,7 @@ public class Logger {
 			
 			int gameInstanceId;
 			//Keep track of game IDs used by the servlets and those used for logging
-			if(logActionType == LogActionType.GAME_STARTED){
-				if(this.gameId2internalId.get(getLogGameByClass(logGameClassName)) == null)
-					this.gameId2internalId.put(getLogGameByClass(logGameClassName), new HashMap<Integer, Integer>());
-				this.gameId2internalId.get(getLogGameByClass(logGameClassName)).put(gameId, internalGameId);
+			if (logActionType == LogActionType.GAME_STARTED){
 				
 				//Create new game instance entry
 				
@@ -215,7 +210,7 @@ public class Logger {
 				
 				gameInstanceId = this.writeToTableGameInstances();
 				
-				if(this.gameId2internalId.get(getLogGameByClass(logGameClassName)) == null)
+				if (this.gameId2internalId.get(getLogGameByClass(logGameClassName)) == null)
 					this.gameId2internalId.put(getLogGameByClass(logGameClassName), new HashMap<Integer, Integer>());
 				this.gameId2internalId.get(getLogGameByClass(logGameClassName)).put(gameId, gameInstanceId);
 				
