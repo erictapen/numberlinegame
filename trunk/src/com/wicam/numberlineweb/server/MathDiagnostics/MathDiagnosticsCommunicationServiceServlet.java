@@ -12,7 +12,6 @@ import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsGameState;
 import com.wicam.numberlineweb.client.MathDiagnostics.isItem;
 import com.wicam.numberlineweb.client.MathDiagnostics.NumberLine.NumberLineItemInformation;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.logging.MathDiagnosticsHandicap;
 
 /**
  * Class for the math diagnostic experiments
@@ -36,7 +35,6 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	public MathDiagnosticsCommunicationServiceServlet() {
 		
 		super("mathdiagnostics");
-		this.handicapAdjustment = new MathDiagnosticsHandicap();
 		
 	}
 	

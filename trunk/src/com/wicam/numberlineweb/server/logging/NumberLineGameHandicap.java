@@ -4,21 +4,19 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
 
-public class NumberLineGameHandicap extends GameHandicap{
+public class NumberLineGameHandicap implements IHandicap{
 	
-	public NumberLineGameHandicap(){
-		
-			super(GameType.NUMBER_LINE_GAME);
-		
-	}
-	
-	public void adjustGameSetting(double handicap, GameState gameState) {
+	public void adjustGameSetting(int eloValue, GameState gameState) {
 		NumberLineGameState numberLineGameState = (NumberLineGameState) gameState;
 		
-		int minimalPointerWidth = 1;
-		int maximalPointerWidth = 27;
-		
-		int pointerWidth = (int) (handicap * (maximalPointerWidth - minimalPointerWidth) + minimalPointerWidth);
+		/*
+		 * ELO value | Pointer width
+		 * 		   0 | 22  (minimal ELO Value)
+		 *      1000 | 14  (average skill)
+		 *      2500 |  2  (maximal ELO value)
+		 * 
+		 */
+		int pointerWidth = (int) (22 - 0.008 * eloValue);
 		
 		numberLineGameState.setPointerWidth(pointerWidth);
 		

@@ -19,7 +19,6 @@ import com.wicam.numberlineweb.server.logging.Logger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
 import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
-import com.wicam.numberlineweb.server.logging.NoHandicapDataException;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -77,6 +76,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
 		
 		this.logger.updateGameProperties(id, this.getClass().getName(), gamePropertiesStr);
+		
+		this.logger.log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", 
+				this.getClass().getName(), LogActionTrigger.APPLICATION);
 
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
@@ -213,8 +215,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 				this.logger.log(game.getId(), uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
 						"", this.getClass().getName(), LogActionTrigger.USER);
 				
-				//Adjust game to user's handicap
-				this.adjustToHandicap(uid, game);
+				//TODO Decide how game adjustment should be handled
+				//Adjust game to user's ELO value
+//				this.adjustToElo(uid, game);
 			}
 
 			return game.getId() + ":" + playerid;
@@ -614,14 +617,10 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 	
-	private void adjustToHandicap(int uid, GameState game){
-		double handicap;
-		try {
-			handicap = this.handicapAdjustment.calculcateUserHandicap(uid);
-			this.handicapAdjustment.adjustGameSetting(handicap, game);
-		} catch (NoHandicapDataException e) {
-			//If not handicap data could be found, default values will be used. The minimal and maximal value a handicap value can be mapped
-			//to should be adjusted so that a handicap value of 0.5 yields the arithmetic mean between minimum and maximum.
-		}
+	private void adjustToElo(int uid, GameState game){
+		int eloValue;
+		eloValue = this.logger.getEloRating(uid);
+		this.handicapAdjustment.adjustGameSetting(eloValue, game);
+
 	}
 }

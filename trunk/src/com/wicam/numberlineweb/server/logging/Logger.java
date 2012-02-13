@@ -109,10 +109,6 @@ public class Logger {
 					return 7;
 				case NUMBERLINE_NUMBER_PRESENTED:
 					return 8;
-				case NUMBERLINE_HANDICAP:
-					return 9;
-				case DOPPELUNG_GAME_HANDICAP:
-					return 10;
 				default:
 					//Should not occur
 					return -1;
@@ -316,7 +312,14 @@ public class Logger {
 		
 		try {
 	
-
+			//The ELO value can be at most 2500
+			if (eloNumber > 2500)
+				return;
+			
+			//The ELO value can not be negative
+			if (eloNumber < 0)
+				eloNumber = 0;
+			
 			String stmt = "UPDATE elo_rating SET elo_number=? WHERE user_id=?";
 			
 			PreparedStatement preparedStmt = this.databaseConnection.prepareStmt(stmt);
