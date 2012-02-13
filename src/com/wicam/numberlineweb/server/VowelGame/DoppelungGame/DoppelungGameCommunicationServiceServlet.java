@@ -21,7 +21,6 @@ import com.wicam.numberlineweb.server.VowelGame.ResetWordFeedbackStateTask;
 import com.wicam.numberlineweb.server.VowelGame.SetDoppelungGameStateTask;
 import com.wicam.numberlineweb.server.VowelGame.UpdateMcCoordsTimerTask;
 import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameWordList;
-import com.wicam.numberlineweb.server.logging.DehnungGameHandicap;
 import com.wicam.numberlineweb.server.logging.DoppelungGameHandicap;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
@@ -141,7 +140,6 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 					}
 					else {
 						this.endGame(gameid);
-						this.handicapAction(gameid);
 					}
 				}
 			}
@@ -307,35 +305,6 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 	public void setMiniGameStartsWhenShortVowel(boolean miniGameStartsWhenShortVowel) {
 		this.miniGameStartsWhenShortVowel = miniGameStartsWhenShortVowel;
-	}
-	
-	private void handicapAction(int gameid) {
-		
-		DoppelungGameState doppelungGameState = (DoppelungGameState) this.getGameById(gameid);
-		
-		ArrayList<? extends Player> players = doppelungGameState.getPlayers();
-		
-		double minimalScore = 0;
-		double maximalScore = this.getDoppelungGameMaxPoints(gameid, this.internalName);
-		
-		for (Player player : players){
-			
-			if (player.getUid() != -2) {
-		
-				int userScore = player.getPoints();
-				
-				/*
-				 * Normalize score to get handicap.
-				 */
-				double userHandicapNormalized = (userScore - minimalScore) / (maximalScore - minimalScore);
-				
-				this.logger.log(gameid, player.getUid(), System.currentTimeMillis(), LogActionType.DOPPELUNG_GAME_HANDICAP,
-					"{\"handicap\" :" + userHandicapNormalized + "}", this.getClass().getName(), LogActionTrigger.USER);
-			
-			}
-			
-		}
-		
 	}
 		
 	private int getDoppelungGameMaxPoints(int gameid, String gameType){

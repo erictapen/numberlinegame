@@ -223,7 +223,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
 				this.endGame(gameid);
-//				this.handicapAction(gameid); 
 				this.updateEloRating(gameid);
 			}
 			else
@@ -233,73 +232,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 
 		g.setServerSendTime(System.currentTimeMillis());
 		return g;
-	}
-
-
-	private void handicapAction(int gameid) {
-		
-		//TODO The current formula is just a proof of concept. 
-		//At the moment, it will produce bad handicaps for
-		//simpler games (e.g., when there are only few players and rounds) and good handicaps
-		//for more complex games. 
-		
-		/*
-		 * A user score is calculated by taking into account the following factors:
-		 * 
-		 * 1) Number of players (2 - 5)
-		 *    Weight: 5
-		 * 
-		 * 2) Number of rounds (5 - 30)
-		 *    Weight: 2
-		 * 
-		 * 3) Number of points (0 - 30)
-		 *    Weight: 10
-		 * 
-		 * 4) The user gets 30 points if he won the game.
-		 * 
-		 * 
-		 * ==> This results in a minimal score of 20 and a maximal score of 415 points. Normalizing this value yields
-		 * the handicap where 1.0 is the best and 0.0 the worst possible value.
-		 */
-		
-		NumberLineGameState numberlineGameState = (NumberLineGameState) this.getGameById(gameid);
-		ArrayList<? extends Player> players = numberlineGameState.getPlayers();
-		Collections.sort(players);
-		
-		int winnerUid = players.get(0).getUid();
-		
-		//TODO Find a reasonable use for number range.
-		//int numRange = (numberlineGameState.getNumberRange().getMaxNumber() - numberlineGameState.getNumberRange().getMinNumber());
-		
-		int numPlayers = numberlineGameState.getPlayerCount();
-		int numRounds = numberlineGameState.getMaxItems(); //Number of items equals number of rounds
-		
-		//General game properties that are not influenced by user performance
-		//but contribute to the score
-		double gamePropertyScore = 5*numPlayers + 2*numRounds;
-		
-		for(Player player : numberlineGameState.getPlayers()){
-			if(player.getUid() != -2){
-				
-				
-				double hasWon = (player.getUid() == winnerUid) ? 30 : 0;
-				double points = player.getPoints();
-				
-				double minimalScore = 20;
-				double maximalScore = 415;
-				
-				double userScore = hasWon + 10*points + gamePropertyScore;
-				
-				/*
-				 * Normalize score to get handicap.
-				 */
-				double userHandicapNormalized = (userScore - minimalScore) / (maximalScore - minimalScore);
-				
-				this.logger.log(gameid, player.getUid(), System.currentTimeMillis(), LogActionType.NUMBERLINE_HANDICAP,
-					"{\"handicap\" :" + userHandicapNormalized + "}", this.getClass().getName(), LogActionTrigger.USER);
-			}
-		}
-		
 	}
 	
 	private void updateEloRating(int gameid) {
@@ -319,15 +251,11 @@ public class NumberLineGameCommunicationServiceServlet extends
 			else
 				player1Elo = this.npcId2Elo.get(player1.getColorId() + 1);
 			
-			System.out.println("Player 1 (uid: " + player1.getUid() + ", elo: " + player1Elo + ")");
-	
 			int player2Elo;
 			if (!this.isNPC(player2.getColorId() + 1))
 				player2Elo = this.logger.getEloRating(player2.getUid());
 			else
 				player2Elo = this.npcId2Elo.get(player2.getColorId() + 1);
-			
-			System.out.println("Player 2 (uid: " + player2.getUid() + ", elo: " + player2Elo + ")");
 			
 			this.calculateElo(player1, player2, player1Elo, player2Elo, false);
 		
@@ -370,10 +298,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 					dummyPlayer.setPoints((int) averagePoints);
 					
 					int playerElo = this.logger.getEloRating(player.getUid());
-					
-					System.out.println("Player with user id: " + player.getUid() + " and ELO: " + playerElo);
-					System.out.println("Average ELO: " + averageElo + ", average points: " + averagePoints +  
-							" (players: " + playersCopy.size() + ")");
 						
 					this.calculateElo(player, dummyPlayer, playerElo, averageElo, true);
 					
@@ -402,8 +326,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 		int k = 15;
 		
 		//Expected score for first player
-		double exp1 = player2Elo - player1Elo;
-		double player1ExpectedScore = 1 / (1 + Math.pow(10, exp1));
+		double exp1 = (player2Elo - player1Elo) / 400.0;
+		double player1ExpectedScore = 1 / (1 + (Math.pow(10, exp1)));
 		
 		double player1GameOutcome;
 		if (player1.getPoints() > player2.getPoints())
@@ -418,14 +342,9 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 		int player1NewEloNumber = (int) (player1Elo + k * (player1GameOutcome - player1ExpectedScore));
 		
-		System.out.println("Expected score for first player with user ID " + player1.getUid() + ": "
-				+ player1ExpectedScore);
-		System.out.println("Game outcome for first player: " + player1GameOutcome);
-		System.out.println("Updated ELO value for first player: " + player1NewEloNumber);
-		
 		//Expected score for second player
-		double exp2 = player1Elo - player2Elo;
-		double player2ExpectedScore = 1 / (1 + Math.pow(10, exp2));
+		double exp2 = (player1Elo - player2Elo) / 400.0;
+		double player2ExpectedScore = 1 / (1 + (Math.pow(10, exp2)));
 	
 		double player2GameOutcome = 1.0 - player1GameOutcome;
 		
