@@ -96,10 +96,11 @@ public class DoppelungGameView extends GameView {
 			}
 		});
 
-		gamePanel.add(startGameButton);
-		gamePanel.setWidgetPosition(startGameButton, 480, 350);
+		
 		gamePanel.add(explanationText);
 		gamePanel.setWidgetPosition(explanationText, 0, 0);
+		gamePanel.add(startGameButton);
+		gamePanel.setWidgetPosition(startGameButton, 480, 350);
 		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
 
@@ -137,7 +138,7 @@ public class DoppelungGameView extends GameView {
 		motherPanel.add(pointsPanel);
 	}
 	
-	protected void setExplanationText(){
+	/*protected void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
 				"<p>" + 
 				"<div style='padding:5px 20px;font-size:18px'>" + "" +
@@ -153,6 +154,30 @@ public class DoppelungGameView extends GameView {
 				"gehört hast verdoppelt werden. Bei „Fluss“ sollst du zum Beispiel die " +
 				"„ss“ einsammeln. Pass gut auf, dass du keine anderen Konsonantenpaare " +
 				"berührst und steuere das Symbol mit den Pfeiltasten." + 
+		"</div>");
+	}*/
+
+	protected void setExplanationText(){
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
+				"<div style='padding:5px 20px;font-size:12px'>" +
+				"Erkl&auml;rung Doppelungsspiel:<br>\r\n" + 
+				"		<br>\r\n" + 
+				"		Zuerst h&ouml;rst du W&ouml;rter.<br>\r\n" + 
+				"		Wenn sich der Vokal lang anh&ouml;rt, klicke mit der Maus auf das rechte Symbol: <img src=\"doppelungGame/ziehen1.jpg\" style=\"height:30px;\">. <br>\r\n" + 
+				"		Wenn sich der Vokal kurz anh&ouml;rt, klicke auf das linke Symbol <img src=\"doppelungGame/knall_small.png\" style=\"height:30px;\">. <br>\r\n" + 
+				"		<br>\r\n" + 
+				"		Klicke dann in einem Minispiel die Silben an, die zum Wort oder zu einer Erweiterung des Wortes geh&ouml;ren. Beim Wort „knallen“ sollst du zum Beispiel<br>\r\n" + 
+				"		<br>\r\n" + 
+				"		<pre style=\"margin:0;\"> 		<strong>knal</strong>\r\n" + 
+				"			ten		<strong>len</strong>\r\n" + 
+				"fen</pre>\r\n" + 
+				"		<br>\r\n" + 
+				"		so schnell wie m&ouml;glich \"knal\" und \"len\" anklicken.<br>\r\n" + 
+				"		<br>\r\n" + 
+				"		Dann fallen Konsonantenpaare vom Bildschirm. Sammle so schnell wie m&ouml;glich die Konsonantenpaare ein, die nach dem kurzen Vokal kommen, nach \"knallen\" sammelst du also alle \"ll\" ein. Steuere mit den Pfeiltasten:<br>\r\n" + 
+				"		<br>\r\n" + 
+				"		<pre style=\"margin:0;\"><img src=\"doppelungGame/coins/coin_ll.png\" style=\"height:25px;\">     <img src=\"doppelungGame/coins/coin_tt.png\" style=\"height:25px;\">\r\n" + 
+				"	<img src=\"doppelungGame/coins/coin_lt.png\" style=\"height:25px;\">      <img src=\"doppelungGame/coins/coin_rt.png\" style=\"height:25px;\"></pre>"+ 
 		"</div>");
 	}
 
