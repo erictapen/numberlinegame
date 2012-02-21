@@ -355,13 +355,14 @@ public class NumberLineGameCommunicationServiceServlet extends
 		System.out.println("Game outcome for second player: " + player2GameOutcome);
 		System.out.println("Updated ELO value for second player: " + player2NewEloNumber);
 		
-		if (!this.isNPC(player1.getColorId() + 1))
+		if (!this.isNPC(player1.getColorId() + 1) && !this.isNPC(player2.getColorId() + 1)) {
 			this.logger.updateEloRating(player1.getUid(), player1NewEloNumber);
+			
+			//By default, the second player in a multiplayer game is a dummy player
+			if (!isMultiplayer)
+				this.logger.updateEloRating(player2.getUid(), player2NewEloNumber);
+		}
 		
-		//By default, the second player in a multiplayer game is a dummy player
-		if (!this.isNPC(player2.getColorId() + 1) && !isMultiplayer)
-			this.logger.updateEloRating(player2.getUid(), player2NewEloNumber);
-	
 	}
 
 	/**
