@@ -34,6 +34,10 @@
     <servlet-name>DehnungGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>MultiplicationGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -62,6 +66,10 @@
   <servlet-mapping>
     <servlet-name>DehnungGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/dehnungGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MultiplicationGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/multiplicationGameCommunication</url-pattern>
   </servlet-mapping>
   
   

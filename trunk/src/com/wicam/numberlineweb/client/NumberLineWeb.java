@@ -22,6 +22,9 @@ import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -205,6 +208,35 @@ public class NumberLineWeb implements EntryPoint {
 							commService.loggingOn(true, dummyCallback);
 					}
 					
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		//adds the Multiplication game
+		gts.addGame("Multiplikation", "nlg_pre.png", "Rechne schnell!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
+				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
 				}
 				else
 					commService.loggingOn(true, dummyCallback);
