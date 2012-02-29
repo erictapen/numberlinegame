@@ -398,12 +398,12 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
+			caught.printStackTrace();
 			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onSuccess(GameState result) {
-
 			openedGame = result;
 			if (result.getServerSendTime() > lastServerSendTime) {
 
