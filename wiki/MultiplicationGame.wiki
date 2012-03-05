@@ -7,8 +7,19 @@ The Multiplication Game.
 
 = Versions =
 
-==[http://code.google.com/p/numberlinegame/source/detail?r=126 v0.1]==
 
+==[r128 v1.0]==
+===Changelog:===
+  * gameplay completed
+  * NPC implemented
+  * added NPC-handicap (skill)
+  * included GameSelector-image for Multiplication
+
+===Known issues:===
+  * poor design
+  * poor feedback
+
+==[r126 v0.1]==
 ===Changelog===
   * running system
   * generation of new results now on server side
