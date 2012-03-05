@@ -7,8 +7,9 @@ import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
+import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet;
 
 public class MultiplicationGameCoordinator extends GameCoordinator {
 	
@@ -24,7 +25,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	@Override
 	public String getGameName() {
 
-		return "Multiplication";
+		return "Multiplikation";
 
 	}
 	
@@ -61,7 +62,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	 */
 	public void openGame(GameState gameState) {
 		
-		GWT.log("opening!");
+		GWT.log("opening! in MultGameCoord");
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
@@ -122,20 +123,25 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 		switch (g.getState()) {
 			//started
 		case 3:
-			//gameView.clear(); //vllt ganz gut
 			
 			gameView.setInfoText("Mache deine Schätzung!");
+			gameView.drawAnwers(g.getAnswers());
+			gameView.setResultText(g.getResult());
+			
+			for (int i = 0; i < g.getPlayers().size(); i++){
+				gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			}
 			
 			//kritischer moment, setze refreshrate nach oben
 			setRefreshRate(200);
 			
 			break;
 
-			//started, next player
+			//started, keep going
 		case 4:
 			
-			setRefreshRate(500);
-			
+//			setRefreshRate(500);
+//			gameView.drawAnwers(g.getAnswers());
 
 			// andere spieler g.getPlayers() abwarten / anzeige erneuern
 			
@@ -144,7 +150,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 
 			//evaluation, who has won?
 		case 5:
-			setRefreshRate(1000);
+			//setRefreshRate(1000);
 			
 			// gewinner g.getWinnerOfLastRound() anzeigen lassen
 			
@@ -218,8 +224,12 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	 * @param w Widget, that was clicked
 	 */
 	public void clickAt(Widget w, int x, int y) {
-		//((MultiplicationGameCommunicationServiceAsync)commServ).clickedAt(openGame.getId(), playerID, updateCallback);
-		//TODO Interface ändern (Methode ändern)
+	}
+	
+	
+	public void clickAt(String answer) {
+		((MultiplicationGameCommunicationServiceAsync)commServ).clickedAt(
+				Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + answer, updateCallback);
 	}
 	
 	

@@ -2,8 +2,8 @@ package com.wicam.numberlineweb.client.Multiplication;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
+import com.google.gwt.core.client.GWT;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 
@@ -19,20 +19,11 @@ public class MultiplicationGameState extends GameState implements Serializable{
 	// we need a serial number for GWT to identify sent instances
 	private static final long serialVersionUID = 846864907276321588L;
 	
-	// Random generator
-	private Random rand = new Random();
-	
-	// The string used as multiplication sign
-	private String sign = " x ";
-	
-	// All possible divisors
-	private int[] possibleDivisors = {2,3,4,5,6,7,8,9};
-	
 	// The result
 	private int result;
 	
 	// All wrong and right answers in the game
-	private ArrayList<MultiplicationAnswer> answers;
+	private ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 	
 	// Round-counter
 	private int round = 0;
@@ -47,54 +38,12 @@ public class MultiplicationGameState extends GameState implements Serializable{
 	
 	
 	/**
-	 * @return Returns a random divisor
+	 * @param res The new result
 	 */
-	private int getRandomDivisor() {
-		return this.possibleDivisors[this.rand.nextInt(this.possibleDivisors.length)];
+	public void setResult(int res) {
+		this.result = res;
 	}
 	
-	
-	
-	/**
-	 * Generates a new result with a set of wrong and right answers
-	 * @return Returns the new result
-	 */
-	public int setNewResult() {
-		
-		int first = getRandomDivisor();
-		int second = getRandomDivisor();
-		this.result = first * second;
-		
-		int noOfAnswers = 0;
-		int randomNumber = rand.nextInt(11);
-		
-		// generate new answers as long there are less than 12
-		while (noOfAnswers < 12) {
-			int a = getRandomDivisor();
-			int b = getRandomDivisor();
-			
-			// insert at least one right answer by chance
-			if (noOfAnswers == randomNumber) {
-				this.answers.add(new MultiplicationAnswer(first+this.sign+b, true));
-				noOfAnswers++;
-			}
-			
-			// genarate new answer
-			MultiplicationAnswer newAnswer = new MultiplicationAnswer(a+this.sign+b, (a*b == this.result));
-			
-			// check, if the answer exists. if not, add to list
-			if (!this.answers.contains(newAnswer)) {
-				this.answers.add(newAnswer);
-				noOfAnswers++;
-			}
-			
-		}
-		
-		// increment the round-counter
-		this.round++;
-		
-		return this.result;
-	}
 	
 	
 	/**
@@ -107,7 +56,16 @@ public class MultiplicationGameState extends GameState implements Serializable{
 	
 	
 	/**
-	 * @return Returns the result
+	 * @param r the new round
+	 */
+	public void setRound(int r) {
+		this.round = r;
+	}
+	
+	
+	
+	/**
+	 * @return Returns the round
 	 */
 	public int getRound() {
 		return this.round;
@@ -132,36 +90,28 @@ public class MultiplicationGameState extends GameState implements Serializable{
 	public int getMaxRound() {
 		return this.maxRound;
 	}
-	
-	
-	
-	/**
-	 * @return Returns all answers scrambled
-	 */
-	public ArrayList<MultiplicationAnswer> getScrambled() {
-		return this.answers;
-	}
-	
+
 	
 	
 	/**
-	 * Deletes a given answer
-	 * @param toDelete The answer to delete
-	 * @return Returns, if the answer was deleted
+	 * @return Returns answers
 	 */
-	public boolean deleteAnswer(String toDelete) {
-		boolean ret = false;
-		for (MultiplicationAnswer answer : this.answers) {
-			if (answer.getAnswer() == toDelete) {
-				answer.setTaken(true);
-				ret = true;
-			}
-		}
-		return ret;
+	public ArrayList<MultiplicationAnswer> getAnswers() {
+		return answers;
 	}
-	
-	
-	
+
+
+
+	/**
+	 * Set answers
+	 * @param answers Set answers to this value
+	 */
+	public void setAnswers(ArrayList<MultiplicationAnswer> answers) {
+		this.answers = answers;
+	}
+
+
+
 	/**
 	 * @return Returns the number of not taken answers in game
 	 */

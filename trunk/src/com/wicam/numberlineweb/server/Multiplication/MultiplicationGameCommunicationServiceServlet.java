@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server.Multiplication;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gwt.core.client.GWT;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
@@ -19,6 +21,17 @@ import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 
 public class MultiplicationGameCommunicationServiceServlet extends
 		GameCommunicationServiceServlet implements MultiplicationGameCommunicationService {
+	
+	
+	// Random generator
+	private Random rand = new Random();
+	
+	// The string used as multiplication sign
+	private String sign = " x ";
+	
+	// All possible divisors
+	private int[] possibleDivisors = {2,3,4,5,6,7,8,9};
+	
 
 	/**
 	 * 
@@ -45,12 +58,142 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	}
 	
 	
-	public void newResult(MultiplicationGameState state) {
-		state.setNewResult();
+	/**
+	 * @param state MultiplicationGameState to alter
+	 * @return The new MultiplicationGameState
+	 */
+	public MultiplicationGameState newResults(MultiplicationGameState state) {
+		
+		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
+		
+		int first = getRandomDivisor();
+		int second = getRandomDivisor();
+		int result = first * second;
+		
+		int noOfAnswers = 0;
+		int randomNumber = rand.nextInt(10);
+		
+		// generate new answers as long there are less than 12
+		while (noOfAnswers < 12) {
+			int a = getRandomDivisor();
+			int b = getRandomDivisor();
+			
+			// insert at least one right answer by chance
+			if (noOfAnswers == randomNumber) {
+				answers.add(new MultiplicationAnswer(first+this.sign+second, true));
+				noOfAnswers++;
+			}
+			
+			// genarate new answer
+			MultiplicationAnswer newAnswer = new MultiplicationAnswer(a+this.sign+b, (a*b == result));
+			
+			// check, if the answer exists. if not, add to list
+			if (!answerExists(newAnswer, answers)) {
+				answers.add(newAnswer);
+				noOfAnswers++;
+			}
+			
+		}
+		
+		// increment the round-counter
+		state.setRound(state.getRound()+1);
+		
+		state.setResult(result);
+		
+		state.setAnswers(answers);
+		
+		return state;
+	}
+	
+	
+	/**
+	 * @return Returns a random divisor
+	 */
+	private int getRandomDivisor() {
+		return this.possibleDivisors[this.rand.nextInt(this.possibleDivisors.length)];
 	}
 	
 	
 	
+	/**
+	 * @param newAnswer Answer to check
+	 * @param answers All answers
+	 * @return Returns true, if the newAnswer is in answers
+	 */
+	private boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.isEqualTo(newAnswer)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	/**
+	 * Deletes a given answer
+	 * @param toDelete The answer to delete
+	 * @param answers Set of answers to delete from
+	 * @return Returns, if the answer was deleted
+	 */
+	private ArrayList<MultiplicationAnswer> deleteAnswer(String toDelete, ArrayList<MultiplicationAnswer> answers) {
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.getAnswer() == toDelete) {
+				answer.setTaken();
+			}
+		}
+		return answers;
+	}
+	
+	
+	/**
+	 * @param toDelete Answer to delete
+	 * @param state GameState to delete from
+	 */
+	public void deleteAnswer(String toDelete, MultiplicationGameState state) {
+		state.setAnswers(deleteAnswer(toDelete, state.getAnswers()));
+	}
+	
+	
+	/**
+	 * @param toFind Answer to be checked
+	 * @param answers All answers
+	 * @return Returns 1, if the given answer was a correct and free one. 
+	 * 		   Returns 0, if user was too slow and answer is already taken. 
+	 * 		   Returns -1, if answer was a false and free one
+	 */
+	private int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers) {
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.getAnswer().equals(toFind)) {				
+				if (answer.isTaken()) {
+					return 0;
+				} else {
+					if (answer.isCorrect()) {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+	
+	
+	private boolean allCorrectTaken(ArrayList<MultiplicationAnswer> answers) {
+		Boolean res = false;
+		for (MultiplicationAnswer answer : answers) {
+			res = res || (answer.isCorrect() && !answer.isTaken());
+		}
+		return res;
+	}
+	
+	
+	/**
+	 * @param clicked gameid:playerid:clickedAnswer
+	 * @return New MultiplicationGameState
+	 */
 	synchronized public MultiplicationGameState clickedAt(String clicked) {
 		
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -61,24 +204,50 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		
 
 	/**
-	 * User has clicked. Again, the format for clicked is
-	 * <gameid>:<playerid>:<clickPosition>
+	 * User has clicked.
+	 * @param clicked gameid:playerid:clickedAnswer
+	 * @param playerid Playerid
+	 * @return New MultiplicationGameState
 	 */
 	synchronized public MultiplicationGameState clickedAt(String clicked, int playerid) {
 
 	
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 
-		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
+		String answer = clicked.split(":")[2];
 		MultiplicationGameState g = (MultiplicationGameState) this.getGameById(gameid);
 
 		HttpServletRequest request = this.getThreadLocalRequest();
 		int uid = -2;
 		if(request != null){
 			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
-					request.getSession().getAttribute("game2pid2uid");
+			request.getSession().getAttribute("game2pid2uid");
 			uid = map.get(internalName).get(gameid).get(playerid);
 		}
+		
+		// check answers an flag taken answers
+		int answerState = checkAnswer(answer, g.getAnswers());
+		
+		System.out.println(answerState + ":" + answer);
+
+		// give/take points
+		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);
+
+		
+		if (!allCorrectTaken(g.getAnswers())) { // keep it going
+			this.setGameState(this.getGameById(gameid),3);
+			this.setChanged(gameid);
+		} else { // New round
+			this.setGameState(this.getGameById(gameid),5);
+		}
+		
+		if (g.getRound() == g.getMaxRound()){
+			this.endGame(gameid);
+			this.handicapAction(gameid);
+		}
+		else
+			this.showNextItem(gameid);
+		
 		
 //		if (!g.isPlayerClicked(playerid)){
 //			
@@ -268,6 +437,9 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		GameState retGameState = super.openGame(g);
 		GWT.log("after opening game");
 		//return super.openGame(g);
+		
+		newResults((MultiplicationGameState) g);
+		
 		return retGameState;
 
 	}
@@ -293,4 +465,6 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		return gamePropertiesStr;
 		
 	}
+	
+	
 }

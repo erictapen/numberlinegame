@@ -346,3 +346,36 @@ background-color:#F6F6F6 !important;
 	display:none;
 	
 }
+
+.answer-Button {
+	margin: 0;
+	padding: 25px 30px;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+	font-size: 15px;
+	background: url("images/hborder.png") repeat-x 0px -2077px;
+	border:1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin: 10px;
+}
+.answer-Button:active {
+	border: 1px inset #ccc;
+}
+.answer-Button:hover {
+	border-color: #939393;
+}
+.answer-Button[disabled] {
+	cursor: default;
+	color: #888;
+}
+.answer-Button[disabled]:hover {
+	border: 1px outset #ccc;
+}
+
+.result-box {
+	font-size: 15px;
+	font-weight: bold;
+}

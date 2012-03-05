@@ -49,7 +49,7 @@ public class MultiplicationGameSelector extends GameSelector {
 						gameState.setMaxRound(gamePopUp.getRoundCount());
 						MultiplicationGameSelector.this.coordinator.openGame(gameState);
 						gamePopUp.hide();
-
+						
 
 					}
 

@@ -13,6 +13,11 @@ public class MultiplicationGameController extends GameController {
 
 	
 	
+	public void clickedAt(String answer) {
+		((MultiplicationGameCoordinator) coordinator).clickAt(answer);
+	}
+	
+	
 	/**
 	 * Forwards mouse-clicks to the coordinator
 	 * @param who Widget, that was clicked
