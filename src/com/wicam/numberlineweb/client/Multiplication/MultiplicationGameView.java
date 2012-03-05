@@ -25,13 +25,8 @@ public class MultiplicationGameView extends GameView  {
 	final MultiplicationView p = new MultiplicationView();
 	final AbsolutePanel playerPanel = new AbsolutePanel();
 
-	/**
-	 * TODO: create own Composite-Classes for elements
-	 */
-
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
-	final MultiplicationPointer correctPositionPointer = new MultiplicationPointer(6, 50,"Chartreuse");
 	final HTML infoText = new HTML();
 	
 
@@ -47,7 +42,7 @@ public class MultiplicationGameView extends GameView  {
 
 	private void init() {
 		
-		p.init(numberOfPlayers+numberOfNPCs);
+		p.init((MultiplicationGameController) this.gameController, numberOfPlayers+numberOfNPCs);
 
 		motherPanel.add(p);
 
@@ -73,38 +68,16 @@ public class MultiplicationGameView extends GameView  {
 
 
 	public void setInfoText(String text) {
-
 		p.setInfoText(text);
-
 	}
+
 	
-	
-	/**
-	 * Draw all the answers
-	 * @param answers List of all answers
-	 */
+	public void setResultText(int res) {
+		p.setResultText(res);
+	}
+
 	public void drawAnwers(ArrayList<MultiplicationAnswer> answers) {
-		
-		for (MultiplicationAnswer answer : answers) {
-			HTML w = new HTML();
-			
-			w.setText(answer.getAnswer());
-			w.setHorizontalAlignment(HTML.ALIGN_CENTER);
-			//TODO vertical alignment
-			w.setWidth("100");
-			w.setHeight("50");
-			w.setVisible(!answer.isTaken()); // invisible, if already taken
-			
-			w.addMouseOverHandler(new MouseOverHandler() {
-				@Override
-				public void onMouseOver(MouseOverEvent event) {
-					//TODO Implement whatever happens at mouseover
-				}
-			});
-			
-			motherPanel.add(w);
-		}
-		
+		p.drawAnwers(answers);
 	}
 
 }

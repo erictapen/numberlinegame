@@ -15,7 +15,7 @@ public class MultiplicationGameStateTask extends SetGameStateTask{
 			//((MultiplicationGameState)s.getGameById(gameid)).resetAllPlayerActPos();
 
 			// numbers should be changed while winner info is displayed
-			((MultiplicationGameCommunicationServiceServlet) s).newResult((MultiplicationGameState) s.getGameById(gameid));
+			((MultiplicationGameCommunicationServiceServlet) s).newResults((MultiplicationGameState) s.getGameById(gameid));
 		}
 	}
 
