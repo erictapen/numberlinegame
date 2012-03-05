@@ -1,0 +1,18 @@
+#summary Description of the Multiplication Game
+
+= Introduction =
+
+The Multiplication Game.
+
+
+= Versions =
+
+==[http://code.google.com/p/numberlinegame/source/detail?r=126 v0.1]==
+
+===Changelog===
+  * running system
+  * generation of new results now on server side
+
+===Known issues===
+  * lag when answer clicked
+  * only one click possible
