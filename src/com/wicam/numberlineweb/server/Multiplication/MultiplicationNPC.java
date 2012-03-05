@@ -1,9 +1,11 @@
 package com.wicam.numberlineweb.server.Multiplication;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 
 public class MultiplicationNPC {
@@ -12,6 +14,7 @@ public class MultiplicationNPC {
 	private int gameid;
 	private int playerid;
 	boolean makeClick = false;
+	private double skill = .7; // 70% correct clicks
 	
 	public MultiplicationNPC(MultiplicationGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
@@ -20,11 +23,53 @@ public class MultiplicationNPC {
 		new CPUBehavior().run();
 	}
 	
-	protected int realPosToRaw(int pos, int leftNumber, int rightNumber) {
-
-		return (int)((pos -leftNumber) /  ((double)(rightNumber -leftNumber)/400));
-
+	
+	
+	/**
+	 * Set skill
+	 * @param skill Set skill to this value
+	 */
+	public void setSkill(double skill) {
+		this.skill = skill;
 	}
+
+
+
+	/**
+	 * @return Returns skill
+	 */
+	public double getSkill() {
+		return skill;
+	}
+
+
+
+	/**
+	 * @return Returns the MultiplicationGameState
+	 */
+	private MultiplicationGameState getGameState() {
+		return ((MultiplicationGameState) comm.getGameById(gameid));
+	}
+	
+	
+	
+	/**
+	 * @param correct Specifies, if the answer has to be correct
+	 * @param taken Specifies, if the answer has to be taken
+	 * @return Gives you a specific answer, randomly picked
+	 */
+	private String getSpecificAnswer(boolean correct, boolean taken) {
+		ArrayList<MultiplicationAnswer> answers = getGameState().getSpecificAnswers(correct, taken);
+		int id = new Random().nextInt(answers.size());
+		for (MultiplicationAnswer answer : answers) {
+			if (!answer.isTaken() && id == 0) {
+				return answer.getAnswer();
+			}
+			id--;
+		}
+		return "fail";
+	}
+	
 	
 	private class CPUBehavior extends TimerTask {
 		
@@ -44,29 +89,26 @@ public class MultiplicationNPC {
 					break;
 					case 3:
 					case 4:
-//						if (!game.isPlayerClicked(playerid)){
-//							if (!makeClick){
-//								time = 2500 + (int)(new Random().nextGaussian()*500);
-//								if (time < 1500)
-//									time = 1500;
-//								makeClick = true;
-//							}
-//							else{
-//								int x = realPosToRaw(game.getExerciseNumber(), game.getLeftNumber(), game.getRightNumber());
-//								x = (int)(x +  new Random().nextGaussian()*50);
-//								if (x < 0)
-//									x = 0;
-//								if (x > 400)
-//									x = 400;
-//								MultiplicationGameState g = comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + Integer.toString(x),playerid);
-//								if (!g.isPlayerClicked(playerid)){
-//									// position was not available => retry
-//									time = 700 + (int)(new Random().nextGaussian()*100);
-//									if (time < 500)
-//										time = 500;
-//								}
-//							}
-//						}
+							if (!makeClick){
+								time = 5000 + (int)(new Random().nextGaussian()*500);
+								if (time < 5000)
+									time = 5000;
+								makeClick = true;
+							}
+							else{
+								makeClick = false;
+								String answer;
+								if (new Random().nextDouble() < skill) { 
+									answer = getSpecificAnswer(true, false);
+								} else {
+									answer = getSpecificAnswer(false, false);
+								}
+								
+								if (!answer.equals("fail")) {									
+									@SuppressWarnings("unused")
+									MultiplicationGameState temp = comm.clickedAt(Integer.toString(game.getId()) + ":" + Integer.toString(playerid) + ":" + answer, playerid);
+								}
+							}
 					break;
 					case 5:
 						makeClick = false;

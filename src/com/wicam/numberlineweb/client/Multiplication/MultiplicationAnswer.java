@@ -34,10 +34,18 @@ public class MultiplicationAnswer implements IsSerializable {
 	 * @param other MultiplicationAnswer to compare this with
 	 * @return Returns true, if other is equal to this
 	 */
-	public boolean isEqualTo(MultiplicationAnswer other) {
-		return (this.answer.compareTo(other.getAnswer()) == 0);
+	public boolean equals(MultiplicationAnswer other) {
+		return this.answer.equals(other.getAnswer());
 	}
 	
+	
+	/**
+	 * @return Returns the answer
+	 */
+	@Override
+	public String toString() {
+		return answer;
+	}
 	
 
 	/**

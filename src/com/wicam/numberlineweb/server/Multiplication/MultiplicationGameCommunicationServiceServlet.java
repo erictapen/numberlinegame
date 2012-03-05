@@ -68,6 +68,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		
 		int first = getRandomDivisor();
 		int second = getRandomDivisor();
+		MultiplicationAnswer oneCorrectAnswer = new MultiplicationAnswer(first+this.sign+second, true);
 		int result = first * second;
 		
 		int noOfAnswers = 0;
@@ -79,8 +80,8 @@ public class MultiplicationGameCommunicationServiceServlet extends
 			int b = getRandomDivisor();
 			
 			// insert at least one right answer by chance
-			if (noOfAnswers == randomNumber) {
-				answers.add(new MultiplicationAnswer(first+this.sign+second, true));
+			if (noOfAnswers == randomNumber && !answerExists(oneCorrectAnswer, answers)) {
+				answers.add(oneCorrectAnswer);
 				noOfAnswers++;
 			}
 			
@@ -122,7 +123,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 */
 	private boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
-			if (answer.isEqualTo(newAnswer)) {
+			if (answer.equals(newAnswer)) {
 				return true;
 			}
 		}
@@ -132,27 +133,13 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	
 	
 	/**
-	 * Deletes a given answer
-	 * @param toDelete The answer to delete
+	 * Disables all answers
 	 * @param answers Set of answers to delete from
-	 * @return Returns, if the answer was deleted
 	 */
-	private ArrayList<MultiplicationAnswer> deleteAnswer(String toDelete, ArrayList<MultiplicationAnswer> answers) {
+	private void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
-			if (answer.getAnswer() == toDelete) {
-				answer.setTaken();
-			}
+			answer.setTaken();
 		}
-		return answers;
-	}
-	
-	
-	/**
-	 * @param toDelete Answer to delete
-	 * @param state GameState to delete from
-	 */
-	public void deleteAnswer(String toDelete, MultiplicationGameState state) {
-		state.setAnswers(deleteAnswer(toDelete, state.getAnswers()));
 	}
 	
 	
@@ -169,6 +156,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 				if (answer.isTaken()) {
 					return 0;
 				} else {
+					answer.setTaken();
 					if (answer.isCorrect()) {
 						return 1;
 					} else {
@@ -181,10 +169,12 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	}
 	
 	
-	private boolean allCorrectTaken(ArrayList<MultiplicationAnswer> answers) {
+	private boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
 		Boolean res = false;
 		for (MultiplicationAnswer answer : answers) {
-			res = res || (answer.isCorrect() && !answer.isTaken());
+			if (answer.isCorrect()) {
+				res = res || !answer.isTaken();				
+			}
 		}
 		return res;
 	}
@@ -211,151 +201,43 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 */
 	synchronized public MultiplicationGameState clickedAt(String clicked, int playerid) {
 
-	
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 
 		String answer = clicked.split(":")[2];
 		MultiplicationGameState g = (MultiplicationGameState) this.getGameById(gameid);
-
+		
 		HttpServletRequest request = this.getThreadLocalRequest();
 		int uid = -2;
 		if(request != null){
 			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
-			request.getSession().getAttribute("game2pid2uid");
+					request.getSession().getAttribute("game2pid2uid");
 			uid = map.get(internalName).get(gameid).get(playerid);
 		}
 		
 		// check answers an flag taken answers
 		int answerState = checkAnswer(answer, g.getAnswers());
-		
-		System.out.println(answerState + ":" + answer);
 
 		// give/take points
 		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);
-
 		
-		if (!allCorrectTaken(g.getAnswers())) { // keep it going
+		if (oneCorrectLeft(g.getAnswers())) { // keep going
 			this.setGameState(this.getGameById(gameid),3);
 			this.setChanged(gameid);
-		} else { // New round
+		} else { // New round or end of game
+			
+			disableAllAnswers(g.getAnswers());
+			
 			this.setGameState(this.getGameById(gameid),5);
+			
+			if (g.getRound() >= g.getMaxRound()){
+				this.endGame(gameid);
+				this.handicapAction(gameid);
+			}
+			else {
+				this.showNextItem(gameid);			
+			}
+			
 		}
-		
-		if (g.getRound() == g.getMaxRound()){
-			this.endGame(gameid);
-			this.handicapAction(gameid);
-		}
-		else
-			this.showNextItem(gameid);
-		
-		
-//		if (!g.isPlayerClicked(playerid)){
-//			
-//			//int number = this.rawPosToReal(clickedAt, g);
-//			/*if(!this.isNPC(playerid)){
-//				if(uid != -2)
-//					this.logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_SUCCESSFUL_CLICK,
-//							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
-//			}
-//			else
-//				this.logger.log(g.getId(), System.currentTimeMillis(), LogActionType.NUMBERLINE_NPC_GUESS, 
-//						"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.NPC);
-//				*/
-//			
-//			boolean posIsFree = true;
-//			for (int i = 0; i < g.getPlayers().size(); i++){
-//				if (i+1 != playerid){
-//					//int posOtherPlayer = g.getPlayerActPos(i+1);
-//				
-////					if (!(posOtherPlayer == Integer.MIN_VALUE) && Math.abs(clickedAt - posOtherPlayer) < g.getPointerWidth())
-////						posIsFree = false;
-//						
-//				}
-//			}
-//			if (posIsFree){
-//				//save position for playerid
-//				g.setPlayerActPos(playerid,clickedAt);
-//				g.setPlayerClicked(playerid);
-//				// change state if waiting for other player
-//				boolean otherPlayersClicked = true;
-//				for (int i = 0; i < g.getPlayers().size(); i++){
-//					if (i+1 != playerid)
-//						if (!g.isPlayerClicked(i+1))
-//							otherPlayersClicked = false;
-//				}
-//				if (!otherPlayersClicked){
-//					this.setGameState(this.getGameById(gameid),4);
-//					this.setChanged(gameid);
-//				}
-//			}
-//			else {
-//				this.setGameState(this.getGameById(gameid),4);
-//				this.setChanged(gameid);
-//				
-//				/*if(uid != -2)
-//					this.logger.log(uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
-//							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
-//			*/}
-//		}
-//
-//		boolean allPlayersClicked = true;
-//		for (int i = 0; i < g.getPlayers().size(); i++)
-//			if (!g.isPlayerClicked(i+1))
-//				allPlayersClicked = false;
-//		
-//		if (allPlayersClicked){
-//			
-//			this.setGameState(this.getGameById(gameid),5);
-//
-//			// reset clicked state
-//			g.resetPlayersClicked();
-//
-//			// reset ready state
-//			g.resetReadyness();
-//
-//			//who has won?
-//
-//			ArrayList<Integer> playersWithMinDiff = new ArrayList<Integer>();
-//			double minDiff = Double.MAX_VALUE;
-//			for (int i = 0; i < g.getPlayers().size(); i++){
-//				// operate on real position
-//				double curDiff = Math.abs(g.getPlayerActPos(i+1)- this.realPosToRaw(g.getExerciseNumber(),g));
-//				if (curDiff < minDiff){
-//					minDiff = curDiff;
-//					// reset list
-//					playersWithMinDiff = new ArrayList<Integer>();
-//					// add player
-//					playersWithMinDiff.add(i+1);
-//				}
-//				// add other player
-//				else if (curDiff == minDiff)
-//					playersWithMinDiff.add(i+1);
-//			}
-//			
-//			if (playersWithMinDiff.size() > 1){
-//				//draw
-//				g.setWinnerOfLastRound(0);
-//				System.out.println("Unentschieden :)");
-//				for (Integer i: playersWithMinDiff){
-//					this.getGameById(gameid).setPlayerPoints(i,this.getGameById(gameid).getPlayerPoints(i) +1);
-//				}
-//			}else {
-//				// one player best
-//				
-//				g.setWinnerOfLastRound(playersWithMinDiff.get(0));
-//				this.getGameById(gameid).setPlayerPoints(playersWithMinDiff.get(0),this.getGameById(gameid).getPlayerPoints(playersWithMinDiff.get(0)) +1);
-//				System.out.println(this.getGameById(gameid).getPlayerName(playersWithMinDiff.get(0))+ " hat gewonnen");
-//			}
-//			
-//			//restart 
-//			if (g.getRound() == g.getMaxRound()){
-//				this.endGame(gameid);
-//				this.handicapAction(gameid);
-//			}
-//			else
-//				this.showNextItem(gameid);
-//
-//		}
 
 		g.setServerSendTime(System.currentTimeMillis());
 		return g;
