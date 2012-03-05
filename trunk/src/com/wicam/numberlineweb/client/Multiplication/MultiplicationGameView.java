@@ -2,8 +2,6 @@ package com.wicam.numberlineweb.client.Multiplication;
 
 import java.util.ArrayList;
 
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;

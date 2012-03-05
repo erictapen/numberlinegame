@@ -9,7 +9,6 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
-import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet;
 
 public class MultiplicationGameCoordinator extends GameCoordinator {
 	
@@ -124,13 +123,8 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 			//started
 		case 3:
 			
-			gameView.setInfoText("Mache deine Schätzung!");
-			gameView.drawAnwers(g.getAnswers());
-			gameView.setResultText(g.getResult());
-			
-			for (int i = 0; i < g.getPlayers().size(); i++){
-				gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
-			}
+			gameView.setInfoText("Klicke auf die richtige Rechnung!");
+			updateViewIngame(g, gameView);
 			
 			//kritischer moment, setze refreshrate nach oben
 			setRefreshRate(200);
@@ -150,7 +144,10 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 
 			//evaluation, who has won?
 		case 5:
-			//setRefreshRate(1000);
+			
+			updateViewIngame(g, gameView);
+			setRefreshRate(1000);
+			gameView.setInfoText("Alle richtigen Antworten sind weg.");
 			
 			// gewinner g.getWinnerOfLastRound() anzeigen lassen
 			
@@ -167,6 +164,23 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 		openGame = g;
 
 
+	}
+	
+	
+	
+	/**
+	 * Updates the game view once
+	 * @param g state to get data from
+	 * @param gameView View to update
+	 * 
+	 */
+	private void updateViewIngame(MultiplicationGameState g, MultiplicationGameView gameView) {
+		gameView.drawAnwers(g.getAnswers());
+		gameView.setResultText(g.getResult());
+		
+		for (int i = 0; i < g.getPlayers().size(); i++){
+			gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+		}
 	}
 	
 	

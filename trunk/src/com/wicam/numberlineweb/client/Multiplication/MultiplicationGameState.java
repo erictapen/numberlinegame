@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.Multiplication;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.google.gwt.core.client.GWT;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 
@@ -124,6 +123,22 @@ public class MultiplicationGameState extends GameState implements Serializable{
 		return counter;
 	}
 
+	
+	
+	/**
+	 * @param correct Specifies, if the answers have to be correct
+	 * @param taken Specifies, if the answers have to be taken
+	 * @return Returns all answers, that are "correct" (given parameter)
+	 */
+	public ArrayList<MultiplicationAnswer> getSpecificAnswers(boolean correct, boolean taken) {
+		ArrayList<MultiplicationAnswer> res = new ArrayList<MultiplicationAnswer>();
+		for (MultiplicationAnswer answer : this.answers) {
+			if (answer.isCorrect() == correct && answer.isTaken() == taken) {
+				res.add(answer);
+			}
+		}
+		return res;
+	}
 	
 	/**
 	 * Adds a new player to the game

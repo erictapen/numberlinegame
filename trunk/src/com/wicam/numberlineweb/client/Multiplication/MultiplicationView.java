@@ -16,7 +16,7 @@ public class MultiplicationView extends AbsolutePanel {
 	
 	private MultiplicationGameController controller;
 	private final HTML infoBox = new HTML();
-	private final HTML resultBox = new HTML();
+	//private final HTML resultBox = new HTML();
 	private final FlowPanel answersBox = new FlowPanel();
 	
 	
