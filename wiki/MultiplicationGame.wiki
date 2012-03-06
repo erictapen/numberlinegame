@@ -7,8 +7,14 @@ The Multiplication Game.
 
 = Versions =
 
+==[http://code.google.com/p/numberlinegame/source/detail?r=132 v1.1]==
+===Changelog:===
+  * Explanation-text and "Start game"-button added
+  * Centered view
+===Known issues:===
+  * Lack of game-mode-modificationability
 
-==[r128 v1.0]==
+==[http://code.google.com/p/numberlinegame/source/detail?r=128 v1.0]==
 ===Changelog:===
   * gameplay completed
   * NPC implemented
@@ -19,7 +25,7 @@ The Multiplication Game.
   * poor design
   * poor feedback
 
-==[r126 v0.1]==
+==[http://code.google.com/p/numberlinegame/source/detail?r=126 v0.1]==
 ===Changelog===
   * running system
   * generation of new results now on server side
