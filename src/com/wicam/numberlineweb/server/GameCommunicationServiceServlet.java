@@ -36,7 +36,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	GameCommunicationServiceServlet comm;
 
 	boolean timeOutListLock = false;
-	private Timer timeOutTimer = new Timer();
+	private Timer timeOutTimer = new Timer(true);
 	protected int currentId=0;
 	int gamePending;
 	protected String internalName;
@@ -71,7 +71,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public void endGame(int id) {
 
-		Timer t = new Timer();
+		Timer t = new Timer(true);
 		
 		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
 		
