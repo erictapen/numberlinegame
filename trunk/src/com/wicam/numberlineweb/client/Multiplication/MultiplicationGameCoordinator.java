@@ -124,6 +124,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 		case 3:
 			
 			gameView.setInfoText("Klicke auf die richtige Rechnung!");
+			
 			updateViewIngame(g, gameView);
 			
 			//kritischer moment, setze refreshrate nach oben
@@ -148,10 +149,9 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 			updateViewIngame(g, gameView);
 			setRefreshRate(1000);
 			gameView.setInfoText("Alle richtigen Antworten sind weg.");
-			
-			// gewinner g.getWinnerOfLastRound() anzeigen lassen
-			
+				
 			break;
+			
 			// for synchronization
 		case 6:
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
@@ -198,8 +198,8 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 		for (int i = 0; i < g.getPlayers().size(); i++)
 			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
 		gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
-		if (!g.isPlayerReady(playerID))
-			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		//if (!g.isPlayerReady(playerID))
+			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 	}
 	
 	
@@ -255,8 +255,17 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	 * @param w Widget, that was hovered
 	 */
 	public void mouseMovedTo(Widget w, int x, int y) {
-		//((MultiplicationGameCommunicationServiceAsync)commServ).mouseMovedTo(openGame.getId(), playerID, updateCallback);
-		//TODO Interface ändern (Methode ändern)
+	}
+
+	
+	
+	/**
+	 * User clicked on "Start game"
+	 */
+	public void startButtonClicked() {
+		if (!openGame.isPlayerReady(this.playerID)) {
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		}		
 	}
 
 
