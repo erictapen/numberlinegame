@@ -175,6 +175,7 @@ div.gametype div {
 .gametypeselector {
 	margin: 10px;
 	height: 425px;
+	padding-bottom: 90px;
 }
 
 body .gametypeselector {
@@ -354,7 +355,7 @@ background-color:#F6F6F6 !important;
 	cursor: pointer;
 	cursor: hand;
 	font-size: 15px;
-	background: url("images/hborder.png") repeat-x 0px -2077px;
+	background: none;
 	border:1px solid #bbb;
 	border-bottom: 1px solid #a0a0a0;
 	border-radius: 3px;
@@ -370,9 +371,14 @@ background-color:#F6F6F6 !important;
 .answer-Button[disabled] {
 	cursor: default;
 	color: #888;
+	background: silver;
 }
 .answer-Button[disabled]:hover {
 	border: 1px outset #ccc;
+}
+
+.answer-Button-chosen {
+	background: grey;
 }
 
 .result-box {
@@ -380,6 +386,18 @@ background-color:#F6F6F6 !important;
 	font-weight: bold;
 }
 
-.multiplication-box {
+.multiplication-box, .BuddyNumber-box {
 	margin-left: 120px;
+}
+
+.community-box, .hand-box {
+	border:1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin-top: 20px;
+}
+
+.hand-box {
+	margin-bottom: 100px;
 }

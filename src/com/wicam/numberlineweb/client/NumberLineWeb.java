@@ -16,6 +16,9 @@ import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinat
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
@@ -218,7 +221,7 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		//adds the Multiplication game
-		gts.addGame("Multiplikation", "nlg_pre.png", "Rechne schnell!", new GameItemStarter() {
+		gts.addGame("Multiplikation", "pre_multiplication.png", "Rechne schnell!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -249,7 +252,43 @@ public class NumberLineWeb implements EntryPoint {
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
 		
+		
+		//adds the BuddyNumber game
+		gts.addGame("Partnerzahl", "pre_buddyNumber.png", "Kombiniere gut!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
+				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+
+				if(logging != null){
+					if(logging.equals("on"))
+						commService.loggingOn(true, dummyCallback);
+					else{
+						if(logging.equals("off"))
+							commService.loggingOn(false, dummyCallback);
+						else
+							commService.loggingOn(true, dummyCallback);
+					}
+				}
+				else
+					commService.loggingOn(true, dummyCallback);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		//init the GTS on the root panel.
+		gts.init(RootPanel.get("game"));
+		
 
 	}
+	
+	
+	
 
 }
