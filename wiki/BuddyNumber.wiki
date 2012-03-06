@@ -1,0 +1,9 @@
+#summary Changelog and Known issues for BuddyNumber
+
+= Versions =
+
+==[http://code.google.com/p/numberlinegame/source/detail?r=134 v1.0]==
+===Changelog:===
+  * First commit => Running game
+===Known issues:===
+  * No NPCs
