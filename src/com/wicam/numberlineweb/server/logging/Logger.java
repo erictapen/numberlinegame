@@ -86,7 +86,7 @@ public class Logger {
 	
 	public enum LogActionType {GAME_STARTED, GAME_ENDED, JOINED_GAME, LEFT_GAME,
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
-		NUMBERLINE_NUMBER_PRESENTED, NUMBERLINE_HANDICAP, DOPPELUNG_GAME_HANDICAP;
+		NUMBERLINE_NUMBER_PRESENTED, DOPPELUNGGAME_WORD_ENTERED, DOPPELUNGGAME_WORD_CATEGORIZED;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -109,6 +109,10 @@ public class Logger {
 					return 7;
 				case NUMBERLINE_NUMBER_PRESENTED:
 					return 8;
+				case DOPPELUNGGAME_WORD_ENTERED:
+					return 9;
+				case DOPPELUNGGAME_WORD_CATEGORIZED:
+					return 10;
 				default:
 					//Should not occur
 					return -1;
