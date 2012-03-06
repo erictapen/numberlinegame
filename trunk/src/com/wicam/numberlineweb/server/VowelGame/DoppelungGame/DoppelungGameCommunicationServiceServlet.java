@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
@@ -100,18 +102,49 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 
 		// short vowel
-		if (g.getCurWord().isShortVowel())
-			if (bottonid == DoppelungGameController.SHORTVOWELBUTTON)
+		boolean isShortVowel = false;
+		boolean isAnswerCorrect = false;
+		
+		if (g.getCurWord().isShortVowel()){
+			
+			isShortVowel = true;
+			
+			if (bottonid == DoppelungGameController.SHORTVOWELBUTTON) {
 				g.setAnswer(playerid,true);
+				isAnswerCorrect = true;
+			}
 			else
 				g.setAnswer(playerid,false);
+		}
 		// long vowel
-		else 
-			if (bottonid == DoppelungGameController.LONGVOWELBUTTON)
+		else {
+			if (bottonid == DoppelungGameController.LONGVOWELBUTTON) {
 				g.setAnswer(playerid,true);
+				isAnswerCorrect = true;
+			}
 			else
 				g.setAnswer(playerid,false);
+		}
+		
+		String type = "";
+		if (isShortVowel) 
+			type = "short";
+		else
+			type = "long";
 
+		HttpServletRequest request = this.getThreadLocalRequest();
+		if(request != null){
+			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
+					request.getSession().getAttribute("game2pid2uid");
+			int uid = map.get(internalName).get(gameid).get(playerid);
+			String params = "{word: \"" + g.getCurWord().getWordString() + "\", " +
+					"vowel_type: \"" + type + "\", " +
+					"has_answered_correctly: " + isAnswerCorrect + "}";
+			this.logger.log(gameid, uid, System.currentTimeMillis(),
+					LogActionType.DOPPELUNGGAME_WORD_CATEGORIZED, params,
+					this.getClass().getName(), LogActionTrigger.USER);
+		}
+		
 
 		// next step if correct answer or already tried once
 		if (g.hasCorrectlyAnswered(playerid) || g.getSoundTries(playerid) >= 2){
@@ -220,11 +253,23 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		int gameid = Integer.parseInt(word.split(":")[0]);
 		int playerid = getPlayerId(gameid);
 		String enteredWord = word.split(":")[2];
-
+		
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 		g.setShowWordFeedback(playerid, true);
 		g.incWordTries(playerid);
 
+		HttpServletRequest request = this.getThreadLocalRequest();
+		if(request != null){
+			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
+					request.getSession().getAttribute("game2pid2uid");
+			int uid = map.get(internalName).get(gameid).get(playerid);
+			String params = "{correct_word: \"" + g.getCurWord().getWordString() + "\", " +
+					"word_entered: \"" + enteredWord + "\"}";
+			this.logger.log(gameid, uid, System.currentTimeMillis(),
+					LogActionType.DOPPELUNGGAME_WORD_ENTERED, params,
+					this.getClass().getName(), LogActionTrigger.USER);
+		}
+		
 		if (enteredWord.equals(g.getCurWord().getWordString()))
 			g.setAnswer(playerid, true);
 		else
