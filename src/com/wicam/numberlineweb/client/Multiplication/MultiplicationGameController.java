@@ -55,6 +55,15 @@ public class MultiplicationGameController extends GameController {
 
 
 
+	/**
+	 * User clicked on "Start game"
+	 */
+	public void startButtonClicked() {
+		((MultiplicationGameCoordinator) coordinator).startButtonClicked();
+	}
+
+
+
 
 
 }
