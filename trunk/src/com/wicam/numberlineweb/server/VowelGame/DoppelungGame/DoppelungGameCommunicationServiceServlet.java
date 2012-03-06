@@ -92,8 +92,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 
-		Timer t = new Timer();
-		mcTimer = new Timer();
+		Timer t = new Timer(true);
+		mcTimer = new Timer(true);
 
 		g.setShowSoundFeedback(playerid, true);
 		g.incSoundTries(playerid);
@@ -230,7 +230,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		else
 			g.setAnswer(playerid, false);
 
-		Timer t = new Timer();
+		Timer t = new Timer(true);
 		if (g.hasCorrectlyAnswered(playerid) || g.getWordTries(playerid) >= 2){
 			// add points for correct answer
 			if (g.getWordTries(playerid) <2)
@@ -271,7 +271,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		if (g.getPlayerCount() == 1 || 
 				g.isEndedShortVowelGame(playerid%2+1)){
 			mcTimer.cancel();
-			Timer t = new Timer();
+			Timer t = new Timer(true);
 			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
 			this.setChanged(gameid);
 		}

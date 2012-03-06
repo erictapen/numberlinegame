@@ -48,7 +48,7 @@ public class NumberLineGameNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer();
+			Timer t = new Timer(true);
 			NumberLineGameState game = (NumberLineGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();
