@@ -47,10 +47,19 @@ public class DatabaseConnection {
 	}
 	
 	
-	public void commit(){
+	public void commit() {
 		
 		try {
 			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void rollback() {
+		
+		try {
+			conn.rollback();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

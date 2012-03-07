@@ -16,6 +16,8 @@ import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
+import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
+import com.wicam.numberlineweb.server.logging.Logger;
 import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
 
 public class NumberLineGameCommunicationServiceServlet extends
@@ -436,4 +438,5 @@ public class NumberLineGameCommunicationServiceServlet extends
 		return gamePropertiesStr;
 		
 	}
+
 }

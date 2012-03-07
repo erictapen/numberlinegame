@@ -19,9 +19,9 @@ public class Logger {
 	private final String dbUser = "log_user";
 	private final String dbPassword = "ner8tiro5";
 	
-	private static final String STATEMENT_LOGS = "INSERT INTO logs (log_user_id, log_time," +
-			"log_action_id, log_action_parameters, log_action_time, log_action_trigger, log_game_instance)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String STATEMENT_LOGS = "INSERT INTO logs (log_user_id, " +
+			"log_action_id, log_action_parameters, log_action_trigger, log_game_instance, log_action_time)" +
+			" VALUES (?, ?, ?, ?, ?, ?)";
 	private PreparedStatement preparedStatementLogs;
 	
 	private static final String STATEMENT_GAME_INSTANCE = "INSERT INTO game_instances (game_id," +
@@ -181,20 +181,14 @@ public class Logger {
 			if(!this.userIDProvided)
 				this.preparedStatementLogs.setNull(1, java.sql.Types.DOUBLE);
 				
-			//Time stamp
-			this.preparedStatementLogs.setDouble(2, System.currentTimeMillis());
-			
 			//Action type
-			this.preparedStatementLogs.setInt(3, LogActionType.getIndex(logActionType));
+			this.preparedStatementLogs.setInt(2, LogActionType.getIndex(logActionType));
 			
 			//Action parameters
-			this.preparedStatementLogs.setString(4, actionParams);
-			
-			//Action time
-			this.preparedStatementLogs.setDouble(5, logActionTime);
+			this.preparedStatementLogs.setString(3, actionParams);
 			
 			//Action trigger (user, application or NPC)
-			this.preparedStatementLogs.setString(6, LogActionTrigger.getName(logActionTrigger));
+			this.preparedStatementLogs.setString(4, LogActionTrigger.getName(logActionTrigger));
 			
 			int gameInstanceId;
 			//Keep track of game IDs used by the servlets and those used for logging
@@ -219,7 +213,10 @@ public class Logger {
 				gameInstanceId = this.gameId2internalId.get(getLogGameByClass(logGameClassName)).get(gameId);
 				
 			//Make reference for log entry to game instance entry
-			this.preparedStatementLogs.setInt(7, gameInstanceId);
+			this.preparedStatementLogs.setInt(5, gameInstanceId);
+			
+			//Action time
+			this.preparedStatementLogs.setTimestamp(6, new java.sql.Timestamp(logActionTime));
 			
 			//Write entry to database
 			this.writeToTableLogs();
@@ -244,6 +241,17 @@ public class Logger {
 		}
 			
 		this.log(gameID, logActionTime, logActionType, actionParams, logGameClassName, logActionTrigger);
+		
+	}
+	
+	public void commitChanges() {
+		
+		this.databaseConnection.commit();
+	}
+	
+	public void rollbackChanges() {
+		
+		this.databaseConnection.rollback();
 		
 	}
 	

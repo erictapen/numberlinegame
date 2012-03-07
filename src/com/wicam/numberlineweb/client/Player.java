@@ -69,13 +69,4 @@ public abstract class Player implements IsSerializable, Comparable<Player>{
 		this.reactionTimes.add(reactionTime);
 	}
 	
-	public Double getReactionTimeMedian(){
-		Double median;
-		int size = this.reactionTimes.size();
-		if (size % 2 != 0)
-			median = this.reactionTimes.get((size + 1) / 2);
-		else
-			median = (this.reactionTimes.get(size / 2) + this.reactionTimes.get((size / 2) + 1)) / 2;
-		return median;
-	}
 }

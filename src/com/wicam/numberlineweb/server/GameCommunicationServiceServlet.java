@@ -12,6 +12,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 import com.wicam.numberlineweb.server.logging.IHandicap;
@@ -80,6 +81,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		this.logger.log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 
+//		this.writeLogToDatabase(id);
+		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
 		
@@ -617,10 +620,30 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 	
-	private void adjustToElo(int uid, GameState game){
-		int eloValue;
-		eloValue = this.logger.getEloRating(uid);
-		this.handicapAdjustment.adjustGameSetting(eloValue, game);
-
-	}
+//	private void adjustToElo(int uid, GameState game){
+//		int eloValue;
+//		eloValue = this.logger.getEloRating(uid);
+//		this.handicapAdjustment.adjustGameSetting(eloValue, game);
+//
+//	}
+	
+//	private void writeLogToDatabase(int gameid) {
+//		
+//		GameState g = this.getGameById(gameid);
+//		
+//		//Check if game has any logged in users...
+//		boolean hasLoggedInUsers = false;
+//		for (Player player : g.getPlayers()) {
+//			
+//			if (player.getUid() != -2 && player.getUid() != -5) // -2 == player is a guest, -5 == player is a NPC
+//				hasLoggedInUsers = true;
+//			
+//		}
+//		
+//		if (hasLoggedInUsers)
+//			this.logger.commitChanges();
+//		else
+//			this.logger.rollbackChanges();
+//		
+//	}
 }
