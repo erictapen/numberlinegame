@@ -7,12 +7,20 @@ The Multiplication Game.
 
 = Versions =
 
+==[http://code.google.com/p/numberlinegame/source/detail?r=136 v1.2]==
+Changelog:
+  * cleaned up Coordinator
+  * improved feedback
+Known issues:
+  * Lack of game-mode-modificationability
+
 ==[http://code.google.com/p/numberlinegame/source/detail?r=132 v1.1]==
 ===Changelog:===
   * Explanation-text and "Start game"-button added
   * Centered view
 ===Known issues:===
   * Lack of game-mode-modificationability
+  * poor feedback
 
 ==[http://code.google.com/p/numberlinegame/source/detail?r=128 v1.0]==
 ===Changelog:===
