@@ -132,17 +132,6 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 			
 			break;
 
-			//started, keep going
-		case 4:
-			
-//			setRefreshRate(500);
-//			gameView.drawAnwers(g.getAnswers());
-
-			// andere spieler g.getPlayers() abwarten / anzeige erneuern
-			
-			
-			break;
-
 			//evaluation, who has won?
 		case 5:
 			

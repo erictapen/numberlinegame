@@ -120,9 +120,9 @@ public class MultiplicationGameView extends GameView  {
 	 * Set the explanation-text
 	 */
 	public void setExplanationText(){
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Multiplikationsspiel - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Du siehst gleich viele Rechenaufgaben. Darunter steht eine Zahl. Klicke so schnell wie möglich auf die " +
+				"Du siehst gleich einige Rechenaufgaben. Darunter steht eine Zahl. Klicke so schnell wie möglich auf die " +
 				"Rechnung, die diese Zahl ergibt." +
 				"</div>");
 	}
