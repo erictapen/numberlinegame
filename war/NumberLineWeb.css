@@ -370,8 +370,8 @@ background-color:#F6F6F6 !important;
 }
 .answer-Button[disabled] {
 	cursor: default;
-	color: #888;
-	background: silver;
+	/*color: #888;
+	background: silver;*/
 }
 .answer-Button[disabled]:hover {
 	border: 1px outset #ccc;
@@ -379,6 +379,16 @@ background-color:#F6F6F6 !important;
 
 .answer-Button-chosen {
 	background: grey;
+}
+
+.correct {
+	background: #32cd32;
+	color: black;
+}
+
+.wrong {
+	background: #b22222;
+	color: white;
 }
 
 .result-box {

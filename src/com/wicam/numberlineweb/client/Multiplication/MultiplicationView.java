@@ -88,8 +88,17 @@ public class MultiplicationView extends AbsolutePanel {
 					
 				}
 			});
+
+			String color = "";
+			if (answer.isTaken()) {
+				if (answer.isCorrect()) {
+					color = " correct";
+				} else {
+					color = " wrong";
+				}
+			}
 			
-			b.setStyleName("answer-Button");
+			b.setStyleName("answer-Button"+color);
 			b.setEnabled(!answer.isTaken()); // unclickable, if already taken
 			
 			answersBox.add(b);
