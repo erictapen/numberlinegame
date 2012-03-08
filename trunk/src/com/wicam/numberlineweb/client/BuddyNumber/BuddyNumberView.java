@@ -37,13 +37,13 @@ public class BuddyNumberView extends AbsolutePanel {
 		
 		// display all answers
 		communityBox.setHeight("180px");
-		communityBox.setWidth("370px");
+		communityBox.setWidth("400px");
 		communityBox.setStyleName("community-box");
 		add(communityBox);
 		
 		// display all answers
 		handBox.setHeight("90px");
-		handBox.setWidth("370px");
+		handBox.setWidth("400px");
 		handBox.setStyleName("hand-box");
 		add(handBox);
 //		setWidgetPosition(handBox, 0, 200);
