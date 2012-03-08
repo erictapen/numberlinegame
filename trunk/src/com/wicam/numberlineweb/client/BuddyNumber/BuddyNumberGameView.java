@@ -135,7 +135,7 @@ public class BuddyNumberGameView extends GameView  {
 	 * Set the explanation-text
 	 */
 	public void setExplanationText(){
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Partnerzahlen - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
 				"Gleich siehst du 2 Kasten. Im oberen sind die Zahlen die allen Spielern zur Verfügung stehen. " +
 				"Im unteren Kasten stehen alle deine Zahlen.<br>Das Ziel des Spiels ist es, möglichst schnell " +

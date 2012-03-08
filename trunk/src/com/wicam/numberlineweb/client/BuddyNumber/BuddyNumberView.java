@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.wicam.numberlineweb.client.Player;
 
 public class BuddyNumberView extends AbsolutePanel {
 	
@@ -102,7 +101,13 @@ public class BuddyNumberView extends AbsolutePanel {
 				}
 			});
 			
-			b.setStyleName("answer-Button");
+			if (digit.isTaken()) {
+				b.setStyleName("answer-Button answer-Button-chosen");				
+			} else {
+				b.setStyleName("answer-Button");
+			}
+			
+			
 			b.setEnabled(!digit.isTaken()); // unclickable, if already taken
 			
 			communityBox.add(b);

@@ -36,7 +36,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 	public BuddyNumberGameCommunicationServiceServlet() {
 
-		super("multiplication");
+		super("buddyNumber");
 		//this.handicapAdjustment = new NumberLineGameHandicap();
 
 	}
@@ -52,6 +52,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		return npcIds.contains(playerId);
 	}
 
+	
 
 	/**
 	 * @param state BuddyNumberGameState to alter
@@ -131,30 +132,6 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		}
 		return false;
 	}
-	
-	
-
-	/**
-	 * Disables/Enables all digits in a set of digits
-	 * @param digits Set of digits to disable/enable
-	 * @param taken Define, if all digits are taken or not
-	 */
-	private void setAllDigitsTakenIn(ArrayList<BuddyNumberDigit> digits, boolean taken) {
-		for (BuddyNumberDigit digit : digits) {
-			digit.setTaken(taken);
-		}
-	}
-
-
-
-	/**
-	 * Disables/Enables one digit in a set of digits
-	 * @param digits Set of digits to disable/enable from
-	 * @param digitID Define, what digit should be disabled
-	 */
-	private void setDigitTaken(ArrayList<BuddyNumberDigit> digits, int digitID) {
-		digits.get(digitID).setTaken(true);
-	}
 
 
 
@@ -170,7 +147,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 	/**
 	 * @param clicked gameid:playerid:clickedAnswer
-	 * @return New MultiplicationGameState
+	 * @return New BuddyNumberGameState
 	 */
 	synchronized public BuddyNumberGameState clickedAt(String clicked) {
 
@@ -217,7 +194,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 			
 			if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 
-				setDigitTaken(g.getCommunityDigits(), digitID);
+				g.setDigitTaken(g.getCommunityDigits(), digitID);
 
 				if (g.getPlayerClickedOn(playerid) + digit == 10) {
 
@@ -236,8 +213,8 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 				} else {
 
-					setAllDigitsTakenIn(g.getCommunityDigits(), true);
-					setAllDigitsTakenIn(g.getHandDigits(), true);
+					g.setAllDigitsTakenIn(g.getCommunityDigits(), true);
+					g.setAllDigitsTakenIn(g.getHandDigits(), true);
 
 					this.setGameState(this.getGameById(gameid),5);
 
@@ -268,6 +245,54 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		return g;
 	}
 
+	
+	
+	/**
+	 * @param playerid NPC-ID
+	 * @param clicked gameid:playerid:digit:digitID:from(com/hand)
+	 * @return Could NPC click? If not, the answer was taken
+	 */
+	public boolean npcClicked(String clicked, Boolean npcWasRight) {
+		int gameid = Integer.parseInt(clicked.split(":")[0]);
+		int playerid = Integer.parseInt(clicked.split(":")[1]);
+		int digitID = Integer.parseInt(clicked.split(":")[3]);
+		BuddyNumberGameState g = (BuddyNumberGameState) this.getGameById(gameid); 
+		
+		System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
+		
+		if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
+
+			g.setDigitTaken(g.getCommunityDigits(), digitID);
+
+			if (npcWasRight) {
+				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
+			} else {
+				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);
+			}
+
+			if (hasSolution(g.getCommunityDigits(), g.getHandDigits())) {
+				this.setGameState(this.getGameById(gameid),3);
+				this.setChanged(gameid);
+			} else {
+				g.setAllDigitsTakenIn(g.getCommunityDigits(), true);
+				g.setAllDigitsTakenIn(g.getHandDigits(), true);
+				this.setGameState(this.getGameById(gameid),5);
+				if (g.getRound() >= g.getMaxRound()){
+					this.endGame(gameid);
+					this.handicapAction(gameid);
+				}
+				else {
+					this.showNextItem(gameid);			
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}	
+	
+	
 
 	private void handicapAction(int gameid) {
 

@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberDigit;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameState;
 
 public class BuddyNumberNPC {
@@ -27,7 +26,7 @@ public class BuddyNumberNPC {
 	
 	/**
 	 * Set skill
-	 * @param skill Set skill to this value
+	 * @param skill Set skill to this value, range 0.0 (very unskilled) to 1.0 (winner-type)
 	 */
 	public void setSkill(double skill) {
 		this.skill = skill;
@@ -36,7 +35,7 @@ public class BuddyNumberNPC {
 
 
 	/**
-	 * @return Returns skill
+	 * @return Returns skill, range 0.0 (very unskilled) to 1.0 (winner-type)
 	 */
 	public double getSkill() {
 		return skill;
@@ -45,7 +44,7 @@ public class BuddyNumberNPC {
 
 
 	/**
-	 * @return Returns the MultiplicationGameState
+	 * @return Returns the BuddyNumberGameState
 	 */
 	private BuddyNumberGameState getGameState() {
 		return ((BuddyNumberGameState) comm.getGameById(gameid));
@@ -88,38 +87,28 @@ public class BuddyNumberNPC {
 					break;
 					case 3:
 					case 4:
-//							if (!makeClick){
-//								time = 5000 + (int)(new Random().nextGaussian()*500);
-//								if (time < 5000)
-//									time = 5000;
-//								makeClick = true;
-//							}
-//							else{
-//								makeClick = false;
-//								String answer;
-//								if (new Random().nextDouble() < skill) { 
-//									answer = getSpecificAnswer(true);
-//								} else {
-//									answer = getSpecificAnswer(false);
-//								}
-//								
-//								if (!answer.equals("fail")) {
-//									String handValue = answer.split(":")[0];
-//									String handID = answer.split(":")[1];
-//									String communityValue = answer.split(":")[2];
-//									String communityID = answer.split(":")[3];
-//									
-//									String first = "" + handValue + ":" + handID + ":hand";
-//									String second = "" + communityValue + ":" + communityID + ":com";
-//									
-//									@SuppressWarnings("unused")
-//									BuddyNumberGameState temp = comm.clickedAt(Integer.toString(game.getId()) + ":" + 
-//											Integer.toString(playerid) + ":" + first, playerid);
-//									@SuppressWarnings("unused")
-//									BuddyNumberGameState temp2 = comm.clickedAt(Integer.toString(game.getId()) + ":" + 
-//											Integer.toString(playerid) + ":" + second, playerid);
-//								}
-//							}
+							if (!makeClick){
+								time = 5000 + (int)(new Random().nextGaussian()*500);
+								if (time < 5000)
+									time = 5000;
+								makeClick = true;
+							}
+							else{
+								String answer;
+								Boolean wasRight = (new Random().nextDouble() < skill);
+								answer = getSpecificAnswer(wasRight);
+								
+								if (!answer.equals("fail")) {
+									String communityValue = answer.split(":")[2];
+									String communityID = answer.split(":")[3];
+									
+									String string = "" + communityValue + ":" + communityID + ":com";
+									
+									makeClick = !comm.npcClicked(Integer.toString(game.getId()) + ":" + 
+											Integer.toString(playerid) + ":" + string, wasRight);
+								
+								}
+							}
 					break;
 					case 5:
 						makeClick = false;
