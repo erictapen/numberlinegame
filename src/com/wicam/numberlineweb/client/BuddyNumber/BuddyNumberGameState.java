@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGamePlayer;
 
 
 /**
@@ -120,6 +119,31 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 		
 		return res;
 	}
+	
+	
+	
+	/**
+	 * Disables/Enables all digits in a set of digits
+	 * @param digits Set of digits to disable/enable
+	 * @param taken Define, if all digits are taken or not
+	 */
+	public void setAllDigitsTakenIn(ArrayList<BuddyNumberDigit> digits, boolean taken) {
+		for (BuddyNumberDigit digit : digits) {
+			digit.setTaken(taken);
+		}
+	}
+
+
+
+	/**
+	 * Disables/Enables one digit in a set of digits
+	 * @param digits Set of digits to disable/enable from
+	 * @param digitID Define, what digit should be disabled
+	 */
+	public void setDigitTaken(ArrayList<BuddyNumberDigit> digits, int digitID) {
+		digits.get(digitID).setTaken(true);
+	}
+	
 	
 
 	/**

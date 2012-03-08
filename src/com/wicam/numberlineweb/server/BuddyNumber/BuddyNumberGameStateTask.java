@@ -11,8 +11,6 @@ public class BuddyNumberGameStateTask extends SetGameStateTask{
 		super.run();
 
 		if (((BuddyNumberGameState)s.getGameById(gameid)) != null) {
-			// reset clicked pos
-			//((MultiplicationGameState)s.getGameById(gameid)).resetAllPlayerActPos();
 
 			// numbers should be changed while winner info is displayed
 			((BuddyNumberGameCommunicationServiceServlet) s).newDigits((BuddyNumberGameState) s.getGameById(gameid));

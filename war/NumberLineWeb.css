@@ -378,7 +378,8 @@ background-color:#F6F6F6 !important;
 }
 
 .answer-Button-chosen {
-	background: grey;
+	background: silver;
+	color: white;
 }
 
 .correct {
