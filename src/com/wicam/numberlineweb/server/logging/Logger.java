@@ -13,7 +13,7 @@ public class Logger {
 	
 	public static enum LoggingActive {ON, OFF};
 	
-	public static LoggingActive loggingActive = LoggingActive.OFF;
+	public static LoggingActive loggingActive = LoggingActive.ON;
 	
 	private DatabaseConnection databaseConnection;
 	
