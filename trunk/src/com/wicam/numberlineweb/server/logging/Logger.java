@@ -11,6 +11,10 @@ import com.wicam.numberlineweb.server.database.DatabaseConnection;
 
 public class Logger {
 	
+	public static enum LoggingActive {ON, OFF};
+	
+	public static LoggingActive loggingActive = LoggingActive.OFF;
+	
 	private DatabaseConnection databaseConnection;
 	
 	private final String dbHost = "localhost";
@@ -52,11 +56,11 @@ public class Logger {
 		tempMap.put("com.wicam.numberlineweb.server.MathDiagnostics." +
 				"MathDiagnosticsCommunicationServiceServlet", LogGame.MATH_DIAGNOSTICS);
 		
-		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
-				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
-		
-		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
-				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
+//		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
+//				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
+//		
+//		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
+//				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
@@ -155,11 +159,6 @@ public class Logger {
 		}
 	
 	};
-	
-	
-	public static enum LoggingActive {ON, OFF};
-	//Enable logging by default
-	public static LoggingActive loggingActive = LoggingActive.ON;
 	
 	public Logger(){
 		

@@ -115,19 +115,6 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
 				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
@@ -142,20 +129,6 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
 				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-					
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
@@ -171,20 +144,6 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
 				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-					
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
@@ -200,20 +159,6 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (DehnungGameCommunicationServiceAsync) GWT.create(DehnungGameCommunicationService.class);
 				coordinator = new DehnungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-					
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
@@ -231,19 +176,6 @@ public class NumberLineWeb implements EntryPoint {
 				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
 				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
-				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
@@ -263,19 +195,6 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
 				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-
-				if(logging != null){
-					if(logging.equals("on"))
-						commService.loggingOn(true, dummyCallback);
-					else{
-						if(logging.equals("off"))
-							commService.loggingOn(false, dummyCallback);
-						else
-							commService.loggingOn(true, dummyCallback);
-					}
-				}
-				else
-					commService.loggingOn(true, dummyCallback);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
