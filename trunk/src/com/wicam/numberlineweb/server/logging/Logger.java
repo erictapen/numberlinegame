@@ -51,6 +51,12 @@ public class Logger {
 		
 		tempMap.put("com.wicam.numberlineweb.server.MathDiagnostics." +
 				"MathDiagnosticsCommunicationServiceServlet", LogGame.MATH_DIAGNOSTICS);
+		
+		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
+				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
+		
+		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
+				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
@@ -59,7 +65,7 @@ public class Logger {
 	// General action data common for all games
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
-		DEHNUNG_GAME, MATH_DIAGNOSTICS;
+		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -74,6 +80,10 @@ public class Logger {
 					return 3;
 				case DOPPELUNG_GAME:
 					return 4;
+				case MULTIPLICATION:
+					return 5;
+				case BUDDY_NUMBER:
+					return 6;
 				default:
 					//Should not occur
 					return -1;
