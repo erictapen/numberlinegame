@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
+import com.wicam.numberlineweb.client.NumberLineWeb;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class NumberLineGameCoordinator extends GameCoordinator {
@@ -63,6 +64,8 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
+		
+		gameState.setGameOpenedUserId(NumberLineWeb.USERID);
 		
 		((NumberLineGameCommunicationServiceAsync)commServ).openGame(gameState, gameOpenedCallBack);
 
