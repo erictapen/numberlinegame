@@ -14,10 +14,9 @@ import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunication
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGamePlayer;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
-import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
-import com.wicam.numberlineweb.server.logging.Logger;
+import com.wicam.numberlineweb.server.logging.GameLogger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
 
 public class NumberLineGameCommunicationServiceServlet extends
@@ -72,6 +71,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 		int rightNumber;
 		int exerciseNumber;
 
+		GameLogger logger = this.gameId2Logger.get(game.getId());
+		
 		if (game.getNumberRange().isRandom()){
 			// not the full range for minNumber
 			leftNumber = game.getNumberRange().getMinNumber() + (int) (Math.random() * (game.getNumberRange().getMaxNumber()*9/10 - game.getNumberRange().getMinNumber()));
@@ -88,7 +89,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		game.setRightNumber(rightNumber);
 		game.setExerciseNumber(exerciseNumber);
 		
-		this.logger.log(game.getId(), System.currentTimeMillis(), LogActionType.NUMBERLINE_NUMBER_PRESENTED, 
+		logger.log(game.getId(), System.currentTimeMillis(), LogActionType.NUMBERLINE_NUMBER_PRESENTED, 
 				"{\"number\" : " + exerciseNumber + "}", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		
@@ -116,6 +117,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 		int clickedAt = Integer.parseInt(clicked.split(":")[2]);
 		NumberLineGameState g = (NumberLineGameState) this.getGameById(gameid);
 
+		GameLogger logger = this.gameId2Logger.get(gameid);
+		
 		HttpServletRequest request = this.getThreadLocalRequest();
 		int uid = -2;
 		if(request != null){
@@ -129,11 +132,11 @@ public class NumberLineGameCommunicationServiceServlet extends
 			int number = this.rawPosToReal(clickedAt, g);
 			if(!this.isNPC(playerid)){
 				if(uid != -2)
-					this.logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_SUCCESSFUL_CLICK,
+					logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_SUCCESSFUL_CLICK,
 							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
 			}
 			else
-				this.logger.log(g.getId(), System.currentTimeMillis(), LogActionType.NUMBERLINE_NPC_GUESS, 
+				logger.log(g.getId(), System.currentTimeMillis(), LogActionType.NUMBERLINE_NPC_GUESS, 
 						"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.NPC);
 				
 			
@@ -168,7 +171,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 				this.setChanged(gameid);
 				
 				if(uid != -2)
-					this.logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
+					logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.NUMBERLINE_POSITION_TAKEN,
 							"{\"number\" : " + number + "}", this.getClass().getName(), LogActionTrigger.USER);
 			}
 		}
@@ -241,6 +244,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 		NumberLineGameState numberlineGameState = (NumberLineGameState) this.getGameById(gameid);
 		ArrayList<? extends Player> players = numberlineGameState.getPlayers();
 		
+		GameLogger logger = this.gameId2Logger.get(gameid);
+		
 		//Two players
 		if (players.size() == 2){
 		
@@ -249,17 +254,17 @@ public class NumberLineGameCommunicationServiceServlet extends
 			
 			int player1Elo;
 			if (!this.isNPC(player1.getColorId() + 1))
-				player1Elo = this.logger.getEloRating(player1.getUid());
+				player1Elo = logger.getEloRating(player1.getUid());
 			else
 				player1Elo = this.npcId2Elo.get(player1.getColorId() + 1);
 			
 			int player2Elo;
 			if (!this.isNPC(player2.getColorId() + 1))
-				player2Elo = this.logger.getEloRating(player2.getUid());
+				player2Elo = logger.getEloRating(player2.getUid());
 			else
 				player2Elo = this.npcId2Elo.get(player2.getColorId() + 1);
 			
-			this.calculateElo(player1, player2, player1Elo, player2Elo, false);
+			this.calculateElo(gameid, player1, player2, player1Elo, player2Elo, false);
 		
 		}
 		//More than two players
@@ -288,7 +293,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 					
 					for (Player otherPlayer : playersCopy) {
 						if (!this.isNPC(otherPlayer.getColorId() + 1))
-							sumEloValues += this.logger.getEloRating(otherPlayer.getUid());
+							sumEloValues += logger.getEloRating(otherPlayer.getUid());
 						else
 							sumEloValues += this.npcId2Elo.get(otherPlayer.getColorId() + 1);
 						sumPoints += otherPlayer.getPoints();
@@ -299,9 +304,9 @@ public class NumberLineGameCommunicationServiceServlet extends
 					
 					dummyPlayer.setPoints((int) averagePoints);
 					
-					int playerElo = this.logger.getEloRating(player.getUid());
+					int playerElo = logger.getEloRating(player.getUid());
 						
-					this.calculateElo(player, dummyPlayer, playerElo, averageElo, true);
+					this.calculateElo(gameid, player, dummyPlayer, playerElo, averageElo, true);
 					
 					playersCopy.add(player);
 					
@@ -318,7 +323,10 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 	}
 	
-	private void calculateElo(Player player1, Player player2, int player1Elo, int player2Elo, boolean isMultiplayer){
+	private void calculateElo(int gameid, Player player1, Player player2, int player1Elo, int player2Elo, boolean isMultiplayer){
+		
+		GameLogger logger = this.gameId2Logger.get(gameid);
+		
 		/* 
 		 * Computation of new ELO numbers according to http://en.wikipedia.org/wiki/Elo_rating_system
 		 * 
@@ -358,11 +366,11 @@ public class NumberLineGameCommunicationServiceServlet extends
 		System.out.println("Updated ELO value for second player: " + player2NewEloNumber);
 		
 		if (!this.isNPC(player1.getColorId() + 1) && !this.isNPC(player2.getColorId() + 1)) {
-			this.logger.updateEloRating(player1.getUid(), player1NewEloNumber);
+			logger.updateEloRating(player1.getUid(), player1NewEloNumber);
 			
 			//By default, the second player in a multiplayer game is a dummy player
 			if (!isMultiplayer)
-				this.logger.updateEloRating(player2.getUid(), player2NewEloNumber);
+				logger.updateEloRating(player2.getUid(), player2NewEloNumber);
 		}
 		
 	}

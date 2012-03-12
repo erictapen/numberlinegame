@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.wicam.numberlineweb.server.database.DatabaseConnection;
 
-public class Logger {
+public class GameLogger {
 	
 	public static enum LoggingActive {ON, OFF};
 	
@@ -22,6 +22,8 @@ public class Logger {
 	private final String db = "logging";
 	private final String dbUser = "log_user";
 	private final String dbPassword = "ner8tiro5";
+	
+	private int gameInstanceId;
 	
 	private static final String STATEMENT_LOGS = "INSERT INTO logs (log_user_id, " +
 			"log_action_id, log_action_parameters, log_action_trigger, log_game_instance, log_action_time)" +
@@ -37,8 +39,6 @@ public class Logger {
 	
 	private static final Map<String, LogGame> className2GameType;
 	
-	private Map<LogGame, Map<Integer, Integer>> gameId2internalId = new HashMap<LogGame, Map<Integer, Integer>>();
-
 	static {
 		
 		Map<String, LogGame> tempMap = new HashMap<String, LogGame>();
@@ -56,47 +56,15 @@ public class Logger {
 		tempMap.put("com.wicam.numberlineweb.server.MathDiagnostics." +
 				"MathDiagnosticsCommunicationServiceServlet", LogGame.MATH_DIAGNOSTICS);
 		
-//		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
-//				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
-//		
-//		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
-//				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
+		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
+				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
+		
+		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
+				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
 	}
-	
-	// General action data common for all games
-	
-	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
-		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER;
-
-		//Get ID for game type
-		public static int getIndex(LogGame logGame){
-			
-			switch(logGame){
-			
-				case NUMBER_LINE_GAME:
-					return 1;
-				case MATH_DIAGNOSTICS:
-					return 2;
-				case DEHNUNG_GAME:
-					return 3;
-				case DOPPELUNG_GAME:
-					return 4;
-				case MULTIPLICATION:
-					return 5;
-				case BUDDY_NUMBER:
-					return 6;
-				default:
-					//Should not occur
-					return -1;
-					
-			
-			}
-		}
-	
-	};
 	
 	public enum LogActionType {GAME_STARTED, GAME_ENDED, JOINED_GAME, LEFT_GAME,
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
@@ -160,16 +128,46 @@ public class Logger {
 	
 	};
 	
-	public Logger(){
+	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
+		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER;
+
+		//Get ID for game type
+		public static int getIndex(LogGame logGame){
+			
+			switch(logGame){
+			
+				case NUMBER_LINE_GAME:
+					return 1;
+				case MATH_DIAGNOSTICS:
+					return 2;
+				case DEHNUNG_GAME:
+					return 3;
+				case DOPPELUNG_GAME:
+					return 4;
+				case MULTIPLICATION:
+					return 5;
+				case BUDDY_NUMBER:
+					return 6;
+				default:
+					//Should not occur
+					return -1;
+					
+			
+			}
+		}
+	
+	};
+	
+	public GameLogger(){
 		
 		try {
 			
 			this.databaseConnection = new DatabaseConnection(this.dbHost, this.dbPort, this.db, 
 					this.dbUser, this.dbPassword);
 			
-			this.preparedStatementLogs = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_LOGS);
+			this.preparedStatementLogs = this.databaseConnection.prepareStmtReturnKeys(GameLogger.STATEMENT_LOGS);
 			
-			this.preparedStatementGameInstance = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_INSTANCE);
+			this.preparedStatementGameInstance = this.databaseConnection.prepareStmtReturnKeys(GameLogger.STATEMENT_GAME_INSTANCE);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -182,7 +180,7 @@ public class Logger {
 	public void log(int gameId, long logActionTime, LogActionType logActionType, String actionParams,
 			String logGameClassName, LogActionTrigger logActionTrigger){
 		
-		if(loggingActive == LoggingActive.OFF)
+		if (loggingActive == LoggingActive.OFF)
 			return;
 		
 		try {
@@ -199,7 +197,6 @@ public class Logger {
 			//Action trigger (user, application or NPC)
 			this.preparedStatementLogs.setString(4, LogActionTrigger.getName(logActionTrigger));
 			
-			int gameInstanceId;
 			//Keep track of game IDs used by the servlets and those used for logging
 			if (logActionType == LogActionType.GAME_STARTED){
 				
@@ -211,18 +208,11 @@ public class Logger {
 				
 				this.preparedStatementGameInstance.setString(2, "");
 				
-				gameInstanceId = this.writeToTableGameInstances();
-				
-				if (this.gameId2internalId.get(getLogGameByClass(logGameClassName)) == null)
-					this.gameId2internalId.put(getLogGameByClass(logGameClassName), new HashMap<Integer, Integer>());
-				this.gameId2internalId.get(getLogGameByClass(logGameClassName)).put(gameId, gameInstanceId);
-				
+				this.gameInstanceId = this.writeToTableGameInstances();
 			}
-			else	
-				gameInstanceId = this.gameId2internalId.get(getLogGameByClass(logGameClassName)).get(gameId);
 				
 			//Make reference for log entry to game instance entry
-			this.preparedStatementLogs.setInt(5, gameInstanceId);
+			this.preparedStatementLogs.setInt(5, this.gameInstanceId);
 			
 			//Action time
 			this.preparedStatementLogs.setTimestamp(6, new java.sql.Timestamp(logActionTime));
@@ -264,9 +254,12 @@ public class Logger {
 		
 	}
 	
-	public void updateGameProperties(int gameId, String logGameClassName, String gamePropertiesStr){
+	public void closeConnection() {
 		
-		int gameInstanceId = this.gameId2internalId.get(getLogGameByClass(logGameClassName)).get(gameId);
+		this.databaseConnection.close();
+	}
+	
+	public void updateGameProperties(int gameId, String logGameClassName, String gamePropertiesStr){
 		
 		String sql = "UPDATE game_instances SET game_property = ? WHERE game_instances_id=?";
 		
@@ -276,11 +269,9 @@ public class Logger {
 			
 			preparedStatement.setString(1, gamePropertiesStr);
 			
-			preparedStatement.setInt(2, gameInstanceId);
+			preparedStatement.setInt(2, this.gameInstanceId);
 			
 			preparedStatement.executeUpdate();
-			
-			this.databaseConnection.commit();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -315,7 +306,6 @@ public class Logger {
 					preparedStmt.setInt(2, 1000);
 					
 					preparedStmt.executeUpdate();
-					this.databaseConnection.commit();
 				
 				}
 				
@@ -348,8 +338,6 @@ public class Logger {
 			preparedStmt.setInt(2, uid);
 			
 			preparedStmt.executeUpdate();
-			this.databaseConnection.commit();
-				
 			
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -361,17 +349,15 @@ public class Logger {
 	private void writeToTableLogs() throws SQLException{
 
 		this.preparedStatementLogs.executeUpdate();
-		this.databaseConnection.commit();
 		
 		this.userIDProvided = false;
-		this.preparedStatementLogs = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_LOGS);
+		this.preparedStatementLogs = this.databaseConnection.prepareStmtReturnKeys(GameLogger.STATEMENT_LOGS);
 	
 	}
 	
 	private int writeToTableGameInstances() throws SQLException{
 
 		this.preparedStatementGameInstance.executeUpdate();
-		this.databaseConnection.commit();
 		
 		ResultSet rs = this.preparedStatementGameInstance.getGeneratedKeys();
 		int id = -1;
@@ -379,7 +365,7 @@ public class Logger {
 			id = rs.getInt("game_instances_id");
 		
 		
-		this.preparedStatementGameInstance = this.databaseConnection.prepareStmtReturnKeys(Logger.STATEMENT_GAME_INSTANCE);
+		this.preparedStatementGameInstance = this.databaseConnection.prepareStmtReturnKeys(GameLogger.STATEMENT_GAME_INSTANCE);
 	
 		return id;
 	}
@@ -390,5 +376,5 @@ public class Logger {
 		return className2GameType.get(className);
 		
 	}
-
+	
 }

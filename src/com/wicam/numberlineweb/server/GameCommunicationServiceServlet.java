@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,11 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
+import com.wicam.numberlineweb.server.logging.GameLogger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
+import com.wicam.numberlineweb.server.logging.GameLogger.LoggingActive;
 import com.wicam.numberlineweb.server.logging.IHandicap;
-import com.wicam.numberlineweb.server.logging.Logger;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
-import com.wicam.numberlineweb.server.logging.Logger.LoggingActive;
 
 public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 
@@ -32,10 +33,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
-	protected Logger logger = new Logger();
 	protected IHandicap handicapAdjustment;
 	GameCommunicationServiceServlet comm;
 
+	protected Map<Integer, GameLogger> gameId2Logger = new HashMap<Integer, GameLogger>();
+	
 	boolean timeOutListLock = false;
 	private Timer timeOutTimer = new Timer(true);
 	protected int currentId=0;
@@ -61,10 +63,17 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		//add game to empty game time out list
 		System.out.println("Added game #" + currentId + " to empty game timeouts.");
 		emptyGameTimeOutStates.add(new EmptyGameTimeOutState(currentId,20));
-
+		
 		System.out.println("Opened Game " + Integer.toString(currentId));
 		
-		this.logger.log(currentId, System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
+//		if (g.getGameOpenedUserId() > 0)
+//			this.gameId2Logger.get(currentId).addGameIdToBeLogged(this.getClass().getName(), currentId);
+		
+		System.out.println("User id: " + g.getGameOpenedUserId());
+		
+		this.gameId2Logger.put(currentId, new GameLogger());
+		
+		this.gameId2Logger.get(currentId).log(currentId, System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		return g;
@@ -76,12 +85,12 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		
 		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
 		
-		this.logger.updateGameProperties(id, this.getClass().getName(), gamePropertiesStr);
+		this.gameId2Logger.get(id).updateGameProperties(id, this.getClass().getName(), gamePropertiesStr);
 		
-		this.logger.log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", 
+		this.gameId2Logger.get(id).log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 
-//		this.writeLogToDatabase(id);
+		this.writeLogToDatabase(id);
 		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
@@ -215,7 +224,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			getTimeOutStates().add(new TimeOutState(uid, playerid, game.getId(),5));
 			
 			if(uid != -2){
-				this.logger.log(game.getId(), uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
+				this.gameId2Logger.get(id).log(game.getId(), uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
 						"", this.getClass().getName(), LogActionTrigger.USER);
 				
 				//TODO Decide how game adjustment should be handled
@@ -411,6 +420,11 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		}
 
 		timeOutListUnLock();
+		
+		//Rollback changes and close database connection
+		GameLogger logger = this.gameId2Logger.get(gameid);
+		logger.rollbackChanges();
+		logger.closeConnection();
 
 
 	}
@@ -451,7 +465,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		this.setChanged(gameid);
 		
 		if(uid != -2)
-			this.logger.log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
+			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
 					"", this.getClass().getName(), LogActionTrigger.USER);
 		
 	}
@@ -527,9 +541,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	
 	synchronized public boolean loggingOn(boolean b){
 		if(b)
-			Logger.loggingActive = LoggingActive.ON;
+			GameLogger.loggingActive = LoggingActive.ON;
 		else
-			Logger.loggingActive = LoggingActive.OFF;
+			GameLogger.loggingActive = LoggingActive.OFF;
 		return true;
 	}
 
@@ -622,28 +636,22 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	
 //	private void adjustToElo(int uid, GameState game){
 //		int eloValue;
-//		eloValue = this.logger.getEloRating(uid);
+//		eloValue = this.gameId2Logger.get(currentId).getEloRating(uid);
 //		this.handicapAdjustment.adjustGameSetting(eloValue, game);
 //
 //	}
 	
-//	private void writeLogToDatabase(int gameid) {
-//		
-//		GameState g = this.getGameById(gameid);
-//		
-//		//Check if game has any logged in users...
-//		boolean hasLoggedInUsers = false;
-//		for (Player player : g.getPlayers()) {
-//			
-//			if (player.getUid() != -2 && player.getUid() != -5) // -2 == player is a guest, -5 == player is a NPC
-//				hasLoggedInUsers = true;
-//			
-//		}
-//		
-//		if (hasLoggedInUsers)
-//			this.logger.commitChanges();
-//		else
-//			this.logger.rollbackChanges();
-//		
-//	}
+	private void writeLogToDatabase(int gameid) {
+		
+		GameState g = this.getGameById(gameid);
+		GameLogger logger = this.gameId2Logger.get(gameid);
+		
+		if (g.getGameOpenedUserId() > 0)
+			logger.commitChanges();
+		else
+			logger.rollbackChanges();
+		
+		logger.closeConnection();
+		
+	}
 }

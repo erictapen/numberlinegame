@@ -24,8 +24,8 @@ import com.wicam.numberlineweb.server.VowelGame.SetDoppelungGameStateTask;
 import com.wicam.numberlineweb.server.VowelGame.UpdateMcCoordsTimerTask;
 import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameWordList;
 import com.wicam.numberlineweb.server.logging.DoppelungGameHandicap;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
-import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 
 public class DoppelungGameCommunicationServiceServlet extends
 GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
@@ -140,7 +140,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 			String params = "{word: \"" + g.getCurWord().getWordString() + "\", " +
 					"vowel_type: \"" + type + "\", " +
 					"has_answered_correctly: " + isAnswerCorrect + "}";
-			this.logger.log(gameid, uid, System.currentTimeMillis(),
+			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(),
 					LogActionType.DOPPELUNGGAME_WORD_CATEGORIZED, params,
 					this.getClass().getName(), LogActionTrigger.USER);
 		}
@@ -265,7 +265,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 			int uid = map.get(internalName).get(gameid).get(playerid);
 			String params = "{correct_word: \"" + g.getCurWord().getWordString() + "\", " +
 					"word_entered: \"" + enteredWord + "\"}";
-			this.logger.log(gameid, uid, System.currentTimeMillis(),
+			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(),
 					LogActionType.DOPPELUNGGAME_WORD_ENTERED, params,
 					this.getClass().getName(), LogActionTrigger.USER);
 		}

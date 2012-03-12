@@ -14,6 +14,7 @@ public abstract class GameState implements IsSerializable{
 	
 	private long pingId = -1;
 
+	private int gameOpenedUserId;
 
 	protected ArrayList<Player> players = new ArrayList<Player>();
 	private int numberOfMaxPlayers;
@@ -163,5 +164,13 @@ public abstract class GameState implements IsSerializable{
 	
 	public boolean getHasLeftGame(int playerid) {
 		return this.players.get(playerid-1).hasLeftGame();
+	}
+
+	public int getGameOpenedUserId() {
+		return gameOpenedUserId;
+	}
+
+	public void setGameOpenedUserId(int gameOpenedUserId) {
+		this.gameOpenedUserId = gameOpenedUserId;
 	}
 }
