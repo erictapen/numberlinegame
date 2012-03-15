@@ -22,5 +22,7 @@ public interface GameCommunicationServiceAsync {
 
 	void getGameProperties(GameState g, AsyncCallback<String> callback);
 
+	void getGameById(int id, AsyncCallback<GameState> callback);
+
 	
 }

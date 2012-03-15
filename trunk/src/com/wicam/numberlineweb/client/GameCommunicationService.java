@@ -25,4 +25,6 @@ public interface GameCommunicationService extends  RemoteService {
 	
 	public String getGameProperties(GameState g);
 	
+	public GameState getGameById(int id);
+	
 }
