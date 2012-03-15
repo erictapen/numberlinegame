@@ -227,8 +227,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 			
 			//restart 
 			if (g.getItemCount() == g.getMaxItems()){
-				this.endGame(gameid);
 				this.updateEloRating(gameid);
+				this.endGame(gameid);
 			}
 			else
 				this.showNextItem(gameid);
