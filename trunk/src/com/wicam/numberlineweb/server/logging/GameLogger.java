@@ -61,6 +61,9 @@ public class GameLogger {
 		
 		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
 				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
+		
+		tempMap.put("com.wicam.numberlineweb.server.WordStem." +
+				"WordStemGameCommunicationServiceServlet", LogGame.WORD_STEM);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
@@ -129,7 +132,7 @@ public class GameLogger {
 	};
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
-		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER;
+		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER, WORD_STEM;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -148,6 +151,8 @@ public class GameLogger {
 					return 5;
 				case BUDDY_NUMBER:
 					return 6;
+				case WORD_STEM:
+					return 7;
 				default:
 					//Should not occur
 					return -1;

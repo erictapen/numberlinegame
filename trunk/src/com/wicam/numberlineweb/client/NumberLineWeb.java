@@ -16,6 +16,9 @@ import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinat
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
@@ -181,8 +184,6 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
-		//init the GTS on the root panel.
-		gts.init(RootPanel.get("game"));
 		
 		
 		//adds the BuddyNumber game
@@ -201,9 +202,29 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
+		
+		
+		//adds the WordStem game
+		gts.addGame("Wortstamm", "pre_buddyNumber.png", "Ordne zu!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
+				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+
+		
+		
+		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
-		
 
 	}
 	
