@@ -42,6 +42,10 @@
     <servlet-name>BuddyNumberGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.BuddyNumber.BuddyNumberGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>WordStemGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.WordStem.WordStemGameCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   
   <servlet-mapping>
@@ -79,6 +83,10 @@
   <servlet-mapping>
     <servlet-name>BuddyNumberGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/buddyNumberGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WordStemGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/wordStemGameCommunication</url-pattern>
   </servlet-mapping>
   
   
