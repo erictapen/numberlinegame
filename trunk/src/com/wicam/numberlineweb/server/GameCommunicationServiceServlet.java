@@ -423,8 +423,13 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		
 		//Rollback changes and close database connection
 		GameLogger logger = this.gameId2Logger.get(gameid);
-		logger.rollbackChanges();
-		logger.closeConnection();
+		
+		if (!logger.connectionClosed()) {
+		
+			logger.rollbackChanges();
+			logger.closeConnection();
+		
+		}
 
 
 	}
@@ -449,7 +454,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	void leavePlayer(int uid, int playerid, int gameid) {
 
-
+		if(uid != -2)
+			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
+					"", this.getClass().getName(), LogActionTrigger.USER);
 
 		setGameState(getGameById(gameid),99);
 		getGameById(gameid).setHasLeftGame(playerid,true);
@@ -463,10 +470,6 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 
 		this.setChanged(gameid);
-		
-		if(uid != -2)
-			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
-					"", this.getClass().getName(), LogActionTrigger.USER);
 		
 	}
 

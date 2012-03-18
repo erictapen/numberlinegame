@@ -381,5 +381,10 @@ public class GameLogger {
 		return className2GameType.get(className);
 		
 	}
+
+	public boolean connectionClosed() {
+		
+		return this.databaseConnection.connectionClosed();
+	}
 	
 }
