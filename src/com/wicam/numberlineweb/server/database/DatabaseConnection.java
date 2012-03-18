@@ -75,4 +75,14 @@ public class DatabaseConnection {
 		
 	}
 
+	public boolean connectionClosed() {
+		
+		try {
+			return conn.isClosed();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
 }
