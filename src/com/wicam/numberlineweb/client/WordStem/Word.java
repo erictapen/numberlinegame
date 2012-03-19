@@ -1,8 +1,8 @@
 package com.wicam.numberlineweb.client.WordStem;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Word implements Serializable {
+public class Word implements IsSerializable{
 	
 	private static final long serialVersionUID = 842910888960886182L;
 	
