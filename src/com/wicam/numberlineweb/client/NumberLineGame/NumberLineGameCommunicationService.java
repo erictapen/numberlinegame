@@ -9,4 +9,6 @@ import com.wicam.numberlineweb.client.GameState;
 public interface NumberLineGameCommunicationService extends GameCommunicationService {
 	
 	public GameState clickedAt(String clicked);	
+	
+	public boolean startBenchmarkGame(GameState gameState);
 }
