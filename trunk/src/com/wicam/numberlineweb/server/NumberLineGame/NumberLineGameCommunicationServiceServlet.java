@@ -8,6 +8,7 @@ import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
@@ -446,5 +447,25 @@ public class NumberLineGameCommunicationServiceServlet extends
 		return gamePropertiesStr;
 		
 	}
+
+	public boolean startBenchmarkGame(GameState gameState) {
+		
+		GameState g = this.openGame(gameState);
+
+		String ids = null;
+		try {
+			ids = this.joinGameNPC(g.getId() + ":" + "___ID/" + g.getGameOpenedUserId());
+		} catch (GameJoinException e) {
+			e.printStackTrace();
+			return false;
+		}
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = Integer.parseInt(ids.split(":")[1]);
+		
+		new NumberLineGameNPC(this, gameid, playerid);
+		
+		return true;
+	}
+
 
 }

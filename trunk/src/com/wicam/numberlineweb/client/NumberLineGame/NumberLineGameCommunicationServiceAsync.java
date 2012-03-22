@@ -7,4 +7,7 @@ import com.wicam.numberlineweb.client.GameState;
 public interface NumberLineGameCommunicationServiceAsync extends GameCommunicationServiceAsync {
 
 	public void clickedAt(String s,AsyncCallback<GameState> callback);
+
+	void startBenchmarkGame(GameState gameState,
+			AsyncCallback<Boolean> callback);
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
 public class NumberLineGameNPC {
@@ -18,11 +19,15 @@ public class NumberLineGameNPC {
 	double accuracyRange = 50;
 	double reactionTimeRange = 1000;
 	
+	Timer t = new Timer(true);
+	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
-		new CPUBehavior().run();
+		
+		t.schedule(new CPUBehavior(), 0);
+		
 	}
 	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid, int eloNumber){
@@ -35,7 +40,8 @@ public class NumberLineGameNPC {
 		
 		reactionTimeRange = 1800 - 0.8 * this.eloNumber;
 		
-		new CPUBehavior().run();
+		t.schedule(new CPUBehavior(), 0);
+		
 	}
 	
 	protected int realPosToRaw(int pos, int leftNumber, int rightNumber) {
@@ -48,7 +54,7 @@ public class NumberLineGameNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer(true);
+			
 			NumberLineGameState game = (NumberLineGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();
@@ -104,6 +110,6 @@ public class NumberLineGameNPC {
 					t.schedule(new CPUBehavior(), time);
 				}
 			}
-		}		
+		}
 	}
 }
