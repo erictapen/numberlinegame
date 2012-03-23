@@ -123,24 +123,13 @@ public class BuddyNumberGameCoordinator extends GameCoordinator {
 		if (g==null) return;
 		
 		switch (g.getState()) {
-			//started, no hand-digit chosen 
+			//started 
 		case 3:
 			
-			gameView.setFirstText();
+			gameView.updateInfoText(g.getPlayerClickedOn(playerID));
 			updateViewIngame(g, gameView);
 			
 			//kritischer moment, setze refreshrate nach oben
-			setRefreshRate(200);
-			
-			break;
-
-			//started,  one hand-digit chosen
-		case 4:
-			
-			gameView.setSecondText(g.getPlayerClickedOn(playerID));
-			updateViewIngame(g, gameView);
-			
-			
 			setRefreshRate(200);
 			
 			break;
