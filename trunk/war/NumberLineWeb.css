@@ -412,3 +412,89 @@ background-color:#F6F6F6 !important;
 .hand-box {
 	margin-bottom: 100px;
 }
+
+.wordStem-label, .wordStem-pot {
+	border:1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	padding: 5px 10px; /* t/b 5px, l/r 10px */
+}
+
+.word-Button {
+	margin: 0;
+	padding: 5px;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+	font-size: 15px;
+	background: none;
+	border:1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin: 10px;
+}
+.word-Button:active {
+	border: 1px inset #ccc;
+}
+.word-Button:hover {
+	border-color: #939393;
+}
+.word-Button[disabled] {
+	cursor: default;
+	/*color: #888;
+	background: silver;*/
+}
+.word-Button[disabled]:hover {
+	border: 1px outset #ccc;
+}
+
+.word-Button-chosen {
+	background: silver;
+	color: white;
+}
+
+.stem-Button {
+	margin: 0;
+	padding: 15px 20px;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+	font-size: 15px;
+	background: none;
+	border:1px solid #bbb;
+	border-bottom: 1px solid #a0a0a0;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	margin: 10px;
+}
+.stem-Button:active {
+	border: 1px inset #ccc;
+}
+.stem-Button:hover {
+	border-color: #939393;
+}
+.stem-Button[disabled] {
+	cursor: default;
+	/*color: #888;
+	background: silver;*/
+}
+.stem-Button[disabled]:hover {
+	border: 1px outset #ccc;
+}
+
+.stem-Button-chosen {
+	background: silver;
+	color: white;
+}
+
+.stem-box, .word-box, .word-info-box {
+	text-align: center;
+}
+
+.word-info-box {
+	padding: 20px 0px;
+	margin-left: auto;
+	margin-right: auto;
+}

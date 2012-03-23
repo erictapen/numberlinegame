@@ -145,6 +145,15 @@ public class BuddyNumberGameView extends GameView  {
 				"Sieger ist, wer als schnellster am meisten richtige Paare findet. Viel Spaß!" +
 				"</div>");
 	}
+
+
+	public void updateInfoText(int playerClickedOn) {
+		if (playerClickedOn == 0) {
+			this.setFirstText();
+		} else {
+			this.setSecondText(playerClickedOn);
+		}
+	}
 	
 
 }
