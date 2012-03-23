@@ -187,7 +187,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		if (from.equals("hand")) { // first click
 
 			g.setPlayerClickedOn(playerid, digit);
-			this.setGameState(g, 4);
+			this.setGameState(g, 3);
 
 		} else if (from.equals("com") && playerHasHand(g, playerid)) { // user has chosen a hand-digit
 			
