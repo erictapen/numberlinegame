@@ -454,7 +454,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 
 		String ids = null;
 		try {
-			ids = this.joinGameNPC(g.getId() + ":" + "___ID/" + g.getGameOpenedUserId());
+			ids = this.joinGameWithoutTimeout(g.getId() + ":" + "___ID/" + g.getGameOpenedUserId());
 		} catch (GameJoinException e) {
 			e.printStackTrace();
 			return false;

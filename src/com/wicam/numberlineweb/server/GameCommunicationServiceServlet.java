@@ -240,9 +240,9 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	}
 
-	//Just for testing (benchmark) purposes - adds a NPC as a user
+	//Just for testing (benchmark) purposes - adds user
 	//who can not time out
-	public String joinGameNPC(String ids) throws GameJoinException {
+	public String joinGameWithoutTimeout(String ids) throws GameJoinException {
 
 		String player = ids.split(":")[1];
 		int uid = -2;
