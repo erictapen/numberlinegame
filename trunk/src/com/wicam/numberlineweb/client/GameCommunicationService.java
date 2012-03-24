@@ -15,6 +15,8 @@ public interface GameCommunicationService extends  RemoteService {
 	
 	public String joinGame(String id) throws GameJoinException;
 	
+	public String joinGameWithoutTimeout(String id) throws GameJoinException;
+	
 	public boolean leaveGame(String id);
 	
 	public boolean updateReadyness(String s);
