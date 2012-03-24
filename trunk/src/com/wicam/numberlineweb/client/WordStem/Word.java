@@ -23,13 +23,26 @@ public class Word implements IsSerializable{
 		this.setSelected(false);
 	}
 	
+	//clone-consructor
+	public Word(Word other) {
+		this.word = other.getWord();
+		this.isSelected = other.isSelected();
+		this.isTaken = other.isTaken();
+		this.initialLeft = other.getInitialLeft();
+		this.initialTop = other.getInitialTop();
+		this.actualLeft = other.getActualLeft();
+		this.actualTop = other.getActualTop();
+	}
+	
 	
 	@Override
-	public boolean equals(Object o) {
-		if (o.getClass().getName().equals(this.getClass().getName())) {
-			return ((Word) o).getWord().equals(this.getWord());
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		} else if ((obj == null) || (obj.getClass() != this.getClass())) {
+			return false;
 		}
-		return false;
+		return ((Word) obj).getWord().equals(this.getWord());
 	}
 	
 

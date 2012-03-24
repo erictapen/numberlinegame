@@ -1,11 +1,10 @@
 package com.wicam.numberlineweb.client.WordStem;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WordSet implements Serializable {
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-	private static final long serialVersionUID = -3724485004558663839L;
+public class WordSet implements IsSerializable {
 	
 	private Word stem;
 	private ArrayList<Word> words = new ArrayList<Word>();
@@ -21,6 +20,16 @@ public class WordSet implements Serializable {
 		}
 		this.distractor = new Word(distractor);
 		this.hasDistractor = (distractor != "");
+	}
+	
+	// clone-constructor
+	public WordSet(WordSet other) {
+		this.stem = other.getStem();
+		for (Word word : other.getWords()) {
+			this.words.add(new Word(word));
+		}
+		this.distractor = other.getDistractor();
+		this.hasDistractor = other.hasDistractor();
 	}
 
 	

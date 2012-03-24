@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gwt.core.client.GWT;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
+import com.wicam.numberlineweb.client.WordStem.WordSetCollection;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameState;
 import com.wicam.numberlineweb.client.WordStem.WordStemPlayer;
-import com.wicam.numberlineweb.client.WordStem.WordSetCollection;
 import com.wicam.numberlineweb.client.WordStem.Word;
 import com.wicam.numberlineweb.client.WordStem.WordSet;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
@@ -278,7 +278,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 		String word = clicked.split(":")[2];
 		WordStemGameState g = (WordStemGameState) this.getGameById(gameid); 
 
-		System.out.println("NPC clicked " + npcWasRight +" on "+word);
+		//System.out.println("NPC clicked " + npcWasRight +" on "+word);
 
 		try {
 			
