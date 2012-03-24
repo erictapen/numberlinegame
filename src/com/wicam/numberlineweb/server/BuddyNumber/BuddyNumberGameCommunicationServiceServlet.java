@@ -258,7 +258,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		int digitID = Integer.parseInt(clicked.split(":")[3]);
 		BuddyNumberGameState g = (BuddyNumberGameState) this.getGameById(gameid); 
 		
-		System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
+		//System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
 		
 		if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 

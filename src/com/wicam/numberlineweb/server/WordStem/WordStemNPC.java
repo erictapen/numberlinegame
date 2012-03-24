@@ -15,6 +15,7 @@ public class WordStemNPC {
 	private int playerid;
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
+	private Random r = new Random();
 	
 	public WordStemNPC(WordStemGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
@@ -62,7 +63,7 @@ public class WordStemNPC {
 		ArrayList<Word> words = comm.getSpecificAnswers(getGameState(), correct);
 		
 		if (words.size() > 0) {			
-			int id = new Random().nextInt(words.size());
+			int id = r.nextInt(words.size());
 			for (Word word : words) {
 				if (id == 0) {
 					return word.getWord();
@@ -94,7 +95,7 @@ public class WordStemNPC {
 					case 3:
 					case 4:
 							if (!makeClick){
-								time = 5000 + (int)(new Random().nextGaussian()*500);
+								time = 5000 + (int)(r.nextGaussian()*500);
 								if (time < 5000)
 									time = 5000;
 								makeClick = true;
@@ -102,7 +103,7 @@ public class WordStemNPC {
 							else {
 								String answer;
 								Boolean wasRight;								
-								wasRight = (new Random().nextDouble() < skill);
+								wasRight = (r.nextDouble() < skill);
 								
 								answer = getSpecificAnswer(true);
 								

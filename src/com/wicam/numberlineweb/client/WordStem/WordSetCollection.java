@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class WordSetCollection {
+
+public class WordSetCollection implements IsSerializable {
 
 	private ArrayList<WordSet> wordSetCollection = new ArrayList<WordSet>();
 	
@@ -85,8 +87,8 @@ public class WordSetCollection {
 			while (res.size() < n) {
 				int index = r.nextInt(this.wordSetCollection.size());
 				if (!taken.contains(this.wordSetCollection.get(index).getStem())) {
-					res.add(this.wordSetCollection.get(index));
-					taken.add(this.wordSetCollection.get(index).getStem());
+					res.add(new WordSet(this.wordSetCollection.get(index)));
+					taken.add(new Word(this.wordSetCollection.get(index).getStem()));
 				}
 			}			
 			
@@ -105,7 +107,7 @@ public class WordSetCollection {
 		
 		for (WordSet set : this.wordSetCollection) {
 			if (set.getStem().getWord().equals(stem)) {
-				return set;
+				return new WordSet(set);
 			}
 		}
 		throw new NoSuchElementException("No WordSet found for stem \"" + stem + "\"");
