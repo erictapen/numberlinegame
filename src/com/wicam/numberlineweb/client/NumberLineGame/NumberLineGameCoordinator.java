@@ -225,8 +225,8 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 		for (int i = 0; i < g.getPlayers().size(); i++)
 			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
 		gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
-		if (!g.isPlayerReady(playerID))
-			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+//		if (!g.isPlayerReady(playerID))
+//			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 	}
 	
 	
@@ -285,6 +285,12 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 		}
 
 
+	}
+
+	public void startButtonClicked() {
+		if (!openGame.isPlayerReady(this.playerID)) {
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		}	
 	}
 
 

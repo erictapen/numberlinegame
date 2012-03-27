@@ -1,6 +1,10 @@
 package com.wicam.numberlineweb.client.NumberLineGame;
 
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -8,6 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.NumberLineGame.NumberLineController;
 
 /**
  * The game view.
@@ -20,6 +25,15 @@ public class NumberLineGameView extends GameView  {
 	final HorizontalPanel motherPanel = new HorizontalPanel();
 	final NumberLineView p = new NumberLineView();
 	final AbsolutePanel playerPanel = new AbsolutePanel();
+	final AbsolutePanel explanationPanel = new AbsolutePanel();
+	final HTML explanationText = new HTML();
+	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+			initGameView();
+			((NumberLineController) gameController).startButtonClicked();
+		}
+	});
 
 	/**
 	 * TODO: create own Composite-Classes for elements
@@ -44,10 +58,30 @@ public class NumberLineGameView extends GameView  {
 	}
 
 
-	private void init() {
+	private void init() {		
+		
+		explanationPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+		explanationPanel.setHeight("400px");
+		explanationPanel.setWidth("600px");
+		setExplanationText();
+		explanationPanel.add(explanationText);
+		explanationPanel.setWidgetPosition(explanationText, 0, 0);
+		explanationPanel.add(startGameButton);
+		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
+		motherPanel.add(explanationPanel);
+
+		RootPanel.get().add(motherPanel);
+		
+	}
+	
+	/**
+	 * Show the game, hide explanation
+	 */
+	public void initGameView() {
+		explanationPanel.clear();
+		explanationPanel.removeFromParent();
 		
 		p.init(gameController,numberOfPlayers+numberOfNPCs);
-
 		motherPanel.add(p);
 
 		playerNamesFlexTable.setStyleName("playerList");
@@ -57,8 +91,6 @@ public class NumberLineGameView extends GameView  {
 		playerPanel.add(playerNamesFlexTable);
 
 		motherPanel.add(playerPanel);
-
-		RootPanel.get().add(motherPanel);
 		p.setExerciseNumberText("---");
 	}
 
@@ -81,6 +113,18 @@ public class NumberLineGameView extends GameView  {
 		p.setInfoText(text);
 
 	}
+	
+	
+	/**
+	 * Set the explanation-text
+	 */
+	public void setExplanationText(){
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Zahlenstrahl - Beschreibung</b></div>" +
+				"<div style='padding:5px 20px;font-size:12px'>" +
+				"Versuche so schnell wie möglich, die Zahlen richtig auf dem Zahlenstrahl anzuordnen." +
+				"</div>");
+	}
+	
 
 	/**
 	 * Reset the view

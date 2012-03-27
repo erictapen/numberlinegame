@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.GameController;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
 
 public class NumberLineController extends GameController {
 
@@ -50,6 +51,12 @@ public class NumberLineController extends GameController {
 	public void onMouseUp(Widget who, int x, int y) {
 		// TODO Auto-generated method stub
 
+	}
+
+
+	public void startButtonClicked() {
+		((NumberLineGameCoordinator) coordinator).startButtonClicked();
+		
 	}
 
 
