@@ -9,7 +9,7 @@ public class OverTenCalculation implements IsSerializable {
 	private int second;
 	private boolean taken;
 	
-	public enum Sign {
+	public enum Sign implements IsSerializable{
 		ADD {
 			public String toString() {
 				return "+";
