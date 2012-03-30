@@ -186,7 +186,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 	 * User has clicked.
 	 * @param clicked gameid:playerid:cickedValue:clickedID:word/stem
 	 * @param playerid Playerid
-	 * @return New BuddyNumberGameState
+	 * @return New WordStemGameState
 	 */
 	synchronized public WordStemGameState clickedAt(String clicked, int playerid) {
 

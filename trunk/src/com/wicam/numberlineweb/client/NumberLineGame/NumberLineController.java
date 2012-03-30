@@ -2,7 +2,6 @@ package com.wicam.numberlineweb.client.NumberLineGame;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.GameController;
-import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
 
 public class NumberLineController extends GameController {
 

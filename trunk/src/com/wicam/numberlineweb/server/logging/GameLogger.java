@@ -64,6 +64,9 @@ public class GameLogger {
 		
 		tempMap.put("com.wicam.numberlineweb.server.WordStem." +
 				"WordStemGameCommunicationServiceServlet", LogGame.WORD_STEM);
+		
+		tempMap.put("com.wicam.numberlineweb.server.OverTen." +
+				"OverTenGameCommunicationServiceServlet", LogGame.OVER_TEN);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
@@ -132,7 +135,8 @@ public class GameLogger {
 	};
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
-		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER, WORD_STEM;
+		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER,
+		WORD_STEM, OVER_TEN, WORD_FAMILY;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -153,6 +157,10 @@ public class GameLogger {
 					return 6;
 				case WORD_STEM:
 					return 7;
+				case OVER_TEN:
+					return 8;
+				case WORD_FAMILY:
+					return 9;
 				default:
 					//Should not occur
 					return -1;
