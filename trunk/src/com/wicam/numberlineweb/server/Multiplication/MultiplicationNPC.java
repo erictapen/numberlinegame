@@ -16,6 +16,8 @@ public class MultiplicationNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
+	Timer t = new Timer(true);
+	
 	public MultiplicationNPC(MultiplicationGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
@@ -75,7 +77,6 @@ public class MultiplicationNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer();
 			MultiplicationGameState game = (MultiplicationGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();
