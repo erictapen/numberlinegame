@@ -15,6 +15,8 @@ public class BuddyNumberNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
+	Timer t = new Timer(true);
+	
 	public BuddyNumberNPC(BuddyNumberGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
@@ -73,7 +75,6 @@ public class BuddyNumberNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer();
 			BuddyNumberGameState game = (BuddyNumberGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();

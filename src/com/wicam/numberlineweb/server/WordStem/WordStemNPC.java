@@ -17,6 +17,8 @@ public class WordStemNPC {
 	private double skill = .7; // 70% correct clicks
 	private Random r = new Random();
 	
+	Timer t = new Timer(true);
+	
 	public WordStemNPC(WordStemGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
@@ -80,7 +82,6 @@ public class WordStemNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer();
 			WordStemGameState game = (WordStemGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();

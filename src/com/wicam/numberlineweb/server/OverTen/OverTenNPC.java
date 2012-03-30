@@ -15,6 +15,8 @@ public class OverTenNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
+	Timer t = new Timer(true);
+	
 	public OverTenNPC(OverTenGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
@@ -77,7 +79,6 @@ public class OverTenNPC {
 		
 		@Override
 		synchronized public void run() {
-			Timer t = new Timer();
 			OverTenGameState game = (OverTenGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();
