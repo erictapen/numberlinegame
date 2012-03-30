@@ -28,6 +28,9 @@ import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
@@ -214,6 +217,24 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
 				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		
+		
+		//adds the OverTen game
+		gts.addGame("Über 10", "pre_overten.png", "Summiere auf!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
+				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

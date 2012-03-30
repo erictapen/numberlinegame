@@ -46,6 +46,10 @@
     <servlet-name>WordStemGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.WordStem.WordStemGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>OverTenGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.OverTen.OverTenGameCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   
   <servlet-mapping>
@@ -87,6 +91,10 @@
   <servlet-mapping>
     <servlet-name>WordStemGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/wordStemGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OverTenGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/overTenGameCommunication</url-pattern>
   </servlet-mapping>
   
   
