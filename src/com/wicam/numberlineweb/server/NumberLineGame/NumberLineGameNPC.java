@@ -19,7 +19,7 @@ public class NumberLineGameNPC {
 	double accuracyRange = 50;
 	double reactionTimeRange = 1000;
 	
-	Timer t = new Timer(true);
+	Timer t = new Timer("TimerNPC", true);
 	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
@@ -111,5 +111,11 @@ public class NumberLineGameNPC {
 				}
 			}
 		}
+	}
+
+	public void terminateTimer() {
+
+		t.cancel();
+		
 	}
 }
