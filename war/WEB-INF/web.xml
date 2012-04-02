@@ -50,6 +50,10 @@
     <servlet-name>OverTenGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.OverTen.OverTenGameCommunicationServiceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>WordFamilyGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.WordFamily.WordFamilyGameCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   
   <servlet-mapping>
@@ -95,6 +99,10 @@
   <servlet-mapping>
     <servlet-name>OverTenGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/overTenGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WordFamilyGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/wordFamilyGameCommunication</url-pattern>
   </servlet-mapping>
   
   

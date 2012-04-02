@@ -169,12 +169,12 @@ div.gametype div {
 	margin-top: 3px;
 	text-align: center;
 	font-size: 15px;
-	font-weight: bold '
+	font-weight: bold;
 }
 
 .gametypeselector {
 	margin: 10px;
-	height: 425px;
+	height: 525px;
 	padding-bottom: 90px;
 }
 
@@ -507,3 +507,17 @@ background-color:#F6F6F6 !important;
 .center-text {
 	text-align: center;
 }
+
+.wordfamily-textbox {
+	border-color: black;
+	border-style: solid;
+	border-radius: 3px;
+	border-size: 2px;
+	-moz-border-radius: 3px;
+	padding: 15px 25px;
+}
+
+.wf-zero { border-style: solid; }
+.wf-twentyfive { border-style: dashed; }
+.wf-fifty { border-style: dotted; }
+.wf-seventyfive { border-style: hidden; }
