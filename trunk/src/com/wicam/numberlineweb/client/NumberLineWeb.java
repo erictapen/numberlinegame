@@ -16,6 +16,9 @@ import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinat
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCoordinator;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
@@ -235,6 +238,23 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
 				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		
+		//adds the WordFamily game
+		gts.addGame("Wortfamilien", "pre_overten.png", "Merke dir viel!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (WordFamilyGameCommunicationServiceAsync) GWT.create(WordFamilyGameCommunicationService.class);
+				coordinator = new WordFamilyGameCoordinator((WordFamilyGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 				
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

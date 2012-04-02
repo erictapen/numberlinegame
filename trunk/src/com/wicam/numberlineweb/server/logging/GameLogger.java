@@ -67,6 +67,9 @@ public class GameLogger {
 		
 		tempMap.put("com.wicam.numberlineweb.server.OverTen." +
 				"OverTenGameCommunicationServiceServlet", LogGame.OVER_TEN);
+		
+		tempMap.put("com.wicam.numberlineweb.server.WordFamily." +
+				"WordFamilyGameCommunicationServiceServlet", LogGame.WORD_FAMILY);
 
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
