@@ -6,8 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameState;
+import com.wicam.numberlineweb.server.NPC;
 
-public class BuddyNumberNPC {
+public class BuddyNumberNPC extends NPC{
 
 	private BuddyNumberGameCommunicationServiceServlet comm;
 	private int gameid;
@@ -15,13 +16,14 @@ public class BuddyNumberNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
-	Timer t = new Timer(true);
-	
 	public BuddyNumberNPC(BuddyNumberGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
-		new CPUBehavior().run();
+		
+		t = new Timer("TimerNPCBuddyNumber", true);
+		
+		t.schedule(new CPUBehavior(), 0);
 	}
 	
 	
