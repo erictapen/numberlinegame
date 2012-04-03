@@ -135,11 +135,12 @@ public class WordStemGameView extends GameView  {
 	 * Set the explanation-text
 	 */
 	public void setExplanationText(){
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Wortstämme - Beschreibung</b></div>" +
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Wortbausteine - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Du siehst gleich zwei Kästchen. Im oberen stehen Wortstämme, im unteren Wörter. Deine Aufgabe ist es, " +
-				"die Wörter den Wortstämmen zuzuordnen. Dazu musst du erst ein Wort anklicken, das du dann mit einem weiteren Klick " +
-				"auf den passenden Wortstamm zuordnest. Wer am Ende die meisten richtig zugeordnet hat, gewinnt.<br><br>" +
+				"Du siehst gleich zwei Kästchen. Im oberen stehen Wortbausteine, im unteren Wörter. Deine Aufgabe ist es, " +
+				"die Wörter den passenden Wortbausteinen zuzuordnen. Dazu klickst du 2 Mal mit der Maus. Zuerst klickst " +
+				"du auf das Wort, das du zuordnen möchtest. Dann klickst du auf den Wortbaustein, zu dem es passt. Wer am " +
+				"Ende die meisten richtig zugeordnet hat, gewinnt.<br><br>" +
 				"Viel Spaß!" +
 				"</div>");
 	}

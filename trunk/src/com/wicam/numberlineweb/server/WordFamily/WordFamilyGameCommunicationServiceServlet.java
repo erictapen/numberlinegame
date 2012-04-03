@@ -67,7 +67,13 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 		sets = this.words.getRandomFamilies(1, state.getTakenStems(), this.rand);			
 		newWords.addAll(sets.get(0).getWords());
 		state.clearCorrectlyAnswered();
-		state.setCorrectWords(sets.get(0).getWords());
+		
+		ArrayList<Word> correctWords = new ArrayList<Word>();
+		for (Word word : sets.get(0).getWords()) {
+			correctWords.add(new Word(word));
+		}
+		state.setCorrectWords(correctWords);
+		
 		newWords.addAll(this.words.getRandomWords(5, newWords, this.rand));
 
 		Collections.shuffle(newWords, this.rand);
@@ -161,8 +167,9 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 			}
 		} else {
 			this.setGameState(this.getGameById(gameid),4);
-			if (isCorrect(g.getStem(), new Word(value))) {
+			if (isCorrect(g.getStem(), new Word(value)) && !getWordByValue(g.getCorrectWords(), value).isTaken()) {
 				g.addCorrectlyAnswered(value);
+				getWordByValue(g.getCorrectWords(), value).setTaken(true);
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
 			} else {
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);
@@ -174,6 +181,14 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 	}
 
 
+	private Word getWordByValue(ArrayList<Word> words, String value) {
+		for (Word word : words) {
+			if (word.getWord().equals(value))
+				return word;
+		}
+		return null;
+	}
+	
 
 	@SuppressWarnings("unused")
 	private void handicapAction(int gameid) {

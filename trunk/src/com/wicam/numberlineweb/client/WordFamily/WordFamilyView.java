@@ -8,6 +8,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
@@ -22,6 +25,7 @@ import com.google.gwt.user.client.Random;
 
 public class WordFamilyView extends AbsolutePanel {
 
+	private WordFamilyGameController controller;
 	private final HTML infoBox = new HTML();
 	private ArrayList<Word> words;
 	private Word stem;
@@ -34,7 +38,7 @@ public class WordFamilyView extends AbsolutePanel {
 	
 	private int wordsUsed;
 	private final int OVERLAP = 500; // Overlap of the words in milliseconds
-	private final int DURATION = 2000; // Duration of each word
+	private final int DURATION = 2500; // Duration of each word
 	
 	private boolean running;
 	
@@ -64,6 +68,7 @@ public class WordFamilyView extends AbsolutePanel {
 
 		GWT.log("call to init with " + Integer.toString(numberOfPlayers) + " players.");
 
+		this.controller = controller;
 
 		//draw everything
 
@@ -96,8 +101,16 @@ public class WordFamilyView extends AbsolutePanel {
 		submit.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				controller.clickedAt(input.getText());
-				input.setText("");
+				submitInput();
+			}
+		});
+		
+		input.addKeyDownHandler(new KeyDownHandler() {
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					submitInput();
+				}
 			}
 		});
 		
@@ -110,8 +123,8 @@ public class WordFamilyView extends AbsolutePanel {
 		cellFormatter.setAlignment(2, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 		
 		
-		inputTable.setHTML(0,0,"Tippe die Wörter ein, die du dir gemerkt hast.<br>" +
-				"Sende nun jedes Wort mit \"Abschicken\" ab.");
+		inputTable.setHTML(0,0,"Tippe die Wörter ein, die du dir gemerkt hast.<br>Klicke nach jedem Wort auf " +
+				"\"abschicken\".<br>Wenn du fertig bist, klicke auf \"fertig\".");
 		inputTable.setWidget(1, 0, input);
 		inputTable.setWidget(2, 0, done);
 		inputTable.setWidget(2, 1, submit);
@@ -120,7 +133,7 @@ public class WordFamilyView extends AbsolutePanel {
 		inputContainer.add(inputTable);
 		inputContainer.setStyleName("family-info-box");
 		add(inputContainer);
-		setWidgetPosition(inputContainer, 50, 150);
+		setWidgetPosition(inputContainer, 50, 130);
 		
 		
 		setWidth("430px");
@@ -169,10 +182,10 @@ public class WordFamilyView extends AbsolutePanel {
 		this.stem = stem;
 		this.setRunning(true);
 		
-		this.setInfoText("Der Wortstamm lautet: <b>"+this.stem.getWord()+"</b>");
+		this.setInfoText("Merke dir alle Wörter, die<br>zur Wortfamilie von <b>"+this.stem.getWord()+"</b> gehören!");
 		
 		// hide stem in DURATION milliseconds
-		stemTimer.schedule(DURATION);
+		stemTimer.schedule(DURATION*2);
 	}
 
 	
@@ -214,6 +227,23 @@ public class WordFamilyView extends AbsolutePanel {
 	
 	private void showInput() {
 		inputContainer.setVisible(true);
+		input.setEnabled(true);
+		input.setFocus(true);
+		submit.setEnabled(true);
+		done.setEnabled(true);
+	}
+
+	private void submitInput() {
+		controller.clickedAt(input.getText());
+		input.setText("");
+		input.setFocus(true);
+	}
+	
+	
+	public void disableInput() {
+		input.setEnabled(false);
+		submit.setEnabled(false);
+		done.setEnabled(false);
 	}
 
 	
@@ -224,6 +254,8 @@ public class WordFamilyView extends AbsolutePanel {
 		this.setRunning(false);
 		this.wordsUsed = 0;
 	}
+
+
 
 	
 

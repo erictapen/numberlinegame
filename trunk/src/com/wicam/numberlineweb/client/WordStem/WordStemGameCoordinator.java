@@ -25,7 +25,7 @@ public class WordStemGameCoordinator extends GameCoordinator {
 	@Override
 	public String getGameName() {
 
-		return "Wortstämme";
+		return "Wortbausteine";
 
 	}
 	

@@ -148,8 +148,10 @@ public class WordFamilyGameCoordinator extends GameCoordinator {
 			
 			updateViewIngame(g, gameView);
 			setRefreshRate(1000);
-			gameView.setInfoText("Du hast dir "+g.getCorrectlyAnswered().size()+" Wörter aus dieser Familie richtig gemerkt.<br><br>" +
+			int correct = g.getCorrectlyAnswered().size();
+			gameView.setInfoText("Du hast dir "+correct+ ((correct == 1)?" Wort":" Wörter") +" aus dieser Familie richtig gemerkt.<br><br>" +
 					"Alle richtigen Wörter waren: "+g.getCorrectAsHtmlList());
+			gameView.disableInput();
 				
 			break;
 			
