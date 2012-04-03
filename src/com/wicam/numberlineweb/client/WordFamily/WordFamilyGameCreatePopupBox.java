@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.WordFamily;
 
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -9,6 +10,7 @@ public class WordFamilyGameCreatePopupBox extends com.wicam.numberlineweb.client
 
 	
 	ListBox roundCount = new ListBox();
+	CheckBox diff = new CheckBox("Schwer?");
 	
 	public WordFamilyGameCreatePopupBox (String msg, String def) {
 		
@@ -31,6 +33,19 @@ public class WordFamilyGameCreatePopupBox extends com.wicam.numberlineweb.client
 		
 		super.p.add(h);
 		
+		
+		HorizontalPanel i = new HorizontalPanel();
+		i.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		i.setSpacing(5);
+		i.add(diff);
+		
+		super.p.add(i);
+		
+	}
+	
+	
+	public boolean getDiffucult() {
+		return diff.getValue();
 	}
 	
 	
