@@ -31,7 +31,8 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 	private Random rand = new Random();
 
 	// All WordSets
-	private WordFamilyCollection words = new WordFamilyCollection();
+	private WordFamilyCollection wordsNormal = new WordFamilyCollection(false);
+	private WordFamilyCollection wordsHard = new WordFamilyCollection(true);
 
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
 
@@ -61,10 +62,13 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 	 */
 	public WordFamilyGameState newWords(WordFamilyGameState state) {
 
+		WordFamilyCollection words = (state.isHard()) ? this.wordsHard : this.wordsNormal;
+		
+		
 		ArrayList<WordFamily> sets;
 		ArrayList<Word> newWords = new ArrayList<Word>();
 
-		sets = this.words.getRandomFamilies(1, state.getTakenStems(), this.rand);			
+		sets = words.getRandomFamilies(1, state.getTakenStems(), this.rand);			
 		newWords.addAll(sets.get(0).getWords());
 		state.clearCorrectlyAnswered();
 		
@@ -74,7 +78,7 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 		}
 		state.setCorrectWords(correctWords);
 		
-		newWords.addAll(this.words.getRandomWords(5, newWords, this.rand));
+		newWords.addAll(words.getRandomWords(5, newWords, this.rand));
 
 		Collections.shuffle(newWords, this.rand);
 
@@ -89,10 +93,10 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 
 
 
-	private boolean isCorrect(Word stem, Word word) {
-
+	private boolean isCorrect(WordFamilyGameState g, Word stem, Word word) {
+		WordFamilyCollection words = (g.isHard()) ? this.wordsHard : this.wordsNormal;
 		try {			
-			WordFamily set = this.words.getWordSet(stem.getWord());
+			WordFamily set = words.getWordSet(stem.getWord());
 			return set.getWords().contains(word);
 		} catch (NullPointerException e) {
 			System.out.println(stem.getWord() + ": No such stem found in WordFamilyCollection.");
@@ -167,7 +171,7 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 			}
 		} else {
 			this.setGameState(this.getGameById(gameid),4);
-			if (isCorrect(g.getStem(), new Word(value)) && !getWordByValue(g.getCorrectWords(), value).isTaken()) {
+			if (isCorrect(g, g.getStem(), new Word(value)) && !getWordByValue(g.getCorrectWords(), value).isTaken()) {
 				g.addCorrectlyAnswered(value);
 				getWordByValue(g.getCorrectWords(), value).setTaken(true);
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
@@ -266,7 +270,7 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 		GameState retGameState = super.openGame(g);
 		GWT.log("after opening game");
 		//return super.openGame(g);
-
+		
 		newWords((WordFamilyGameState) g);
 
 		return retGameState;

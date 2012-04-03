@@ -31,6 +31,9 @@ public class WordFamilyGameState extends GameState implements Serializable{
 	// All correctly sent words
 	private ArrayList<String> correctlyAnswered = new ArrayList<String>();
 	
+	// Use difficult words?
+	private boolean hard = false;	
+	
 	// Round-counter
 	private int round = 0;
 	// Max number of rounds to play
@@ -242,6 +245,25 @@ public class WordFamilyGameState extends GameState implements Serializable{
 
 	public void setCorrectWords(ArrayList<Word> correctWords) {
 		this.correctWords = correctWords;
+	}
+
+
+
+	/**
+	 * Set hard
+	 * @param hard Set hard to this value
+	 */
+	public void setHard(boolean hard) {
+		this.hard = hard;
+	}
+
+
+
+	/**
+	 * @return Returns hard
+	 */
+	public boolean isHard() {
+		return hard;
 	}
 
 

@@ -46,6 +46,7 @@ public class WordFamilyGameSelector extends GameSelector {
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(1);
 						gameState.setNumberOfMaxNPCs(0);
+						gameState.setHard(gamePopUp.getDiffucult());
 						gameState.setMaxRound(gamePopUp.getRoundCount());
 						WordFamilyGameSelector.this.coordinator.openGame(gameState);
 						gamePopUp.hide();
