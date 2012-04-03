@@ -211,7 +211,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordStem game
-		gts.addGame("Wortstamm", "pre_wordstem.png", "Ordne zu!", new GameItemStarter() {
+		gts.addGame("Wortbausteine", "pre_wordstem.png", "Ordne zu!", new GameItemStarter() {
 
 			@Override
 			public void run() {

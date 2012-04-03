@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
 import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -45,6 +46,8 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
+	protected SoundController soundController = new SoundController();
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3,"doppelungGame/soundFiles/description.mp3");
 
 	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
 
@@ -79,6 +82,10 @@ public class DoppelungGameView extends GameView {
 			@Override
 			public void onClick(ClickEvent event) {
 				doppelungGameController.onStartButtonClick();
+				try {
+					descriptionSound.stop();
+				} catch (Exception e) {
+				}
 			}
 		});
 
@@ -96,6 +103,7 @@ public class DoppelungGameView extends GameView {
 			}
 		});
 
+		descriptionSound.play();
 		
 		gamePanel.add(explanationText);
 		gamePanel.setWidgetPosition(explanationText, 0, 0);
