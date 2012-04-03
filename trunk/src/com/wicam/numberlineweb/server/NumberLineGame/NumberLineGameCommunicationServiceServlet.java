@@ -1,9 +1,7 @@
 package com.wicam.numberlineweb.server.NumberLineGame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
@@ -30,7 +28,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 	private static final long serialVersionUID = 7200332323767902482L;
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
 	private Map<Integer, Integer> npcId2Elo = new HashMap<Integer, Integer>();
-	private List<NumberLineGameNPC> npcs = new ArrayList<NumberLineGameNPC>();
 	
 	public NumberLineGameCommunicationServiceServlet() {
 		
@@ -468,13 +465,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 		new NumberLineGameNPC(this, gameid, playerid);
 		
 		return true;
-	}
-
-	public void terminateNPCTimers() {
-		
-		for (NumberLineGameNPC npc : this.npcs)
-			npc.terminateTimer();
-			
 	}
 
 }

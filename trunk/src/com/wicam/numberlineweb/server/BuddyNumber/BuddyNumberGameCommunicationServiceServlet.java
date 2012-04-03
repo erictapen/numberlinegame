@@ -45,7 +45,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
 		npcIds.add(playerid);
-		new BuddyNumberNPC(this, game.getId(), playerid);
+		npcs.add(new BuddyNumberNPC(this, game.getId(), playerid));
 	}
 
 	protected boolean isNPC(int playerId){
@@ -280,6 +280,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 				if (g.getRound() >= g.getMaxRound()){
 					this.endGame(gameid);
 					this.handicapAction(gameid);
+					this.terminateNPCTimers();
 				}
 				else {
 					this.showNextItem(gameid);			

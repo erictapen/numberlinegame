@@ -7,8 +7,9 @@ import java.util.TimerTask;
 
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
+import com.wicam.numberlineweb.server.NPC;
 
-public class MultiplicationNPC {
+public class MultiplicationNPC extends NPC{
 
 	private MultiplicationGameCommunicationServiceServlet comm;
 	private int gameid;
@@ -16,13 +17,14 @@ public class MultiplicationNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
-	Timer t = new Timer(true);
-	
 	public MultiplicationNPC(MultiplicationGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
-		new CPUBehavior().run();
+		
+		t = new Timer("TimerNPCMultiplication", true);
+		
+		t.schedule(new CPUBehavior(), 0);
 	}
 	
 	

@@ -6,8 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.wicam.numberlineweb.client.OverTen.OverTenGameState;
+import com.wicam.numberlineweb.server.NPC;
 
-public class OverTenNPC {
+public class OverTenNPC extends NPC{
 
 	private OverTenGameCommunicationServiceServlet comm;
 	private int gameid;
@@ -15,13 +16,14 @@ public class OverTenNPC {
 	boolean makeClick = false;
 	private double skill = .7; // 70% correct clicks
 	
-	Timer t = new Timer(true);
-	
 	public OverTenNPC(OverTenGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
-		new CPUBehavior().run();
+		
+		t = new Timer("TimerNPCOverTen", true);
+		
+		t.schedule(new CPUBehavior(), 0);
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
@@ -14,6 +15,7 @@ import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
+import com.wicam.numberlineweb.server.NumberLineGame.NumberLineGameNPC;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 import com.wicam.numberlineweb.server.logging.GameLogger;
@@ -44,6 +46,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	int gamePending;
 	protected String internalName;
 
+	protected List<NPC> npcs = new ArrayList<NPC>();;
+	
 	public GameCommunicationServiceServlet (String internalName){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
 		this.internalName=internalName;
@@ -787,5 +791,12 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		
 		logger.closeConnection();
 		
+	}
+	
+	protected void terminateNPCTimers() {
+		
+		for (NPC npc : this.npcs)
+			npc.terminateTimer();
+			
 	}
 }

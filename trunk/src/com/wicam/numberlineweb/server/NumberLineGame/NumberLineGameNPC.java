@@ -4,10 +4,10 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.google.gwt.core.client.RunAsyncCallback;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
+import com.wicam.numberlineweb.server.NPC;
 
-public class NumberLineGameNPC {
+public class NumberLineGameNPC extends NPC{
 
 	private NumberLineGameCommunicationServiceServlet comm;
 	private int gameid;
@@ -19,12 +19,12 @@ public class NumberLineGameNPC {
 	double accuracyRange = 50;
 	double reactionTimeRange = 1000;
 	
-	Timer t = new Timer("TimerNPC", true);
-	
 	public NumberLineGameNPC(NumberLineGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
+		
+		t = new Timer("TimerNPCNumberLine", true);
 		
 		t.schedule(new CPUBehavior(), 0);
 		
@@ -39,6 +39,8 @@ public class NumberLineGameNPC {
 		accuracyRange = 90 - 0.04 * this.eloNumber;
 		
 		reactionTimeRange = 1800 - 0.8 * this.eloNumber;
+		
+		t = new Timer("TimerNPCNumberLine", true);
 		
 		t.schedule(new CPUBehavior(), 0);
 		

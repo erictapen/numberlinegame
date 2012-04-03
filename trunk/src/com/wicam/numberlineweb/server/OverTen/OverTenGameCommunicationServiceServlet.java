@@ -46,7 +46,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
 		npcIds.add(playerid);
-		new OverTenNPC(this, game.getId(), playerid);
+		this.npcs.add(new OverTenNPC(this, game.getId(), playerid));
 	}
 
 	protected boolean isNPC(int playerId){
@@ -306,6 +306,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 					if (g.getRound() >= g.getMaxRound()){
 						this.endGame(gameid);
 						this.handicapAction(gameid);
+						this.terminateNPCTimers();
 					}
 					else {
 						this.showNextItem(gameid);			

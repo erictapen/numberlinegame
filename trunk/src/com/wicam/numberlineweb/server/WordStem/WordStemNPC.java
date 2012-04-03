@@ -7,8 +7,9 @@ import java.util.TimerTask;
 
 import com.wicam.numberlineweb.client.WordStem.Word;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameState;
+import com.wicam.numberlineweb.server.NPC;
 
-public class WordStemNPC {
+public class WordStemNPC extends NPC{
 
 	private WordStemGameCommunicationServiceServlet comm;
 	private int gameid;
@@ -17,13 +18,15 @@ public class WordStemNPC {
 	private double skill = .7; // 70% correct clicks
 	private Random r = new Random();
 	
-	Timer t = new Timer(true);
 	
 	public WordStemNPC(WordStemGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
 		this.gameid = gameid;
 		this.playerid = playerid;
-		new CPUBehavior().run();
+		
+		t = new Timer("TimerNPCWordStem", true);
+		
+		t.schedule(new CPUBehavior(), 0);
 	}
 	
 	
