@@ -8,6 +8,19 @@ public class VowelGameWord implements IsSerializable{
 	private String word = "";
 	private String consonantPair = "";
 
+	public VowelGameWord(){}
+	
+	public VowelGameWord(String word, String consPair) {
+		this.word = word;
+		this.consonantPair = consPair;
+		this.shortVowel = true;
+	}
+	
+	public VowelGameWord(String word) {
+		this.word = word;
+		this.shortVowel = false;
+	}
+	
 	public void setShortVowel(boolean shortVowel) {
 		this.shortVowel = shortVowel;
 	}

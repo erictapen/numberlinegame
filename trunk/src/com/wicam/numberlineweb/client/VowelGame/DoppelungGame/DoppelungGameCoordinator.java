@@ -135,7 +135,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (!g.getShowSoundFeedback(playerID)){
 				feedbackNumberSet = false;
 				gameView.showVowelChoice();
-				gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord().getWordString()), g.getCurWord().getWordString());
+				if (g.getSoundTries(playerID) == 0) {
+					gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord(), false), g.getCurWord().getWordString());
+				} else {
+					gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord(), true), g.getCurWord().getWordString());
+				}
 			}
 			// sound feedback after choice
 			else {

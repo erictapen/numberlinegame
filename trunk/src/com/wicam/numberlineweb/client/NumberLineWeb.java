@@ -145,34 +145,34 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		
-		//adds the mathe game
-		gts.addGame("Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
-				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		//adds the mathe game
+//		gts.addGame("Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
+//				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		
-		//adds the doppelung game
-		gts.addGame("Dehnungspiel", "pre_dehnung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (DehnungGameCommunicationServiceAsync) GWT.create(DehnungGameCommunicationService.class);
-				coordinator = new DehnungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		//adds the doppelung game
+//		gts.addGame("Dehnungspiel", "pre_dehnung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (DehnungGameCommunicationServiceAsync) GWT.create(DehnungGameCommunicationService.class);
+//				coordinator = new DehnungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		//adds the Multiplication game
 		gts.addGame("Multiplikation", "pre_multiplication.png", "Rechne schnell!", new GameItemStarter() {
@@ -246,7 +246,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordFamily game
-		gts.addGame("Wortfamilien", "pre_overten.png", "Merke dir viel!", new GameItemStarter() {
+		gts.addGame("Wortfamilien", "pre_wordfamily.png", "Merke dir viel!", new GameItemStarter() {
 
 			@Override
 			public void run() {

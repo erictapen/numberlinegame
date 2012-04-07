@@ -58,7 +58,7 @@ public class WordFamilyCollection implements IsSerializable {
 			wordCollection.add(new WordFamily("schmecken", new ArrayList<String>(Arrays.asList("Geschmack"))));
 			wordCollection.add(new WordFamily("schmettern", new ArrayList<String>(Arrays.asList("Schmetterball","zerschmettern"))));
 			wordCollection.add(new WordFamily("schmutzig", new ArrayList<String>(Arrays.asList("verschmutzen","Schmutz"))));
-			wordCollection.add(new WordFamily("schnappen", new ArrayList<String>(Arrays.asList("schnappt","geschnappt","aufschnappen"))));
+			wordCollection.add(new WordFamily("schnappen", new ArrayList<String>(Arrays.asList("klappt","geklappt","aufklappen"))));
 			wordCollection.add(new WordFamily("Schreck", new ArrayList<String>(Arrays.asList("erschreckend","erschrocken","erschrickt"))));
 			wordCollection.add(new WordFamily("schwimmen", new ArrayList<String>(Arrays.asList("Schwimmflossen","geschwommen","schwimmend"))));
 			wordCollection.add(new WordFamily("sitzen", new ArrayList<String>(Arrays.asList("Nachsitzen","Hochsitz","Kindersitz","sitzt"))));
@@ -122,7 +122,7 @@ public class WordFamilyCollection implements IsSerializable {
 			wordCollection.add(new WordFamily("schmecken", new ArrayList<String>(Arrays.asList("Geschmack"))));
 			wordCollection.add(new WordFamily("schmettern", new ArrayList<String>(Arrays.asList("Schmetterball","zerschmettern"))));
 			wordCollection.add(new WordFamily("schmutzig", new ArrayList<String>(Arrays.asList("verschmutzen","Schmutz"))));
-			wordCollection.add(new WordFamily("schnappen", new ArrayList<String>(Arrays.asList("schnappt","geschnappt","aufschnappen"))));
+			wordCollection.add(new WordFamily("klappen", new ArrayList<String>(Arrays.asList("klappt","geklappt","aufklappen"))));
 			wordCollection.add(new WordFamily("Schreck", new ArrayList<String>(Arrays.asList("erschreckend","erschrocken","erschrickt"))));
 			wordCollection.add(new WordFamily("schwimmen", new ArrayList<String>(Arrays.asList("Schwimmflossen","geschwommen","schwimmend"))));
 			wordCollection.add(new WordFamily("sitzen", new ArrayList<String>(Arrays.asList("nachsitzen","Hochsitz","sitzt"))));

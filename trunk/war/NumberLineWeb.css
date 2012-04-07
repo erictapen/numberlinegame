@@ -6,6 +6,26 @@
 	src: url(Ubuntu-Regular.ttf);
 }
 
+@font-face {
+	font-family: Ubuntu;
+	font-style: normal;
+	font-weight: bold;
+	src: url(Ubuntu-Bold.ttf);
+}
+
+@font-face {
+	font-family: Ubuntu;
+	font-style: italic;
+	src: url(Ubuntu-Italic.ttf);
+}
+
+@font-face {
+	font-family: Ubuntu;
+	font-style: italic;
+	font-weight: bold;
+	src: url(Ubuntu-BoldItalic.ttf);
+}
+
 body, body.visible,table td,select,.gwt-Button {
 	font-family: Ubuntu, Tahoma, Geneva, sans-serif !important;
 }
@@ -174,7 +194,7 @@ div.gametype div {
 
 .gametypeselector {
 	margin: 10px;
-	height: 525px;
+	height: 425px;
 	padding-bottom: 90px;
 }
 
