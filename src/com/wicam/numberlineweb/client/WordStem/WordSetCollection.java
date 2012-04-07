@@ -46,12 +46,12 @@ public class WordSetCollection implements IsSerializable {
 		wordSetCollection.add(new WordSet("schlepp", new ArrayList<String>(Arrays.asList("verschleppt","Schlepper","schleppend")), ""));
 		wordSetCollection.add(new WordSet("schluss", new ArrayList<String>(Arrays.asList("Ausschluss","Abschlussessen","Schulabschluss")), "Ausschuss"));
 		wordSetCollection.add(new WordSet("schmutz", new ArrayList<String>(Arrays.asList("verschmutzen","Schmutz")), ""));
-		wordSetCollection.add(new WordSet("schnapp", new ArrayList<String>(Arrays.asList("schnappt","geschnappt","aufschnappen")), ""));
+		wordSetCollection.add(new WordSet("klapp", new ArrayList<String>(Arrays.asList("klappt","geklappt","aufklappen")), ""));
 		wordSetCollection.add(new WordSet("schreck", new ArrayList<String>(Arrays.asList("erschrecken","schrecklich","erschreckend")), ""));
 		wordSetCollection.add(new WordSet("schwimm", new ArrayList<String>(Arrays.asList("Schwimmflossen","Brustschwimmen")), ""));
 		wordSetCollection.add(new WordSet("sitz", new ArrayList<String>(Arrays.asList("Nachsitzen","Hochsitz","Kindersitz","sitzt")), ""));
 		wordSetCollection.add(new WordSet("spann", new ArrayList<String>(Arrays.asList("gespannt","Spannung","verspannt","ausspannen")), ""));
-		wordSetCollection.add(new WordSet("Sperr", new ArrayList<String>(Arrays.asList("versperren","sperrig","gesperrt","Sperre")), "Sperber"));
+		wordSetCollection.add(new WordSet("sperr", new ArrayList<String>(Arrays.asList("versperren","sperrig","gesperrt","Sperre")), "Sperber"));
 		wordSetCollection.add(new WordSet("stamm", new ArrayList<String>(Arrays.asList("Baumstamm","abstammen","Volksstamm")), ""));
 		wordSetCollection.add(new WordSet("starr", new ArrayList<String>(Arrays.asList("Totenstarre","erstarrt","starren","Starrheit")), ""));
 		wordSetCollection.add(new WordSet("stell", new ArrayList<String>(Arrays.asList("verstellen","gestellt","Ausstellung","aufstellen")), "Stelzen"));

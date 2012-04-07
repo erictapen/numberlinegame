@@ -6,7 +6,7 @@ import com.wicam.numberlineweb.server.VowelGame.TargetConsonantListCreater;
 
 public class DoppelungGameConsonantPairListCreater extends TargetConsonantListCreater{
 
-	private static final String[] pairs = new String[]{"tt", "ss", "mm", "ll", "nn", "pp", "rr", "ck", "lt", "rt"};
+	private static final String[] pairs = new String[]{"ff", "tt", "ss", "mm", "ll", "nn", "pp", "rr", "ck", "lt", "rt"};
 	
 	public ArrayList<String> createTargetConsonantList(String correctPair, int numberOfCorrectPairs, int numberOfPairs){
 		ArrayList<String> list = new ArrayList<String>();

@@ -47,7 +47,7 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3,"doppelungGame/soundFiles/description.mp3");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"doppelungGame/soundFiles/description.wav");
 
 	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
 
@@ -76,8 +76,6 @@ public class DoppelungGameView extends GameView {
 		//draw everthing
 		gamePanel.getElement().getStyle().setPosition(Position.RELATIVE);
 
-		setExplanationText();
-		
 		startGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -105,6 +103,7 @@ public class DoppelungGameView extends GameView {
 
 		descriptionSound.play();
 		
+		setExplanationText();
 		gamePanel.add(explanationText);
 		gamePanel.setWidgetPosition(explanationText, 0, 0);
 		gamePanel.add(startGameButton);
@@ -112,7 +111,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
 
-		textBox.setMaxLength(10);
+		textBox.setMaxLength(25);
 		textBox.addKeyPressHandler(new KeyPressHandler(){
 
 			@Override

@@ -131,7 +131,6 @@ public class WordFamilyView extends AbsolutePanel {
 
 		inputContainer.setVisible(false);
 		inputContainer.add(inputTable);
-		inputContainer.setStyleName("family-info-box");
 		add(inputContainer);
 		setWidgetPosition(inputContainer, 50, 130);
 		
@@ -141,7 +140,6 @@ public class WordFamilyView extends AbsolutePanel {
 		
 		// display status updates
 		infoBox.setText("Awaiting Signal...");
-		infoBox.setStyleName("family-info-box");
 		add(infoBox);
 		setWidgetPosition(infoBox, 50, 250);
 
@@ -182,9 +180,11 @@ public class WordFamilyView extends AbsolutePanel {
 		this.stem = stem;
 		this.setRunning(true);
 		
-		this.setInfoText("Merke dir alle Wörter, die<br>zur Wortfamilie von <b>"+this.stem.getWord()+"</b> gehören!");
+		this.setInfoText("<div style=\"text-align:center;\">Merke dir alle Wörter,<br>die zur Wortfamilie von" +
+				"<div style=\"text-align:center;font-weight:bold;color:red;margin:.8em 0em;\">"+
+				this.stem.getWord()+"</div>gehören!</div>");
 		
-		// hide stem in DURATION milliseconds
+		// hide stem in DURATION*2 milliseconds
 		stemTimer.schedule(DURATION*2);
 	}
 
@@ -234,9 +234,11 @@ public class WordFamilyView extends AbsolutePanel {
 	}
 
 	private void submitInput() {
-		controller.clickedAt(input.getText());
-		input.setText("");
-		input.setFocus(true);
+		if (!input.getText().equals("")) {
+			controller.clickedAt(input.getText());
+			input.setText("");
+			input.setFocus(true);
+		}
 	}
 	
 	
@@ -254,11 +256,6 @@ public class WordFamilyView extends AbsolutePanel {
 		this.setRunning(false);
 		this.wordsUsed = 0;
 	}
-
-
-
-	
-
 
 
 }
