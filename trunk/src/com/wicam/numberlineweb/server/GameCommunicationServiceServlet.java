@@ -41,7 +41,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 	protected Map<Integer, GameLogger> gameId2Logger = new HashMap<Integer, GameLogger>();
 	
 	boolean timeOutListLock = false;
-	private Timer timeOutTimer = new Timer(true);
+	private Timer timeOutTimer = new Timer("TimerTimeOut", true);
 	protected int currentId=0;
 	int gamePending;
 	protected String internalName;
@@ -85,7 +85,7 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 
 	public void endGame(int id) {
 
-		Timer t = new Timer(true);
+		Timer t = new Timer("TimerEndGame", true);
 		
 		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
 		
@@ -95,6 +95,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 
 		this.writeLogToDatabase(id);
+		
+		this.terminateNPCTimers();
 		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
@@ -555,6 +557,8 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 		}
 
 		timeOutListUnLock();
+		
+		this.terminateNPCTimers();
 		
 		//Rollback changes and close database connection
 		GameLogger logger = this.gameId2Logger.get(gameid);
