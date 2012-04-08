@@ -306,7 +306,6 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 					if (g.getRound() >= g.getMaxRound()){
 						this.endGame(gameid);
 						this.handicapAction(gameid);
-						this.terminateNPCTimers();
 					}
 					else {
 						this.showNextItem(gameid);			

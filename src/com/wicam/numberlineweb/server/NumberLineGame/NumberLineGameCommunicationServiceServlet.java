@@ -229,7 +229,6 @@ public class NumberLineGameCommunicationServiceServlet extends
 			if (g.getItemCount() == g.getMaxItems()){
 				this.updateEloRating(gameid);
 				this.endGame(gameid);
-				this.terminateNPCTimers();
 			}
 			else
 				this.showNextItem(gameid);
@@ -424,7 +423,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 	
 	public void showNextItem(int id) {
 		
-		Timer t = new Timer(true);
+		Timer t = new Timer("TimerNumberLineShowNextItem", true);
 		t.schedule(new SetNumberLineGameStateTask(id, 6, this), 6000);
 	}
 
