@@ -8,7 +8,7 @@ public class BuddyNumberDigit implements IsSerializable {
 	
 	private int value;
 	private boolean isTaken;
-	
+	private String color;
 	
 	
 	// only for IsSerializable (requires empty constructor)
@@ -22,6 +22,7 @@ public class BuddyNumberDigit implements IsSerializable {
 	public BuddyNumberDigit(int value) {
 		this.value = value;
 		this.isTaken = false;
+		this.setColor("white");
 	}
 
 	
@@ -76,6 +77,23 @@ public class BuddyNumberDigit implements IsSerializable {
 	 */
 	public void setTaken(boolean isTaken) {
 		this.isTaken = isTaken;
+	}
+
+
+	/**
+	 * Set color
+	 * @param color Set color to this value
+	 */
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	/**
+	 * @return Returns color
+	 */
+	public String getColor() {
+		return color;
 	}
 	
 	

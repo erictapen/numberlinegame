@@ -8,6 +8,7 @@ import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.NumberLineWeb;
+import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -189,7 +190,11 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 			chatC.setUserName(g.getPlayerName(this.playerID));
 		for (int i = 0; i < g.getPlayers().size(); i++)
 			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
-		gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
+		int notReady = 0;
+		for (Player p : g.getPlayers()) {
+			notReady += (p.isReady()) ? 0 : 1;
+		}
+		gameView.setInfoText("Warte auf " + notReady + " Spieler...");
 		//if (!g.isPlayerReady(playerID))
 			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 	}

@@ -9,7 +9,7 @@ public class MultiplicationAnswer implements IsSerializable {
 	private String answer;
 	private boolean isCorrect;
 	private boolean isTaken;
-	
+	private String color;
 	
 	
 	// only for IsSerializable (requires empty constructor)
@@ -25,6 +25,7 @@ public class MultiplicationAnswer implements IsSerializable {
 		this.answer = answer;
 		this.isCorrect = isCorrect;
 		this.isTaken = false;
+		this.color = "white";
 	}
 
 	
@@ -95,6 +96,23 @@ public class MultiplicationAnswer implements IsSerializable {
 	 */
 	public void setTaken() {
 		this.isTaken = true;
+	}
+
+
+	/**
+	 * Set color
+	 * @param color Set color to this value
+	 */
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	/**
+	 * @return Returns color
+	 */
+	public String getColor() {
+		return color;
 	}
 
 }

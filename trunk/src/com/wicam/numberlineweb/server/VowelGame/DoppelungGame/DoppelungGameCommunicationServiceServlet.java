@@ -64,7 +64,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 		GameState gameState =  super.openGame(g);
 
-		wordLists.put(gameState.getId(), DoppelungGameWordList.createWordList().iterator());
+		wordLists.put(gameState.getId(), DoppelungGameWordList.createWordList().subList(0,
+				((DoppelungGameState) gameState).getNumberOfWordsToPlay()).iterator());
 
 		// set first word
 		((DoppelungGameState)gameState).setCurWord(getNextWord(currentId));

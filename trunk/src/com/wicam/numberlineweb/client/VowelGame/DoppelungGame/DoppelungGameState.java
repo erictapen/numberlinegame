@@ -14,6 +14,7 @@ public class DoppelungGameState extends GameState {
 	public String player2movingto;
 	private int numberOfConsonants = 20;
 	private int numberOfCorrectConsonants = 5;
+	private int numberOfWordsToPlay = 10;
 	
 	public String enemyMovingTo(int playerid) {
 		
@@ -184,5 +185,20 @@ public class DoppelungGameState extends GameState {
 	public void setPlayerPosX(int playerid, int x) {
 		if (playerid-1 < players.size())
 			((DoppelungGamePlayer)players.get(playerid-1)).setXPos(x);
+	}
+
+	/**
+	 * Set numberOfWordsToPlay
+	 * @param numberOfWordsToPlay Set numberOfWordsToPlay to this value
+	 */
+	public void setNumberOfWordsToPlay(int numberOfWordsToPlay) {
+		this.numberOfWordsToPlay = numberOfWordsToPlay;
+	}
+
+	/**
+	 * @return Returns numberOfWordsToPlay
+	 */
+	public int getNumberOfWordsToPlay() {
+		return numberOfWordsToPlay;
 	}
 }

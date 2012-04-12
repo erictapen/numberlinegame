@@ -7,6 +7,8 @@ import com.wicam.numberlineweb.client.GameSelector;
 
 public class DoppelungGameSelector extends GameSelector {
 	
+	protected final DoppelungGameCreatePopupBox gamePopUp = new DoppelungGameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
+	
 	public DoppelungGameSelector(GameCoordinator coordinator) {
 		super(coordinator);
 		
@@ -27,6 +29,7 @@ public class DoppelungGameSelector extends GameSelector {
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
 						gameState.setNumberOfMaxNPCs(0);
+						gameState.setNumberOfWordsToPlay(gamePopUp.getRoundCount());
 						coordinator.openGame(gameState);
 						gamePopUp.hide();
 					}
