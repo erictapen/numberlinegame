@@ -29,6 +29,8 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	// Max number of rounds to play
 	private int maxRound;
 	
+	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	
 	
 	public BuddyNumberGameState() {
 		
@@ -140,8 +142,9 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	 * @param digits Set of digits to disable/enable from
 	 * @param digitID Define, what digit should be disabled
 	 */
-	public void setDigitTaken(ArrayList<BuddyNumberDigit> digits, int digitID) {
+	public void setDigitTaken(ArrayList<BuddyNumberDigit> digits, int digitID, int uid) {
 		digits.get(digitID).setTaken(true);
+		digits.get(digitID).setColor(playerColors[uid-1]);
 	}
 	
 	

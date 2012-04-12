@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.gwt.core.client.GWT;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 //import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 //import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
@@ -31,6 +33,8 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	
 	// All possible divisors
 	private int[] possibleDivisors = {2,3,4,5,6,7,8,9};
+	
+	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 	
 
 	/**
@@ -150,13 +154,14 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * 		   Returns 0, if user was too slow and answer is already taken. 
 	 * 		   Returns -1, if answer was a false and free one
 	 */
-	private int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers) {
+	private int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.getAnswer().equals(toFind)) {				
 				if (answer.isTaken()) {
 					return 0;
 				} else {
 					answer.setTaken();
+					answer.setColor(playerColors[player.getColorId()]);
 					if (answer.isCorrect()) {
 						return 1;
 					} else {
@@ -214,8 +219,8 @@ public class MultiplicationGameCommunicationServiceServlet extends
 			uid = map.get(internalName).get(gameid).get(playerid);
 		}
 		
-		// check answers an flag taken answers
-		int answerState = checkAnswer(answer, g.getAnswers());
+		// check answers and flag/colorize taken answers
+		int answerState = checkAnswer(answer, g.getAnswers(), (MultiplicationPlayer) g.getPlayers().get(playerid-1));
 
 		// give/take points
 		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);

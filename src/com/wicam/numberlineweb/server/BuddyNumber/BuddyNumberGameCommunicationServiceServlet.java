@@ -194,7 +194,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 			
 			if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 
-				g.setDigitTaken(g.getCommunityDigits(), digitID);
+				g.setDigitTaken(g.getCommunityDigits(), digitID, playerid);
 
 				if (g.getPlayerClickedOn(playerid) + digit == 10) {
 
@@ -262,7 +262,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		
 		if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 
-			g.setDigitTaken(g.getCommunityDigits(), digitID);
+			g.setDigitTaken(g.getCommunityDigits(), digitID, playerid);
 
 			if (npcWasRight) {
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);

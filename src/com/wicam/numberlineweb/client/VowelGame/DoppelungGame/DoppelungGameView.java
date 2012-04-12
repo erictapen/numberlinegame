@@ -47,7 +47,8 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"doppelungGame/soundFiles/description.wav");
+	// streaming activated because of the .wav being 1.5mb big
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"doppelungGame/soundFiles/description.wav", true);
 
 	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
 

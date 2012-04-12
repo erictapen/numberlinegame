@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -102,7 +103,8 @@ public class BuddyNumberView extends AbsolutePanel {
 			});
 			
 			if (digit.isTaken()) {
-				b.setStyleName("answer-Button answer-Button-chosen");				
+				b.setStyleName("answer-Button answer-Button-chosen");
+				DOM.setElementAttribute(b.getElement(), "style", "background-color:"+digit.getColor()+";color:white;");
 			} else {
 				b.setStyleName("answer-Button");
 			}
@@ -141,7 +143,7 @@ public class BuddyNumberView extends AbsolutePanel {
 			b.setEnabled(!digit.isTaken()); // unclickable, if round over
 			
 			if (taken == digit.getValue()) {
-				b.setStyleName("answer-Button answer-Button-chosen");				
+				b.setStyleName("answer-Button answer-Button-chosen");			
 			} else {
 				b.setStyleName("answer-Button");
 			}

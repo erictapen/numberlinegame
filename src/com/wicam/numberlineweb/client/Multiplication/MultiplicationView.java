@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -41,17 +42,7 @@ public class MultiplicationView extends AbsolutePanel {
 		add(answersBox);
 		
 		
-		// display the result
-//		resultBox.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'></div>");
-//		resultBox.setStyleName("result-box");
-//		add(resultBox);
-//		setWidgetPosition(resultBox, 80, 380);
-		
-
 		setWidgetPosition(infoBox, 80, 360);
-		
-//		HTML c = new HTML("<div id='canvas' style='width:600px;height:400px'></div>");
-//		add(c);
 		
 	}
 	
@@ -91,15 +82,20 @@ public class MultiplicationView extends AbsolutePanel {
 
 			String color = "";
 			if (answer.isTaken()) {
+				String back;
 				if (answer.isCorrect()) {
-					color = " correct";
+					//color = " correct";
+					back = answer.getColor();
 				} else {
-					color = " wrong";
+					//color = " wrong";
+					back = "black";
 				}
+				DOM.setElementAttribute(b.getElement(), "style", "background-color:"+back+";color:white;");
 			}
 			
 			b.setStyleName("answer-Button"+color);
 			b.setEnabled(!answer.isTaken()); // unclickable, if already taken
+			
 			
 			answersBox.add(b);
 		}
