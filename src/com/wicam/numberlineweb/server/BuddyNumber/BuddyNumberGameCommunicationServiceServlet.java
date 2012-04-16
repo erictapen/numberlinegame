@@ -63,7 +63,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 		// Reset players
 		for (int i = 0; i < state.getPlayers().size(); i++) {
-			state.setPlayerClickedOn(i, 0);
+			state.setPlayerClickedOn(i+1, 0);
 		}
 
 		// Generate digits until at least one solution is possible
@@ -140,7 +140,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 	 * @return Checks, if the player has already chosen a hand-digit
 	 */
 	private boolean playerHasHand(BuddyNumberGameState g, int playerID) {
-		return ((BuddyNumberPlayer)g.getPlayers().get(playerID)).getClickedOn() != 0;
+		return ((BuddyNumberPlayer)g.getPlayers().get(playerID-1)).getClickedOn() != 0;
 	}
 
 
@@ -233,7 +233,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 			}
 
 			// enable all hand-digits again
-			((BuddyNumberPlayer)g.getPlayers().get(playerid)).setClickedOn(0);
+			((BuddyNumberPlayer)g.getPlayers().get(playerid-1)).setClickedOn(0);
 
 
 		} else {

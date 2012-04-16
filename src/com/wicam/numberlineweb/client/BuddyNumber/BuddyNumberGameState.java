@@ -81,7 +81,7 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	 * @return Returns the hand-digit the user has clicked on
 	 */
 	public int getPlayerClickedOn(int playerID) {
-		return ((BuddyNumberPlayer) players.get(playerID)).getClickedOn();
+		return ((BuddyNumberPlayer) players.get(playerID-1)).getClickedOn();
 	}
 	
 	
@@ -91,7 +91,7 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	 * @param clickedOn hand-digit the player clicked on
 	 */
 	public void setPlayerClickedOn(int playerID, int clickedOn) {
-		((BuddyNumberPlayer) players.get(playerID)).setClickedOn(clickedOn);
+		((BuddyNumberPlayer) players.get(playerID-1)).setClickedOn(clickedOn);
 	}
 	
 	
