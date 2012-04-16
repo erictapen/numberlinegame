@@ -124,7 +124,7 @@ public class WordStemGameState extends GameState implements Serializable{
 	 * @return Returns the hand-digit the user has clicked on
 	 */
 	public String getPlayerClickedOn(int playerID) {
-		return ((WordStemPlayer) players.get(playerID)).getClickedOn();
+		return ((WordStemPlayer) players.get(playerID-1)).getClickedOn();
 	}
 	
 	
@@ -134,7 +134,7 @@ public class WordStemGameState extends GameState implements Serializable{
 	 * @param clickedOn hand-digit the player clicked on
 	 */
 	public void setPlayerClickedOn(int playerID, String clickedOn) {
-		((WordStemPlayer) players.get(playerID)).setClickedOn(clickedOn);
+		((WordStemPlayer) players.get(playerID-1)).setClickedOn(clickedOn);
 	}
 	
 	

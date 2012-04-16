@@ -167,7 +167,7 @@ public class WordStemGameCoordinator extends GameCoordinator {
 	 */
 	private void updateViewIngame(WordStemGameState g, WordStemGameView gameView) {
 		gameView.drawStems(g.getStems());
-		gameView.drawWords(g.getWords(), ((WordStemPlayer)g.getPlayers().get(playerID)).getClickedOn());
+		gameView.drawWords(g.getWords(), ((WordStemPlayer)g.getPlayers().get(playerID-1)).getClickedOn());
 		
 		for (int i = 0; i < g.getPlayers().size(); i++){
 			gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));

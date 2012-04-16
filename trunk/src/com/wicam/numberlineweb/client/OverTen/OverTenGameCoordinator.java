@@ -180,7 +180,7 @@ public class OverTenGameCoordinator extends GameCoordinator {
 	 */
 	private void updateViewIngame(OverTenGameState g, OverTenGameView gameView) {
 		gameView.drawCommunityDigits(g.getCommunityDigits());
-		gameView.drawCalculations(g.getCalculations(), ((OverTenPlayer)g.getPlayers().get(playerID)).getCalculation().toString());
+		gameView.drawCalculations(g.getCalculations(), ((OverTenPlayer)g.getPlayers().get(playerID-1)).getCalculation().toString());
 		
 		for (int i = 0; i < g.getPlayers().size(); i++){
 			gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));

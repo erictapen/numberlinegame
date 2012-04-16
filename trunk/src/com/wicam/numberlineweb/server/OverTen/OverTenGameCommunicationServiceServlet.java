@@ -64,7 +64,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 
 		// Reset players
 		for (int i = 0; i < state.getPlayers().size(); i++) {
-			state.setPlayerCalculation(i, new OverTenCalculation());
+			state.setPlayerCalculation(i+1, new OverTenCalculation());
 		}
 
 
@@ -188,7 +188,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 	 * @return Checks, if the player has already chosen a calculation
 	 */
 	private boolean playerHasCalc(OverTenGameState g, int playerID) {
-		return !((OverTenPlayer)g.getPlayers().get(playerID)).getCalculation().equals(new OverTenCalculation());
+		return !((OverTenPlayer)g.getPlayers().get(playerID-1)).getCalculation().equals(new OverTenCalculation());
 	}
 
 	
@@ -197,7 +197,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 	 * @return Checks, if the player has already chosen a community-digit
 	 */
 	private boolean playerHasFirstDigit(OverTenGameState g, int playerID) {
-		return ((OverTenPlayer)g.getPlayers().get(playerID)).getFirstDigit() != -1;
+		return ((OverTenPlayer)g.getPlayers().get(playerID-1)).getFirstDigit() != -1;
 	}
 
 
@@ -318,7 +318,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 			}
 
 			// enable calculation again, clear chosen digit
-			((OverTenPlayer)g.getPlayers().get(playerid)).reset();
+			((OverTenPlayer)g.getPlayers().get(playerid-1)).reset();
 
 
 		} else {

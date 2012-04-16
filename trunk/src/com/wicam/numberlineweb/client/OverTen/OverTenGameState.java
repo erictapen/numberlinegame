@@ -79,7 +79,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * @return Returns the calculation the user has clicked on
 	 */
 	public OverTenCalculation getPlayerCalculation(int playerID) {
-		return ((OverTenPlayer) players.get(playerID)).getCalculation();
+		return ((OverTenPlayer) players.get(playerID-1)).getCalculation();
 	}
 	
 	
@@ -89,7 +89,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * @param calculation calculation the player clicked on
 	 */
 	public void setPlayerCalculation(int playerID, OverTenCalculation calculation) {
-		((OverTenPlayer) players.get(playerID)).setCalculation(calculation);
+		((OverTenPlayer) players.get(playerID-1)).setCalculation(calculation);
 	}
 	
 	
@@ -98,7 +98,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * @return Returns the digit-index the user has clicked on
 	 */
 	public int getPlayerDigit(int playerID) {
-		return ((OverTenPlayer) players.get(playerID)).getFirstDigit();
+		return ((OverTenPlayer) players.get(playerID-1)).getFirstDigit();
 	}
 	
 	
@@ -108,7 +108,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * @param index digit-index the player clicked on
 	 */
 	public void setPlayerDigit(int playerID, int index) {
-		((OverTenPlayer) players.get(playerID)).setFirstDigit(index);
+		((OverTenPlayer) players.get(playerID-1)).setFirstDigit(index);
 	}
 	
 	

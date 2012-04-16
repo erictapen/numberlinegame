@@ -164,7 +164,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 	 * @return Checks, if the player has already chosen a hand-digit
 	 */
 	private boolean playerHasHand(WordStemGameState g, int playerID) {
-		return !((WordStemPlayer)g.getPlayers().get(playerID)).getClickedOn().equals("");
+		return !((WordStemPlayer)g.getPlayers().get(playerID-1)).getClickedOn().equals("");
 	}
 
 
@@ -253,7 +253,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 			}
 
 			// enable all hand-digits again
-			((WordStemPlayer)g.getPlayers().get(playerid)).setClickedOn("");
+			((WordStemPlayer)g.getPlayers().get(playerid-1)).setClickedOn("");
 
 
 		} else {
