@@ -31,10 +31,6 @@ public class OverTenView extends AbsolutePanel {
 		
 		getElement().getStyle().setPosition(Position.RELATIVE);
 		
-		// display status updates
-		infoBox.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>Awaiting Signal...</div>");
-		add(infoBox);
-		
 		// display all answers
 		communityBox.setWidth("400px");
 		communityBox.setStyleName("community-box center-text");
@@ -42,35 +38,36 @@ public class OverTenView extends AbsolutePanel {
 		
 		// display all answers
 		calcBox.setWidth("400px");
-		calcBox.setStyleName("hand-box center-text");
+		calcBox.setStyleName("hand-box center-text word-box");
 		add(calcBox);
 		
 
-		setWidgetPosition(infoBox, 30, 320);
+		infoBox.setText("Awaiting Signal...");
+		infoBox.setStyleName("word-info-box");
+		calcBox.add(infoBox);
+		
+//		setWidgetPosition(infoBox, 30, 320);
 		
 		
 	}
 	
 	public void setInfoText(String text) {
 
-		infoBox.setHTML("<div id='resultText' style='width:500px;padding:5px 20px;'>" + text +"</div>");
+		infoBox.setHTML(text);
 
 	}
 
 	
 	public void setThirdText(int result) {
-		infoBox.setHTML("<div id='resultText' style='width:500px;padding:5px 20px;'>" +
-				"Welche Zahl ergibt zusammen mit 10 genau "+result+"?</div>");
+		infoBox.setHTML("Welche Zahl ergibt zusammen mit 10 genau "+result+"?");
 	}
 	
 	public void setSecondText(int first) {
-		infoBox.setHTML("<div id='resultText' style='width:500px;padding:5px 20px;'>" +
-				"Welche Zahl ergibt zusammen mit "+first+" genau 10?</div>");
+		infoBox.setHTML("Welche Zahl ergibt zusammen mit "+first+" genau 10?");
 	}
 
 	public void setFirstText() {
-		infoBox.setHTML("<div id='resultText' style='width:500px;padding:5px 20px;'>" +
-				"Wähle eine der Rechnungen durch klicken aus.</div>");
+		infoBox.setHTML("Wähle eine der Rechnungen durch klicken aus.");
 	}
 	
 	
@@ -145,6 +142,8 @@ public class OverTenView extends AbsolutePanel {
 			
 			counter++;
 		}
+		
+		calcBox.add(infoBox);
 		
 	}
 }

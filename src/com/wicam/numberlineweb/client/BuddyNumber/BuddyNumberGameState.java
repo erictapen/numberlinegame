@@ -144,7 +144,11 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	 */
 	public void setDigitTaken(ArrayList<BuddyNumberDigit> digits, int digitID, int uid) {
 		digits.get(digitID).setTaken(true);
-		digits.get(digitID).setColor(playerColors[uid-1]);
+		int temp = uid;
+		while (temp>playerColors.length) {
+			temp -= playerColors.length;
+		}
+		digits.get(digitID).setColor(playerColors[temp-1]);
 	}
 	
 	

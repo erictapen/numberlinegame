@@ -122,8 +122,10 @@ public class MultiplicationGameView extends GameView  {
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Multiplikationsspiel - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Du siehst gleich einige Rechenaufgaben. Darunter steht eine Zahl. Klicke so schnell wie möglich auf die " +
-				"Rechnung, die diese Zahl ergibt." +
+				"Du siehst gleich ein gewünschtes Ergebnis, und darüber 12 verschiedene Multiplikationsaufgaben. " +
+				"Klicke so schnell wie möglich auf die Rechnung, die das gewünschte Ergebnis hat. " +
+				"Es können auch mehrere Aufgaben richtig sein. Ist dein Gegenspieler schneller als du, " +
+				"ist die Rechnung, die er angeklickt hat, aus dem Spiel. " +
 				"</div>");
 	}
 	
