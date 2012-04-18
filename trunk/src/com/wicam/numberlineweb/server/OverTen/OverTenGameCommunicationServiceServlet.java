@@ -95,7 +95,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 		}
 
 		// fill with random digits
-		while (state.getCommunityDigits().size() < 8) {
+		while (state.getCommunityDigits().size() < 12) {
 			state.getCommunityDigits().add(new OverTenDigit(getRandomDigit()));
 		}
 		

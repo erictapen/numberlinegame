@@ -83,6 +83,10 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 			}
 			stems.add(wordSet.getStem());
 		}
+		
+		if (state.usesDistractor()) {
+			stems.add(this.words.getRandomStem(stems, this.rand));
+		}
 
 		Collections.shuffle(stems, this.rand);
 		Collections.shuffle(words, this.rand);

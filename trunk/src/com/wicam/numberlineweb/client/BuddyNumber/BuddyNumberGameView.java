@@ -137,12 +137,13 @@ public class BuddyNumberGameView extends GameView  {
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Partnerzahlen - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Gleich siehst du 2 Kasten. Im oberen sind die Zahlen die allen Spielern zur Verfügung stehen. " +
-				"Im unteren Kasten stehen alle deine Zahlen.<br>Das Ziel des Spiels ist es, möglichst schnell " +
-				"erst unten, danach oben eine Zahl anzucklicken, so dass beide Zahlen gemeinsam genau 10 ergeben.<br>" +
-				"Danach wird die angeklickte Zahl im oberen Kasten nicht mehr zur Verfügung stehen, alle deine Zahlen " +
-				"im unteren Kasten bleiben dir aber erhalten.<br>" +
-				"Sieger ist, wer als schnellster am meisten richtige Paare findet. Viel Spaß!" +
+				"Gleich siehst du 2 Kasten. Im oberen Kasten sind die Zahlen, die allen Spielern zur Verfügung stehen. " +
+				"Im unteren Kasten stehen Zahlen, die nur du sehen und benutzen kannst.<br>" +
+				"Das Ziel des Spiels ist es, möglichst schnell erst unten, danach oben eine Zahl anzuklicken, so dass beide " +
+				"Zahlen gemeinsam genau 10 ergeben.<br>" +
+				"Danach ist die angeklickte Zahl im oberen Kasten aus dem Spiel, das heißt, keiner der Spieler kann sie mehr anklicken. " +
+				"Die Zahlen im unteren Kasten jedoch kannst du benutzen, so oft du willst. Sieger ist, wer als Schnellster die " +
+				"meisten richtigen Paare findet. Viel Spaß!" +
 				"</div>");
 	}
 

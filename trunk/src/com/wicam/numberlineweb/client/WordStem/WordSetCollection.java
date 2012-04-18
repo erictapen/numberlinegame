@@ -71,6 +71,21 @@ public class WordSetCollection implements IsSerializable {
 	}
 	
 	/**
+	 * @param notThese Stems already taken
+	 * @param r Random generator
+	 * @return A random stem not yet used
+	 */
+	public Word getRandomStem(ArrayList<Word> notThese, Random r) {
+		Word stem = new Word();
+		int index = 0;
+		do {			
+			index = r.nextInt(this.wordSetCollection.size());
+			stem = this.wordSetCollection.get(index).getStem();
+		} while (notThese.contains(stem));
+		return stem;
+	}
+
+	/**
 	 * @param n Number of WordSets to get
 	 * @param taken All word stems that are already taken
 	 * @param r Random-object

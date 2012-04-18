@@ -55,7 +55,7 @@ public class MultiplicationView extends AbsolutePanel {
 	public void setResultText(int res) {
 		
 		infoBox.setHTML("<div id='resultText' style='width:500px;padding:5px 20px;'>" +
-				"Welche Rechnung ergibt "+Integer.toString(res) +"?</div>");
+				"Gesucht wird <strong style=\"font-size:1.2em;\">"+Integer.toString(res) +"</strong></div>");
 		
 	}
 	

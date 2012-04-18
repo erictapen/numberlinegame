@@ -140,15 +140,18 @@ public class OverTenGameView extends GameView  {
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Über Zehn - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Gleich siehst du 2 Kasten. Im oberen sind die Zahlen die allen Spielern zur Verfügung stehen. " +
-				"Im unteren Kasten stehen alle deine Rechenaufgaben.<br>Das Ziel des Spiels ist es, möglichst schnell " +
-				"erst unten eine Rechnung auszuwählen, danach oben eine Zahl anzucklicken, so dass die erste Zahl deiner Rechnung " +
-				"und die angeklickte Zahl genau 10 ergeben. Danach suchst du eine weitere Zahl, die die Rechnung auflöst. " +
-				"Beispiel: Du wählst unten \"7 + 5\" aus. Dann musst du oben erst die 3 suchen (7 + 3 = 10) und danach " +
-				"die 2 (10 + 2 = 12).<br>" +
-				"Danach wird die angeklickte Zahl im oberen Kasten nicht mehr zur Verfügung stehen, alle deine Rechnungen " +
-				"im unteren Kasten bleiben dir aber erhalten.<br>" +
-				"Sieger ist, wer als schnellster am meisten richtige Rechnungen vervollständigt.. Viel Spaß!" +
+				"Gleich siehst du 2 Kasten. Im oberen sind die Zahlen, die allen Spielern zur Verfügung stehen. " +
+				"Im unteren Kasten stehen Rechenaufgaben, die nur du sehen und benutzen kannst.<br>" +
+				"Das Ziel des Spiels ist es, möglichst schnell erst unten eine Rechnung auszuwählen, " +
+				"danach oben eine Zahl anzuklicken, so dass die <strong>erste Zahl</strong> deiner " +
+				"Rechnung und die <strong>angeklickte Zahl</strong> genau <strong>10</strong> ergeben. " +
+				"Danach suchst du eine weitere Zahl, die die ursprüngliche Rechnung auflöst. Beispiel: " +
+				"Du wählst unten \"7 + 5\" (=12) aus. Dann musst du oben erst die <strong>3</strong> " +
+				"suchen (<strong>7 + 3 = 10</strong>) und danach die 2 (10 + 2 = 12).<br>" +
+				"Danach ist die angeklickte Zahl im oberen Kasten aus dem Spiel, das heißt weder du " +
+				"noch deine Gegenspieler können sie verwenden, alle deine Rechnungen im unteren Kasten " +
+				"kannst du aber benutzen, so oft du möchtest.<br>" +
+				"Sieger ist, wer als Schnellster am meisten richtige Rechnungen vervollständigt. Viel Spaß!" +
 				"</div>");
 	}
 
