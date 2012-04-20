@@ -19,6 +19,8 @@ import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 //import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
 //import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
 //import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 
 public class BuddyNumberGameCommunicationServiceServlet extends
 GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
@@ -172,8 +174,6 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		int digitID = Integer.parseInt(clicked.split(":")[3]);
 		String from = clicked.split(":")[4];
 
-
-
 		BuddyNumberGameState g = (BuddyNumberGameState) this.getGameById(gameid);
 
 		HttpServletRequest request = this.getThreadLocalRequest();
@@ -188,23 +188,36 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 			g.setPlayerClickedOn(playerid, digit);
 			this.setGameState(g, 3);
-
+			
 		} else if (from.equals("com") && playerHasHand(g, playerid)) { // user has chosen a hand-digit
 			
 			
 			if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
-
+				
+				boolean wasRight = false;
+				
 				g.setDigitTaken(g.getCommunityDigits(), digitID, playerid);
 
 				if (g.getPlayerClickedOn(playerid) + digit == 10) {
 
 					this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
-
+					
+					wasRight = true;
+					
 				} else {
 
 					this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);
-
+					
 				}
+				
+				String actionParams = "{\"first_click_digit\" : " + g.getPlayerClickedOn(playerid) +
+						", \"second_click_digit\" : " + digit + ", \"was_right\" : " + wasRight + "}";
+				
+				System.out.println(actionParams);
+				
+				this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), 
+						LogActionType.BUDDYNUMBER_PICKED_NUMBER_PAIR, actionParams, 
+						this.getClass().getName(), LogActionTrigger.USER);
 
 				if (hasSolution(g.getCommunityDigits(), g.getHandDigits())) {
 
@@ -258,7 +271,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 		int digitID = Integer.parseInt(clicked.split(":")[3]);
 		BuddyNumberGameState g = (BuddyNumberGameState) this.getGameById(gameid); 
 		
-		//System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
+		System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
 		
 		if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 
