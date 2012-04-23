@@ -803,4 +803,14 @@ public abstract class GameCommunicationServiceServlet extends RemoteServiceServl
 			npc.terminateTimer();
 			
 	}
+	
+	//This method is overridden to prevent security exceptions
+	//caused by Firefox not adding the X-GWT-PERMUTATION header 
+	//(see http://code.google.com/p/gwteventservice/issues/detail?id=30).
+	@Override
+	protected void checkPermutationStrongName() throws SecurityException {
+	    return;
+	}
+
+
 }

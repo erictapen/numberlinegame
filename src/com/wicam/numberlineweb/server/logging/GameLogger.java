@@ -78,7 +78,7 @@ public class GameLogger {
 	public enum LogActionType {GAME_STARTED, GAME_ENDED, JOINED_GAME, LEFT_GAME,
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
 		NUMBERLINE_NUMBER_PRESENTED, DOPPELUNGGAME_WORD_ENTERED, DOPPELUNGGAME_WORD_CATEGORIZED,
-		BUDDYNUMBER_PICKED_NUMBER_PAIR;
+		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -107,6 +107,8 @@ public class GameLogger {
 					return 10;
 				case BUDDYNUMBER_PICKED_NUMBER_PAIR:
 					return 11;
+				case BUDDYNUMBER_NPC_PICKED_NUMBER:
+					return 12;
 				default:
 					//Should not occur
 					return -1;
