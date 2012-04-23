@@ -213,8 +213,6 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 				String actionParams = "{\"first_click_digit\" : " + g.getPlayerClickedOn(playerid) +
 						", \"second_click_digit\" : " + digit + ", \"was_right\" : " + wasRight + "}";
 				
-				System.out.println(actionParams);
-				
 				this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), 
 						LogActionType.BUDDYNUMBER_PICKED_NUMBER_PAIR, actionParams, 
 						this.getClass().getName(), LogActionTrigger.USER);
@@ -243,6 +241,7 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 			} else {
 				//TODO message: someone was faster...
+				
 			}
 
 			// enable all hand-digits again
@@ -268,20 +267,28 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 	public boolean npcClicked(String clicked, Boolean npcWasRight) {
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
 		int playerid = Integer.parseInt(clicked.split(":")[1]);
+		int digit = Integer.parseInt(clicked.split(":")[2]);
 		int digitID = Integer.parseInt(clicked.split(":")[3]);
 		BuddyNumberGameState g = (BuddyNumberGameState) this.getGameById(gameid); 
-		
-		System.out.println("NPC clicked " + npcWasRight +" on "+digitID);
 		
 		if (!g.getCommunityDigits().get(digitID).isTaken()) { // Nobody was faster
 
 			g.setDigitTaken(g.getCommunityDigits(), digitID, playerid);
-
+			
+			boolean wasRight = false;
+			
 			if (npcWasRight) {
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
+				wasRight = true;
 			} else {
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);
 			}
+			
+			String actionParams = "{\"digit\" : " + digit + ", \"was_right\" : " + wasRight + "}";
+			
+			this.gameId2Logger.get(gameid).log(gameid, System.currentTimeMillis(), 
+					LogActionType.BUDDYNUMBER_NPC_PICKED_NUMBER, actionParams, 
+					this.getClass().getName(), LogActionTrigger.NPC);
 
 			if (hasSolution(g.getCommunityDigits(), g.getHandDigits())) {
 				this.setGameState(this.getGameById(gameid),3);
@@ -300,6 +307,8 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 			}
 			
 			return true;
+		} else {
+			
 		}
 		
 		return false;
@@ -397,14 +406,18 @@ GameCommunicationServiceServlet implements BuddyNumberGameCommunicationService {
 
 	public String getGameProperties(GameState gameState) {
 
-		BuddyNumberGameState numberlineGameState = (BuddyNumberGameState) gameState;
+		BuddyNumberGameState buddyGameState = (BuddyNumberGameState) gameState;
 
 		String gamePropertiesStr = "{";
 
-		gamePropertiesStr += "num_players : " + numberlineGameState.getPlayerCount() + ", ";
+		gamePropertiesStr += "\"num_players\" : " + buddyGameState.getPlayerCount() + ", ";
 
-		//TODO gameproperties
-
+		gamePropertiesStr += "\"max_rounds\" : " + buddyGameState.getMaxRound() + ", ";
+		
+		gamePropertiesStr += "\"hand_digits\" : " + buddyGameState.getHandDigits() + ", ";
+		
+		gamePropertiesStr += "\"community_digits\" : " + buddyGameState.getCommunityDigits();
+		
 		gamePropertiesStr += "}";
 
 		return gamePropertiesStr;
