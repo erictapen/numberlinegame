@@ -2,6 +2,8 @@ package com.wicam.numberlineweb.client.WordFamily;
 
 import java.util.ArrayList;
 
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,11 +30,20 @@ public class WordFamilyGameView extends GameView  {
 	final AbsolutePanel playerPanel = new AbsolutePanel();
 	final AbsolutePanel explanationPanel = new AbsolutePanel();
 	final HTML explanationText = new HTML();
+	
+	protected SoundController soundController = new SoundController();
+	// streaming activated because of the .wav being 1.5mb big
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"desc/Wortfamilienspiel.wav", true);
+	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
 			initGameView();
 			((WordFamilyGameController) gameController).startButtonClicked();
+			try {
+				descriptionSound.stop();
+			} catch (Exception e) {
+			}
 		}
 	});
 	
@@ -67,6 +78,8 @@ public class WordFamilyGameView extends GameView  {
 		motherPanel.add(explanationPanel);
 
 		RootPanel.get().add(motherPanel);
+		
+		descriptionSound.play();
 	}
 	
 	/**
