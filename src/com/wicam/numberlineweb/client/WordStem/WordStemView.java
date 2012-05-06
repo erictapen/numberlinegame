@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -128,11 +129,15 @@ public class WordStemView extends AbsolutePanel {
 			b.setEnabled(!word.isTaken() && !word.isSelected());
 
 			if (taken.equals(word.getWord())) {
-				b.setStyleName("word-Button word-Button-chosen");				
+				b.setStyleName("word-Button word-Button-chosen");
 			} else {
 				b.setStyleName("word-Button");
 			}
 
+			if (word.isTaken()) {
+				DOM.setElementAttribute(b.getElement(), "style", "background-color:"+word.getColor()+";color:white;");
+			}
+			
 			wordBox.add(b);
 
 			counter++;

@@ -35,6 +35,8 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 	private int[] possibleSummands = {2,3,4,5,6,7,8,9};
 
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
+	
+	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 
 	public OverTenGameCommunicationServiceServlet() {
 
@@ -278,8 +280,8 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 				if (isCorrect(g.getPlayerCalculation(playerid), g.getCommunityDigits().get(g.getPlayerDigit(playerid)), 
 						g.getCommunityDigits().get(index))) {
 
-					g.setDigitTaken(g.getCommunityDigits(), g.getPlayerDigit(playerid));
-					g.setDigitTaken(g.getCommunityDigits(), index);
+					g.setDigitTaken(g.getCommunityDigits(), g.getPlayerDigit(playerid), playerColors[g.getPlayers().get(playerid-1).getColorId()]);
+					g.setDigitTaken(g.getCommunityDigits(), index, playerColors[g.getPlayers().get(playerid-1).getColorId()]);
 					
 					this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
 
@@ -349,8 +351,8 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 		if (!g.getCommunityDigits().get(firstID).isTaken() && !g.getCommunityDigits().get(secondID).isTaken()) { // Nobody was faster
 
 			if (npcWasRight) {
-				g.setDigitTaken(g.getCommunityDigits(), firstID);
-				g.setDigitTaken(g.getCommunityDigits(), secondID);
+				g.setDigitTaken(g.getCommunityDigits(), firstID, playerColors[g.getPlayers().get(playerid-1).getColorId()]);
+				g.setDigitTaken(g.getCommunityDigits(), secondID, playerColors[g.getPlayers().get(playerid-1).getColorId()]);
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
 			} else {
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);

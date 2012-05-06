@@ -2,6 +2,8 @@ package com.wicam.numberlineweb.client.OverTen;
 
 import java.util.ArrayList;
 
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,12 +35,19 @@ public class OverTenGameView extends GameView  {
 		public void onClick(ClickEvent event) {
 			initGameView();
 			((OverTenGameController) gameController).startButtonClicked();
+			try {
+				descriptionSound.stop();
+			} catch (Exception e) {
+			}
 		}
 	});
 	
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
+	
+	protected SoundController soundController = new SoundController();
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/OverTen.wav");
 	
 
 	public OverTenGameView(OverTenGameController gameController, int numberOfPlayers, int numberOfNPCs) {
@@ -66,6 +75,8 @@ public class OverTenGameView extends GameView  {
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
 
+		descriptionSound.play();
+		
 		RootPanel.get().add(motherPanel);
 	}
 	

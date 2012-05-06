@@ -2,6 +2,8 @@ package com.wicam.numberlineweb.client.BuddyNumber;
 
 import java.util.ArrayList;
 
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -32,6 +34,11 @@ public class BuddyNumberGameView extends GameView  {
 		@Override
 		public void onClick(ClickEvent event) {
 			initGameView();
+			try {
+				descriptionSound.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			((BuddyNumberGameController) gameController).startButtonClicked();
 		}
 	});
@@ -39,6 +46,8 @@ public class BuddyNumberGameView extends GameView  {
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
+	protected SoundController soundController = new SoundController();
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/BuddyNumber.wav");
 	
 
 	public BuddyNumberGameView(BuddyNumberGameController gameController, int numberOfPlayers, int numberOfNPCs) {
@@ -65,6 +74,8 @@ public class BuddyNumberGameView extends GameView  {
 		explanationPanel.add(startGameButton);
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
+		
+		descriptionSound.play();
 
 		RootPanel.get().add(motherPanel);
 	}

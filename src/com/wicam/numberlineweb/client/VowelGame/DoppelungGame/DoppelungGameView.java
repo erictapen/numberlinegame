@@ -47,8 +47,7 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
-	// streaming activated because of the .wav being 1.5mb big
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"doppelungGame/soundFiles/description.wav", true);
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/Doppelung.wav");
 
 	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
 
@@ -146,46 +145,25 @@ public class DoppelungGameView extends GameView {
 		motherPanel.add(pointsPanel);
 	}
 	
-	/*protected void setExplanationText(){
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
-				"<p>" + 
-				"<div style='padding:5px 20px;font-size:18px'>" + "" +
-				"In diesem Spiel übst du die Doppelung von Konsonanten. " +
-				"Häufig wird ein Konsonant nach einem kurzen Vokal verdoppelt. " +
-				"Deshalb besteht deine Aufgabe erst einmal darin zu erkennen, " +
-				"ob sich ein Vokal lang oder kurz anhört. Um das zu tun, musst" +
-				" du gut zuhören, welches Wort der Computer abspielt. Wenn sich der " +
-				"Vokal lang anhört, klicke mit der Maus auf das rechte Symbol. " +
-				"Wenn sich der Vokal kurz anhört, klicke auf das linke Symbol. " +
-				"Nach kurzen Vokalen  öffnet sich ein Minispiel, in dem du die " +
-				"Konsonantenpaare einsammeln sollst, die in dem Wort, das du gerade " +
-				"gehört hast verdoppelt werden. Bei „Fluss“ sollst du zum Beispiel die " +
-				"„ss“ einsammeln. Pass gut auf, dass du keine anderen Konsonantenpaare " +
-				"berührst und steuere das Symbol mit den Pfeiltasten." + 
-		"</div>");
-	}*/
-
-	protected void setExplanationText(){
+	protected void setExplanationText() {
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Doppelungspiel - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Erkl&auml;rung Doppelungsspiel:<br>\r\n" + 
-				"		<br>\r\n" + 
-				"		Zuerst h&ouml;rst du W&ouml;rter.<br>\r\n" + 
-				"		Wenn sich der Vokal lang anh&ouml;rt, klicke mit der Maus auf das rechte Symbol: <img src=\"doppelungGame/ziehen1.jpg\" style=\"height:30px;\">. <br>\r\n" + 
-				"		Wenn sich der Vokal kurz anh&ouml;rt, klicke auf das linke Symbol <img src=\"doppelungGame/knall_small.png\" style=\"height:30px;\">. <br>\r\n" + 
-				"		<br>\r\n" + 
-				"		Klicke dann in einem Minispiel die Silben an, die zum Wort oder zu einer Erweiterung des Wortes geh&ouml;ren. Beim Wort „knallen“ sollst du zum Beispiel<br>\r\n" + 
-				"		<br>\r\n" + 
-				"		<pre style=\"margin:0;\"> 		<strong>knal</strong>\r\n" + 
-				"			ten		<strong>len</strong>\r\n" + 
-				"fen</pre>\r\n" + 
-				"		<br>\r\n" + 
-				"		so schnell wie m&ouml;glich \"knal\" und \"len\" anklicken.<br>\r\n" + 
-				"		<br>\r\n" + 
-				"		Dann fallen Konsonantenpaare vom Bildschirm. Sammle so schnell wie m&ouml;glich die Konsonantenpaare ein, die nach dem kurzen Vokal kommen, nach \"knallen\" sammelst du also alle \"ll\" ein. Steuere mit den Pfeiltasten:<br>\r\n" + 
-				"		<br>\r\n" + 
-				"		<pre style=\"margin:0;\"><img src=\"doppelungGame/coins/coin_ll.png\" style=\"height:25px;\">     <img src=\"doppelungGame/coins/coin_tt.png\" style=\"height:25px;\">\r\n" + 
-				"	<img src=\"doppelungGame/coins/coin_lt.png\" style=\"height:25px;\">      <img src=\"doppelungGame/coins/coin_rt.png\" style=\"height:25px;\"></pre>"+ 
+				"In diesem Spiel übst du die Doppelung von Konsonanten. Oft werden " +
+				"Konsonanten nach einem kurzen Vokal verdoppelt. Erstmal sollst du deshalb " +
+				"entscheiden, ob sich ein Vokal lang oder kurz anhört. Hör gut zu, welches " +
+				"Wort der Computer abspielt und merke es dir.<br>\r\n" + 
+				"Wenn sich der erste Vokal lang anhört, wie zum Beispiel das „i“ in „ziehen“, " +
+				"klicke mit der Maus auf das rechte Symbol, auf das Männchen, das am Seil zieht. " +
+				"<img src=\"doppelungGame/ziehen1.jpg\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\">" +
+				"Wenn sich der erste Vokal kurz anhört, wie zum Beispiel das „a“ in „Knall“, " +
+				"klicke auf das linke Symbol, auf den Knall. " +
+				"<img src=\"doppelungGame/knall_small.png\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\"><br>\r\n" + 
+				"Wenn du ein Wort mit kurzem Vokal gehört hast, fallen Konsonanten vom Bildschirm. " +
+				"Sammle genau die Konsonanten ein, die man in dem Wort verdoppelt. Bei „Knall“ " +
+				"sollst du zum Beispiel alle „ll“ einsammeln, bei „rennen“ alle „nn“. Pass gut auf, " +
+				"dass du keine anderen Konsonantenpaare berührst und steuere das Symbol mit den Pfeiltasten.<br>\r\n" + 
+				"<br>\r\n" + 
+				"Viel Spaß!\r\n" +
 		"</div>");
 	}
 

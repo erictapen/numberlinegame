@@ -174,6 +174,10 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	}
 	
 	
+	/**
+	 * @param answers Set of answers to check
+	 * @return True, if at least one correct answer is not yet taken
+	 */
 	private boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
 		Boolean res = false;
 		for (MultiplicationAnswer answer : answers) {

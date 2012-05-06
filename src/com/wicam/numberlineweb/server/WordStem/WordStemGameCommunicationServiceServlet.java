@@ -36,6 +36,8 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 	private WordSetCollection words = new WordSetCollection();
 
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
+	
+	public final String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 
 	public WordStemGameCommunicationServiceServlet() {
 
@@ -225,7 +227,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 			if (isCorrect(new Word(value), new Word(g.getPlayerClickedOn(playerid)))) {
 
 				g.setWordSelected(g.getWords(), g.getPlayerClickedOn(playerid), false);
-				g.setWordTaken(g.getWords(), g.getPlayerClickedOn(playerid), true);
+				g.setWordTaken(g.getWords(), g.getPlayerClickedOn(playerid), true, playerColors[g.getPlayerColorID(playerid)]);
 				this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
 
 			} else {
@@ -290,7 +292,7 @@ GameCommunicationServiceServlet implements WordStemGameCommunicationService {
 				
 				
 				if (npcWasRight) {
-					g.setWordTaken(g.getWords(), word, true);
+					g.setWordTaken(g.getWords(), word, true, playerColors[g.getPlayerColorID(playerid)]);
 					this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + 1);
 				} else {
 					this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) - 1);

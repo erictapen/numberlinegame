@@ -9,7 +9,8 @@ public class OverTenDigit implements IsSerializable {
 	private int value;
 	private boolean isTaken;
 	private boolean chosen;
-	
+	private String color;
+
 	
 	
 	// only for IsSerializable (requires empty constructor)
@@ -24,6 +25,7 @@ public class OverTenDigit implements IsSerializable {
 		this.value = value;
 		this.isTaken = false;
 		this.chosen = false;
+		this.setColor("white");
 	}
 
 	
@@ -102,6 +104,22 @@ public class OverTenDigit implements IsSerializable {
 	 */
 	public boolean isChosen() {
 		return chosen;
+	}
+
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
 	}
 	
 	

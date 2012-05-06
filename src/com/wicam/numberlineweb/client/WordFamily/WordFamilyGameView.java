@@ -32,8 +32,7 @@ public class WordFamilyGameView extends GameView  {
 	final HTML explanationText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	// streaming activated because of the .wav being 1.5mb big
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"desc/Wortfamilienspiel.wav", true);
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/Wortfamilienspiel.wav");
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
@@ -134,12 +133,10 @@ public class WordFamilyGameView extends GameView  {
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Wortfamilien - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"In diesem Spiel geht es um Wortfamilien. Zuerst siehst du in der Mitte des Bildschirms ein Wort, das zu " +
-				"einer bestimmten Wortfamilie gehört. Wenn sich das Spiel öffnet, sollst du dir so viele Wörter wie möglich " +
-				"merken, die zu dieser Wortfamilie gehören. Wenn du zum Beispiel zuerst „Mann“ siehst, dann kannst du dir " +
-				"Wörter wie „Mannschaft“ oder „Männer“ merken.<br>" + 
-				"Am Schluss kannst du alle Wörter eintippen, die du dir gemerkt hast. Schicke jedes Wort einzeln mit dem " +
-				"„weiter“- Button ab. Wenn du fertig bist, klicke einfach nochmals auf „weiter“.\n" + 
+				"Zuerst siehst du in der Mitte des Bildschirms ein Wort. Achte auf die Wortfamilie, zu der das Wort gehört. " +
+				"Dann öffnet sich ein Minispiel, in dem du dir alle Wörter merken sollst, die zur gesuchten Wortfamilie gehören. " +
+				"Wenn du zum Beispiel zuerst „Mann“ siehst, dann kannst du dir im Minispiel Wörter wie „Mannschaft“ oder " +
+				"„Männer“ merken. Am Schluss kannst du alle Wörter eintippen, die du dir gemerkt hast.<br><br>Viel Spaß!" + 
 				"</div>");
 	}
 

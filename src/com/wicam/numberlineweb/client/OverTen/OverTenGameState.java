@@ -142,9 +142,11 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * Disables/Enables one digit in a set of digits
 	 * @param digits Set of digits to disable/enable from
 	 * @param digitID Define, what digit should be disabled
+	 * @param color 
 	 */
-	public void setDigitTaken(ArrayList<OverTenDigit> digits, int digitID) {
+	public void setDigitTaken(ArrayList<OverTenDigit> digits, int digitID, String color) {
 		digits.get(digitID).setTaken(true);
+		digits.get(digitID).setColor(color);
 	}
 
 	
