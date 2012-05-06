@@ -118,6 +118,14 @@ public class WordStemGameState extends GameState implements Serializable{
 	}
 
 
+	/**
+	 * @param playerID
+	 * @return Returns the player's color-id
+	 */
+	public int getPlayerColorID(int playerID) {
+		return ((WordStemPlayer) players.get(playerID-1)).getColorId();
+	}
+	
 
 	/**
 	 * @param playerID ID of the player to be looked up
@@ -169,10 +177,11 @@ public class WordStemGameState extends GameState implements Serializable{
 	 * @param value Define, what word should be disabled
 	 * @param disable Defines, if word should be disabled or enabled
 	 */
-	public void setWordTaken(ArrayList<Word> words, String value, boolean disable) {
+	public void setWordTaken(ArrayList<Word> words, String value, boolean disable, String color) {
 		for (Word word : words) {
 			if (word.getWord().equals(value)) {
 				word.setTaken(disable);
+				word.setColor(color);
 				break;
 			}
 		}

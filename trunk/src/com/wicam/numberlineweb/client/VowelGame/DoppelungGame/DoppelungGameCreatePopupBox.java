@@ -15,7 +15,7 @@ public class DoppelungGameCreatePopupBox extends GameCreatePopupBox {
 		
 		super(msg,def);
 		
-		roundCount.addItem("1");//TODO 3
+		roundCount.addItem("3");
 		roundCount.addItem("5");
 		roundCount.addItem("7");
 		roundCount.addItem("10");

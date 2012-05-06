@@ -13,7 +13,8 @@ public class Word implements IsSerializable{
 	private int actualTop;
 	private boolean isTaken;
 	private boolean isSelected;
-	
+	private String color;
+
 	
 	public Word(){}
 	
@@ -21,6 +22,7 @@ public class Word implements IsSerializable{
 		this.word = word;
 		this.setTaken(false);
 		this.setSelected(false);
+		this.setColor("white");
 	}
 	
 	//clone-consructor
@@ -137,6 +139,20 @@ public class Word implements IsSerializable{
 	 */
 	public int getActualTop() {
 		return actualTop;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
 	}
 	
 	

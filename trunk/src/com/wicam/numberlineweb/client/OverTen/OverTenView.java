@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -35,6 +36,14 @@ public class OverTenView extends AbsolutePanel {
 		communityBox.setWidth("400px");
 		communityBox.setStyleName("community-box center-text");
 		add(communityBox);
+		
+		// pre-fill this box for optical issues
+		for (int i = 0; i < 12; i++) {
+			final Button b = new Button(" ");
+			b.setStyleName("answer-Button");
+			b.setEnabled(true);
+			communityBox.add(b);
+		}
 		
 		// display all answers
 		calcBox.setWidth("400px");
@@ -100,6 +109,9 @@ public class OverTenView extends AbsolutePanel {
 				b.setStyleName("answer-Button");
 			}
 			
+			if (digit.isTaken()) {
+				DOM.setElementAttribute(b.getElement(), "style", "background-color:"+digit.getColor()+";color:white;");
+			}
 			
 			b.setEnabled(!digit.isTaken() && !digit.isChosen()); // unclickable, if already taken
 			

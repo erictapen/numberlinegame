@@ -32,8 +32,7 @@ public class WordStemGameView extends GameView  {
 	final HTML explanationText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	// streaming activated because of the .wav being 1.5mb big
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_ADPCM,"desc/WortbausteinespielVersion1.wav", true);
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/WortbausteinespielVersion1.wav");
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
@@ -150,10 +149,10 @@ public class WordStemGameView extends GameView  {
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Wortbausteine - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Du siehst gleich zwei Kästchen. Im oberen stehen Wortbausteine, im unteren Wörter. Deine Aufgabe ist es, " +
-				"die Wörter den passenden Wortbausteinen zuzuordnen. Dazu klickst du 2 Mal mit der Maus. Zuerst klickst " +
-				"du auf das Wort, das du zuordnen möchtest. Dann klickst du auf den Wortbaustein, zu dem es passt. Wer am " +
-				"Ende die meisten richtig zugeordnet hat, gewinnt.<br><br>" +
+				"Du siehst gleich zwei Kästchen. Im oberen stehen Wortbausteine, im unteren stehen Wörter. Deine Aufgabe " +
+				"ist es, die Wörter den passenden Wortbausteinen zuzuordnen. Dazu klickst du zuerst auf ein Wort und dann " +
+				"klickst du auf den Wortbaustein, zu dem das Wort passt. Wer am Ende die meisten Wörter richtig zugeordnet " +
+				"hat, gewinnt.<br><br>" +
 				"Viel Spaß!" +
 				"</div>");
 	}

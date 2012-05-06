@@ -10,6 +10,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wicam.numberlineweb.client.GameTypeSelector.GameType;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinator;
@@ -114,24 +115,42 @@ public class NumberLineWeb implements EntryPoint {
 		
 		final String logging = Window.Location.getParameter("logging");
 		
-		//adds the numberlinegame
-		gts.addGame("NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
-
+		// add math games container
+		gts.addGame(GameType.CAT, "Mathespiele", "pre_multiplication.png", "Alle Spiele mit Zahlen", new GameItemStarter() {
+			
 			@Override
 			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
-				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
+				gts.showMath();
 			}
 		});
+		
+		// add grammar games container
+		gts.addGame(GameType.CAT, "Wortspiele", "pre_doppelung.png", "Alle Spiele mit Wörtern", new GameItemStarter() {
+			
+			@Override
+			public void run() {
+				gts.showGrammar();
+			}
+		});
+		
+//		//adds the numberlinegame
+//		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+//				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 
 		//adds the doppelung game
-		gts.addGame("Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -175,7 +194,7 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 		
 		//adds the Multiplication game
-		gts.addGame("Multiplikation", "pre_multiplication.png", "Rechne schnell!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Multiplikation", "pre_multiplication.png", "Rechne schnell!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -193,7 +212,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the BuddyNumber game
-		gts.addGame("Partnerzahl", "pre_buddyNumber.png", "Kombiniere gut!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Partnerzahl", "pre_buddyNumber.png", "Kombiniere gut!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -211,7 +230,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordStem game
-		gts.addGame("Wortbausteine", "pre_wordstem.png", "Ordne zu!", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Wortbausteine", "pre_wordstem.png", "Ordne zu!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -229,7 +248,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the OverTen game
-		gts.addGame("Über 10", "pre_overten.png", "Summiere auf!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Über 10", "pre_overten.png", "Summiere auf!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -246,7 +265,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordFamily game
-		gts.addGame("Wortfamilien", "pre_wordfamily.png", "Merke dir viel!", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Wortfamilien", "pre_wordfamily.png", "Merke dir viel!", new GameItemStarter() {
 
 			@Override
 			public void run() {
