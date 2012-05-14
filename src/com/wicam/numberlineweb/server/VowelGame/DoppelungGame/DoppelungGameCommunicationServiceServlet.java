@@ -348,6 +348,28 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 		return g;
 	}
+	
+	public GameState setPlayerPoints(String ids) {
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = getPlayerId(gameid);
+		int points = Integer.parseInt(ids.split(":")[2]);
+		
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
+		g.setPlayerPoints(playerid, points);
+		
+		return null;
+	}
+	
+	public boolean sendKeepAlive(String ids) {
+		
+		int gameid = Integer.parseInt(ids.split(":")[0]);
+		int playerid = getPlayerId(gameid);
+		
+		super.resetUpdateTimer(playerid, gameid);
+		
+		return true;
+	}
 
 	public void setMiniGameStartsWhenShortVowel(boolean miniGameStartsWhenShortVowel) {
 		this.miniGameStartsWhenShortVowel = miniGameStartsWhenShortVowel;
