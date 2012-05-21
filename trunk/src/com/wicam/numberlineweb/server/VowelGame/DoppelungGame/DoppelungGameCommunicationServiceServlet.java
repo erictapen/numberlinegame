@@ -244,7 +244,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 			newPoints = 0;
 
 		g.setPlayerPoints(playerid, newPoints);
-		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
+//		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
+		g.getMovingConsonantsCoords().get(mcid).setCollected(true, playerid);
 		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
@@ -361,14 +362,16 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		return null;
 	}
 	
-	public boolean sendKeepAlive(String ids) {
+	public GameState sendKeepAlive(String ids) {
 		
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = getPlayerId(gameid);
 		
+		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
+		
 		super.resetUpdateTimer(playerid, gameid);
 		
-		return true;
+		return g;
 	}
 
 	public void setMiniGameStartsWhenShortVowel(boolean miniGameStartsWhenShortVowel) {

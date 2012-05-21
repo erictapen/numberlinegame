@@ -25,7 +25,7 @@ public interface DoppelungGameCommunicationService extends
 	
 	public GameState updatePlayerPos(String ids);
 	
-	public boolean sendKeepAlive(String ids);
+	public GameState sendKeepAlive(String ids);
 
 	public GameState setPlayerPoints(String string);
 }
