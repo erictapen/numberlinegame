@@ -23,7 +23,7 @@ public interface DoppelungGameCommunicationServiceAsync extends GameCommunicatio
 	
 	public void updatePlayerPos(String ids, AsyncCallback<GameState> callback);
 
-	public void sendKeepAlive(String ids, AsyncCallback<Boolean> callback);
+	public void sendKeepAlive(String ids, AsyncCallback<GameState> callback);
 
 	public void setPlayerPoints(String string, AsyncCallback<GameState> callback);
 }

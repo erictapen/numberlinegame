@@ -462,7 +462,7 @@ public class DoppelungGameView extends GameView {
 		movingShortVowelImage.setX(startX);
 		movingShortVowelImage.setY(startY);
 
-
+		/*
 		if (players ==2) {
 
 			gamePanel.add(enemyMovingShortVowelImage);
@@ -471,6 +471,7 @@ public class DoppelungGameView extends GameView {
 			gamePanel.setWidgetPosition(enemyMovingShortVowelImage, startX, startY);
 
 		}
+		*/
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
 
 		if (MobileDeviceChecker.checkForKeyboard()) {

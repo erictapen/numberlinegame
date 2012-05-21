@@ -1,7 +1,9 @@
 package com.wicam.numberlineweb.client.VowelGame;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
 
 public class MovingConsonants extends Image{
@@ -15,8 +17,11 @@ public class MovingConsonants extends Image{
 	private boolean removed = false;
 	private int id;
 	private boolean startedMoving = false;
+	private boolean collected = false;
+	
 	
 	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y, int id){
+		
 		super("doppelungGame/coins/coin_" + consonants + ".png");
 		
 		GWT.log(consonants);
@@ -27,6 +32,8 @@ public class MovingConsonants extends Image{
 		this.y = y;
 		this.id = id;
 		move = new Move(this);
+		
+		Image.prefetch("doppelungGame/knall_small.png");
 	}
 	
 	public void setSpeed( int spaceSpeed){
@@ -54,6 +61,23 @@ public class MovingConsonants extends Image{
 
 	public void setRemoved(boolean stopped) {
 		this.removed = stopped;
+	}
+
+	public void setCollected(int playerNumber) {
+		
+		this.collected = true;
+		
+		if (playerNumber == 1)
+			this.setUrl("doppelungGame/coins/coin_red.png");
+		else
+			this.setUrl("doppelungGame/coins/coin_blue.png");
+		
+	}
+	
+	public boolean isCollected() {
+		
+		return this.collected;
+		
 	}
 	
 	public int getX() {
@@ -119,4 +143,5 @@ public class MovingConsonants extends Image{
 			}
 		}
 	}
+
 }
