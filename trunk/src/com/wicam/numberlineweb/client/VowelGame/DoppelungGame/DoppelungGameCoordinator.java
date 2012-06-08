@@ -284,6 +284,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	}
 	
 	private void markCollectedMc(DoppelungGameState g){
+		
+		//Game state is already up to date
+		if (g == null)
+			return;
+		
 		if (getMovingConsonantsList() != null){
 			for (MovingConsonants mc: this.getMovingConsonantsList()){
 				ArrayList<ConsonantPoint2D> mcCoordsList = g.getMovingConsonantsCoords();
@@ -331,8 +336,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 		super.timeStamp = System.currentTimeMillis();
 		
-		((DoppelungGameCommunicationServiceAsync) this.commServ).sendKeepAlive(this.openGame.getId() + ":" + 
-				this.playerID, getMarkedMCCallback);
+		if (this.view != null) {
+			commServ.update(Integer.toString(this.openGame.getId()) + ":" + Integer.toString(this.playerID) + ":" + id, getMarkedMCCallback);
+		}
 		
 	}
 
@@ -807,8 +813,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 					GWT.log("Received an outlived game state, ignoring...");
 
 				}
-
-
 
 				lastTenLatencies.add(latency);
 				if (lastTenLatencies.size()>10) lastTenLatencies.poll();

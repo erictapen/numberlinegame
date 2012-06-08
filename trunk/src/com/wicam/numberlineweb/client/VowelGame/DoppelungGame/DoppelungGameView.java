@@ -170,12 +170,13 @@ public class DoppelungGameView extends GameView {
 	public void initializeMovingShortVowelImages(int playerid){
 		if (playerid == 1){
 			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
-			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
+			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
 		}
 		if (playerid == 2){
 			movingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
-			enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
+			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
 		}
+		
 	}
 
 	/**
@@ -473,7 +474,11 @@ public class DoppelungGameView extends GameView {
 		}
 		*/
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
-
+		
+		//Resize
+		movingShortVowelImage.setPixelSize((int) (movingShortVowelImage.getWidth() / 1.25), 
+				(int) (movingShortVowelImage.getHeight() / 1.25));
+		
 		if (MobileDeviceChecker.checkForKeyboard()) {
 			kbd = new KeyboardDummy((DoppelungGameController)super.gameController);
 			gamePanel.add(kbd, 440, 240);
