@@ -7,6 +7,7 @@ import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
@@ -90,7 +91,27 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	protected void joinedGame(int playerID, int gameID) {
 		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
+		
+		AsyncCallback<ArrayList<VowelGameWord>> callback = new AsyncCallback<ArrayList<VowelGameWord>>() {
 
+			@Override
+			public void onFailure(Throwable caught) {
+	
+				
+			}
+
+			@Override
+			public void onSuccess(ArrayList<VowelGameWord> result) {
+				
+				preloadSoundFiles(result);
+				
+			}
+			
+			
+		};
+		((DoppelungGameCommunicationServiceAsync) commServ).getSimpleWordList(Integer.toString(gameID), callback);
+		this.preloadImageFiles();
+		
 		//construct game
 		createControllerAndView();
 		DoppelungGameView gameView =  (DoppelungGameView) view;
@@ -113,6 +134,37 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	}
 	
+	protected final void preloadSoundFiles(ArrayList<VowelGameWord> list) {
+		
+		System.out.println("Starting preloading sound files...");
+		
+		for (VowelGameWord word : list) {
+			
+			SoundRetriever.preloadSound(word, false);
+			SoundRetriever.preloadSound(word, true);
+			
+		}
+		
+		System.out.println("Ended preloading sound files");
+		
+	}
+	
+	protected void preloadImageFiles() {
+		System.out.println("Starting preloading image files...");
+		
+		String[] imageFileNames = {"doppelungGame/feedback/beide_daumen.gif", "doppelungGame/feedback/beifall.gif",
+				"doppelungGame/feedback/beifall_1.gif", "doppelungGame/feedback/jippie.gif", "doppelungGame/feedback/juchhu.gif",
+				"doppelungGame/feedback/smile_1.gif", "doppelungGame/feedback/victory.gif", "doppelungGame/feedback/hantel.gif",
+				"doppelungGame/feedback/hmm_big.gif", "doppelungGame/feedback/huch.gif", "doppelungGame/feedback/oops.gif"}; 
+		
+		for (String imageFileName : imageFileNames) 
+			Image.prefetch(imageFileName);
+		
+		System.out.println("Ended preloading image files");
+			
+	}
+
+
 	protected void createControllerAndView(){
 		controller = new DoppelungGameController(this);
 		this.view = new DoppelungGameView(numberOfPlayers, controller);

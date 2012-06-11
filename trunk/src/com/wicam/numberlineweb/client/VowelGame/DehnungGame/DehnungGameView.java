@@ -1,12 +1,13 @@
 package com.wicam.numberlineweb.client.VowelGame.DehnungGame;
 
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameController;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameView;
 
 public class DehnungGameView extends DoppelungGameView {
 
 	public DehnungGameView(int numberOfPlayers,
-			DoppelungGameController doppelungGameController) {
+			DoppelungGameController doppelungGameController, DoppelungGameState gameState) {
 		super(numberOfPlayers, doppelungGameController);
 		longVowelImage.setUrl("doppelungGame/ziehen2.jpg");
 	}

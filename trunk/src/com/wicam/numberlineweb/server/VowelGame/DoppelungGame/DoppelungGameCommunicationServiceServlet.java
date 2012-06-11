@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 	private int SPACE_SPEED = 4;
 	private Timer mcTimer = null;
 	protected HashMap<Integer,Iterator<VowelGameWord>> wordLists = new HashMap<Integer,Iterator<VowelGameWord>>();
+	protected HashMap<Integer, ArrayList<VowelGameWord>> simpleWordLists = new HashMap<Integer, ArrayList<VowelGameWord>>();
 	protected boolean miniGameStartsWhenShortVowel = true;
 
 	public DoppelungGameCommunicationServiceServlet() {
@@ -63,9 +65,15 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		// initialize game list
 
 		GameState gameState =  super.openGame(g);
+		
+		List<VowelGameWord> vowelWordList = DoppelungGameWordList.createWordList().subList(0,
+				((DoppelungGameState) gameState).getNumberOfWordsToPlay());
+		
+		this.simpleWordLists.put(gameState.getId(), new ArrayList<VowelGameWord>());
+		for (VowelGameWord word : vowelWordList)
+			this.simpleWordLists.get(gameState.getId()).add(word);
 
-		wordLists.put(gameState.getId(), DoppelungGameWordList.createWordList().subList(0,
-				((DoppelungGameState) gameState).getNumberOfWordsToPlay()).iterator());
+		wordLists.put(gameState.getId(), vowelWordList.iterator());
 
 		// set first word
 		((DoppelungGameState)gameState).setCurWord(getNextWord(currentId));
@@ -73,6 +81,12 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		return gameState;
 
 
+	}
+	
+	public ArrayList<VowelGameWord> getSimpleWordList(String gameId) {
+		
+		return this.simpleWordLists.get(Integer.parseInt(gameId));
+		
 	}
 
 	public boolean hasNextWord(int gameid){
