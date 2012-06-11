@@ -1,5 +1,7 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
+import java.util.ArrayList;
+
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
@@ -16,11 +18,13 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
 import com.wicam.numberlineweb.client.VowelGame.MovingConsonants;
 import com.wicam.numberlineweb.client.VowelGame.ShortVowelImage;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
 
@@ -67,6 +71,8 @@ public class DoppelungGameView extends GameView {
 
 
 	private void init() {
+		
+		System.out.println("Initializing DoppelungGameView...");
 		
 		longVowelImage.addStyleName("vowel_img");
 		shortVowelImage.addStyleName("vowel_img");
@@ -476,8 +482,7 @@ public class DoppelungGameView extends GameView {
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
 		
 		//Resize
-		movingShortVowelImage.setPixelSize((int) (movingShortVowelImage.getWidth() / 1.25), 
-				(int) (movingShortVowelImage.getHeight() / 1.25));
+		movingShortVowelImage.setPixelSize(48, 47);
 		
 		if (MobileDeviceChecker.checkForKeyboard()) {
 			kbd = new KeyboardDummy((DoppelungGameController)super.gameController);

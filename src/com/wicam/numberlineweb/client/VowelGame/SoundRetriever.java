@@ -35,4 +35,26 @@ public class SoundRetriever {
 		}
 		
 	}
+	
+	//Preload sound by playing it silently
+	public static void preloadSound(VowelGameWord word, boolean slow) {
+		
+		SoundController dummySoundController = new SoundController();
+		
+		dummySoundController.setDefaultVolume(0);
+		
+		String value = word.getWordString().replace("ä", "ae").replace("ö", "oe").replace("ü", "ue");
+		value = value.replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss");
+		String length = (word.isShortVowel()) ? "short" : "long";
+		String speed = (slow) ? "slow" : "normal";
+		String path = "doppelungGame/new_sounds/" + length + "/" + speed + "/" + value + ".wav";
+		
+		try {
+			Sound sound = dummySoundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM, path);
+			sound.play();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

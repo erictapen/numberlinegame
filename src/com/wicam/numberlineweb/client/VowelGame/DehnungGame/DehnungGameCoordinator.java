@@ -5,6 +5,7 @@ import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class DehnungGameCoordinator extends DoppelungGameCoordinator {
@@ -28,6 +29,7 @@ public class DehnungGameCoordinator extends DoppelungGameCoordinator {
 	@Override
 	protected void createControllerAndView(){
 		controller = new DoppelungGameController(this);
-		this.view = new DehnungGameView(numberOfPlayers, controller);
+		this.view = new DehnungGameView(numberOfPlayers, controller,
+				(DoppelungGameState) openGame);
 	}
 }
