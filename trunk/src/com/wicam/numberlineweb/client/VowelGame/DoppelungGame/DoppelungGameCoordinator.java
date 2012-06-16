@@ -92,25 +92,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
 		
-		AsyncCallback<ArrayList<VowelGameWord>> callback = new AsyncCallback<ArrayList<VowelGameWord>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-	
-				
-			}
-
-			@Override
-			public void onSuccess(ArrayList<VowelGameWord> result) {
-				
-				preloadSoundFiles(result);
-				
-			}
-			
-			
-		};
-		((DoppelungGameCommunicationServiceAsync) commServ).getSimpleWordList(Integer.toString(gameID), callback);
 		this.preloadImageFiles();
+		
+		((DoppelungGameCommunicationServiceAsync) commServ).getSimpleWordList(Integer.toString(gameID), callback);
 		
 		//construct game
 		createControllerAndView();
@@ -131,12 +115,26 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		if (this.numberOfPlayers > 1){
 			this.addChatView();
 		}
-
+		
 	}
+	
+	AsyncCallback<ArrayList<VowelGameWord>> callback = new AsyncCallback<ArrayList<VowelGameWord>>() {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<VowelGameWord> result) {
+			preloadSoundFiles(result);
+		}
+		
+		
+	};
 	
 	protected final void preloadSoundFiles(ArrayList<VowelGameWord> list) {
 		
-		System.out.println("Starting preloading sound files...");
 		
 		for (VowelGameWord word : list) {
 			
@@ -145,23 +143,23 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			
 		}
 		
-		System.out.println("Ended preloading sound files");
-		
 	}
 	
 	protected void preloadImageFiles() {
-		System.out.println("Starting preloading image files...");
 		
 		String[] imageFileNames = {"doppelungGame/feedback/beide_daumen.gif", "doppelungGame/feedback/beifall.gif",
 				"doppelungGame/feedback/beifall_1.gif", "doppelungGame/feedback/jippie.gif", "doppelungGame/feedback/juchhu.gif",
 				"doppelungGame/feedback/smile_1.gif", "doppelungGame/feedback/victory.gif", "doppelungGame/feedback/hantel.gif",
-				"doppelungGame/feedback/hmm_big.gif", "doppelungGame/feedback/huch.gif", "doppelungGame/feedback/oops.gif"}; 
+				"doppelungGame/feedback/hmm_big.gif", "doppelungGame/feedback/huch.gif", "doppelungGame/feedback/oops.gif",
+				"doppelungGame/coins/coin_blue.png", "doppelungGame/coins/coin_red.png", "doppelungGame/coins/coin_ck.png",
+				"doppelungGame/coins/coin_hl.png", "doppelungGame/coins/coin_hm.png", "doppelungGame/coins/coin_hn.png",
+				"doppelungGame/coins/coin_ll.png", "doppelungGame/coins/coin_lt.png", "doppelungGame/coins/coin_mm.png",
+				"doppelungGame/coins/coin_nn.png", "doppelungGame/coins/coin_pp.png", "doppelungGame/coins/coin_rr.png",
+				"doppelungGame/coins/coin_rt.png", "doppelungGame/coins/coin_ss.png", "doppelungGame/coins/coin_tt.png"}; 
 		
 		for (String imageFileName : imageFileNames) 
 			Image.prefetch(imageFileName);
 		
-		System.out.println("Ended preloading image files");
-			
 	}
 
 
