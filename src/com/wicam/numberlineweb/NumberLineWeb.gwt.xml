@@ -11,6 +11,7 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
   
   <inherits name='com.google.gwt.widgetideas.GWTCanvas'/>
+  
 
   <!-- Other module inherits                                      -->
 
@@ -23,5 +24,8 @@
   <inherits name="com.allen_sauer.gwt.voices.gwt-voices"/>
   <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
   <inherits name="com.wicam.numberlineweb.NumberLineWeb"/>
+
+  <!-- ClientBundle -->
+  <inherits name="com.google.gwt.resources.Resources" />
 
 </module>

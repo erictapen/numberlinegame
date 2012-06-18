@@ -92,9 +92,9 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
 		
-		this.preloadImageFiles();
+		//this.preloadImageFiles();
 		
-		((DoppelungGameCommunicationServiceAsync) commServ).getSimpleWordList(Integer.toString(gameID), callback);
+		//((DoppelungGameCommunicationServiceAsync) commServ).getSimpleWordList(Integer.toString(gameID), callback);
 		
 		//construct game
 		createControllerAndView();
