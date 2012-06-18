@@ -25,6 +25,7 @@ import com.wicam.numberlineweb.client.MobileDeviceChecker;
 import com.wicam.numberlineweb.client.VowelGame.MovingConsonants;
 import com.wicam.numberlineweb.client.VowelGame.ShortVowelImage;
 import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResources;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
 
@@ -46,16 +47,17 @@ public class DoppelungGameView extends GameView {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 
 	protected final Button startGameButton = new Button("Spiel Starten");
-	protected final ShortVowelImage shortVowelImage = new ShortVowelImage("doppelungGame/knall_small.png", 270, 330);
+	protected final ShortVowelImage shortVowelImage = new ShortVowelImage(DoppelungGameResources.INSTANCE.knall_small().getSafeUri().asString(), 
+			270, 330);
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/Doppelung.wav");
 
-	protected final Image feedbackImage = new Image("doppelungGame/feedback/beide_daumen.gif");
+	protected final Image feedbackImage = new Image(DoppelungGameResources.INSTANCE.beide_daumen());
 
-	protected final Image longVowelImage = new Image("doppelungGame/ziehen1.jpg");
+	protected final Image longVowelImage = new Image(DoppelungGameResources.INSTANCE.ziehen1().getSafeUri());
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
@@ -160,10 +162,10 @@ public class DoppelungGameView extends GameView {
 				"Wort der Computer abspielt und merke es dir.<br>\r\n" + 
 				"Wenn sich der erste Vokal lang anhört, wie zum Beispiel das „i“ in „ziehen“, " +
 				"klicke mit der Maus auf das rechte Symbol, auf das Männchen, das am Seil zieht. " +
-				"<img src=\"doppelungGame/ziehen1.jpg\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\">" +
+//				"<img src=\"../src/com/wicam/numberlineweb/client/VowelGame/DoppelungGame/Resources\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\">" +
 				"Wenn sich der erste Vokal kurz anhört, wie zum Beispiel das „a“ in „Knall“, " +
 				"klicke auf das linke Symbol, auf den Knall. " +
-				"<img src=\"doppelungGame/knall_small.png\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\"><br>\r\n" + 
+//				"<img src=\"doppelungGame/knall_small.png\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\"><br>\r\n" + 
 				"Wenn du ein Wort mit kurzem Vokal gehört hast, fallen Konsonanten vom Bildschirm. " +
 				"Sammle genau die Konsonanten ein, die man in dem Wort verdoppelt. Bei „Knall“ " +
 				"sollst du zum Beispiel alle „ll“ einsammeln, bei „rennen“ alle „nn“. Pass gut auf, " +
@@ -175,11 +177,13 @@ public class DoppelungGameView extends GameView {
 
 	public void initializeMovingShortVowelImages(int playerid){
 		if (playerid == 1){
-			movingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
+			movingShortVowelImage = new ShortVowelImage(DoppelungGameResources.INSTANCE.roter_knall().getSafeUri().asString(),
+					270, 330);
 			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
 		}
 		if (playerid == 2){
-			movingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
+			movingShortVowelImage = new ShortVowelImage(DoppelungGameResources.INSTANCE.blauer_knall().getSafeUri().asString(), 
+					270, 330);
 			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
 		}
 		
@@ -240,37 +244,37 @@ public class DoppelungGameView extends GameView {
 		switch (randomNumberFeedback){
 		case 0:
 			feedback = "Klasse, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/beide_daumen.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beide_daumen().getSafeUri());
 			imageX = imageX - 20;
 			break;
 		case 1:
 			feedback = "Super, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/beifall.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beifall().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		case 2:
 			feedback = "Richtig, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/beifall_1.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beifall_1().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		case 3:
 			feedback = "Genau, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/jippie.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.jippie().getSafeUri());
 			imageX = imageX - 10;
 			break;
 		case 4:
 			feedback = "Genau, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/juchhu.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.juchhu().getSafeUri());
 			imageX = imageX - 20;
 			break;
 		case 5:
 			feedback = "Gut gemacht, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/smile_1.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.smile_1().getSafeUri());
 			feedbackX = feedbackX - 10;
 			break;
 		case 6:
 			feedback = "Richtig, der Vokal war ";
-			feedbackImage.setUrl("doppelungGame/feedback/victory.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.victory().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		}
@@ -291,26 +295,26 @@ public class DoppelungGameView extends GameView {
 		case 0:
 			feedback = "Durchhalten, probiers nochmal,";
 			feedback2 = "hört sich der Vokal eher lang oder eher kurz an?";
-			feedbackImage.setUrl("doppelungGame/feedback/hantel.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.hantel().getSafeUri());
 			imageX = imageX - 30;
 			feedback1X = feedback1X -20;
 			break;
 		case 1:
 			feedback = "Hmm, überleg nochmal,";
 			feedback2 = "hört sich der Vokal eher lang oder eher kurz an?";
-			feedbackImage.setUrl("doppelungGame/feedback/hmm_big.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.hmm_big().getSafeUri());
 			feedback1X = feedback1X + 10;
 			break;
 		case 2:
 			feedback = "Hmm, überleg nochmal,";
 			feedback2 = "hört sich der Vokal eher lang oder eher kurz an?";
-			feedbackImage.setUrl("doppelungGame/feedback/huch.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.huch().getSafeUri());
 			feedback1X = feedback1X + 10;
 			break;
 		case 3:
 			feedback = "Ups, hör nochmal genau hin,";
 			feedback2 = "hört sich der Vokal eher lang oder eher kurz an?";
-			feedbackImage.setUrl("doppelungGame/feedback/oops.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.oops().getSafeUri());
 			imageX = imageX - 20;
 			break;
 		}
@@ -355,36 +359,36 @@ public class DoppelungGameView extends GameView {
 		switch (randomNumberFeedback){
 		case 0:
 			feedback = "Klasse, genau so schreibt man \"" + word + "\"! ";
-			feedbackImage.setUrl("doppelungGame/feedback/beide_daumen.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beide_daumen().getSafeUri());
 			imageX = imageX - 20;
 			break;
 		case 1:
 			feedback = "Super, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/beifall.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beifall().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		case 2:
 			feedback = "Richtig, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/beifall_1.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.beifall_1().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		case 3:
 			feedback = "Genau, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/jippie.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.jippie().getSafeUri());
 			imageX = imageX - 10;
 			break;
 		case 4:
 			feedback = "Genau, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/juchhu.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.juchhu().getSafeUri());
 			imageX = imageX - 20;
 			break;
 		case 5:
 			feedback = "Gut gemacht, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/smile_1.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.smile_1().getSafeUri());
 			break;
 		case 6:
 			feedback = "Richtig, genau so schreibt man \"" + word + "\"!";
-			feedbackImage.setUrl("doppelungGame/feedback/victory.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.victory().getSafeUri());
 			imageX = imageX - 15;
 			break;
 		}
@@ -404,21 +408,21 @@ public class DoppelungGameView extends GameView {
 		switch (randomNumberFeedback){
 		case 0:
 			feedback = "Durchhalten, schau dir das Wort nochmal an:";
-			feedbackImage.setUrl("doppelungGame/feedback/hantel.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.hantel().getSafeUri());
 			imageX = imageX - 30;
 			feedback1X = feedback1X - 50;
 			break;
 		case 1:
 			feedback = "Hmm, schau dir das Wort nochmal an:";
-			feedbackImage.setUrl("doppelungGame/feedback/hmm_big.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.hmm_big().getSafeUri());
 			break;
 		case 2:
 			feedback = "Hmm, schau dir das Wort nochmal an:";
-			feedbackImage.setUrl("doppelungGame/feedback/huch.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.huch().getSafeUri());
 			break;
 		case 3:
 			feedback = "Ups, schau dir das Wort nochmal an:";
-			feedbackImage.setUrl("doppelungGame/feedback/oops.gif");
+			feedbackImage.setUrl(DoppelungGameResources.INSTANCE.oops().getSafeUri());
 			break;
 		}
 		imageX = imageX + 300-feedbackImage.getOffsetWidth()/2 - 20;

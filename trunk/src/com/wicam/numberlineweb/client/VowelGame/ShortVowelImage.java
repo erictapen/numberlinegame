@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.VowelGame;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;
 
 public class ShortVowelImage extends Image {
@@ -9,6 +10,12 @@ public class ShortVowelImage extends Image {
 	
 	public ShortVowelImage(String string, int x, int y) {
 		super(string);
+		this.setX(x);
+		this.setY(y);
+	}
+	
+	public ShortVowelImage(ImageResource imgResource, int x, int y) {
+		super(imgResource);
 		this.setX(x);
 		this.setY(y);
 	}
