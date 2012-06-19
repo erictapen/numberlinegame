@@ -74,8 +74,6 @@ public class DoppelungGameView extends GameView {
 
 	private void init() {
 		
-		System.out.println("Initializing DoppelungGameView...");
-		
 		longVowelImage.addStyleName("vowel_img");
 		shortVowelImage.addStyleName("vowel_img");
 
@@ -162,10 +160,10 @@ public class DoppelungGameView extends GameView {
 				"Wort der Computer abspielt und merke es dir.<br>\r\n" + 
 				"Wenn sich der erste Vokal lang anhört, wie zum Beispiel das „i“ in „ziehen“, " +
 				"klicke mit der Maus auf das rechte Symbol, auf das Männchen, das am Seil zieht. " +
-//				"<img src=\"../src/com/wicam/numberlineweb/client/VowelGame/DoppelungGame/Resources\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\">" +
+				"<img src=\"ziehen1.jpg\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\">" +
 				"Wenn sich der erste Vokal kurz anhört, wie zum Beispiel das „a“ in „Knall“, " +
 				"klicke auf das linke Symbol, auf den Knall. " +
-//				"<img src=\"doppelungGame/knall_small.png\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\"><br>\r\n" + 
+				"<img src=\"knall_small.jpg\" style=\"height:30px;display:block;margin-left:auto;margin-right:auto;\"><br>\r\n" + 
 				"Wenn du ein Wort mit kurzem Vokal gehört hast, fallen Konsonanten vom Bildschirm. " +
 				"Sammle genau die Konsonanten ein, die man in dem Wort verdoppelt. Bei „Knall“ " +
 				"sollst du zum Beispiel alle „ll“ einsammeln, bei „rennen“ alle „nn“. Pass gut auf, " +
