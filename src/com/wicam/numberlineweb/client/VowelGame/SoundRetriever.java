@@ -2,7 +2,7 @@ package com.wicam.numberlineweb.client.VowelGame;
 
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResources;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResourcesSounds;
 
 /**
  * Class for retrieving the wave-files
@@ -81,824 +81,824 @@ public class SoundRetriever {
 			if (slow == false) {
 
 				if (value.equals("Ball")) { 
-					path = DoppelungGameResources.INSTANCE.ballNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ballNormal().getUrl();
 				}
 				if (value.equals("billig")) { 
-					path = DoppelungGameResources.INSTANCE.billigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.billigNormal().getUrl();
 				}
 				if (value.equals("Biss")) { 
-					path = DoppelungGameResources.INSTANCE.bissNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bissNormal().getUrl();
 				}
 				if (value.equals("bitter")) { 
-					path = DoppelungGameResources.INSTANCE.bitterNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bitterNormal().getUrl();
 				}
 				if (value.equals("Blatt")) { 
-					path = DoppelungGameResources.INSTANCE.blattNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blattNormal().getUrl();
 				}
 				if (value.equals("blicken")) { 
-					path = DoppelungGameResources.INSTANCE.blickenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blickenNormal().getUrl();
 				}
 				if (value.equals("Brett")) { 
-					path = DoppelungGameResources.INSTANCE.brettNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brettNormal().getUrl();
 				}
 				if (value.equals("Brille")) { 
-					path = DoppelungGameResources.INSTANCE.brilleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brilleNormal().getUrl();
 				}
 				if (value.equals("Brücke")) { 
-					path = DoppelungGameResources.INSTANCE.brueckeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brueckeNormal().getUrl();
 				}
 				if (value.equals("Brunnen")) { 
-					path = DoppelungGameResources.INSTANCE.brunnenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brunnenNormal().getUrl();
 				}
 				if (value.equals("Decke")) { 
-					path = DoppelungGameResources.INSTANCE.deckeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.deckeNormal().getUrl();
 				}
 				if (value.equals("dick")) { 
-					path = DoppelungGameResources.INSTANCE.dickNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dickNormal().getUrl();
 				}
 				if (value.equals("Donner")) { 
-					path = DoppelungGameResources.INSTANCE.donnerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.donnerNormal().getUrl();
 				}
 				if (value.equals("Doppelbett")) { 
-					path = DoppelungGameResources.INSTANCE.doppelbettNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.doppelbettNormal().getUrl();
 				}
 				if (value.equals("doppelt")) { 
-					path = DoppelungGameResources.INSTANCE.doppeltNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.doppeltNormal().getUrl();
 				}
 				if (value.equals("dreckig")) { 
-					path = DoppelungGameResources.INSTANCE.dreckigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dreckigNormal().getUrl();
 				}
 				if (value.equals("drucken")) { 
-					path = DoppelungGameResources.INSTANCE.druckenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.druckenNormal().getUrl();
 				}
 				if (value.equals("drücken")) { 
-					path = DoppelungGameResources.INSTANCE.drueckenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.drueckenNormal().getUrl();
 				}
 				if (value.equals("Dummheit")) { 
-					path = DoppelungGameResources.INSTANCE.dummheitNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dummheitNormal().getUrl();
 				}
 				if (value.equals("Ecke")) { 
-					path = DoppelungGameResources.INSTANCE.eckeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.eckeNormal().getUrl();
 				}
 				if (value.equals("fallen")) { 
-					path = DoppelungGameResources.INSTANCE.fallenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fallenNormal().getUrl();
 				}
 				if (value.equals("fällen")) { 
-					path = DoppelungGameResources.INSTANCE.faellenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.faellenNormal().getUrl();
 				}
 				if (value.equals("Fell")) { 
-					path = DoppelungGameResources.INSTANCE.fellNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fellNormal().getUrl();
 				}
 				if (value.equals("Flossen")) { 
-					path = DoppelungGameResources.INSTANCE.flossenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.flossenNormal().getUrl();
 				}
 				if (value.equals("füllen")) { 
-					path = DoppelungGameResources.INSTANCE.fuellenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fuellenNormal().getUrl();
 				}
 				if (value.equals("glatt")) { 
-					path = DoppelungGameResources.INSTANCE.glattNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.glattNormal().getUrl();
 				}
 				if (value.equals("Glück")) { 
-					path = DoppelungGameResources.INSTANCE.glueckNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.glueckNormal().getUrl();
 				}
 				if (value.equals("Griff")) { 
-					path = DoppelungGameResources.INSTANCE.griffNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.griffNormal().getUrl();
 				}
 				if (value.equals("Halle")) { 
-					path = DoppelungGameResources.INSTANCE.halleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.halleNormal().getUrl();
 				}
 				if (value.equals("Hammer")) { 
-					path = DoppelungGameResources.INSTANCE.hammerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hammerNormal().getUrl();
 				}
 				if (value.equals("hassen")) { 
-					path = DoppelungGameResources.INSTANCE.hassenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hassenNormal().getUrl();
 				}
 				if (value.equals("hässlich")) { 
-					path = DoppelungGameResources.INSTANCE.haesslichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.haesslichNormal().getUrl();
 				}
 				if (value.equals("hell")) { 
-					path = DoppelungGameResources.INSTANCE.hellNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hellNormal().getUrl();
 				}
 				if (value.equals("herrlich")) { 
-					path = DoppelungGameResources.INSTANCE.herrlichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.herrlichNormal().getUrl();
 				}
 				if (value.equals("hoffen")) { 
-					path = DoppelungGameResources.INSTANCE.hoffenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoffenNormal().getUrl();
 				}
 				if (value.equals("Hoffnung")) { 
-					path = DoppelungGameResources.INSTANCE.hoffnungNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoffnungNormal().getUrl();
 				}
 				if (value.equals("Irrtum")) { 
-					path = DoppelungGameResources.INSTANCE.irrtumNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.irrtumNormal().getUrl();
 				}
 				if (value.equals("Kammer")) { 
-					path = DoppelungGameResources.INSTANCE.kammerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kammerNormal().getUrl();
 				}
 				if (value.equals("Keller")) { 
-					path = DoppelungGameResources.INSTANCE.kellerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kellerNormal().getUrl();
 				}
 				if (value.equals("kennen")) { 
-					path = DoppelungGameResources.INSTANCE.kennenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kennenNormal().getUrl();
 				}
 				if (value.equals("Kette")) { 
-					path = DoppelungGameResources.INSTANCE.ketteNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ketteNormal().getUrl();
 				}
 				if (value.equals("kippen")) { 
-					path = DoppelungGameResources.INSTANCE.kippenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kippenNormal().getUrl();
 				}
 				if (value.equals("klappen")) { 
-					path = DoppelungGameResources.INSTANCE.klappenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klappenNormal().getUrl();
 				}
 				if (value.equals("klappern")) { 
-					path = DoppelungGameResources.INSTANCE.klappernNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klappernNormal().getUrl();
 				}
 				if (value.equals("klettern")) { 
-					path = DoppelungGameResources.INSTANCE.kletternNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kletternNormal().getUrl();
 				}
 				if (value.equals("Klippe")) { 
-					path = DoppelungGameResources.INSTANCE.klippeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klippeNormal().getUrl();
 				}
 				if (value.equals("knacken")) { 
-					path = DoppelungGameResources.INSTANCE.knackenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knackenNormal().getUrl();
 				}
 				if (value.equals("knapp")) { 
-					path = DoppelungGameResources.INSTANCE.knappNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knappNormal().getUrl();
 				}
 				if (value.equals("knittern")) { 
-					path = DoppelungGameResources.INSTANCE.knitternNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knitternNormal().getUrl();
 				}
 				if (value.equals("knurren")) { 
-					path = DoppelungGameResources.INSTANCE.knurrenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knurrenNormal().getUrl();
 				}
 				if (value.equals("Komma")) { 
-					path = DoppelungGameResources.INSTANCE.kommaNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kommaNormal().getUrl();
 				}
 				if (value.equals("krumm")) { 
-					path = DoppelungGameResources.INSTANCE.krummNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.krummNormal().getUrl();
 				}
 				if (value.equals("lassen")) { 
-					path = DoppelungGameResources.INSTANCE.lassenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lassenNormal().getUrl();
 				}
 				if (value.equals("lässig")) { 
-					path = DoppelungGameResources.INSTANCE.laessigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.laessigNormal().getUrl();
 				}
 				if (value.equals("Locke")) { 
-					path = DoppelungGameResources.INSTANCE.lockeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lockeNormal().getUrl();
 				}
 				if (value.equals("lockig")) { 
-					path = DoppelungGameResources.INSTANCE.lockigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lockigNormal().getUrl();
 				}
 				if (value.equals("Lücke")) { 
-					path = DoppelungGameResources.INSTANCE.lueckeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lueckeNormal().getUrl();
 				}
 				if (value.equals("messen")) { 
-					path = DoppelungGameResources.INSTANCE.messenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.messenNormal().getUrl();
 				}
 				if (value.equals("Mitte")) { 
-					path = DoppelungGameResources.INSTANCE.mitteNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mitteNormal().getUrl();
 				}
 				if (value.equals("Mücke")) { 
-					path = DoppelungGameResources.INSTANCE.mueckeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mueckeNormal().getUrl();
 				}
 				if (value.equals("nennen")) { 
-					path = DoppelungGameResources.INSTANCE.nennenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nennenNormal().getUrl();
 				}
 				if (value.equals("Nummer")) { 
-					path = DoppelungGameResources.INSTANCE.nummerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nummerNormal().getUrl();
 				}
 				if (value.equals("öffnen")) { 
-					path = DoppelungGameResources.INSTANCE.oeffnenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.oeffnenNormal().getUrl();
 				}
 				if (value.equals("Päckchen")) { 
-					path = DoppelungGameResources.INSTANCE.paeckchenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.paeckchenNormal().getUrl();
 				}
 				if (value.equals("packen")) { 
-					path = DoppelungGameResources.INSTANCE.packenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.packenNormal().getUrl();
 				}
 				if (value.equals("passen")) { 
-					path = DoppelungGameResources.INSTANCE.passenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.passenNormal().getUrl();
 				}
 				if (value.equals("Pfiff")) { 
-					path = DoppelungGameResources.INSTANCE.pfiffNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.pfiffNormal().getUrl();
 				}
 				if (value.equals("pfiffig")) { 
-					path = DoppelungGameResources.INSTANCE.pfiffigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.pfiffigNormal().getUrl();
 				}
 				if (value.equals("Puppentheater")) { 
-					path = DoppelungGameResources.INSTANCE.puppentheaterNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.puppentheaterNormal().getUrl();
 				}
 				if (value.equals("Qualle")) { 
-					path = DoppelungGameResources.INSTANCE.qualleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.qualleNormal().getUrl();
 				}
 				if (value.equals("Quelle")) { 
-					path = DoppelungGameResources.INSTANCE.quelleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.quelleNormal().getUrl();
 				}
 				if (value.equals("Rennbahn")) { 
-					path = DoppelungGameResources.INSTANCE.rennbahnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rennbahnNormal().getUrl();
 				}
 				if (value.equals("rennen")) { 
-					path = DoppelungGameResources.INSTANCE.rennenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rennenNormal().getUrl();
 				}
 				if (value.equals("Riss")) { 
-					path = DoppelungGameResources.INSTANCE.rissNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rissNormal().getUrl();
 				}
 				if (value.equals("Ritt")) { 
-					path = DoppelungGameResources.INSTANCE.rittNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rittNormal().getUrl();
 				}
 				if (value.equals("rollen")) { 
-					path = DoppelungGameResources.INSTANCE.rollenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rollenNormal().getUrl();
 				}
 				if (value.equals("Rücksicht")) { 
-					path = DoppelungGameResources.INSTANCE.ruecksichtNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ruecksichtNormal().getUrl();
 				}
 				if (value.equals("sammeln")) { 
-					path = DoppelungGameResources.INSTANCE.sammelnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sammelnNormal().getUrl();
 				}
 				if (value.equals("schaffen")) { 
-					path = DoppelungGameResources.INSTANCE.schaffenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schaffenNormal().getUrl();
 				}
 				if (value.equals("Schall")) { 
-					path = DoppelungGameResources.INSTANCE.schallNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schallNormal().getUrl();
 				}
 				if (value.equals("Schallgeschwindigkeit")) { 
-					path = DoppelungGameResources.INSTANCE.schallgeschwindigkeitNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schallgeschwindigkeitNormal().getUrl();
 				}
 				if (value.equals("scharren")) { 
-					path = DoppelungGameResources.INSTANCE.scharrenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.scharrenNormal().getUrl();
 				}
 				if (value.equals("schicken")) { 
-					path = DoppelungGameResources.INSTANCE.schickenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schickenNormal().getUrl();
 				}
 				if (value.equals("Schiff")) { 
-					path = DoppelungGameResources.INSTANCE.schiffNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiffNormal().getUrl();
 				}
 				if (value.equals("Schimmel")) { 
-					path = DoppelungGameResources.INSTANCE.schimmelNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schimmelNormal().getUrl();
 				}
 				if (value.equals("Schlamm")) { 
-					path = DoppelungGameResources.INSTANCE.schlammNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlammNormal().getUrl();
 				}
 				if (value.equals("schleppen")) { 
-					path = DoppelungGameResources.INSTANCE.schleppenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schleppenNormal().getUrl();
 				}
 				if (value.equals("schlimm")) { 
-					path = DoppelungGameResources.INSTANCE.schlimmNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlimmNormal().getUrl();
 				}
 				if (value.equals("schlucken")) { 
-					path = DoppelungGameResources.INSTANCE.schluckenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schluckenNormal().getUrl();
 				}
 				if (value.equals("Schluss")) { 
-					path = DoppelungGameResources.INSTANCE.schlussNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlussNormal().getUrl();
 				}
 				if (value.equals("Schlüssel")) { 
-					path = DoppelungGameResources.INSTANCE.schluesselNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schluesselNormal().getUrl();
 				}
 				if (value.equals("schmettern")) { 
-					path = DoppelungGameResources.INSTANCE.schmetternNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schmetternNormal().getUrl();
 				}
 				if (value.equals("schmollen")) { 
-					path = DoppelungGameResources.INSTANCE.schmollenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schmollenNormal().getUrl();
 				}
 				if (value.equals("schnappen")) { 
-					path = DoppelungGameResources.INSTANCE.schnappenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schnappenNormal().getUrl();
 				}
 				if (value.equals("schnell")) { 
-					path = DoppelungGameResources.INSTANCE.schnellNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schnellNormal().getUrl();
 				}
 				if (value.equals("Schramme")) { 
-					path = DoppelungGameResources.INSTANCE.schrammeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schrammeNormal().getUrl();
 				}
 				if (value.equals("Schreck")) { 
-					path = DoppelungGameResources.INSTANCE.schreckNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schreckNormal().getUrl();
 				}
 				if (value.equals("Schuppen")) { 
-					path = DoppelungGameResources.INSTANCE.schuppenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuppenNormal().getUrl();
 				}
 				if (value.equals("schuppig")) { 
-					path = DoppelungGameResources.INSTANCE.schuppigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuppigNormal().getUrl();
 				}
 				if (value.equals("Schuss")) { 
-					path = DoppelungGameResources.INSTANCE.schussNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schussNormal().getUrl();
 				}
 				if (value.equals("Schusswaffe")) { 
-					path = DoppelungGameResources.INSTANCE.schusswaffeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schusswaffeNormal().getUrl();
 				}
 				if (value.equals("schütteln")) { 
-					path = DoppelungGameResources.INSTANCE.schuettelnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuettelnNormal().getUrl();
 				}
 				if (value.equals("Schwamm")) { 
-					path = DoppelungGameResources.INSTANCE.schwammNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwammNormal().getUrl();
 				}
 				if (value.equals("schwimmen")) { 
-					path = DoppelungGameResources.INSTANCE.schwimmenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwimmenNormal().getUrl();
 				}
 				if (value.equals("spannen")) { 
-					path = DoppelungGameResources.INSTANCE.spannenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spannenNormal().getUrl();
 				}
 				if (value.equals("Sperre")) { 
-					path = DoppelungGameResources.INSTANCE.sperreNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sperreNormal().getUrl();
 				}
 				if (value.equals("Splitter")) { 
-					path = DoppelungGameResources.INSTANCE.splitterNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.splitterNormal().getUrl();
 				}
 				if (value.equals("Stamm")) { 
-					path = DoppelungGameResources.INSTANCE.stammNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stammNormal().getUrl();
 				}
 				if (value.equals("starr")) { 
-					path = DoppelungGameResources.INSTANCE.starrNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.starrNormal().getUrl();
 				}
 				if (value.equals("Stecker")) { 
-					path = DoppelungGameResources.INSTANCE.steckerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.steckerNormal().getUrl();
 				}
 				if (value.equals("Stelle")) { 
-					path = DoppelungGameResources.INSTANCE.stelleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stelleNormal().getUrl();
 				}
 				if (value.equals("stellen")) { 
-					path = DoppelungGameResources.INSTANCE.stellenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stellenNormal().getUrl();
 				}
 				if (value.equals("still")) { 
-					path = DoppelungGameResources.INSTANCE.stillNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stillNormal().getUrl();
 				}
 				if (value.equals("Stimme")) { 
-					path = DoppelungGameResources.INSTANCE.stimmeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stimmeNormal().getUrl();
 				}
 				if (value.equals("Stoff")) { 
-					path = DoppelungGameResources.INSTANCE.stoffNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stoffNormal().getUrl();
 				}
 				if (value.equals("stoppen")) { 
-					path = DoppelungGameResources.INSTANCE.stoppenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stoppenNormal().getUrl();
 				}
 				if (value.equals("stumm")) { 
-					path = DoppelungGameResources.INSTANCE.stummNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stummNormal().getUrl();
 				}
 				if (value.equals("summen")) { 
-					path = DoppelungGameResources.INSTANCE.summenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.summenNormal().getUrl();
 				}
 				if (value.equals("treffen")) { 
-					path = DoppelungGameResources.INSTANCE.treffenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.treffenNormal().getUrl();
 				}
 				if (value.equals("trennen")) { 
-					path = DoppelungGameResources.INSTANCE.trennenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trennenNormal().getUrl();
 				}
 				if (value.equals("Trick")) { 
-					path = DoppelungGameResources.INSTANCE.trickNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trickNormal().getUrl();
 				}
 				if (value.equals("Tritt")) { 
-					path = DoppelungGameResources.INSTANCE.trittNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trittNormal().getUrl();
 				}
 				if (value.equals("trocken")) { 
-					path = DoppelungGameResources.INSTANCE.trockenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trockenNormal().getUrl();
 				}
 				if (value.equals("Trockenheit")) { 
-					path = DoppelungGameResources.INSTANCE.trockenheitNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trockenheitNormal().getUrl();
 				}
 				if (value.equals("Tunnel")) { 
-					path = DoppelungGameResources.INSTANCE.tunnelNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tunnelNormal().getUrl();
 				}
 				if (value.equals("voll")) { 
-					path = DoppelungGameResources.INSTANCE.vollNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vollNormal().getUrl();
 				}
 				if (value.equals("Wasser")) { 
-					path = DoppelungGameResources.INSTANCE.wasserNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wasserNormal().getUrl();
 				}
 				if (value.equals("wecken")) { 
-					path = DoppelungGameResources.INSTANCE.weckenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.weckenNormal().getUrl();
 				}
 				if (value.equals("Wette")) { 
-					path = DoppelungGameResources.INSTANCE.wetteNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wetteNormal().getUrl();
 				}
 				if (value.equals("Wetter")) { 
-					path = DoppelungGameResources.INSTANCE.wetterNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wetterNormal().getUrl();
 				}
 				if (value.equals("Wille")) { 
-					path = DoppelungGameResources.INSTANCE.willeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.willeNormal().getUrl();
 				}
 				if (value.equals("wissen")) { 
-					path = DoppelungGameResources.INSTANCE.wissenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wissenNormal().getUrl();
 				}
 				if (value.equals("zerren")) { 
-					path = DoppelungGameResources.INSTANCE.zerrenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zerrenNormal().getUrl();
 				}
 				if (value.equals("Zucker")) { 
-					path = DoppelungGameResources.INSTANCE.zuckerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zuckerNormal().getUrl();
 				}
 				if (value.equals("zwicken")) { 
-					path = DoppelungGameResources.INSTANCE.zwickenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zwickenNormal().getUrl();
 				}
 				if (value.equals("Zwillinge")) { 
-					path = DoppelungGameResources.INSTANCE.zwillingeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zwillingeNormal().getUrl();
 				}
 
 			}
 			else {
 
 				if (value.equals("Ball")) { 
-					path = DoppelungGameResources.INSTANCE.ballSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ballSlow().getUrl();
 				}
 				if (value.equals("billig")) { 
-					path = DoppelungGameResources.INSTANCE.billigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.billigSlow().getUrl();
 				}
 				if (value.equals("Biss")) { 
-					path = DoppelungGameResources.INSTANCE.bissSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bissSlow().getUrl();
 				}
 				if (value.equals("bitter")) { 
-					path = DoppelungGameResources.INSTANCE.bitterSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bitterSlow().getUrl();
 				}
 				if (value.equals("Blatt")) { 
-					path = DoppelungGameResources.INSTANCE.blattSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blattSlow().getUrl();
 				}
 				if (value.equals("blicken")) { 
-					path = DoppelungGameResources.INSTANCE.blickenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blickenSlow().getUrl();
 				}
 				if (value.equals("Brett")) { 
-					path = DoppelungGameResources.INSTANCE.brettSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brettSlow().getUrl();
 				}
 				if (value.equals("Brille")) { 
-					path = DoppelungGameResources.INSTANCE.brilleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brilleSlow().getUrl();
 				}
 				if (value.equals("Brücke")) { 
-					path = DoppelungGameResources.INSTANCE.brueckeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brueckeSlow().getUrl();
 				}
 				if (value.equals("Brunnen")) { 
-					path = DoppelungGameResources.INSTANCE.brunnenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.brunnenSlow().getUrl();
 				}
 				if (value.equals("Decke")) { 
-					path = DoppelungGameResources.INSTANCE.deckeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.deckeSlow().getUrl();
 				}
 				if (value.equals("dick")) { 
-					path = DoppelungGameResources.INSTANCE.dickSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dickSlow().getUrl();
 				}
 				if (value.equals("Donner")) { 
-					path = DoppelungGameResources.INSTANCE.donnerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.donnerSlow().getUrl();
 				}
 				if (value.equals("Doppelbett")) { 
-					path = DoppelungGameResources.INSTANCE.doppelbettSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.doppelbettSlow().getUrl();
 				}
 				if (value.equals("doppelt")) { 
-					path = DoppelungGameResources.INSTANCE.doppeltSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.doppeltSlow().getUrl();
 				}
 				if (value.equals("dreckig")) { 
-					path = DoppelungGameResources.INSTANCE.dreckigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dreckigSlow().getUrl();
 				}
 				if (value.equals("drucken")) { 
-					path = DoppelungGameResources.INSTANCE.druckenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.druckenSlow().getUrl();
 				}
 				if (value.equals("drücken")) { 
-					path = DoppelungGameResources.INSTANCE.drueckenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.drueckenSlow().getUrl();
 				}
 				if (value.equals("Dummheit")) { 
-					path = DoppelungGameResources.INSTANCE.dummheitSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.dummheitSlow().getUrl();
 				}
 				if (value.equals("Ecke")) { 
-					path = DoppelungGameResources.INSTANCE.eckeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.eckeSlow().getUrl();
 				}
 				if (value.equals("fallen")) { 
-					path = DoppelungGameResources.INSTANCE.fallenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fallenSlow().getUrl();
 				}
 				if (value.equals("fällen")) { 
-					path = DoppelungGameResources.INSTANCE.faellenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.faellenSlow().getUrl();
 				}
 				if (value.equals("Fell")) { 
-					path = DoppelungGameResources.INSTANCE.fellSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fellSlow().getUrl();
 				}
 				if (value.equals("Flossen")) { 
-					path = DoppelungGameResources.INSTANCE.flossenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.flossenSlow().getUrl();
 				}
 				if (value.equals("füllen")) { 
-					path = DoppelungGameResources.INSTANCE.fuellenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fuellenSlow().getUrl();
 				}
 				if (value.equals("glatt")) { 
-					path = DoppelungGameResources.INSTANCE.glattSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.glattSlow().getUrl();
 				}
 				if (value.equals("Glück")) { 
-					path = DoppelungGameResources.INSTANCE.glueckSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.glueckSlow().getUrl();
 				}
 				if (value.equals("Griff")) { 
-					path = DoppelungGameResources.INSTANCE.griffSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.griffSlow().getUrl();
 				}
 				if (value.equals("Halle")) { 
-					path = DoppelungGameResources.INSTANCE.halleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.halleSlow().getUrl();
 				}
 				if (value.equals("Hammer")) { 
-					path = DoppelungGameResources.INSTANCE.hammerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hammerSlow().getUrl();
 				}
 				if (value.equals("hassen")) { 
-					path = DoppelungGameResources.INSTANCE.hassenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hassenSlow().getUrl();
 				}
 				if (value.equals("hässlich")) { 
-					path = DoppelungGameResources.INSTANCE.haesslichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.haesslichSlow().getUrl();
 				}
 				if (value.equals("hell")) { 
-					path = DoppelungGameResources.INSTANCE.hellSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hellSlow().getUrl();
 				}
 				if (value.equals("herrlich")) { 
-					path = DoppelungGameResources.INSTANCE.herrlichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.herrlichSlow().getUrl();
 				}
 				if (value.equals("hoffen")) { 
-					path = DoppelungGameResources.INSTANCE.hoffenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoffenSlow().getUrl();
 				}
 				if (value.equals("Hoffnung")) { 
-					path = DoppelungGameResources.INSTANCE.hoffnungSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoffnungSlow().getUrl();
 				}
 				if (value.equals("Irrtum")) { 
-					path = DoppelungGameResources.INSTANCE.irrtumSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.irrtumSlow().getUrl();
 				}
 				if (value.equals("Kammer")) { 
-					path = DoppelungGameResources.INSTANCE.kammerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kammerSlow().getUrl();
 				}
 				if (value.equals("Keller")) { 
-					path = DoppelungGameResources.INSTANCE.kellerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kellerSlow().getUrl();
 				}
 				if (value.equals("kennen")) { 
-					path = DoppelungGameResources.INSTANCE.kennenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kennenSlow().getUrl();
 				}
 				if (value.equals("Kette")) { 
-					path = DoppelungGameResources.INSTANCE.ketteSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ketteSlow().getUrl();
 				}
 				if (value.equals("kippen")) { 
-					path = DoppelungGameResources.INSTANCE.kippenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kippenSlow().getUrl();
 				}
 				if (value.equals("klappen")) { 
-					path = DoppelungGameResources.INSTANCE.klappenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klappenSlow().getUrl();
 				}
 				if (value.equals("klappern")) { 
-					path = DoppelungGameResources.INSTANCE.klappernSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klappernSlow().getUrl();
 				}
 				if (value.equals("klettern")) { 
-					path = DoppelungGameResources.INSTANCE.kletternSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kletternSlow().getUrl();
 				}
 				if (value.equals("Klippe")) { 
-					path = DoppelungGameResources.INSTANCE.klippeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.klippeSlow().getUrl();
 				}
 				if (value.equals("knacken")) { 
-					path = DoppelungGameResources.INSTANCE.knackenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knackenSlow().getUrl();
 				}
 				if (value.equals("knapp")) { 
-					path = DoppelungGameResources.INSTANCE.knappSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knappSlow().getUrl();
 				}
 				if (value.equals("knittern")) { 
-					path = DoppelungGameResources.INSTANCE.knitternSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knitternSlow().getUrl();
 				}
 				if (value.equals("knurren")) { 
-					path = DoppelungGameResources.INSTANCE.knurrenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.knurrenSlow().getUrl();
 				}
 				if (value.equals("Komma")) { 
-					path = DoppelungGameResources.INSTANCE.kommaSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kommaSlow().getUrl();
 				}
 				if (value.equals("krumm")) { 
-					path = DoppelungGameResources.INSTANCE.krummSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.krummSlow().getUrl();
 				}
 				if (value.equals("lassen")) { 
-					path = DoppelungGameResources.INSTANCE.lassenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lassenSlow().getUrl();
 				}
 				if (value.equals("lässig")) { 
-					path = DoppelungGameResources.INSTANCE.laessigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.laessigSlow().getUrl();
 				}
 				if (value.equals("Locke")) { 
-					path = DoppelungGameResources.INSTANCE.lockeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lockeSlow().getUrl();
 				}
 				if (value.equals("lockig")) { 
-					path = DoppelungGameResources.INSTANCE.lockigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lockigSlow().getUrl();
 				}
 				if (value.equals("Lücke")) { 
-					path = DoppelungGameResources.INSTANCE.lueckeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lueckeSlow().getUrl();
 				}
 				if (value.equals("messen")) { 
-					path = DoppelungGameResources.INSTANCE.messenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.messenSlow().getUrl();
 				}
 				if (value.equals("Mitte")) { 
-					path = DoppelungGameResources.INSTANCE.mitteSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mitteSlow().getUrl();
 				}
 				if (value.equals("Mücke")) { 
-					path = DoppelungGameResources.INSTANCE.mueckeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mueckeSlow().getUrl();
 				}
 				if (value.equals("nennen")) { 
-					path = DoppelungGameResources.INSTANCE.nennenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nennenSlow().getUrl();
 				}
 				if (value.equals("Nummer")) { 
-					path = DoppelungGameResources.INSTANCE.nummerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nummerSlow().getUrl();
 				}
 				if (value.equals("öffnen")) { 
-					path = DoppelungGameResources.INSTANCE.oeffnenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.oeffnenSlow().getUrl();
 				}
 				if (value.equals("Päckchen")) { 
-					path = DoppelungGameResources.INSTANCE.paeckchenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.paeckchenSlow().getUrl();
 				}
 				if (value.equals("packen")) { 
-					path = DoppelungGameResources.INSTANCE.packenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.packenSlow().getUrl();
 				}
 				if (value.equals("passen")) { 
-					path = DoppelungGameResources.INSTANCE.passenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.passenSlow().getUrl();
 				}
 				if (value.equals("Pfiff")) { 
-					path = DoppelungGameResources.INSTANCE.pfiffSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.pfiffSlow().getUrl();
 				}
 				if (value.equals("pfiffig")) { 
-					path = DoppelungGameResources.INSTANCE.pfiffigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.pfiffigSlow().getUrl();
 				}
 				if (value.equals("Puppentheater")) { 
-					path = DoppelungGameResources.INSTANCE.puppentheaterSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.puppentheaterSlow().getUrl();
 				}
 				if (value.equals("Qualle")) { 
-					path = DoppelungGameResources.INSTANCE.qualleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.qualleSlow().getUrl();
 				}
 				if (value.equals("Quelle")) { 
-					path = DoppelungGameResources.INSTANCE.quelleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.quelleSlow().getUrl();
 				}
 				if (value.equals("Rennbahn")) { 
-					path = DoppelungGameResources.INSTANCE.rennbahnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rennbahnSlow().getUrl();
 				}
 				if (value.equals("rennen")) { 
-					path = DoppelungGameResources.INSTANCE.rennenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rennenSlow().getUrl();
 				}
 				if (value.equals("Riss")) { 
-					path = DoppelungGameResources.INSTANCE.rissSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rissSlow().getUrl();
 				}
 				if (value.equals("Ritt")) { 
-					path = DoppelungGameResources.INSTANCE.rittSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rittSlow().getUrl();
 				}
 				if (value.equals("rollen")) { 
-					path = DoppelungGameResources.INSTANCE.rollenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.rollenSlow().getUrl();
 				}
 				if (value.equals("Rücksicht")) { 
-					path = DoppelungGameResources.INSTANCE.ruecksichtSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ruecksichtSlow().getUrl();
 				}
 				if (value.equals("sammeln")) { 
-					path = DoppelungGameResources.INSTANCE.sammelnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sammelnSlow().getUrl();
 				}
 				if (value.equals("schaffen")) { 
-					path = DoppelungGameResources.INSTANCE.schaffenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schaffenSlow().getUrl();
 				}
 				if (value.equals("Schall")) { 
-					path = DoppelungGameResources.INSTANCE.schallSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schallSlow().getUrl();
 				}
 				if (value.equals("Schallgeschwindigkeit")) { 
-					path = DoppelungGameResources.INSTANCE.schallgeschwindigkeitSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schallgeschwindigkeitSlow().getUrl();
 				}
 				if (value.equals("scharren")) { 
-					path = DoppelungGameResources.INSTANCE.scharrenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.scharrenSlow().getUrl();
 				}
 				if (value.equals("schicken")) { 
-					path = DoppelungGameResources.INSTANCE.schickenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schickenSlow().getUrl();
 				}
 				if (value.equals("Schiff")) { 
-					path = DoppelungGameResources.INSTANCE.schiffSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiffSlow().getUrl();
 				}
 				if (value.equals("Schimmel")) { 
-					path = DoppelungGameResources.INSTANCE.schimmelSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schimmelSlow().getUrl();
 				}
 				if (value.equals("Schlamm")) { 
-					path = DoppelungGameResources.INSTANCE.schlammSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlammSlow().getUrl();
 				}
 				if (value.equals("schleppen")) { 
-					path = DoppelungGameResources.INSTANCE.schleppenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schleppenSlow().getUrl();
 				}
 				if (value.equals("schlimm")) { 
-					path = DoppelungGameResources.INSTANCE.schlimmSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlimmSlow().getUrl();
 				}
 				if (value.equals("schlucken")) { 
-					path = DoppelungGameResources.INSTANCE.schluckenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schluckenSlow().getUrl();
 				}
 				if (value.equals("Schluss")) { 
-					path = DoppelungGameResources.INSTANCE.schlussSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schlussSlow().getUrl();
 				}
 				if (value.equals("Schlüssel")) { 
-					path = DoppelungGameResources.INSTANCE.schluesselSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schluesselSlow().getUrl();
 				}
 				if (value.equals("schmettern")) { 
-					path = DoppelungGameResources.INSTANCE.schmetternSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schmetternSlow().getUrl();
 				}
 				if (value.equals("schmollen")) { 
-					path = DoppelungGameResources.INSTANCE.schmollenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schmollenSlow().getUrl();
 				}
 				if (value.equals("schnappen")) { 
-					path = DoppelungGameResources.INSTANCE.schnappenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schnappenSlow().getUrl();
 				}
 				if (value.equals("schnell")) { 
-					path = DoppelungGameResources.INSTANCE.schnellSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schnellSlow().getUrl();
 				}
 				if (value.equals("Schramme")) { 
-					path = DoppelungGameResources.INSTANCE.schrammeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schrammeSlow().getUrl();
 				}
 				if (value.equals("Schreck")) { 
-					path = DoppelungGameResources.INSTANCE.schreckSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schreckSlow().getUrl();
 				}
 				if (value.equals("Schuppen")) { 
-					path = DoppelungGameResources.INSTANCE.schuppenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuppenSlow().getUrl();
 				}
 				if (value.equals("schuppig")) { 
-					path = DoppelungGameResources.INSTANCE.schuppigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuppigSlow().getUrl();
 				}
 				if (value.equals("Schuss")) { 
-					path = DoppelungGameResources.INSTANCE.schussSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schussSlow().getUrl();
 				}
 				if (value.equals("Schusswaffe")) { 
-					path = DoppelungGameResources.INSTANCE.schusswaffeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schusswaffeSlow().getUrl();
 				}
 				if (value.equals("schütteln")) { 
-					path = DoppelungGameResources.INSTANCE.schuettelnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schuettelnSlow().getUrl();
 				}
 				if (value.equals("Schwamm")) { 
-					path = DoppelungGameResources.INSTANCE.schwammSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwammSlow().getUrl();
 				}
 				if (value.equals("schwimmen")) { 
-					path = DoppelungGameResources.INSTANCE.schwimmenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwimmenSlow().getUrl();
 				}
 				if (value.equals("spannen")) { 
-					path = DoppelungGameResources.INSTANCE.spannenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spannenSlow().getUrl();
 				}
 				if (value.equals("Sperre")) { 
-					path = DoppelungGameResources.INSTANCE.sperreSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sperreSlow().getUrl();
 				}
 				if (value.equals("Splitter")) { 
-					path = DoppelungGameResources.INSTANCE.splitterSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.splitterSlow().getUrl();
 				}
 				if (value.equals("Stamm")) { 
-					path = DoppelungGameResources.INSTANCE.stammSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stammSlow().getUrl();
 				}
 				if (value.equals("starr")) { 
-					path = DoppelungGameResources.INSTANCE.starrSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.starrSlow().getUrl();
 				}
 				if (value.equals("Stecker")) { 
-					path = DoppelungGameResources.INSTANCE.steckerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.steckerSlow().getUrl();
 				}
 				if (value.equals("Stelle")) { 
-					path = DoppelungGameResources.INSTANCE.stelleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stelleSlow().getUrl();
 				}
 				if (value.equals("stellen")) { 
-					path = DoppelungGameResources.INSTANCE.stellenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stellenSlow().getUrl();
 				}
 				if (value.equals("still")) { 
-					path = DoppelungGameResources.INSTANCE.stillSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stillSlow().getUrl();
 				}
 				if (value.equals("Stimme")) { 
-					path = DoppelungGameResources.INSTANCE.stimmeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stimmeSlow().getUrl();
 				}
 				if (value.equals("Stoff")) { 
-					path = DoppelungGameResources.INSTANCE.stoffSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stoffSlow().getUrl();
 				}
 				if (value.equals("stoppen")) { 
-					path = DoppelungGameResources.INSTANCE.stoppenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stoppenSlow().getUrl();
 				}
 				if (value.equals("stumm")) { 
-					path = DoppelungGameResources.INSTANCE.stummSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stummSlow().getUrl();
 				}
 				if (value.equals("summen")) { 
-					path = DoppelungGameResources.INSTANCE.summenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.summenSlow().getUrl();
 				}
 				if (value.equals("treffen")) { 
-					path = DoppelungGameResources.INSTANCE.treffenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.treffenSlow().getUrl();
 				}
 				if (value.equals("trennen")) { 
-					path = DoppelungGameResources.INSTANCE.trennenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trennenSlow().getUrl();
 				}
 				if (value.equals("Trick")) { 
-					path = DoppelungGameResources.INSTANCE.trickSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trickSlow().getUrl();
 				}
 				if (value.equals("Tritt")) { 
-					path = DoppelungGameResources.INSTANCE.trittSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trittSlow().getUrl();
 				}
 				if (value.equals("trocken")) { 
-					path = DoppelungGameResources.INSTANCE.trockenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trockenSlow().getUrl();
 				}
 				if (value.equals("Trockenheit")) { 
-					path = DoppelungGameResources.INSTANCE.trockenheitSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.trockenheitSlow().getUrl();
 				}
 				if (value.equals("Tunnel")) { 
-					path = DoppelungGameResources.INSTANCE.tunnelSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tunnelSlow().getUrl();
 				}
 				if (value.equals("voll")) { 
-					path = DoppelungGameResources.INSTANCE.vollSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vollSlow().getUrl();
 				}
 				if (value.equals("Wasser")) { 
-					path = DoppelungGameResources.INSTANCE.wasserSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wasserSlow().getUrl();
 				}
 				if (value.equals("wecken")) { 
-					path = DoppelungGameResources.INSTANCE.weckenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.weckenSlow().getUrl();
 				}
 				if (value.equals("Wette")) { 
-					path = DoppelungGameResources.INSTANCE.wetteSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wetteSlow().getUrl();
 				}
 				if (value.equals("Wetter")) { 
-					path = DoppelungGameResources.INSTANCE.wetterSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wetterSlow().getUrl();
 				}
 				if (value.equals("Wille")) { 
-					path = DoppelungGameResources.INSTANCE.willeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.willeSlow().getUrl();
 				}
 				if (value.equals("wissen")) { 
-					path = DoppelungGameResources.INSTANCE.wissenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wissenSlow().getUrl();
 				}
 				if (value.equals("zerren")) { 
-					path = DoppelungGameResources.INSTANCE.zerrenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zerrenSlow().getUrl();
 				}
 				if (value.equals("Zucker")) { 
-					path = DoppelungGameResources.INSTANCE.zuckerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zuckerSlow().getUrl();
 				}
 				if (value.equals("zwicken")) { 
-					path = DoppelungGameResources.INSTANCE.zwickenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zwickenSlow().getUrl();
 				}
 				if (value.equals("Zwillinge")) { 
-					path = DoppelungGameResources.INSTANCE.zwillingeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zwillingeSlow().getUrl();
 				}
 
 
@@ -908,220 +908,220 @@ public class SoundRetriever {
 			if (slow == false) {
 
 				if (value.equals("Ahnung")) { 
-					path = DoppelungGameResources.INSTANCE.ahnungNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ahnungNormal().getUrl();
 				}
 				if (value.equals("Bahn")) { 
-					path = DoppelungGameResources.INSTANCE.bahnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bahnNormal().getUrl();
 				}
 				if (value.equals("Blume")) { 
-					path = DoppelungGameResources.INSTANCE.blumeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blumeNormal().getUrl();
 				}
 				if (value.equals("Bruder")) { 
-					path = DoppelungGameResources.INSTANCE.bruderNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bruderNormal().getUrl();
 				}
 				if (value.equals("Ebene")) { 
-					path = DoppelungGameResources.INSTANCE.ebeneNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ebeneNormal().getUrl();
 				}
 				if (value.equals("Fehler")) { 
-					path = DoppelungGameResources.INSTANCE.fehlerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fehlerNormal().getUrl();
 				}
 				if (value.equals("Flug")) { 
-					path = DoppelungGameResources.INSTANCE.flugNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.flugNormal().getUrl();
 				}
 				if (value.equals("Frieden")) { 
-					path = DoppelungGameResources.INSTANCE.friedenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.friedenNormal().getUrl();
 				}
 				if (value.equals("Frühling")) { 
-					path = DoppelungGameResources.INSTANCE.fruehlingNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fruehlingNormal().getUrl();
 				}
 				if (value.equals("Gas")) { 
-					path = DoppelungGameResources.INSTANCE.gasNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.gasNormal().getUrl();
 				}
 				if (value.equals("Hose")) { 
-					path = DoppelungGameResources.INSTANCE.hoseNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoseNormal().getUrl();
 				}
 				if (value.equals("Höhle")) { 
-					path = DoppelungGameResources.INSTANCE.hoehleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoehleNormal().getUrl();
 				}
 				if (value.equals("Kino")) { 
-					path = DoppelungGameResources.INSTANCE.kinoNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kinoNormal().getUrl();
 				}
 				if (value.equals("Kohle")) { 
-					path = DoppelungGameResources.INSTANCE.kohleNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kohleNormal().getUrl();
 				}
 				if (value.equals("Lehrer")) { 
-					path = DoppelungGameResources.INSTANCE.lehrerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lehrerNormal().getUrl();
 				}
 				if (value.equals("Liege")) { 
-					path = DoppelungGameResources.INSTANCE.liegeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.liegeNormal().getUrl();
 				}
 				if (value.equals("Löwe")) { 
-					path = DoppelungGameResources.INSTANCE.loeweNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.loeweNormal().getUrl();
 				}
 				if (value.equals("Lüge")) { 
-					path = DoppelungGameResources.INSTANCE.luegeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.luegeNormal().getUrl();
 				}
 				if (value.equals("Miete")) { 
-					path = DoppelungGameResources.INSTANCE.mieteNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mieteNormal().getUrl();
 				}
 				if (value.equals("Rede")) { 
-					path = DoppelungGameResources.INSTANCE.redeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.redeNormal().getUrl();
 				}
 				if (value.equals("Rose")) { 
-					path = DoppelungGameResources.INSTANCE.roseNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.roseNormal().getUrl();
 				}
 				if (value.equals("Schal")) { 
-					path = DoppelungGameResources.INSTANCE.schalNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schalNormal().getUrl();
 				}
 				if (value.equals("Schnee")) { 
-					path = DoppelungGameResources.INSTANCE.schneeNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schneeNormal().getUrl();
 				}
 				if (value.equals("Sieger")) { 
-					path = DoppelungGameResources.INSTANCE.siegerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.siegerNormal().getUrl();
 				}
 				if (value.equals("Sohn")) { 
-					path = DoppelungGameResources.INSTANCE.sohnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sohnNormal().getUrl();
 				}
 				if (value.equals("Spiegel")) { 
-					path = DoppelungGameResources.INSTANCE.spiegelNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spiegelNormal().getUrl();
 				}
 				if (value.equals("Spiel")) { 
-					path = DoppelungGameResources.INSTANCE.spielNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spielNormal().getUrl();
 				}
 				if (value.equals("Straße")) { 
-					path = DoppelungGameResources.INSTANCE.strasseNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.strasseNormal().getUrl();
 				}
 				if (value.equals("Stuhl")) { 
-					path = DoppelungGameResources.INSTANCE.stuhlNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stuhlNormal().getUrl();
 				}
 				if (value.equals("Tafel")) { 
-					path = DoppelungGameResources.INSTANCE.tafelNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tafelNormal().getUrl();
 				}
 				if (value.equals("Telefon")) { 
-					path = DoppelungGameResources.INSTANCE.telefonNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.telefonNormal().getUrl();
 				}
 				if (value.equals("Vater")) { 
-					path = DoppelungGameResources.INSTANCE.vaterNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vaterNormal().getUrl();
 				}
 				if (value.equals("Vogel")) { 
-					path = DoppelungGameResources.INSTANCE.vogelNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vogelNormal().getUrl();
 				}
 				if (value.equals("Wagen")) { 
-					path = DoppelungGameResources.INSTANCE.wagenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wagenNormal().getUrl();
 				}
 				if (value.equals("Wahrheit")) { 
-					path = DoppelungGameResources.INSTANCE.wahrheitNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wahrheitNormal().getUrl();
 				}
 				if (value.equals("Weg")) { 
-					path = DoppelungGameResources.INSTANCE.wegNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wegNormal().getUrl();
 				}
 				if (value.equals("Wiese")) { 
-					path = DoppelungGameResources.INSTANCE.wieseNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wieseNormal().getUrl();
 				}
 				if (value.equals("Wohnung")) { 
-					path = DoppelungGameResources.INSTANCE.wohnungNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wohnungNormal().getUrl();
 				}
 				if (value.equals("Zahl")) { 
-					path = DoppelungGameResources.INSTANCE.zahlNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zahlNormal().getUrl();
 				}
 				if (value.equals("Zähler")) { 
-					path = DoppelungGameResources.INSTANCE.zaehlerNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zaehlerNormal().getUrl();
 				}
 				if (value.equals("Ziel")) { 
-					path = DoppelungGameResources.INSTANCE.zielNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zielNormal().getUrl();
 				}
 				if (value.equals("Zug")) { 
-					path = DoppelungGameResources.INSTANCE.zugNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zugNormal().getUrl();
 				}
 				if (value.equals("ähnlich")) { 
-					path = DoppelungGameResources.INSTANCE.aehnlichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.aehnlichNormal().getUrl();
 				}
 				if (value.equals("beten")) { 
-					path = DoppelungGameResources.INSTANCE.betenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.betenNormal().getUrl();
 				}
 				if (value.equals("biegen")) { 
-					path = DoppelungGameResources.INSTANCE.biegenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.biegenNormal().getUrl();
 				}
 				if (value.equals("drehen")) { 
-					path = DoppelungGameResources.INSTANCE.drehenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.drehenNormal().getUrl();
 				}
 				if (value.equals("fahren")) { 
-					path = DoppelungGameResources.INSTANCE.fahrenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fahrenNormal().getUrl();
 				}
 				if (value.equals("fehlen")) { 
-					path = DoppelungGameResources.INSTANCE.fehlenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fehlenNormal().getUrl();
 				}
 				if (value.equals("fröhlich")) { 
-					path = DoppelungGameResources.INSTANCE.froehlichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.froehlichNormal().getUrl();
 				}
 				if (value.equals("führen")) { 
-					path = DoppelungGameResources.INSTANCE.fuehrenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fuehrenNormal().getUrl();
 				}
 				if (value.equals("geben")) { 
-					path = DoppelungGameResources.INSTANCE.gebenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.gebenNormal().getUrl();
 				}
 				if (value.equals("leben")) { 
-					path = DoppelungGameResources.INSTANCE.lebenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lebenNormal().getUrl();
 				}
 				if (value.equals("legen")) { 
-					path = DoppelungGameResources.INSTANCE.legenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.legenNormal().getUrl();
 				}
 				if (value.equals("lieben")) { 
-					path = DoppelungGameResources.INSTANCE.liebenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.liebenNormal().getUrl();
 				}
 				if (value.equals("nehmen")) { 
-					path = DoppelungGameResources.INSTANCE.nehmenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nehmenNormal().getUrl();
 				}
 				if (value.equals("niedlich")) { 
-					path = DoppelungGameResources.INSTANCE.niedlichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.niedlichNormal().getUrl();
 				}
 				if (value.equals("ohne")) { 
-					path = DoppelungGameResources.INSTANCE.ohneNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ohneNormal().getUrl();
 				}
 				if (value.equals("sagen")) { 
-					path = DoppelungGameResources.INSTANCE.sagenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sagenNormal().getUrl();
 				}
 				if (value.equals("schieben")) { 
-					path = DoppelungGameResources.INSTANCE.schiebenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiebenNormal().getUrl();
 				}
 				if (value.equals("schief")) { 
-					path = DoppelungGameResources.INSTANCE.schiefNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiefNormal().getUrl();
 				}
 				if (value.equals("schließlich")) { 
-					path = DoppelungGameResources.INSTANCE.schliesslichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schliesslichNormal().getUrl();
 				}
 				if (value.equals("schwierig")) { 
-					path = DoppelungGameResources.INSTANCE.schwierigNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwierigNormal().getUrl();
 				}
 				if (value.equals("tragen")) { 
-					path = DoppelungGameResources.INSTANCE.tragenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tragenNormal().getUrl();
 				}
 				if (value.equals("viel")) { 
-					path = DoppelungGameResources.INSTANCE.vielNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vielNormal().getUrl();
 				}
 				if (value.equals("während")) { 
-					path = DoppelungGameResources.INSTANCE.waehrendNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.waehrendNormal().getUrl();
 				}
 				if (value.equals("wieder")) { 
-					path = DoppelungGameResources.INSTANCE.wiederNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wiederNormal().getUrl();
 				}
 				if (value.equals("wohnen")) { 
-					path = DoppelungGameResources.INSTANCE.wohnenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wohnenNormal().getUrl();
 				}
 				if (value.equals("zahlen")) { 
-					path = DoppelungGameResources.INSTANCE.zahlenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zahlenNormal().getUrl();
 				}
 				if (value.equals("zählen")) { 
-					path = DoppelungGameResources.INSTANCE.zaehlenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zaehlenNormal().getUrl();
 				}
 				if (value.equals("zehn")) { 
-					path = DoppelungGameResources.INSTANCE.zehnNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zehnNormal().getUrl();
 				}
 				if (value.equals("ziehen")) { 
-					path = DoppelungGameResources.INSTANCE.ziehenNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ziehenNormal().getUrl();
 				}
 				if (value.equals("ziemlich")) { 
-					path = DoppelungGameResources.INSTANCE.ziemlichNormal().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ziemlichNormal().getUrl();
 				}
 
 
@@ -1129,220 +1129,220 @@ public class SoundRetriever {
 			else {
 
 				if (value.equals("Ahnung")) { 
-					path = DoppelungGameResources.INSTANCE.ahnungSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ahnungSlow().getUrl();
 				}
 				if (value.equals("Bahn")) { 
-					path = DoppelungGameResources.INSTANCE.bahnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bahnSlow().getUrl();
 				}
 				if (value.equals("Blume")) { 
-					path = DoppelungGameResources.INSTANCE.blumeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.blumeSlow().getUrl();
 				}
 				if (value.equals("Bruder")) { 
-					path = DoppelungGameResources.INSTANCE.bruderSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.bruderSlow().getUrl();
 				}
 				if (value.equals("Ebene")) { 
-					path = DoppelungGameResources.INSTANCE.ebeneSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ebeneSlow().getUrl();
 				}
 				if (value.equals("Fehler")) { 
-					path = DoppelungGameResources.INSTANCE.fehlerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fehlerSlow().getUrl();
 				}
 				if (value.equals("Flug")) { 
-					path = DoppelungGameResources.INSTANCE.flugSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.flugSlow().getUrl();
 				}
 				if (value.equals("Frieden")) { 
-					path = DoppelungGameResources.INSTANCE.friedenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.friedenSlow().getUrl();
 				}
 				if (value.equals("Frühling")) { 
-					path = DoppelungGameResources.INSTANCE.fruehlingSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fruehlingSlow().getUrl();
 				}
 				if (value.equals("Gas")) { 
-					path = DoppelungGameResources.INSTANCE.gasSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.gasSlow().getUrl();
 				}
 				if (value.equals("Hose")) { 
-					path = DoppelungGameResources.INSTANCE.hoseSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoseSlow().getUrl();
 				}
 				if (value.equals("Höhle")) { 
-					path = DoppelungGameResources.INSTANCE.hoehleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.hoehleSlow().getUrl();
 				}
 				if (value.equals("Kino")) { 
-					path = DoppelungGameResources.INSTANCE.kinoSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kinoSlow().getUrl();
 				}
 				if (value.equals("Kohle")) { 
-					path = DoppelungGameResources.INSTANCE.kohleSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.kohleSlow().getUrl();
 				}
 				if (value.equals("Lehrer")) { 
-					path = DoppelungGameResources.INSTANCE.lehrerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lehrerSlow().getUrl();
 				}
 				if (value.equals("Liege")) { 
-					path = DoppelungGameResources.INSTANCE.liegeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.liegeSlow().getUrl();
 				}
 				if (value.equals("Löwe")) { 
-					path = DoppelungGameResources.INSTANCE.loeweSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.loeweSlow().getUrl();
 				}
 				if (value.equals("Lüge")) { 
-					path = DoppelungGameResources.INSTANCE.luegeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.luegeSlow().getUrl();
 				}
 				if (value.equals("Miete")) { 
-					path = DoppelungGameResources.INSTANCE.mieteSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.mieteSlow().getUrl();
 				}
 				if (value.equals("Rede")) { 
-					path = DoppelungGameResources.INSTANCE.redeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.redeSlow().getUrl();
 				}
 				if (value.equals("Rose")) { 
-					path = DoppelungGameResources.INSTANCE.roseSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.roseSlow().getUrl();
 				}
 				if (value.equals("Schal")) { 
-					path = DoppelungGameResources.INSTANCE.schalSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schalSlow().getUrl();
 				}
 				if (value.equals("Schnee")) { 
-					path = DoppelungGameResources.INSTANCE.schneeSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schneeSlow().getUrl();
 				}
 				if (value.equals("Sieger")) { 
-					path = DoppelungGameResources.INSTANCE.siegerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.siegerSlow().getUrl();
 				}
 				if (value.equals("Sohn")) { 
-					path = DoppelungGameResources.INSTANCE.sohnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sohnSlow().getUrl();
 				}
 				if (value.equals("Spiegel")) { 
-					path = DoppelungGameResources.INSTANCE.spiegelSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spiegelSlow().getUrl();
 				}
 				if (value.equals("Spiel")) { 
-					path = DoppelungGameResources.INSTANCE.spielSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.spielSlow().getUrl();
 				}
 				if (value.equals("Straße")) { 
-					path = DoppelungGameResources.INSTANCE.strasseSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.strasseSlow().getUrl();
 				}
 				if (value.equals("Stuhl")) { 
-					path = DoppelungGameResources.INSTANCE.stuhlSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.stuhlSlow().getUrl();
 				}
 				if (value.equals("Tafel")) { 
-					path = DoppelungGameResources.INSTANCE.tafelSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tafelSlow().getUrl();
 				}
 				if (value.equals("Telefon")) { 
-					path = DoppelungGameResources.INSTANCE.telefonSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.telefonSlow().getUrl();
 				}
 				if (value.equals("Vater")) { 
-					path = DoppelungGameResources.INSTANCE.vaterSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vaterSlow().getUrl();
 				}
 				if (value.equals("Vogel")) { 
-					path = DoppelungGameResources.INSTANCE.vogelSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vogelSlow().getUrl();
 				}
 				if (value.equals("Wagen")) { 
-					path = DoppelungGameResources.INSTANCE.wagenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wagenSlow().getUrl();
 				}
 				if (value.equals("Wahrheit")) { 
-					path = DoppelungGameResources.INSTANCE.wahrheitSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wahrheitSlow().getUrl();
 				}
 				if (value.equals("Weg")) { 
-					path = DoppelungGameResources.INSTANCE.wegSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wegSlow().getUrl();
 				}
 				if (value.equals("Wiese")) { 
-					path = DoppelungGameResources.INSTANCE.wieseSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wieseSlow().getUrl();
 				}
 				if (value.equals("Wohnung")) { 
-					path = DoppelungGameResources.INSTANCE.wohnungSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wohnungSlow().getUrl();
 				}
 				if (value.equals("Zahl")) { 
-					path = DoppelungGameResources.INSTANCE.zahlSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zahlSlow().getUrl();
 				}
 				if (value.equals("Zähler")) { 
-					path = DoppelungGameResources.INSTANCE.zaehlerSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zaehlerSlow().getUrl();
 				}
 				if (value.equals("Ziel")) { 
-					path = DoppelungGameResources.INSTANCE.zielSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zielSlow().getUrl();
 				}
 				if (value.equals("Zug")) { 
-					path = DoppelungGameResources.INSTANCE.zugSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zugSlow().getUrl();
 				}
 				if (value.equals("ähnlich")) { 
-					path = DoppelungGameResources.INSTANCE.aehnlichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.aehnlichSlow().getUrl();
 				}
 				if (value.equals("beten")) { 
-					path = DoppelungGameResources.INSTANCE.betenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.betenSlow().getUrl();
 				}
 				if (value.equals("biegen")) { 
-					path = DoppelungGameResources.INSTANCE.biegenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.biegenSlow().getUrl();
 				}
 				if (value.equals("drehen")) { 
-					path = DoppelungGameResources.INSTANCE.drehenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.drehenSlow().getUrl();
 				}
 				if (value.equals("fahren")) { 
-					path = DoppelungGameResources.INSTANCE.fahrenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fahrenSlow().getUrl();
 				}
 				if (value.equals("fehlen")) { 
-					path = DoppelungGameResources.INSTANCE.fehlenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fehlenSlow().getUrl();
 				}
 				if (value.equals("fröhlich")) { 
-					path = DoppelungGameResources.INSTANCE.froehlichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.froehlichSlow().getUrl();
 				}
 				if (value.equals("führen")) { 
-					path = DoppelungGameResources.INSTANCE.fuehrenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.fuehrenSlow().getUrl();
 				}
 				if (value.equals("geben")) { 
-					path = DoppelungGameResources.INSTANCE.gebenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.gebenSlow().getUrl();
 				}
 				if (value.equals("leben")) { 
-					path = DoppelungGameResources.INSTANCE.lebenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.lebenSlow().getUrl();
 				}
 				if (value.equals("legen")) { 
-					path = DoppelungGameResources.INSTANCE.legenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.legenSlow().getUrl();
 				}
 				if (value.equals("lieben")) { 
-					path = DoppelungGameResources.INSTANCE.liebenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.liebenSlow().getUrl();
 				}
 				if (value.equals("nehmen")) { 
-					path = DoppelungGameResources.INSTANCE.nehmenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.nehmenSlow().getUrl();
 				}
 				if (value.equals("niedlich")) { 
-					path = DoppelungGameResources.INSTANCE.niedlichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.niedlichSlow().getUrl();
 				}
 				if (value.equals("ohne")) { 
-					path = DoppelungGameResources.INSTANCE.ohneSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ohneSlow().getUrl();
 				}
 				if (value.equals("sagen")) { 
-					path = DoppelungGameResources.INSTANCE.sagenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.sagenSlow().getUrl();
 				}
 				if (value.equals("schieben")) { 
-					path = DoppelungGameResources.INSTANCE.schiebenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiebenSlow().getUrl();
 				}
 				if (value.equals("schief")) { 
-					path = DoppelungGameResources.INSTANCE.schiefSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schiefSlow().getUrl();
 				}
 				if (value.equals("schließlich")) { 
-					path = DoppelungGameResources.INSTANCE.schliesslichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schliesslichSlow().getUrl();
 				}
 				if (value.equals("schwierig")) { 
-					path = DoppelungGameResources.INSTANCE.schwierigSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.schwierigSlow().getUrl();
 				}
 				if (value.equals("tragen")) { 
-					path = DoppelungGameResources.INSTANCE.tragenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.tragenSlow().getUrl();
 				}
 				if (value.equals("viel")) { 
-					path = DoppelungGameResources.INSTANCE.vielSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.vielSlow().getUrl();
 				}
 				if (value.equals("während")) { 
-					path = DoppelungGameResources.INSTANCE.waehrendSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.waehrendSlow().getUrl();
 				}
 				if (value.equals("wieder")) { 
-					path = DoppelungGameResources.INSTANCE.wiederSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wiederSlow().getUrl();
 				}
 				if (value.equals("wohnen")) { 
-					path = DoppelungGameResources.INSTANCE.wohnenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.wohnenSlow().getUrl();
 				}
 				if (value.equals("zahlen")) { 
-					path = DoppelungGameResources.INSTANCE.zahlenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zahlenSlow().getUrl();
 				}
 				if (value.equals("zählen")) { 
-					path = DoppelungGameResources.INSTANCE.zaehlenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zaehlenSlow().getUrl();
 				}
 				if (value.equals("zehn")) { 
-					path = DoppelungGameResources.INSTANCE.zehnSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.zehnSlow().getUrl();
 				}
 				if (value.equals("ziehen")) { 
-					path = DoppelungGameResources.INSTANCE.ziehenSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ziehenSlow().getUrl();
 				}
 				if (value.equals("ziemlich")) { 
-					path = DoppelungGameResources.INSTANCE.ziemlichSlow().getUrl();
+					path = DoppelungGameResourcesSounds.INSTANCE.ziemlichSlow().getUrl();
 				}
 
 
