@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResources;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResourcesImages;
 
 public class MovingConsonants extends Image{
 
@@ -26,27 +26,27 @@ public class MovingConsonants extends Image{
 		//super("doppelungGame/coins/coin_" + consonants + ".png");
 		
 		if (consonants.equals("ff"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_ff().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_ff().getSafeUri()));
 		if (consonants.equals("tt"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_tt().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_tt().getSafeUri()));
 		if (consonants.equals("ss"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_ss().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_ss().getSafeUri()));
 		if (consonants.equals("mm"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_mm().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_mm().getSafeUri()));
 		if (consonants.equals("ll"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_ll().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_ll().getSafeUri()));
 		if (consonants.equals("nn"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_nn().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_nn().getSafeUri()));
 		if (consonants.equals("pp"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_pp().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_pp().getSafeUri()));
 		if (consonants.equals("rr"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_rr().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_rr().getSafeUri()));
 		if (consonants.equals("ck"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_ck().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_ck().getSafeUri()));
 		if (consonants.equals("lt"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_lt().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_lt().getSafeUri()));
 		if (consonants.equals("rt"))
-			this.setUrl((DoppelungGameResources.INSTANCE.coin_rt().getSafeUri()));
+			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_rt().getSafeUri()));
 		
 		
 		GWT.log(consonants);
@@ -93,9 +93,9 @@ public class MovingConsonants extends Image{
 		this.collected = true;
 		
 		if (playerNumber == 1)
-			this.setUrl(DoppelungGameResources.INSTANCE.coin_red().getSafeUri());
+			this.setUrl(DoppelungGameResourcesImages.INSTANCE.coin_red().getSafeUri());
 		else
-			this.setUrl(DoppelungGameResources.INSTANCE.coin_blue().getSafeUri());
+			this.setUrl(DoppelungGameResourcesImages.INSTANCE.coin_blue().getSafeUri());
 		
 	}
 	
