@@ -24,7 +24,8 @@ import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 import com.wicam.numberlineweb.server.logging.GameLogger.LoggingActive;
 import com.wicam.numberlineweb.server.logging.IHandicap;
 
-public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
+//public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
+public abstract class GameCommunicationServiceServlet extends CustomRemoteServiceServlet implements GameCommunicationService{
 
 	/**
 	 * 
