@@ -3,11 +3,11 @@ package com.wicam.numberlineweb.server.chat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatMsg;
+import com.wicam.numberlineweb.server.CustomRemoteServiceServlet;
 
-public class ChatCommunicationServiceServlet extends RemoteServiceServlet implements ChatCommunicationService {
+public class ChatCommunicationServiceServlet extends CustomRemoteServiceServlet implements ChatCommunicationService {
 
 	/**
 	 * 

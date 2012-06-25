@@ -10,12 +10,9 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.server.NumberLineGame.NumberLineGameNPC;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 import com.wicam.numberlineweb.server.logging.GameLogger;
@@ -24,7 +21,6 @@ import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 import com.wicam.numberlineweb.server.logging.GameLogger.LoggingActive;
 import com.wicam.numberlineweb.server.logging.IHandicap;
 
-//public abstract class GameCommunicationServiceServlet extends RemoteServiceServlet implements GameCommunicationService{
 public abstract class GameCommunicationServiceServlet extends CustomRemoteServiceServlet implements GameCommunicationService{
 
 	/**

@@ -1,6 +1,8 @@
 package com.wicam.numberlineweb.client;
 
-public class GameJoinException extends Exception {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class GameJoinException extends Exception implements IsSerializable{
 
 	/**
 	 * 
