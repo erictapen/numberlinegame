@@ -468,7 +468,7 @@ GameCommunicationServiceServlet implements OverTenGameCommunicationService {
 
 	public void showNextItem(int id) {
 
-		Timer t = new Timer();
+		Timer t = new Timer(true);
 		t.schedule(new OverTenGameStateTask(id, 6, this), 6000);
 	}
 
