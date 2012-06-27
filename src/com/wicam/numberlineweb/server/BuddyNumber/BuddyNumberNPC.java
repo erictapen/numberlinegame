@@ -126,7 +126,8 @@ public class BuddyNumberNPC extends NPC{
 					comm.leaveGame(game.getId() + ":" + Integer.toString(playerid),playerid);
 				}
 				else {
-					t.schedule(new CPUBehavior(), time);
+					if (!isTimerCancelled)
+						t.schedule(new CPUBehavior(), time);
 				}
 			}
 		}		

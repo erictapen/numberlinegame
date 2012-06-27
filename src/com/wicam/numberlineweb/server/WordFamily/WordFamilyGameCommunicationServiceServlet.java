@@ -279,7 +279,7 @@ GameCommunicationServiceServlet implements WordFamilyGameCommunicationService {
 
 	public void showNextItem(int id) {
 
-		Timer t = new Timer();
+		Timer t = new Timer(true);
 		t.schedule(new WordFamilyGameStateTask(id, 6, this), 6000);
 		t.schedule(new WordFamilyGameStateTask(id, 42, this), 6500);
 	}
