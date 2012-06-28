@@ -47,7 +47,7 @@ public class BuddyNumberGameView extends GameView  {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/BuddyNumber.wav");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/BuddyNumber.ogg");
 	
 
 	public BuddyNumberGameView(BuddyNumberGameController gameController, int numberOfPlayers, int numberOfNPCs) {
