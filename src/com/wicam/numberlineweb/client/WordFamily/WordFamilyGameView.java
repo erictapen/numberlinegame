@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.Resources.SoundResources;
 
 /**
  * The game view.
@@ -32,7 +33,8 @@ public class WordFamilyGameView extends GameView  {
 	final HTML explanationText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/Wortfamilienspiel.ogg");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
+			SoundResources.INSTANCE.wortfamilienspiel().getSafeUri().asString());
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override

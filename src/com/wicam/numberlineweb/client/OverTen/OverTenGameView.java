@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.Resources.SoundResources;
 
 /**
  * The game view.
@@ -47,7 +48,8 @@ public class OverTenGameView extends GameView  {
 	final HTML infoText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/OverTen.ogg");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
+			SoundResources.INSTANCE.overTen().getSafeUri().asString());
 	
 
 	public OverTenGameView(OverTenGameController gameController, int numberOfPlayers, int numberOfNPCs) {

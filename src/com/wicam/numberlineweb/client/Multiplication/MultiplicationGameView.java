@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.Resources.SoundResources;
 
 /**
  * The game view.
@@ -47,7 +48,8 @@ public class MultiplicationGameView extends GameView  {
 	final HTML infoText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/Multiplication.ogg");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
+			SoundResources.INSTANCE.multiplication().getSafeUri().asString());
 
 	public MultiplicationGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
