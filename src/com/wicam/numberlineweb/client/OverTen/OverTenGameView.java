@@ -47,7 +47,7 @@ public class OverTenGameView extends GameView  {
 	final HTML infoText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/OverTen.wav");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/OverTen.ogg");
 	
 
 	public OverTenGameView(OverTenGameController gameController, int numberOfPlayers, int numberOfNPCs) {

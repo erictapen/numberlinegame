@@ -32,7 +32,7 @@ public class WordFamilyGameView extends GameView  {
 	final HTML explanationText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_WAV_PCM,"desc/Wortfamilienspiel.wav");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/Wortfamilienspiel.ogg");
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
