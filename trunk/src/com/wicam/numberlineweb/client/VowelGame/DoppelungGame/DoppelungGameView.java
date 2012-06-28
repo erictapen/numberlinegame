@@ -22,6 +22,7 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
+import com.wicam.numberlineweb.client.Resources.SoundResources;
 import com.wicam.numberlineweb.client.VowelGame.MovingConsonants;
 import com.wicam.numberlineweb.client.VowelGame.ShortVowelImage;
 import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
@@ -53,7 +54,8 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS,"desc/Doppelung.ogg");
+	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
+			SoundResources.INSTANCE.doppelung().getSafeUri().asString());
 
 	protected final Image feedbackImage = new Image(DoppelungGameResourcesImages.INSTANCE.beide_daumen());
 
