@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wicam.numberlineweb.client.Resources.ImageResources;
+import com.wicam.numberlineweb.client.Resources.SoundResources;
 
 /**
  * An extendible list-view for game types
@@ -51,7 +53,7 @@ public class GameTypeSelector extends Composite{
 				showCats();
 			}
 		});
-		backButton.setImage("pre_backButton.png");
+		backButton.setImage(ImageResources.INSTANCE.pre_backButton().getSafeUri().asString());
 	
 
 		RootPanel.get().add(p);
