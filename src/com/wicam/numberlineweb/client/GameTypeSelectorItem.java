@@ -4,6 +4,7 @@ package com.wicam.numberlineweb.client;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTML;
+import com.wicam.numberlineweb.client.Resources.ImageResources;
 
 /**
  * An item for the GameTypeSelector
@@ -22,7 +23,7 @@ public class GameTypeSelectorItem extends HTML{
 
 	private void builtHTML() {
 		
-		if (img.equals("")) img = "Fragezeichen.gif";
+		if (img.equals("")) img = ImageResources.INSTANCE.fragezeichen().getSafeUri().asString();
 		
 		super.setHTML("<div class='gametype'>" +
 				"<img alt='"+ desc + "' height='130' width='130' src='" + img + "'>" + 

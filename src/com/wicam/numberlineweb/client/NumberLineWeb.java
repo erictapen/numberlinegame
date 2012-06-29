@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -35,6 +36,7 @@ import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
 import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService;
 import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
+import com.wicam.numberlineweb.client.Resources.ImageResources;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
@@ -116,7 +118,8 @@ public class NumberLineWeb implements EntryPoint {
 		final String logging = Window.Location.getParameter("logging");
 		
 		// add math games container
-		gts.addGame(GameType.CAT, "Mathespiele", "pre_multiplication.png", "Alle Spiele mit Zahlen", new GameItemStarter() {
+		gts.addGame(GameType.CAT, "Mathespiele", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+				"Alle Spiele mit Zahlen", new GameItemStarter() {
 			
 			@Override
 			public void run() {
@@ -125,7 +128,8 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// add grammar games container
-		gts.addGame(GameType.CAT, "Wortspiele", "pre_doppelung.png", "Alle Spiele mit Wörtern", new GameItemStarter() {
+		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Alle Spiele mit Wörtern", new GameItemStarter() {
 			
 			@Override
 			public void run() {
@@ -150,7 +154,8 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 
 		//adds the doppelung game
-		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", "pre_doppelung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -194,7 +199,8 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 		
 		//adds the Multiplication game
-		gts.addGame(GameType.MATH, "Multiplikation", "pre_multiplication.png", "Rechne schnell!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+				"Rechne schnell!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -212,7 +218,8 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the BuddyNumber game
-		gts.addGame(GameType.MATH, "Partnerzahl", "pre_buddyNumber.png", "Kombiniere gut!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Partnerzahl", ImageResources.INSTANCE.pre_buddyNumber().getSafeUri().asString(), 
+				"Kombiniere gut!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -230,7 +237,8 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordStem game
-		gts.addGame(GameType.GRAMMAR, "Wortbausteine", "pre_wordstem.png", "Ordne zu!", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Wortbausteine", ImageResources.INSTANCE.pre_wordstem().getSafeUri().asString(), 
+				"Ordne zu!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -248,7 +256,8 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the OverTen game
-		gts.addGame(GameType.MATH, "Über 10", "pre_overten.png", "Summiere auf!", new GameItemStarter() {
+		gts.addGame(GameType.MATH, "Über 10", ImageResources.INSTANCE.pre_overten().getSafeUri().asString(), 
+				"Summiere auf!", new GameItemStarter() {
 
 			@Override
 			public void run() {
@@ -265,7 +274,8 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the WordFamily game
-		gts.addGame(GameType.GRAMMAR, "Wortfamilien", "pre_wordfamily.png", "Merke dir viel!", new GameItemStarter() {
+		gts.addGame(GameType.GRAMMAR, "Wortfamilien", ImageResources.INSTANCE.pre_wordfamily().getSafeUri().asString(), 
+				"Merke dir viel!", new GameItemStarter() {
 
 			@Override
 			public void run() {
