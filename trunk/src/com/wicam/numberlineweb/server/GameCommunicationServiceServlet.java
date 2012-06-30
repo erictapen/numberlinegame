@@ -74,8 +74,9 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		
 		this.gameId2Logger.put(currentId, new GameLogger());
 		
-		this.gameId2Logger.get(currentId).log(currentId, System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
-				this.getClass().getName(), LogActionTrigger.APPLICATION);
+		if (this.gameId2Logger.containsKey(currentId))
+			this.gameId2Logger.get(currentId).log(currentId, System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
+					this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		return g;
 	}
@@ -626,6 +627,9 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 			setUpToDate(id,player);
 
 			GameState g = getGameById(id);
+			
+			if (g == null)
+				return null;
 
 			//tell the client when this state was sent to prevent asynchronous
 			//processing
