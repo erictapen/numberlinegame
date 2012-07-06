@@ -1,7 +1,5 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
-import java.util.ArrayList;
-
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
@@ -18,14 +16,12 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
 import com.wicam.numberlineweb.client.Resources.SoundResources;
 import com.wicam.numberlineweb.client.VowelGame.MovingConsonants;
 import com.wicam.numberlineweb.client.VowelGame.ShortVowelImage;
-import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResourcesImages;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -49,7 +45,7 @@ public class DoppelungGameView extends GameView {
 
 	protected final Button startGameButton = new Button("Spiel Starten");
 	protected final ShortVowelImage shortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.knall_small().getSafeUri().asString(), 
-			270, 330);
+            270, 330);
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
@@ -179,14 +175,15 @@ public class DoppelungGameView extends GameView {
 		if (playerid == 1){
 			movingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.roter_knall().getSafeUri().asString(),
 					270, 330);
-			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/blauer_knall.png", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.blauer_knall().getSafeUri().asString(),
+					270, 330);
 		}
 		if (playerid == 2){
 			movingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.blauer_knall().getSafeUri().asString(), 
 					270, 330);
-			//enemyMovingShortVowelImage = new ShortVowelImage("doppelungGame/roter_knall.png", 270, 330);
+			enemyMovingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.roter_knall().getSafeUri().asString(), 
+					270, 330);
 		}
-		
 	}
 
 	/**
@@ -473,7 +470,7 @@ public class DoppelungGameView extends GameView {
 		movingShortVowelImage.setX(startX);
 		movingShortVowelImage.setY(startY);
 
-		/*
+
 		if (players ==2) {
 
 			gamePanel.add(enemyMovingShortVowelImage);
@@ -482,12 +479,12 @@ public class DoppelungGameView extends GameView {
 			gamePanel.setWidgetPosition(enemyMovingShortVowelImage, startX, startY);
 
 		}
-		*/
 		gamePanel.setWidgetPosition(movingShortVowelImage, startX, startY);
 		
 		//Resize
 		movingShortVowelImage.setPixelSize(48, 47);
-		
+		enemyMovingShortVowelImage.setPixelSize(48, 47);
+
 		if (MobileDeviceChecker.checkForKeyboard()) {
 			kbd = new KeyboardDummy((DoppelungGameController)super.gameController);
 			gamePanel.add(kbd, 440, 240);

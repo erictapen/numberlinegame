@@ -1,8 +1,6 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.VowelGame.ConsonantPoint2D;
@@ -203,5 +201,4 @@ public class DoppelungGameState extends GameState {
 	public int getNumberOfWordsToPlay() {
 		return numberOfWordsToPlay;
 	}
-	
 }

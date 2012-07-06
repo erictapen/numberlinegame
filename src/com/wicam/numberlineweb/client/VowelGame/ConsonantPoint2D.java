@@ -14,8 +14,6 @@ public class ConsonantPoint2D implements IsSerializable {
 	private int x = 0;
 	private int y = 0;
 	private boolean removed = false;
-	private boolean collected = false;
-	private int collectorPlayerID;
 	private String consonant = "";
 	
 	public void setX(int x) {
@@ -46,19 +44,6 @@ public class ConsonantPoint2D implements IsSerializable {
 
 	public boolean isRemoved() {
 		return removed;
-	}
-	
-	public void setCollected(boolean collected, int playerid) {
-		this.collected = collected;
-		this.collectorPlayerID = playerid;
-	}
-
-	public boolean isCollected() {
-		return this.collected;
-	}
-	
-	public int getCollectorPlayerID() {
-		return this.collectorPlayerID;
 	}
 
 	/**
