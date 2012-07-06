@@ -1,9 +1,7 @@
 package com.wicam.numberlineweb.client.VowelGame;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResourcesImages;
 
@@ -18,12 +16,8 @@ public class MovingConsonants extends Image{
 	private boolean removed = false;
 	private int id;
 	private boolean startedMoving = false;
-	private boolean collected = false;
-	
 	
 	public MovingConsonants(String consonants, DoppelungGameCoordinator coordinator, int x, int y, int id){
-		
-		//super("doppelungGame/coins/coin_" + consonants + ".png");
 		
 		if (consonants.equals("ff"))
 			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_ff().getSafeUri()));
@@ -48,7 +42,6 @@ public class MovingConsonants extends Image{
 		if (consonants.equals("rt"))
 			this.setUrl((DoppelungGameResourcesImages.INSTANCE.coin_rt().getSafeUri()));
 		
-		
 		GWT.log(consonants);
 		
 		this.consonants = consonants;
@@ -57,8 +50,6 @@ public class MovingConsonants extends Image{
 		this.y = y;
 		this.id = id;
 		move = new Move(this);
-		
-		//Image.prefetch("doppelungGame/knall_small.png");
 	}
 	
 	public void setSpeed( int spaceSpeed){
@@ -86,23 +77,6 @@ public class MovingConsonants extends Image{
 
 	public void setRemoved(boolean stopped) {
 		this.removed = stopped;
-	}
-
-	public void setCollected(int playerNumber) {
-		
-		this.collected = true;
-		
-		if (playerNumber == 1)
-			this.setUrl(DoppelungGameResourcesImages.INSTANCE.coin_red().getSafeUri());
-		else
-			this.setUrl(DoppelungGameResourcesImages.INSTANCE.coin_blue().getSafeUri());
-		
-	}
-	
-	public boolean isCollected() {
-		
-		return this.collected;
-		
 	}
 	
 	public int getX() {
@@ -168,5 +142,4 @@ public class MovingConsonants extends Image{
 			}
 		}
 	}
-
 }

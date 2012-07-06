@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +38,9 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 
 	private int TIMER_SPEED = 40;
 	private int SPACE_SPEED = 4;
-	private Timer mcTimer = null;
+	//private Timer mcTimer = null;
+	private Map<Integer, Timer> mcTimerMap = new HashMap<Integer, Timer>();
 	protected HashMap<Integer,Iterator<VowelGameWord>> wordLists = new HashMap<Integer,Iterator<VowelGameWord>>();
-	protected HashMap<Integer, ArrayList<VowelGameWord>> simpleWordLists = new HashMap<Integer, ArrayList<VowelGameWord>>();
 	protected boolean miniGameStartsWhenShortVowel = true;
 
 	public DoppelungGameCommunicationServiceServlet() {
@@ -65,15 +65,9 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		// initialize game list
 
 		GameState gameState =  super.openGame(g);
-		
-		List<VowelGameWord> vowelWordList = DoppelungGameWordList.createWordList().subList(0,
-				((DoppelungGameState) gameState).getNumberOfWordsToPlay());
-		
-		this.simpleWordLists.put(gameState.getId(), new ArrayList<VowelGameWord>());
-		for (VowelGameWord word : vowelWordList)
-			this.simpleWordLists.get(gameState.getId()).add(word);
 
-		wordLists.put(gameState.getId(), vowelWordList.iterator());
+		wordLists.put(gameState.getId(), DoppelungGameWordList.createWordList().subList(0,
+				((DoppelungGameState) gameState).getNumberOfWordsToPlay()).iterator());
 
 		// set first word
 		((DoppelungGameState)gameState).setCurWord(getNextWord(currentId));
@@ -81,12 +75,6 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		return gameState;
 
 
-	}
-	
-	public ArrayList<VowelGameWord> getSimpleWordList(String gameId) {
-		
-		return this.simpleWordLists.get(Integer.parseInt(gameId));
-		
 	}
 
 	public boolean hasNextWord(int gameid){
@@ -110,7 +98,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
 
 		Timer t = new Timer(true);
-		mcTimer = new Timer(true);
+		//mcTimer = new Timer(true);
+		this.mcTimerMap.put(gameid, new Timer(true));
 
 		g.setShowSoundFeedback(playerid, true);
 		g.incSoundTries(playerid);
@@ -176,7 +165,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 					t.schedule(new SetGameStateTask(gameid, 5, this), feedbackTime);
 
 					// initialize moving consonants timer
-					mcTimer.schedule(new UpdateMcCoordsTimerTask(g.getId(), SPACE_SPEED, this), feedbackTime, TIMER_SPEED);
+					//mcTimer.schedule(new UpdateMcCoordsTimerTask(g.getId(), SPACE_SPEED, this), feedbackTime, TIMER_SPEED);
+					this.mcTimerMap.get(gameid).schedule(new UpdateMcCoordsTimerTask(g.getId(), SPACE_SPEED, this), feedbackTime, TIMER_SPEED);
 				}
 				// long vowel: show next word if has next
 				else {
@@ -258,8 +248,7 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 			newPoints = 0;
 
 		g.setPlayerPoints(playerid, newPoints);
-//		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
-		g.getMovingConsonantsCoords().get(mcid).setCollected(true, playerid);
+		g.getMovingConsonantsCoords().get(mcid).setRemoved(true);
 		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
@@ -331,7 +320,8 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		// wait for other player
 		if (g.getPlayerCount() == 1 || 
 				g.isEndedShortVowelGame(playerid%2+1)){
-			mcTimer.cancel();
+			//mcTimer.cancel();
+			this.mcTimerMap.get(gameid).cancel();
 			Timer t = new Timer(true);
 			t.schedule(new SetGameStateTask(gameid, 6, this), 500);
 			this.setChanged(gameid);
@@ -361,30 +351,6 @@ GameCommunicationServiceServlet implements DoppelungGameCommunicationService {
 		super.resetUpdateTimer(playerid, gameid);
 
 
-		return g;
-	}
-	
-	public GameState setPlayerPoints(String ids) {
-		int gameid = Integer.parseInt(ids.split(":")[0]);
-		int playerid = getPlayerId(gameid);
-		int points = Integer.parseInt(ids.split(":")[2]);
-		
-		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		
-		g.setPlayerPoints(playerid, points);
-		
-		return null;
-	}
-	
-	public GameState sendKeepAlive(String ids) {
-		
-		int gameid = Integer.parseInt(ids.split(":")[0]);
-		int playerid = getPlayerId(gameid);
-		
-		DoppelungGameState g = (DoppelungGameState) getGameById(gameid);
-		
-		super.resetUpdateTimer(playerid, gameid);
-		
 		return g;
 	}
 
