@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
+import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
+import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
+import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,7 +19,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
-import com.wicam.numberlineweb.client.Resources.SoundResources;
 
 /**
  * The game view.
@@ -48,8 +50,8 @@ public class MultiplicationGameView extends GameView  {
 	final HTML infoText = new HTML();
 	
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
-			SoundResources.INSTANCE.multiplication().getSafeUri().asString());
+	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
+			sr.getInstance().multiplication().getSafeUri().asString());
 
 	public MultiplicationGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
@@ -76,7 +78,19 @@ public class MultiplicationGameView extends GameView  {
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
 		
-		descriptionSound.play();
+		descriptionSound.addEventHandler(new SoundHandler() {
+			
+			@Override
+			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
+				descriptionSound.play();
+				
+			}
+			
+			@Override
+			public void onPlaybackComplete(PlaybackCompleteEvent event) {
+				
+			}
+		});
 
 		RootPanel.get().add(motherPanel);
 	}
