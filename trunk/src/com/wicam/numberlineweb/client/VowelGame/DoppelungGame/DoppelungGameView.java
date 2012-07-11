@@ -2,6 +2,9 @@ package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
+import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
+import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
+import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,7 +22,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
-import com.wicam.numberlineweb.client.Resources.SoundResources;
 import com.wicam.numberlineweb.client.VowelGame.MovingConsonants;
 import com.wicam.numberlineweb.client.VowelGame.ShortVowelImage;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.Resources.DoppelungGameResourcesImages;
@@ -50,8 +52,8 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
 	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, 
-			SoundResources.INSTANCE.doppelung().getSafeUri().asString());
+	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
+			sr.getInstance().doppelung().getSafeUri().asString());
 
 	protected final Image feedbackImage = new Image(DoppelungGameResourcesImages.INSTANCE.beide_daumen());
 
@@ -59,8 +61,6 @@ public class DoppelungGameView extends GameView {
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
-
-
 
 	public DoppelungGameView(int numberOfPlayers, DoppelungGameController doppelungGameController) {
 		super(numberOfPlayers, doppelungGameController);
@@ -105,7 +105,19 @@ public class DoppelungGameView extends GameView {
 			}
 		});
 
-		descriptionSound.play();
+		descriptionSound.addEventHandler(new SoundHandler() {
+			
+			@Override
+			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
+				descriptionSound.play();
+				
+			}
+			
+			@Override
+			public void onPlaybackComplete(PlaybackCompleteEvent event) {
+				
+			}
+		});
 		
 		setExplanationText();
 		gamePanel.add(explanationText);
