@@ -53,7 +53,7 @@ public class DoppelungGameView extends GameView {
 
 	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().doppelung().getSafeUri().asString());
+			sr.getInstance().doppelung().getSafeUri().asString(), true, false);
 
 	protected final Image feedbackImage = new Image(DoppelungGameResourcesImages.INSTANCE.beide_daumen());
 
@@ -216,15 +216,27 @@ public class DoppelungGameView extends GameView {
 	 * @param wordSound       sound which should be played
 	 * @param word            word as a string
 	 */
-	public void playWord(Sound wordSound, String word){
-		if (wordSound != null)
-			wordSound.play();
-		// display word only if there is no sound file
-		else {
+	public void playWord(final Sound wordSound, String word){
+		
+		if (wordSound == null) {
 			wordText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>" + word + "</div>");
 			gamePanel.add(wordText);
 			gamePanel.setWidgetPosition(wordText, 250, 33);
 		}
+		
+		wordSound.addEventHandler(new SoundHandler() {
+			
+			@Override
+			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
+				wordSound.play();
+				
+			}
+			
+			@Override
+			public void onPlaybackComplete(PlaybackCompleteEvent event) {
+				
+			}
+		});
 	}
 
 	/**
