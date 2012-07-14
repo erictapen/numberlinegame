@@ -2,7 +2,7 @@ package com.wicam.numberlineweb.client.Resources;
 
 import com.allen_sauer.gwt.voices.client.Sound;
 
-public class SoundResourcesImplMp3 extends SoundResourcesAbstract{
+public class SoundResourcesImplMp3 extends SoundResourcesImpl{
 	
 	@Override
 	public SoundResourcesMp3 getInstance() {

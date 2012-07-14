@@ -36,7 +36,7 @@ public class WordStemGameView extends GameView  {
 	
 	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().wortbausteinespielVersion1().getSafeUri().asString());
+			sr.getInstance().wortbausteinespielVersion1().getSafeUri().asString(), true, false);
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override

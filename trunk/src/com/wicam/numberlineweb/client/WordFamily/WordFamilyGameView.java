@@ -36,7 +36,7 @@ public class WordFamilyGameView extends GameView  {
 	
 	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().wortfamilienspiel().getSafeUri().asString());
+			sr.getInstance().wortfamilienspiel().getSafeUri().asString(), true, false);
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override

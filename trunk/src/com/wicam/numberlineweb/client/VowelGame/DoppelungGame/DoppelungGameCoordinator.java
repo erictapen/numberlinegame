@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.allen_sauer.gwt.voices.client.Html5Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
@@ -72,6 +73,8 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	public void init() {
 		gameSelector = new DoppelungGameSelector((DoppelungGameCoordinator) this);
 		rootPanel.add(gameSelector);
+		
+		this.soundController.setPreferredSoundType(Html5Sound.class);
 
 		t = new Timer() {
 			public void run() {

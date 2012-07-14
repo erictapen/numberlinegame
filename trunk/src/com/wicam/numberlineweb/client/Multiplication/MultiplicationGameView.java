@@ -51,7 +51,7 @@ public class MultiplicationGameView extends GameView  {
 	
 	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().multiplication().getSafeUri().asString());
+			sr.getInstance().multiplication().getSafeUri().asString(), true, false);
 
 	public MultiplicationGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);

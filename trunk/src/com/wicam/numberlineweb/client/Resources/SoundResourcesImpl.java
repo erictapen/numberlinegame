@@ -1,6 +1,6 @@
 package com.wicam.numberlineweb.client.Resources;
 
-public class SoundResourcesAbstract{
+public class SoundResourcesImpl{
 	
 	public SoundResources getInstance(){
 		return null;
