@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.WordStem;
 import java.util.ArrayList;
 
 import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
 import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
 import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
@@ -34,7 +33,6 @@ public class WordStemGameView extends GameView  {
 	final AbsolutePanel explanationPanel = new AbsolutePanel();
 	final HTML explanationText = new HTML();
 	
-	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
 			sr.getInstance().wortbausteinespielVersion1().getSafeUri().asString(), true, false);
 	
