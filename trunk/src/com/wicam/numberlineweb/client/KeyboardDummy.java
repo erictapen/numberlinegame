@@ -1,24 +1,12 @@
 package com.wicam.numberlineweb.client;
 
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.HandlesAllKeyEvents;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HasHandlers;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEndHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
 
 public class KeyboardDummy extends Composite {
 
@@ -50,198 +38,90 @@ public class KeyboardDummy extends Composite {
 
 	public KeyboardDummy(final DirectionHandler target) {
 
-
-		upArrow.addMouseDownHandler(new MouseDownHandler() {
-
+		upArrow.addTouchStartHandler(new TouchStartHandler() {
+			
 			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				
+			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
 				target.directionDown(2);
-
+				
 			}
-
 		});
 		
-		upArrow.addMouseMoveHandler(new MouseMoveHandler() {
+		upArrow.addTouchEndHandler(new TouchEndHandler() {
 
 			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				
-				event.preventDefault();
-				target.directionDown(2);
-
-			}
-
-		});
-
-
-		upArrow.addMouseUpHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				
+			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
 				target.directionUp(2);
+				
 			}
-
+			
 		});
 		
-		upArrow.addMouseOutHandler(new MouseOutHandler() {
-
+		downArrow.addTouchStartHandler(new TouchStartHandler() {
+			
 			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				
-				event.preventDefault();
-				target.directionUp(2);
-			}
-
-		});
-		
-
-		downArrow.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				
+			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
 				target.directionDown(1);
-
+				
 			}
-
 		});
 		
-		downArrow.addMouseMoveHandler(new MouseMoveHandler() {
+		downArrow.addTouchEndHandler(new TouchEndHandler() {
 
 			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				
-				event.preventDefault();
-				target.directionDown(1);
-
-			}
-
-		});
-
-		downArrow.addMouseUpHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				
+			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
 				target.directionUp(1);
+				
 			}
-
+			
 		});
 		
-		downArrow.addMouseOutHandler(new MouseOutHandler() {
-
+		leftArrow.addTouchStartHandler(new TouchStartHandler() {
+			
 			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				
-				event.preventDefault();
-				target.directionUp(1);
-			}
-
-		});
-		
-
-		leftArrow.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				
+			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
 				target.directionDown(4);
-
+				
 			}
-
 		});
 		
-		leftArrow.addMouseMoveHandler(new MouseMoveHandler() {
+		leftArrow.addTouchEndHandler(new TouchEndHandler() {
 
 			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				
-				event.preventDefault();
-				target.directionDown(4);
-
-			}
-
-		});
-
-		leftArrow.addMouseUpHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				
+			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
 				target.directionUp(4);
+				
 			}
-
+			
 		});
 		
-		leftArrow.addMouseOutHandler(new MouseOutHandler() {
-
+		rightArrow.addTouchStartHandler(new TouchStartHandler() {
+			
 			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				
-				event.preventDefault();
-				target.directionUp(4);
-			}
-
-		});
-
-		rightArrow.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				
+			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
 				target.directionDown(3);
-
+				
 			}
-
 		});
 		
-		rightArrow.addMouseMoveHandler(new MouseMoveHandler() {
+		rightArrow.addTouchEndHandler(new TouchEndHandler() {
 
 			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				
-				event.preventDefault();
-				target.directionDown(3);
-
-			}
-
-		});
-
-
-		rightArrow.addMouseUpHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				
+			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
 				target.directionUp(3);
+				
 			}
-
+			
 		});
 		
-		rightArrow.addMouseOutHandler(new MouseOutHandler() {
-
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				
-				event.preventDefault();
-				target.directionUp(3);
-			}
-
-		});
-
-
-
-
 		// Place the check above the text box using a vertical panel.
 		AbsolutePanel panel = new AbsolutePanel();
 
@@ -252,8 +132,6 @@ public class KeyboardDummy extends Composite {
 		panel.add(downArrow, 50, 100);
 		panel.add(leftArrow, 0, 50);
 		panel.add(rightArrow, 100, 50);
-
-
 
 		// All composites must call initWidget() in their constructors.
 		initWidget(panel);

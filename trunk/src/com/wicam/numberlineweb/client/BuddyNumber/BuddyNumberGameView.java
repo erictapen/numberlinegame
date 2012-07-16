@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.BuddyNumber;
 import java.util.ArrayList;
 
 import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
 import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
 import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
@@ -11,7 +10,6 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -50,7 +48,6 @@ public class BuddyNumberGameView extends GameView  {
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
-	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
 			sr.getInstance().buddyNumber().getSafeUri().asString(), true, false);
 

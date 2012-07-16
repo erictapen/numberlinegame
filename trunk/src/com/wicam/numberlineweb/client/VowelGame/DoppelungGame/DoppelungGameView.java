@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
 import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
 import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
 import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
@@ -51,7 +50,6 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
-	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
 			sr.getInstance().doppelung().getSafeUri().asString(), true, false);
 

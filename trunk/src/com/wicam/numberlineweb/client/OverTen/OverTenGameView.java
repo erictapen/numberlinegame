@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.OverTen;
 import java.util.ArrayList;
 
 import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
 import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
 import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
@@ -49,7 +48,6 @@ public class OverTenGameView extends GameView  {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
 	
-	protected SoundController soundController = new SoundController();
 	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
 			sr.getInstance().overTen().getSafeUri().asString());
 
