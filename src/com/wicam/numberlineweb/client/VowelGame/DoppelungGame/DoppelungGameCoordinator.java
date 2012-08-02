@@ -3,8 +3,6 @@ package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.allen_sauer.gwt.voices.client.Html5Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -42,7 +40,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	private ArrayList<MovingConsonants> movingConsonantsList = new ArrayList<MovingConsonants>();
 	private AnimationTimer aniTimer = new AnimationTimer();
 	// SoundController for playing sound files
-	private SoundController soundController = new SoundController();
 	private Timer updateMyPositionTimer;
 
 	private static int POSITION_TIMER_INTERVALL = 80;
@@ -74,8 +71,6 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		gameSelector = new DoppelungGameSelector((DoppelungGameCoordinator) this);
 		rootPanel.add(gameSelector);
 		
-		this.soundController.setPreferredSoundType(Html5Sound.class);
-
 		t = new Timer() {
 			public void run() {
 				update();
@@ -138,11 +133,13 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 			if (!g.getShowSoundFeedback(playerID)){
 				feedbackNumberSet = false;
 				gameView.showVowelChoice();
+				
 				if (g.getSoundTries(playerID) == 0) {
-					gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord(), false), g.getCurWord().getWordString());
+					gameView.playWord(SoundRetriever.getAudioElement(g.getCurWord(), false), g.getCurWord().getWordString());
 				} else {
-					gameView.playWord(SoundRetriever.getSound(soundController, g.getCurWord(), true), g.getCurWord().getWordString());
+					gameView.playWord(SoundRetriever.getAudioElement(g.getCurWord(), true), g.getCurWord().getWordString());
 				}
+				
 			}
 			// sound feedback after choice
 			else {

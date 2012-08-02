@@ -2,13 +2,10 @@ package com.wicam.numberlineweb.client.WordFamily;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -33,8 +30,7 @@ public class WordFamilyGameView extends GameView  {
 	final AbsolutePanel explanationPanel = new AbsolutePanel();
 	final HTML explanationText = new HTML();
 	
-	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().wortfamilienspiel().getSafeUri().asString(), true, false);
+	protected Audio descriptionSound = Audio.createIfSupported();
 	
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
@@ -42,7 +38,8 @@ public class WordFamilyGameView extends GameView  {
 			initGameView();
 			((WordFamilyGameController) gameController).startButtonClicked();
 			try {
-				descriptionSound.stop();
+				descriptionSound.pause();
+				descriptionSound.setCurrentTime(0);
 			} catch (Exception e) {
 			}
 		}
@@ -77,22 +74,19 @@ public class WordFamilyGameView extends GameView  {
 		explanationPanel.add(startGameButton);
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
+		
+		if (Audio.isSupported() && descriptionSound != null) {
+			
+			descriptionSound.addSource("desc/Wortfamilienspiel.ogg", "audio/ogg; codecs=vorbis");
+			descriptionSound.addSource("desc/Wortfamilienspiel.mp3", "audio/mpeg; codecs=MP3");
+			
+			descriptionSound.play();
+			
+		}
 
 		RootPanel.get().add(motherPanel);
 		
-		descriptionSound.addEventHandler(new SoundHandler() {
-			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				descriptionSound.play();
-				
-			}
-			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
-			}
-		});
+		
 	}
 	
 	/**
@@ -153,8 +147,7 @@ public class WordFamilyGameView extends GameView  {
 				"„Männer“ merken. Am Schluss kannst du alle Wörter eintippen, die du dir gemerkt hast.<br><br>Viel Spaß!" + 
 				"</div>");
 	}
-
-
+	
 	public void disableInput() {
 		p.disableInput();
 	}

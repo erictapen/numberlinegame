@@ -2,13 +2,10 @@ package com.wicam.numberlineweb.client.OverTen;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -38,7 +35,8 @@ public class OverTenGameView extends GameView  {
 			initGameView();
 			((OverTenGameController) gameController).startButtonClicked();
 			try {
-				descriptionSound.stop();
+				descriptionSound.pause();
+				descriptionSound.setCurrentTime(0);
 			} catch (Exception e) {
 			}
 		}
@@ -48,9 +46,8 @@ public class OverTenGameView extends GameView  {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
 	
-	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().overTen().getSafeUri().asString());
-
+	Audio descriptionSound = Audio.createIfSupported();
+	
 	public OverTenGameView(OverTenGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
 		this.gameController = gameController;
@@ -75,20 +72,15 @@ public class OverTenGameView extends GameView  {
 		explanationPanel.add(startGameButton);
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
-
-		descriptionSound.addEventHandler(new SoundHandler() {
+		
+		if (Audio.isSupported() && descriptionSound != null) {
 			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				descriptionSound.play();
-				
-			}
+			descriptionSound.addSource("desc/OverTen.ogg", "audio/ogg; codecs=vorbis");
+			descriptionSound.addSource("desc/OverTen.mp3", "audio/mpeg; codecs=MP3");
 			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
-			}
-		});
+			descriptionSound.play();
+			
+		}
 		
 		RootPanel.get().add(motherPanel);
 	}
@@ -178,6 +170,5 @@ public class OverTenGameView extends GameView  {
 				"Sieger ist, wer als Schnellster am meisten richtige Rechnungen vervollständigt. Viel Spaß!" +
 				"</div>");
 	}
-
 
 }

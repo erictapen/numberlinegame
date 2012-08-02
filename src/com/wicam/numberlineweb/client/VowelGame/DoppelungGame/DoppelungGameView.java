@@ -1,9 +1,5 @@
 package com.wicam.numberlineweb.client.VowelGame.DoppelungGame;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -50,15 +47,14 @@ public class DoppelungGameView extends GameView {
 	protected ShortVowelImage movingShortVowelImage;
 	protected ShortVowelImage enemyMovingShortVowelImage;
 
-	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().doppelung().getSafeUri().asString(), true, false);
-
 	protected final Image feedbackImage = new Image(DoppelungGameResourcesImages.INSTANCE.beide_daumen());
 
 	protected final Image longVowelImage = new Image(DoppelungGameResourcesImages.INSTANCE.ziehen1().getSafeUri());
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
+	
+	protected Audio descriptionSound = Audio.createIfSupported();
 
 	public DoppelungGameView(int numberOfPlayers, DoppelungGameController doppelungGameController) {
 		super(numberOfPlayers, doppelungGameController);
@@ -83,7 +79,8 @@ public class DoppelungGameView extends GameView {
 			public void onClick(ClickEvent event) {
 				doppelungGameController.onStartButtonClick();
 				try {
-					descriptionSound.stop();
+					descriptionSound.pause();
+					descriptionSound.setCurrentTime(0);
 				} catch (Exception e) {
 				}
 			}
@@ -100,20 +97,6 @@ public class DoppelungGameView extends GameView {
 			@Override
 			public void onClick(ClickEvent event) {
 				doppelungGameController.onLongVowelButtonClick();
-			}
-		});
-
-		descriptionSound.addEventHandler(new SoundHandler() {
-			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				descriptionSound.play();
-				
-			}
-			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
 			}
 		});
 		
@@ -157,6 +140,15 @@ public class DoppelungGameView extends GameView {
 
 		motherPanel.add(gamePanel);
 		motherPanel.add(pointsPanel);
+		
+		if (Audio.isSupported() && descriptionSound != null) {
+			
+			descriptionSound.addSource("desc/Doppelung.ogg", "audio/ogg; codecs=vorbis");
+			descriptionSound.addSource("desc/Doppelung.mp3", "audio/mpeg; codecs=MP3");
+			
+			descriptionSound.play();
+			
+		}
 	}
 	
 	protected void setExplanationText() {
@@ -214,27 +206,16 @@ public class DoppelungGameView extends GameView {
 	 * @param wordSound       sound which should be played
 	 * @param word            word as a string
 	 */
-	public void playWord(final Sound wordSound, String word){
+	public void playWord(Audio audio, String word){
 		
-		if (wordSound == null) {
+		if (audio == null) {
 			wordText.setHTML("<div style='width:500px;padding:5px 20px;font-size:25px'>" + word + "</div>");
 			gamePanel.add(wordText);
 			gamePanel.setWidgetPosition(wordText, 250, 33);
 		}
+		else
+			audio.play();
 		
-		wordSound.addEventHandler(new SoundHandler() {
-			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				wordSound.play();
-				
-			}
-			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
-			}
-		});
 	}
 
 	/**
@@ -678,7 +659,5 @@ public class DoppelungGameView extends GameView {
 	public void setMcPosition(MovingConsonants mc, int x, int y) {
 		gamePanel.setWidgetPosition(mc, x, y);
 	}
-
-
 
 }
