@@ -2,14 +2,10 @@ package com.wicam.numberlineweb.client.Multiplication;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -39,7 +35,8 @@ public class MultiplicationGameView extends GameView  {
 			initGameView();
 			((MultiplicationGameController) gameController).startButtonClicked();
 			try {
-				descriptionSound.stop();
+				descriptionSound.pause();
+				descriptionSound.setCurrentTime(0);
 			} catch (Exception e) {
 			}
 		}
@@ -49,9 +46,7 @@ public class MultiplicationGameView extends GameView  {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
 	
-	protected SoundController soundController = new SoundController();
-	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().multiplication().getSafeUri().asString(), true, false);
+	protected Audio descriptionSound = Audio.createIfSupported();
 
 	public MultiplicationGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
@@ -78,20 +73,15 @@ public class MultiplicationGameView extends GameView  {
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
 		
-		descriptionSound.addEventHandler(new SoundHandler() {
+		if (Audio.isSupported() && descriptionSound != null) {
 			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				descriptionSound.play();
-				
-			}
+			descriptionSound.addSource("desc/Multiplication.ogg", "audio/ogg; codecs=vorbis");
+			descriptionSound.addSource("desc/Multiplication.mp3", "audio/mpeg; codecs=MP3");
 			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
-			}
-		});
-
+			descriptionSound.play();
+			
+		}
+		
 		RootPanel.get().add(motherPanel);
 	}
 	
@@ -155,5 +145,4 @@ public class MultiplicationGameView extends GameView  {
 				"</div>");
 	}
 	
-
 }

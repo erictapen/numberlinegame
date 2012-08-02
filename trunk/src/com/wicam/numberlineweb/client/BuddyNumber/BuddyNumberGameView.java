@@ -2,13 +2,10 @@ package com.wicam.numberlineweb.client.BuddyNumber;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -37,7 +34,8 @@ public class BuddyNumberGameView extends GameView  {
 		public void onClick(ClickEvent event) {
 			initGameView();
 			try {
-				descriptionSound.stop();
+				descriptionSound.pause();
+				descriptionSound.setCurrentTime(0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -48,8 +46,8 @@ public class BuddyNumberGameView extends GameView  {
 	private int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
-	protected Sound descriptionSound = soundController.createSound(sr.getMimeType(), 
-			sr.getInstance().buddyNumber().getSafeUri().asString(), true, false);
+	
+	protected Audio descriptionSound = Audio.createIfSupported();
 
 	public BuddyNumberGameView(BuddyNumberGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
@@ -76,20 +74,14 @@ public class BuddyNumberGameView extends GameView  {
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
 		
-		descriptionSound.addEventHandler(new SoundHandler() {
+		if (Audio.isSupported() && descriptionSound != null) {
 			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				descriptionSound.play();
+			descriptionSound.addSource("desc/BuddyNumber.ogg", "audio/ogg; codecs=vorbis");
+			descriptionSound.addSource("desc/BuddyNumber.mp3", "audio/mpeg; codecs=MP3");
 			
-				
-			}
+			descriptionSound.play();
 			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				
-			}
-		});
+		}
 		
 		RootPanel.get().add(motherPanel);
 	}
@@ -154,8 +146,6 @@ public class BuddyNumberGameView extends GameView  {
 		p.drawHandDigits(digits, taken);
 	}
 	
-	
-	
 	/**
 	 * Set the explanation-text
 	 */
@@ -171,8 +161,7 @@ public class BuddyNumberGameView extends GameView  {
 				"meisten richtigen Paare findet. Viel Spaß!" +
 				"</div>");
 	}
-
-
+	
 	public void updateInfoText(int playerClickedOn) {
 		if (playerClickedOn == 0) {
 			this.setFirstText();
