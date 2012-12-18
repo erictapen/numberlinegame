@@ -447,23 +447,4 @@ public class NumberLineGameCommunicationServiceServlet extends
 		
 	}
 
-	public boolean startBenchmarkGame(GameState gameState) {
-		
-		GameState g = this.openGame(gameState);
-
-		String ids = null;
-		try {
-			ids = this.joinGameWithoutTimeout(g.getId() + ":" + "___ID/" + g.getGameOpenedUserId());
-		} catch (GameJoinException e) {
-			e.printStackTrace();
-			return false;
-		}
-		int gameid = Integer.parseInt(ids.split(":")[0]);
-		int playerid = Integer.parseInt(ids.split(":")[1]);
-		
-		new NumberLineGameNPC(this, gameid, playerid);
-		
-		return true;
-	}
-
 }

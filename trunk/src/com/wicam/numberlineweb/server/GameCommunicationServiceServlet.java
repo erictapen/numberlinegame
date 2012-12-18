@@ -67,9 +67,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		
 		System.out.println("Opened Game " + Integer.toString(currentId));
 		
-//		if (g.getGameOpenedUserId() > 0)
-//			this.gameId2Logger.get(currentId).addGameIdToBeLogged(this.getClass().getName(), currentId);
-		
 		System.out.println("User id: " + g.getGameOpenedUserId());
 		
 		this.gameId2Logger.put(currentId, new GameLogger());
@@ -244,137 +241,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	}
 
-	//Just for testing (benchmark) purposes - adds user
-	//who can not time out
-	public String joinGameWithoutTimeout(String ids) throws GameJoinException {
-
-		String player = ids.split(":")[1];
-		int uid = -2;
-		int id = Integer.parseInt(ids.split(":")[0]);
-
-		if (player.split("/")[0].equals("___ID")) {
-
-			uid = Integer.parseInt(player.split("/")[1]);
-			if (uid == -2) player = "Gast"; else{
-				DrupalCommunicator dc = new DrupalCommunicator();
-				try {
-					player = dc.getUser(uid).getUname();
-				} catch (UserNotFoundException e) {
-					throw new GameJoinException("User with id =" + uid + " could not be found.");
-				}
-			}
-
-		}
-		
-		GameState game = getGameById(id);
-
-		HttpServletRequest request = this.getThreadLocalRequest();
-		HashMap<String,HashMap<Integer,Integer>> games;
-		HashMap<Integer,Integer> pids;
-		HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> game2pid2uid;
-
-		HttpSession session = request.getSession(true);
-
-		if (session.isNew()) {
-			games = new HashMap<String,HashMap<Integer,Integer>>();
-			pids = new HashMap<Integer,Integer>();
-			game2pid2uid = new HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>();
-			
-			games.put(internalName, pids);
-			
-			game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
-			game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
-			
-			session.setAttribute("pids",games);
-			session.setAttribute("game2pid2uid", game2pid2uid);
-
-		}else{
-
-			games = (HashMap<String,HashMap<Integer,Integer>>) session.getAttribute("pids");
-			pids = games.get(internalName);
-			
-			game2pid2uid = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) session.getAttribute("game2pid2uid");
-
-			if (pids == null) {
-
-				pids = new HashMap<Integer,Integer>();
-				games.put(internalName,pids);
-
-			}
-			
-			if (game2pid2uid == null){
-				
-				game2pid2uid = new HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>();
-				game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
-				game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
-				
-			}
-			
-			if (game2pid2uid.get(internalName) == null){
-				
-				game2pid2uid.put(internalName, new HashMap<Integer, HashMap<Integer, Integer>>());
-				
-			}
-			
-			if (game2pid2uid.get(internalName).get(id) == null){
-				
-				game2pid2uid.get(internalName).put(id, new HashMap<Integer, Integer>());
-			}
-
-		}
-
-		//we dont want the same human player to play multiple players
-		if (pids.containsKey(id)) {
-			throw new GameJoinException("Du bist bereits in diesem Spiel!");
-		}
-
-		System.out.println("Player '" + player + "' joined game #" + Integer.toString(id));
-
-		
-		
-		//only join if free and not yet started...
-		if (game.isFree() && game.getState() < 2) {
-
-			int playerid = game.addPlayer(player, uid);
-			
-
-			if (game.isFree()) {
-				setGameState(getGameById(game.getId()),1);
-
-			}else{
-				// add NPCs
-				for (int i = 0; i < game.getNumberOfMaxNPCs(); i++)
-					addNPC(game);
-				setGameState(getGameById(game.getId()),2);
-			}
-
-			pids.put(id, playerid);
-			request.getSession(true).setAttribute("pids", games);
-
-			game2pid2uid.get(internalName).get(id).put(playerid, uid);
-			request.getSession(true).setAttribute("game2pid2uid", game2pid2uid);
-			
-			//add this user to the update-state list
-
-			getUpdateStates().add(new UpdateState(playerid,game.getId(),false));
-			
-			if(uid != -2){
-				this.gameId2Logger.get(id).log(game.getId(), uid, System.currentTimeMillis(), LogActionType.JOINED_GAME, 
-						"", this.getClass().getName(), LogActionTrigger.USER);
-				
-				//TODO Decide how game adjustment should be handled
-				//Adjust game to user's ELO value
-//				this.adjustToElo(uid, game);
-			}
-
-			return game.getId() + ":" + playerid;
-
-		}
-
-		throw new GameJoinException("Das Spiel ist voll.");
-
-	}
-	
 	protected void addNPC(GameState game){}
 
 	protected boolean isNPC(int playerId){
@@ -479,7 +345,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 		return false;
 	}
-
 
 	protected void resetUpdateTimer(int player, int game) {
 
@@ -812,6 +677,5 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	protected void checkPermutationStrongName() throws SecurityException {
 	    return;
 	}
-
 
 }
