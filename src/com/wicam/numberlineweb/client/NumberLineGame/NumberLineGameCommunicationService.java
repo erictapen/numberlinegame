@@ -5,10 +5,9 @@ import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
 
 @RemoteServiceRelativePath("numberLineGameCommunication")
+public interface NumberLineGameCommunicationService extends
+		GameCommunicationService {
 
-public interface NumberLineGameCommunicationService extends GameCommunicationService {
-	
-	public GameState clickedAt(String clicked);	
-	
-	public boolean startBenchmarkGame(GameState gameState);
+	public GameState clickedAt(String clicked);
+
 }

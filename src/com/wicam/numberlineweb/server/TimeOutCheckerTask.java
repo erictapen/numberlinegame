@@ -6,22 +6,19 @@ import java.util.TimerTask;
 
 public class TimeOutCheckerTask extends TimerTask {
 
-
 	private ArrayList<TimeOutState> timeOutStates;
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates;
 	private GameCommunicationServiceServlet gameComm;
 
-
-	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates, ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates, GameCommunicationServiceServlet gameComm) {
-
+	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates,
+			ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates,
+			GameCommunicationServiceServlet gameComm) {
 
 		this.timeOutStates = timeOutStates;
 		this.emptyGameTimeOutStates = emptyGameTimeOutStates;
 		this.gameComm = gameComm;
 
-
 	}
-
 
 	@Override
 	public void run() {
@@ -29,17 +26,12 @@ public class TimeOutCheckerTask extends TimerTask {
 		checkPlayerTimeOut();
 		checkEmptyGameTimeout();
 
-
 	}
-
 
 	private void checkPlayerTimeOut() {
 		Iterator<TimeOutState> i = timeOutStates.iterator();
 
-
-
 		while (gameComm.timeOutListLocked()) {
-
 
 		}
 
@@ -49,51 +41,49 @@ public class TimeOutCheckerTask extends TimerTask {
 
 			TimeOutState current = i.next();
 
-			if (!current.countDown() && !gameComm.getGameById(current.getGameId()).hasPlayerLeft(current.getPlayerId())) {
+			if (!current.countDown()
+					&& !gameComm.getGameById(current.getGameId())
+							.hasPlayerLeft(current.getPlayerId())) {
 
 				timeOutStates.remove(current);
 				gameComm.timeOutListUnLock();
-				System.out.println("player " + current.getPlayerId() + " timed out.");
-				gameComm.leavePlayer(current.getUid(), current.getPlayerId(), current.getGameId());
+				System.out.println("player " + current.getPlayerId()
+						+ " timed out.");
+				gameComm.leavePlayer(current.getUid(), current.getPlayerId(),
+						current.getGameId());
 
 				break;
 			}
 
 		}
 
-
 		gameComm.timeOutListUnLock();
 	}
-
 
 	private void checkEmptyGameTimeout() {
 
 		Iterator<EmptyGameTimeOutState> i = emptyGameTimeOutStates.iterator();
 
-
-
 		while (i.hasNext()) {
 
 			EmptyGameTimeOutState current = i.next();
 
-			if (gameComm.getGameById(current.getGameId()) != null && 
-					gameComm.getGameById(current.getGameId()).getPlayerCount() == 0 && !current.countDown()) {
+			if (gameComm.getGameById(current.getGameId()) != null
+					&& gameComm.getGameById(current.getGameId())
+							.getPlayerCount() == 0 && !current.countDown()) {
 
 				emptyGameTimeOutStates.remove(current);
-				System.out.println("Empty game #" + current.getGameId() + " timed out.");
-				
+				System.out.println("Empty game #" + current.getGameId()
+						+ " timed out.");
+
 				gameComm.removeGame(current.getGameId());
 				break;
 			}
 
 		}
 
-
 		gameComm.timeOutListUnLock();
 
-
 	}
-
-
 
 }

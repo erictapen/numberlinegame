@@ -115,8 +115,6 @@ public class NumberLineWeb implements EntryPoint {
 
 		};
 		
-		final String logging = Window.Location.getParameter("logging");
-		
 		// add math games container
 		gts.addGame(GameType.CAT, "Mathespiele", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
 				"Alle Spiele mit Zahlen", new GameItemStarter() {
