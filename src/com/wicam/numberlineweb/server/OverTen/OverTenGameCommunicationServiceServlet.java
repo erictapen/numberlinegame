@@ -8,7 +8,7 @@ import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.shared.GWT;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.OverTen.OverTenCalculation;
