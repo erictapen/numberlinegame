@@ -110,14 +110,18 @@ public class NumberLineView extends AbsolutePanel {
 	public void setPointerWidth(int width) {
 
 
-		this.pointerWidth = width;
-		for (int i = 0; i < pointerList.size(); i++)
-			this.pointerList.get(i).setWidth(width);		
+		if(pointerList.size() > 0){
+			this.pointerWidth = width;
+			for (int i = 0; i < pointerList.size(); i++)
+				this.pointerList.get(i).setWidth(width);
+		}
+		else
+			this.pointerWidth = 0;
 
 	}
 	
 	public int getPointerWidth() {
-
+		
 		return pointerWidth;
 
 
