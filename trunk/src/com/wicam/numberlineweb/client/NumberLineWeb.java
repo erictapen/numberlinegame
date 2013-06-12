@@ -140,8 +140,6 @@ public class NumberLineWeb implements EntryPoint {
 
 			@Override
 			public void run() {
-				
-				GWT.log("gurr");
 
 				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
 				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
