@@ -40,6 +40,9 @@ import com.wicam.numberlineweb.client.Resources.ImageResources;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
+import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
+import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationService;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
@@ -211,6 +214,22 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
+		//adds the inverse Multiplication game
+		gts.addGame(GameType.MATH, "MultiplikationInverse", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+				"Rechne schnell!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
+				coordinator = new MultiplicationInverseGameCoordinator((MultiplicationInverseGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});		
 		
 		
 		//adds the BuddyNumber game

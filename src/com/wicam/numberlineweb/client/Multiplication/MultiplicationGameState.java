@@ -19,15 +19,15 @@ public class MultiplicationGameState extends GameState implements Serializable{
 	private static final long serialVersionUID = 846864907276321588L;
 	
 	// The result
-	private int result;
+	protected int result;
 	
 	// All wrong and right answers in the game
-	private ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
+	protected ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 	
 	// Round-counter
-	private int round = 0;
+	protected int round = 0;
 	// Max number of rounds to play
-	private int maxRound;
+	protected int maxRound;
 	
 	
 	public MultiplicationGameState() {

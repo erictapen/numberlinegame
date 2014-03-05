@@ -15,10 +15,10 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class MultiplicationView extends AbsolutePanel {
 	
-	private MultiplicationGameController controller;
-	private final HTML infoBox = new HTML();
+	protected MultiplicationGameController controller;
+	protected final HTML infoBox = new HTML();
 	//private final HTML resultBox = new HTML();
-	private final FlowPanel answersBox = new FlowPanel();
+	protected final FlowPanel answersBox = new FlowPanel();
 	
 	
 	public void init(MultiplicationGameController controller, int numberOfPlayers){

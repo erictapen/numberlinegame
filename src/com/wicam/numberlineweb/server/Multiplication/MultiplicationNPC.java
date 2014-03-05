@@ -11,11 +11,11 @@ import com.wicam.numberlineweb.server.NPC;
 
 public class MultiplicationNPC extends NPC{
 
-	private MultiplicationGameCommunicationServiceServlet comm;
-	private int gameid;
-	private int playerid;
+	protected MultiplicationGameCommunicationServiceServlet comm;
+	protected int gameid;
+	protected int playerid;
 	boolean makeClick = false;
-	private double skill = .7; // 70% correct clicks
+	protected double skill = .7; // 70% correct clicks
 	
 	public MultiplicationNPC(MultiplicationGameCommunicationServiceServlet comm, int gameid, int playerid){
 		this.comm = comm;
@@ -51,7 +51,7 @@ public class MultiplicationNPC extends NPC{
 	/**
 	 * @return Returns the MultiplicationGameState
 	 */
-	private MultiplicationGameState getGameState() {
+	protected MultiplicationGameState getGameState() {
 		return ((MultiplicationGameState) comm.getGameById(gameid));
 	}
 	
@@ -62,7 +62,7 @@ public class MultiplicationNPC extends NPC{
 	 * @param taken Specifies, if the answer has to be taken
 	 * @return Gives you a specific answer, randomly picked
 	 */
-	private String getSpecificAnswer(boolean correct, boolean taken) {
+	protected String getSpecificAnswer(boolean correct, boolean taken) {
 		ArrayList<MultiplicationAnswer> answers = getGameState().getSpecificAnswers(correct, taken);
 		int id = new Random().nextInt(answers.size());
 		for (MultiplicationAnswer answer : answers) {
@@ -75,7 +75,7 @@ public class MultiplicationNPC extends NPC{
 	}
 	
 	
-	private class CPUBehavior extends TimerTask {
+	protected class CPUBehavior extends TimerTask {
 		
 		@Override
 		synchronized public void run() {

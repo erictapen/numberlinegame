@@ -42,7 +42,7 @@ public class MultiplicationGameView extends GameView  {
 		}
 	});
 	
-	private int numberOfNPCs;
+	protected int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
 	final HTML infoText = new HTML();
 	
@@ -61,7 +61,7 @@ public class MultiplicationGameView extends GameView  {
 	/**
 	 * Show explanation
 	 */
-	private void init() {
+	protected void init() {
 		
 		explanationPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		explanationPanel.setHeight("400px");
