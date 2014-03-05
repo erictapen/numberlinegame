@@ -39,6 +39,10 @@
     <servlet-class>com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>MultiplicationInverseGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.MultiplicationInverse.MultiplicationInverseGameCommunicationServiceServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>BuddyNumberGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.BuddyNumber.BuddyNumberGameCommunicationServiceServlet</servlet-class>
   </servlet>
@@ -87,6 +91,10 @@
   <servlet-mapping>
     <servlet-name>MultiplicationGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/multiplicationGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MultiplicationInverseGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/multiplicationInverseGameCommunication</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>BuddyNumberGameCommunicationServiceServlet</servlet-name>

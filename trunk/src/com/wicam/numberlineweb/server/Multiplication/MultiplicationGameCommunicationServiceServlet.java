@@ -26,13 +26,13 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	
 	
 	// Random generator
-	private Random rand = new Random();
+	protected Random rand = new Random();
 	
 	// The string used as multiplication sign
-	private String sign = " x ";
+	protected String sign = " x ";
 	
 	// All possible divisors
-	private int[] possibleDivisors = {2,3,4,5,6,7,8,9};
+	protected int[] possibleDivisors = {2,3,4,5,6,7,8,9};
 	
 	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
 	
@@ -41,7 +41,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * 
 	 */
 	private static final long serialVersionUID = 7200332323767902482L;
-	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
+	protected ArrayList<Integer> npcIds = new ArrayList<Integer>();
 	
 	public MultiplicationGameCommunicationServiceServlet() {
 		
@@ -50,6 +50,12 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		
 	}
 	
+    public MultiplicationGameCommunicationServiceServlet(String name) {
+		
+		super(name);
+		//this.handicapAdjustment = new NumberLineGameHandicap();
+		
+	}
 	@Override
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
@@ -114,7 +120,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	/**
 	 * @return Returns a random divisor
 	 */
-	private int getRandomDivisor() {
+	protected int getRandomDivisor() {
 		return this.possibleDivisors[this.rand.nextInt(this.possibleDivisors.length)];
 	}
 	
@@ -125,7 +131,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * @param answers All answers
 	 * @return Returns true, if the newAnswer is in answers
 	 */
-	private boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
+	protected boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.equals(newAnswer)) {
 				return true;
@@ -140,7 +146,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * Disables all answers
 	 * @param answers Set of answers to delete from
 	 */
-	private void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
+	protected void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
 			answer.setTaken();
 		}
@@ -154,7 +160,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * 		   Returns 0, if user was too slow and answer is already taken. 
 	 * 		   Returns -1, if answer was a false and free one
 	 */
-	private int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
+	protected int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.getAnswer().equals(toFind)) {				
 				if (answer.isTaken()) {
@@ -178,7 +184,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * @param answers Set of answers to check
 	 * @return True, if at least one correct answer is not yet taken
 	 */
-	private boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
+	protected boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
 		Boolean res = false;
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.isCorrect()) {
@@ -253,7 +259,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	}
 
 
-	private void handicapAction(int gameid) {
+	protected void handicapAction(int gameid) {
 		
 		//TODO The current formula is just a proof of concept. 
 		//At the moment, it will produce bad handicaps for

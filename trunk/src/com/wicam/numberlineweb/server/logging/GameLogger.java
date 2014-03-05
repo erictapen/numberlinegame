@@ -71,6 +71,10 @@ public class GameLogger {
 		tempMap.put("com.wicam.numberlineweb.server.WordFamily." +
 				"WordFamilyGameCommunicationServiceServlet", LogGame.WORD_FAMILY);
 
+		tempMap.put("com.wicam.numberlineweb.server.MultiplicationInverse." +
+				"MultiplicationInverseGameCommunicationServiceServlet", LogGame.MULTIPLICATION_INVERSE);
+
+		
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
 		
 	}
@@ -143,7 +147,7 @@ public class GameLogger {
 	};
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
-		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, BUDDY_NUMBER,
+		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, MULTIPLICATION_INVERSE, BUDDY_NUMBER,
 		WORD_STEM, OVER_TEN, WORD_FAMILY;
 
 		//Get ID for game type
@@ -169,6 +173,8 @@ public class GameLogger {
 					return 8;
 				case WORD_FAMILY:
 					return 9;
+				case MULTIPLICATION_INVERSE:
+					return 10;
 				default:
 					//Should not occur
 					return -1;

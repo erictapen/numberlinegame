@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
+import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
@@ -14,10 +15,10 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class MultiplicationGameCoordinator extends GameCoordinator {
 	
-	private MultiplicationGameController controller;
+	protected MultiplicationGameController controller;
 	
 	
-	public MultiplicationGameCoordinator(MultiplicationGameCommunicationServiceAsync commServ,
+	public MultiplicationGameCoordinator(GameCommunicationServiceAsync commServ,
 			ChatCommunicationServiceAsync chatCommServ, 
 			Panel root, GameTypeSelector gts) {
 		super(commServ, chatCommServ, root,gts);
@@ -167,7 +168,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	 * @param gameView View to update
 	 * 
 	 */
-	private void updateViewIngame(MultiplicationGameState g, MultiplicationGameView gameView) {
+	protected void updateViewIngame(MultiplicationGameState g, MultiplicationGameView gameView) {
 		gameView.drawAnwers(g.getAnswers());
 		gameView.setResultText(g.getResult());
 		

@@ -6,10 +6,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class MultiplicationAnswer implements IsSerializable {
 	
-	private String answer;
-	private boolean isCorrect;
-	private boolean isTaken;
-	private String color;
+	protected String answer;
+	protected boolean isCorrect;
+	protected boolean isTaken;
+	protected String color;
 	
 	
 	// only for IsSerializable (requires empty constructor)
