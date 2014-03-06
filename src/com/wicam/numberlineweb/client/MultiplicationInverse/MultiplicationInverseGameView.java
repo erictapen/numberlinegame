@@ -1,6 +1,9 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameController;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameView;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationView;
@@ -14,6 +17,19 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationView;
 public class MultiplicationInverseGameView extends MultiplicationGameView  {
 	
 	final MultiplicationInverseView p = new MultiplicationInverseView();
+	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+			initGameView();
+			((MultiplicationGameController) gameController).startButtonClicked();
+			// In the inverse multiplication game no description sound is used.
+//			try {
+//				descriptionSound.pause();
+//				descriptionSound.setCurrentTime(0);
+//			} catch (Exception e) {
+//			}
+		}
+	});
 
 	public MultiplicationInverseGameView(MultiplicationGameController gameController,
 			int numberOfPlayers, int numberOfNPCs) {
