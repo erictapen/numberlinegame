@@ -137,6 +137,13 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		return state;
 	}
 	
+	@Override
+	public void showNextItem(int id) {
+		
+		Timer t = new Timer(true);
+		t.schedule(new MultiplicationInverseGameStateTask(id, 6, this), 6000);
+	}
+	
 	/**
 	 * Set the response times of the trials.
 	 */

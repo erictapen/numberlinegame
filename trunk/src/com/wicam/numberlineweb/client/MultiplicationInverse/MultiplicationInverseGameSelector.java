@@ -8,7 +8,7 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameSelector;
 
 public class MultiplicationInverseGameSelector extends MultiplicationGameSelector {
 
-	public MultiplicationInverseGameSelector(MultiplicationGameCoordinator coordinator) {
+	public MultiplicationInverseGameSelector(MultiplicationInverseGameCoordinator coordinator) {
 		super(coordinator);
 	}
 

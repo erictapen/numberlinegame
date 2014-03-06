@@ -40,7 +40,7 @@ public class MultiplicationGameView extends GameView  {
 			} catch (Exception e) {
 			}
 		}
-	});
+	}); 
 	
 	protected int numberOfNPCs;
 	final FlexTable playerNamesFlexTable = new FlexTable();
