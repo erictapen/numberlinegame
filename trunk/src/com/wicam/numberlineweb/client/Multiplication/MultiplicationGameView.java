@@ -28,7 +28,7 @@ public class MultiplicationGameView extends GameView  {
 	final MultiplicationView p = new MultiplicationView();
 	final AbsolutePanel playerPanel = new AbsolutePanel();
 	final AbsolutePanel explanationPanel = new AbsolutePanel();
-	final HTML explanationText = new HTML();
+	protected final HTML explanationText = new HTML();
 	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {

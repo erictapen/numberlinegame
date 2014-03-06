@@ -411,7 +411,7 @@ public abstract class GameCoordinator {
 			if (result.getServerSendTime() > lastServerSendTime) {
 
 				lastServerSendTime = result.getServerSendTime();
-				commServ.getOpenGames(openGamesAndJoinCallback);	
+				commServ.getOpenGames(openGamesAndJoinCallback);
 
 			}else{
 
