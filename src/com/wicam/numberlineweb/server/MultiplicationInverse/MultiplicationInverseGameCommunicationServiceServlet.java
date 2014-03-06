@@ -16,6 +16,7 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunica
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
+import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameStateTask;
@@ -52,14 +53,14 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		numberOfPresentationsPerItem = 7;
 		
 		
-		//TODO Test if the items are produced 112 times each 7 times.
-		MultiplicationInverseItem item = nextRandomItem();
-		int count = 1;
-		while (item != null) {
-			System.out.println(count + ". " + item);
-			count++;
-			item = nextRandomItem();
-		}
+//		// Test if the items are produced 112 times each 7 times.
+//		MultiplicationInverseItem item = nextRandomItem();
+//		int count = 1;
+//		while (item != null) {
+//			System.out.println(count + ". " + item);
+//			count++;
+//			item = nextRandomItem();
+//		}
 	}
 	
 	@Override
@@ -70,8 +71,7 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		GameState retGameState = super.openGame(g);
 		GWT.log("after opening game");
 		//return super.openGame(g);
-		
-		newResults((MultiplicationGameState) g);
+		newResults((MultiplicationInverseGameState) g);
 		
 		return retGameState;
 	}
@@ -80,44 +80,57 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 	 * @param state MultiplicationGameState to alter
 	 * @return The new MultiplicationGameState
 	 */
-	@Override
-	public MultiplicationGameState newResults(MultiplicationGameState state) {
+	public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
-		int first = getRandomDivisor();
-		int second = getRandomDivisor();
-		MultiplicationAnswer oneCorrectAnswer = new MultiplicationAnswer(first+this.sign+second, true);
-		int result = first * second;
+//		int first = getRandomDivisor();
+//		int second = getRandomDivisor();
+//		MultiplicationAnswer oneCorrectAnswer = new MultiplicationAnswer(first+this.sign+second, true);
+//		int result = first * second;
+//		
+//		int noOfAnswers = 0;
+//		int randomNumber = rand.nextInt(10);
+//		
+//		// generate new answers as long there are less than 12
+//		while (noOfAnswers < 12) {
+//			int a = getRandomDivisor();
+//			int b = getRandomDivisor();
+//			
+//			// insert at least one right answer by chance
+//			if (noOfAnswers == randomNumber && !answerExists(oneCorrectAnswer, answers)) {
+//				answers.add(oneCorrectAnswer);
+//				noOfAnswers++;
+//			}
+//			
+//			// genarate new answer
+//			MultiplicationAnswer newAnswer = new MultiplicationAnswer(a+this.sign+b, (a*b == result));
+//			
+//			// check, if the answer exists. if not, add to list
+//			if (!answerExists(newAnswer, answers)) {
+//				answers.add(newAnswer);
+//				noOfAnswers++;
+//			}	
+//		}
 		
-		int noOfAnswers = 0;
-		int randomNumber = rand.nextInt(10);
+		// Get next random item.
+		MultiplicationInverseItem item = nextRandomItem();
+		assert item != null : "There is no item left!";
 		
-		// generate new answers as long there are less than 12
-		while (noOfAnswers < 12) {
-			int a = getRandomDivisor();
-			int b = getRandomDivisor();
-			
-			// insert at least one right answer by chance
-			if (noOfAnswers == randomNumber && !answerExists(oneCorrectAnswer, answers)) {
-				answers.add(oneCorrectAnswer);
-				noOfAnswers++;
-			}
-			
-			// genarate new answer
-			MultiplicationAnswer newAnswer = new MultiplicationAnswer(a+this.sign+b, (a*b == result));
-			
-			// check, if the answer exists. if not, add to list
-			if (!answerExists(newAnswer, answers)) {
-				answers.add(newAnswer);
-				noOfAnswers++;
-			}	
+		// Set the multiplication task.
+		state.setTask(item.getFirstFactor() + sign + item.getSecondFactor());
+		
+		// Set the possible answers.
+		ArrayList<Integer> answerNumbers = item.getShuffledPossibleAnsers();
+		for (int x : answerNumbers) {
+			MultiplicationAnswer newAnswer = new MultiplicationAnswer(String.valueOf(x), (x == item.getResult()));
+			answers.add(newAnswer);
 		}
 		
 		// increment the round-counter
 		state.setRound(state.getRound()+1);
 		
-		state.setResult(result);
+		state.setResult(item.getResult());
 		
 		state.setAnswers(answers);
 		
