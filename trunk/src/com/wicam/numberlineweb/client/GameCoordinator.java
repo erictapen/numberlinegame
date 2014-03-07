@@ -212,7 +212,7 @@ public abstract class GameCoordinator {
 		}
 	}
 
-	private void handleAwaitingReadyConfirm() {
+	protected void handleAwaitingReadyConfirm() {
 		setRefreshRate(200);
 		commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 	}
@@ -537,7 +537,7 @@ public abstract class GameCoordinator {
 
 	};
 
-	private class GameCloseQuestion extends DialogBox {
+	protected class GameCloseQuestion extends DialogBox {
 
 		public GameCloseQuestion() {
 			// Set the dialog box's caption.

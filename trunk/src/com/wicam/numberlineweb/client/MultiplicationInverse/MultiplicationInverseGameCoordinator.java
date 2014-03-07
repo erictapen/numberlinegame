@@ -1,11 +1,14 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
+import com.wicam.numberlineweb.client.HistoryChangeHandler;
 import com.wicam.numberlineweb.client.NumberLineWeb;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
@@ -77,6 +80,7 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 		GWT.log("inverse multiplication game coordinator loaded.");
 	}
 	
+	
 	/**
 	 * Called after our player joined the game.
 	 * @param playerID
@@ -85,7 +89,23 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	@Override
 	protected void joinedGame(int playerID, int gameID) {
 
-		super.joinedGame(playerID, gameID);
+//		super.joinedGame(playerID, gameID);
+		
+		History.newItem("game-" + getGameName(),false);
+		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
+
+
+			@Override
+			public void onHistoryChanged(String historyToken) {
+
+				if (historyToken.matches("gameSelector.*")) {
+					new GameCloseQuestion();
+				}
+
+
+			}
+		});
+		
 		this.playerID = playerID;
 
 		//construct game
@@ -134,7 +154,43 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	 * @param gameState The GameState to update
 	 */
 	protected void updateGame(GameState gameState) {
-		super.updateGame(gameState);
+//		super.updateGame(gameState);
+		
+		// handle basic cases
+		switch (gameState.getState()){
+		// game closed
+		case -1:
+			handleGameClosedState(gameState);
+			break;
+			// awaiting players
+		case 0:
+			handleWaitingForPlayersState();
+			break;
+			// awaiting other players
+		case 1:
+			handleWaitingForOtherPlayersState(gameState);
+			break;
+			// awaiting start 
+		case 2:
+			handleAwaitingStartState(gameState);
+			break;
+			//awaiting start confirmation
+		case 21:
+			handleAwaitingReadyConfirm();
+			break;
+			// performance
+		case 97:
+			handlePerformanceState(gameState);
+			break;
+			// close game
+		case 98:
+			handleCloseGameState();
+			break;
+			// player left
+		case 99:
+			handlePlayerLeftState(gameState);
+			break;
+		}
 
 		MultiplicationInverseGameState g = (MultiplicationInverseGameState) gameState;
 		MultiplicationInverseGameView gameView = (MultiplicationInverseGameView) view;

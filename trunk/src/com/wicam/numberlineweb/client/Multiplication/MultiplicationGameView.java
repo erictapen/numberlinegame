@@ -25,11 +25,11 @@ import com.wicam.numberlineweb.client.GameView;
 public class MultiplicationGameView extends GameView  {
 
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
-	protected MultiplicationView p = new MultiplicationView(); // final
+	protected final MultiplicationView p = new MultiplicationView();
 	protected final AbsolutePanel playerPanel = new AbsolutePanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final HTML explanationText = new HTML();
-	protected Button startGameButton = new Button("Spiel starten", new ClickHandler() { // final
+	protected final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
 			initGameView();
