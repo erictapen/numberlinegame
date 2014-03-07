@@ -1,10 +1,14 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
+import com.wicam.numberlineweb.client.GameJoinException;
+import com.wicam.numberlineweb.client.GameSelector;
+import com.wicam.numberlineweb.client.NumberLineWeb;
+import com.wicam.numberlineweb.client.TextPopupBox;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameSelector;
+import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
+import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 
 public class MultiplicationInverseGameSelector extends MultiplicationGameSelector {
 
@@ -15,37 +19,46 @@ public class MultiplicationInverseGameSelector extends MultiplicationGameSelecto
 	@Override
 	protected void addGameCreationHandler() {
 
+		// Do not show a popup.
+		MultiplicationInverseGameState gameState = new MultiplicationInverseGameState();
+		gameState.setGameName("Experiment");
+		gameState.setNumberOfPlayers(1);
+		gameState.setNumberOfMaxNPCs(1);
+		gameState.setMaxRound(224);
+		MultiplicationInverseGameSelector.this.coordinator.openGame(gameState);
+	}
+	
+	@Override
+	public void joinGame() {
 
-		createGameButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
+		if (this.getSelectedGameId() < 0) return;
 
-				
-				
-				if (!gamePopUp.hasClickHandler()) gamePopUp.addClickHandler(new ClickHandler() {
+		if (NumberLineWeb.USERID == -1) {
 
-					@Override
-					public void onClick(ClickEvent event) {
+			// Don't show the player's name popup.
+			//TODO Fill in the name of the subject instead of the string "Player".
+			// E.g. like that on the server side:
+//			DrupalCommunicator dc = new DrupalCommunicator();
+//			try {
+//				player = dc.getUser(uid).getUname();
+//			} catch (UserNotFoundException e) {
+//				throw new GameJoinException("User with id =" + uid + " could not be found.");
+//			}
+			coordinator.joinGame(MultiplicationInverseGameSelector.this.getSelectedGameId(), "Player", getMaxNumberOfPlayers(),
+					getMaxNumberOfNPCs());
+			t.cancel();
 
-						GWT.log("click");
+		}else{
 
-						MultiplicationInverseGameState gameState = new MultiplicationInverseGameState();
-						gameState.setGameName(gamePopUp.getTextValue());
-						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
-						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
-						gameState.setMaxRound(gamePopUp.getRoundCount());
-						MultiplicationInverseGameSelector.this.coordinator.openGame(gameState);
-						gamePopUp.hide();
-						
+			coordinator.joinGame(MultiplicationInverseGameSelector.this.getSelectedGameId(), "___ID/" + NumberLineWeb.USERID,getMaxNumberOfPlayers(),
+					getMaxNumberOfNPCs());
+			t.cancel();
 
-					}
+		}
 
-				});
+//		gamePopUp.hide();
 
-				gamePopUp.show();
-
-			}
-		});
+	
 	}
 	
 }
