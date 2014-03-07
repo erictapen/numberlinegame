@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.Multiplication;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,7 +13,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
 
@@ -24,12 +24,12 @@ import com.wicam.numberlineweb.client.GameView;
 
 public class MultiplicationGameView extends GameView  {
 
-	final HorizontalPanel motherPanel = new HorizontalPanel();
-	final MultiplicationView p = new MultiplicationView();
-	final AbsolutePanel playerPanel = new AbsolutePanel();
-	final AbsolutePanel explanationPanel = new AbsolutePanel();
+	protected final HorizontalPanel motherPanel = new HorizontalPanel();
+	protected MultiplicationView p = new MultiplicationView(); // final
+	protected final AbsolutePanel playerPanel = new AbsolutePanel();
+	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final HTML explanationText = new HTML();
-	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
+	protected Button startGameButton = new Button("Spiel starten", new ClickHandler() { // final
 		@Override
 		public void onClick(ClickEvent event) {
 			initGameView();
@@ -72,6 +72,8 @@ public class MultiplicationGameView extends GameView  {
 		explanationPanel.add(startGameButton);
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
+		
+		GWT.log("executing normal init");
 		
 		if (Audio.isSupported() && descriptionSound != null) {
 			
