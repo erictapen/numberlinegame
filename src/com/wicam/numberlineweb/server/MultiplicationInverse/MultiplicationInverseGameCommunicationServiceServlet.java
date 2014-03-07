@@ -84,38 +84,11 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
-//		int first = getRandomDivisor();
-//		int second = getRandomDivisor();
-//		MultiplicationAnswer oneCorrectAnswer = new MultiplicationAnswer(first+this.sign+second, true);
-//		int result = first * second;
-//		
-//		int noOfAnswers = 0;
-//		int randomNumber = rand.nextInt(10);
-//		
-//		// generate new answers as long there are less than 12
-//		while (noOfAnswers < 12) {
-//			int a = getRandomDivisor();
-//			int b = getRandomDivisor();
-//			
-//			// insert at least one right answer by chance
-//			if (noOfAnswers == randomNumber && !answerExists(oneCorrectAnswer, answers)) {
-//				answers.add(oneCorrectAnswer);
-//				noOfAnswers++;
-//			}
-//			
-//			// genarate new answer
-//			MultiplicationAnswer newAnswer = new MultiplicationAnswer(a+this.sign+b, (a*b == result));
-//			
-//			// check, if the answer exists. if not, add to list
-//			if (!answerExists(newAnswer, answers)) {
-//				answers.add(newAnswer);
-//				noOfAnswers++;
-//			}	
-//		}
-		
 		// Get next random item.
 		MultiplicationInverseItem item = nextRandomItem();
 		assert item != null : "There is no item left!";
+		// Log the current round and item.
+//		System.out.println("Round " + ((state.getRound() + 1) / 2) + ", " + item);
 		
 		// Set the multiplication task.
 		state.setTask(item.getFirstFactor() + sign + item.getSecondFactor());
@@ -133,6 +106,8 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		state.setResult(item.getResult());
 		
 		state.setAnswers(answers);
+		
+		state.setNPCResponseTime(getRandomResponseTimeForItem(item));
 		
 		return state;
 	}
@@ -467,6 +442,13 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		// Choose a random time and return it.
 		Collections.shuffle(responseTimes);
 		return responseTimes.get(0);
+	}
+	
+	@Override
+	protected void addNPC(GameState game){
+		int playerid = game.addPlayer("NPC", -2);
+		npcIds.add(playerid);
+		npcs.add(new MultiplicationInverseNPC(this, game.getId(), playerid, game.getNPCResponseTime()));
 	}
 	
 }

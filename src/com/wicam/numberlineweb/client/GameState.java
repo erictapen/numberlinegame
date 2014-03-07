@@ -20,6 +20,16 @@ public abstract class GameState implements IsSerializable{
 	private int numberOfMaxPlayers;
 	private int numberOfMaxNPCs;
 	
+	private int NPCResponseTime; // in milliseconds
+	
+	public int getNPCResponseTime() {
+		return NPCResponseTime;
+	}
+
+	public void setNPCResponseTime(int nPCResponseTime) {
+		NPCResponseTime = nPCResponseTime;
+	}
+
 	public int getState() {
 
 		return state;
