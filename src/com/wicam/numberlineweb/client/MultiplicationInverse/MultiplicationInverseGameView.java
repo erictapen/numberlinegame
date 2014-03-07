@@ -1,16 +1,23 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wicam.numberlineweb.client.GameView;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameController;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameView;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationView;
 
 /**
  * The game view.
@@ -18,51 +25,45 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationView;
  *
  */
 
-public class MultiplicationInverseGameView extends MultiplicationGameView  {
+public class MultiplicationInverseGameView extends GameView  {
 	
-//	final MultiplicationInverseView p = new MultiplicationInverseView();
-//	final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
-//		@Override
-//		public void onClick(ClickEvent event) {
-//			initGameView();
-//			((MultiplicationGameController) gameController).startButtonClicked();
-//			// In the inverse multiplication game no description sound is used.
-////			try {
-////				descriptionSound.pause();
-////				descriptionSound.setCurrentTime(0);
-////			} catch (Exception e) {
-////			}
-//		}
-//	});
+	protected final HorizontalPanel motherPanel = new HorizontalPanel();
+	protected final MultiplicationInverseView p = new MultiplicationInverseView();
+	protected final AbsolutePanel playerPanel = new AbsolutePanel();
+	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
+	protected final HTML explanationText = new HTML();
+	protected final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+			initGameView();
+			((MultiplicationGameController) gameController).startButtonClicked();
+			// In the inverse multiplication game no description sound is used.
+//			try {
+//				descriptionSound.pause();
+//				descriptionSound.setCurrentTime(0);
+//			} catch (Exception e) {
+//			}
+		}
+	}); 
+	
+	protected int numberOfNPCs;
+	final FlexTable playerNamesFlexTable = new FlexTable();
+	final HTML infoText = new HTML();
+	
+	protected Audio descriptionSound = Audio.createIfSupported();
 
-	public MultiplicationInverseGameView(MultiplicationGameController gameController,
-			int numberOfPlayers, int numberOfNPCs) {
-		super(gameController, numberOfPlayers, numberOfNPCs);
-		// Change the initialization of the view and the start game button.
-		this.p = new MultiplicationInverseView();
-		this.startGameButton = new Button("Spiel starten", new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				initGameView();
-				((MultiplicationGameController) MultiplicationInverseGameView.this.gameController).startButtonClicked();
-				// In the inverse multiplication game no description sound is used.
-//				try {
-//					descriptionSound.pause();
-//					descriptionSound.setCurrentTime(0);
-//				} catch (Exception e) {
-//				}
-			}
-		});
+	public MultiplicationInverseGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
+		super(numberOfPlayers);
+		this.gameController = gameController;
+		this.numberOfNPCs = numberOfNPCs;
+		init();
+		sinkEvents(Event.MOUSEEVENTS);
+		this.initWidget(motherPanel);
 	}
-	
-	public void setTaskText(String task) {
-		((MultiplicationInverseView) p).setTaskText(task);
-	}
-	
+
 	/**
 	 * Show explanation
 	 */
-	@Override
 	protected void init() {
 		
 		explanationPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -90,10 +91,61 @@ public class MultiplicationInverseGameView extends MultiplicationGameView  {
 		RootPanel.get().add(motherPanel);
 	}
 	
+	
+	/**
+	 * Show the game, hide explanation
+	 */
+	public void initGameView() {
+		explanationPanel.clear();
+		explanationPanel.removeFromParent();
+		
+		p.init((MultiplicationGameController) this.gameController, numberOfPlayers+numberOfNPCs);
+		p.setStyleName("multiplication-box");
+		motherPanel.add(p);
+
+		playerNamesFlexTable.setStyleName("playerList");
+		playerNamesFlexTable.setCellPadding(5);
+		
+
+		playerPanel.add(playerNamesFlexTable);
+
+		motherPanel.add(playerPanel);
+	}
+
+	public void setPoints(int playerid, int p,String name) {
+		playerNamesFlexTable.setHTML(playerid, 1, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
+	}
+
+	public void deletePlayerFromPointList(int playerid) {
+		playerNamesFlexTable.clearCell(playerid, 1);
+		playerNamesFlexTable.removeCell(playerid, 1);
+	}
+
+
+	public void setInfoText(String text) {
+		p.setInfoText(text);
+	}
+
+	
+	public void setResultText(int res) {
+		p.setResultText(res);
+	}
+	
+	public void setTaskText(String task) {
+		((MultiplicationInverseView) p).setTaskText(task);
+	}
+
+	/**
+	 * Draw all possible answers
+	 * @param answers Answers to draw
+	 */
+	public void drawAnwers(ArrayList<MultiplicationAnswer> answers) {
+		p.drawAnwers(answers);
+	}
+	
 	/**
 	 * Set the explanation-text
 	 */
-	@Override
 	public void setExplanationText(){
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Multiplikationsspiel - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
@@ -102,6 +154,5 @@ public class MultiplicationInverseGameView extends MultiplicationGameView  {
 				"Ist dein Gegenspieler schneller als du, " +
 				"dann hat er die Runde gewonnen. " +
 				"</div>");
-	}
-	
+	}	
 }
