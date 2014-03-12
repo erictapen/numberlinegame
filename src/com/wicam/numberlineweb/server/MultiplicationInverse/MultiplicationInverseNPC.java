@@ -103,6 +103,7 @@ public class MultiplicationInverseNPC extends NPC{
 								makeClick = true;
 							}
 							else{
+								//System.out.println("NPC clicks: " + System.currentTimeMillis());
 								makeClick = false;
 								String answer;
 								if (new Random().nextDouble() < skill) { 
