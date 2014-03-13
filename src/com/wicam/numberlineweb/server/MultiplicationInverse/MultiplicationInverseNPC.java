@@ -84,7 +84,7 @@ public class MultiplicationInverseNPC extends NPC{
 			MultiplicationGameState game = (MultiplicationGameState) comm.getGameById(gameid);
 			if (game != null){
 				int state = game.getState();
-				int time = 500;
+				int time = 50; //Reduce the refresh time to increase response time accuracy. Old value: 500.
 				switch (state){
 					case 1:
 					case 2:
@@ -100,10 +100,11 @@ public class MultiplicationInverseNPC extends NPC{
 //								if (time < 5000)
 //									time = 5000;
 								time = responseTime;
+								System.out.println("Task set: " + System.currentTimeMillis());
 								makeClick = true;
 							}
 							else{
-								//System.out.println("NPC clicks: " + System.currentTimeMillis());
+								System.out.println("NPC clicks: " + System.currentTimeMillis());
 								makeClick = false;
 								String answer;
 								if (new Random().nextDouble() < skill) { 

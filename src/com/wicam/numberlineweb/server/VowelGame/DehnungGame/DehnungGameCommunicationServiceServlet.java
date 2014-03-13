@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.server.VowelGame.DehnungGame;
 
 import java.util.ArrayList;
 
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
@@ -21,7 +22,7 @@ public class DehnungGameCommunicationServiceServlet extends
 	}
 	
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 		
 		// we want the mini game to start when short vowel is false
 		this.setMiniGameStartsWhenShortVowel(false);

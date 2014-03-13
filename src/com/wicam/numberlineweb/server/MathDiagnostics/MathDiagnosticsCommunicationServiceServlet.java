@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server.MathDiagnostics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.MathDiagnostics.ChoiceTaskItemInformation;
@@ -41,13 +42,14 @@ public class MathDiagnosticsCommunicationServiceServlet extends
 	
 	/**
 	 * basic implementation of openGame
+	 * @throws GameOpenException 
 	 */
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 		
 		// initialize game list
 	
-		GameState gameState =  super.openGame(g);
+		GameState gameState = super.openGame(g);
 		
 		return gameState;
 		

@@ -10,6 +10,7 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gwt.core.shared.GWT;
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.WordStem.WordSetCollection;
 import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
@@ -341,7 +342,7 @@ public class WordStemGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 
 		g.setServerSendTime(System.currentTimeMillis());
 		GWT.log("before opening game");
