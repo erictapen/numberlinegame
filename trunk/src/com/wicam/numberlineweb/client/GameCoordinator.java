@@ -32,7 +32,7 @@ public abstract class GameCoordinator {
 	protected GameCommunicationServiceAsync commServ;
 	protected ChatCommunicationServiceAsync chatCommServ;
 	protected Panel rootPanel;
-	protected GameSelector gameSelector;
+	protected AbstractGameSelector gameSelector;
 	protected Timer t;
 	protected GameView view;
 	protected ChatCoordinator chatC;
@@ -66,6 +66,14 @@ public abstract class GameCoordinator {
 		this.gts=gts;
 
 
+	}
+	
+	/**
+	 * Get the root panel of the coordinator.
+	 * @return root panel
+	 */
+	public Panel getRootPanel() {
+		return this.rootPanel;
 	}
 
 	/**
@@ -401,8 +409,7 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			caught.printStackTrace();
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
 		}
 
 		@Override

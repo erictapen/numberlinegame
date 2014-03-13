@@ -62,8 +62,10 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	@Override
 	public void init() {
 		
+		// Don't show the game selector page, but precede to the game description instead.
 		gameSelector = new MultiplicationInverseGameSelector((MultiplicationInverseGameCoordinator) this);
-		rootPanel.add(gameSelector);
+//		rootPanel.add(gameSelector);
+		
 
 		t = new Timer() {
 			public void run() {

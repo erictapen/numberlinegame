@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.server.factsGame;
 
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.factsGame.FactsGameCommunicationService;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
@@ -20,11 +21,11 @@ public class FactsGameCommunicationServiceServlet extends
 	}
 	
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 		
 		// initialize game list
 	
-		GameState gameState =  super.openGame(g);
+		GameState gameState = super.openGame(g);
 		
 		return gameState;
 		

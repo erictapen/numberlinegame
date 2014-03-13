@@ -9,6 +9,7 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gwt.core.shared.GWT;
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.OverTen.OverTenCalculation;
@@ -420,7 +421,7 @@ public class OverTenGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 
 		g.setServerSendTime(System.currentTimeMillis());
 		GWT.log("before opening game");

@@ -123,6 +123,7 @@ public class MultiplicationGameView extends GameView  {
 
 	
 	public void setResultText(int res) {
+		//System.out.println("Task (" + res + ") set: " + System.currentTimeMillis());
 		p.setResultText(res);
 	}
 

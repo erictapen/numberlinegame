@@ -9,6 +9,7 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gwt.core.shared.GWT;
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
@@ -64,7 +65,7 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 	}
 	
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 		
 		g.setServerSendTime(System.currentTimeMillis());
 		GWT.log("before opening game");
@@ -88,7 +89,7 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		MultiplicationInverseItem item = nextRandomItem();
 		assert item != null : "There is no item left!";
 		// Log the current round and item.
-//		System.out.println("Round " + ((state.getRound() + 1) / 2) + ", " + item);
+		System.out.println("Round " + state.getRound() + ", " + item);
 		
 		// Set the multiplication task.
 		state.setTask(item.getFirstFactor() + sign + item.getSecondFactor());
@@ -96,6 +97,13 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		// Set the possible answers.
 		ArrayList<Integer> answerNumbers = item.getShuffledPossibleAnsers();
 		for (int x : answerNumbers) {
+			// Add a space to answers less than 10.
+//			String answerStr = "";
+//			if (x < 10) {
+//				answerStr = " " + x;
+//			} else {
+//				answerStr = String.valueOf(x);
+//			}
 			MultiplicationAnswer newAnswer = new MultiplicationAnswer(String.valueOf(x), (x == item.getResult()));
 			answers.add(newAnswer);
 		}
@@ -426,7 +434,6 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 	 * @return
 	 */
 	private int getRandomResponseTimeForItem(MultiplicationInverseItem item) {
-		//TODO Implement this.
 		ArrayList<Integer> responseTimes = new ArrayList<Integer>();
 		// Choose the corresponding response time list and clone it.
 		if (item.isSimple()) {

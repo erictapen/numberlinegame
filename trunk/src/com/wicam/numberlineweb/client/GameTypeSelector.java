@@ -78,9 +78,10 @@ public class GameTypeSelector extends Composite{
 			@Override
 			public void onHistoryChanged(String historyToken) {
 				if (historyToken.matches("gameSelector.*")) {
+					
+					System.out.println("Baam");
 
 					String gameName = historyToken.split("-")[1];
-
 					
 					getGameSelectorItemByGameName(gameName).start();
 

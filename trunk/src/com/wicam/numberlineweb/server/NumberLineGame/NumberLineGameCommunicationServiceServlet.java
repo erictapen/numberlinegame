@@ -8,6 +8,7 @@ import java.util.Timer;
 import javax.servlet.http.HttpServletRequest;
 
 import com.wicam.numberlineweb.client.GameJoinException;
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
@@ -404,7 +405,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
 		
 		// initialize pointerwidth
 		((NumberLineGameState) g).setPointerWidth(14);

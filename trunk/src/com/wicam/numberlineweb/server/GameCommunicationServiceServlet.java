@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameJoinException;
+import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
@@ -56,7 +57,13 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	}
 
 	@Override
-	public GameState openGame(GameState g) {
+	public GameState openGame(GameState g) throws GameOpenException {
+		// Allow only one game at a time being played on the server.
+//		System.out.println("Es ist gerade " + this.getOpenGames().size() + " Spiel offen.");
+		if (this.getOpenGames().size() > 0) {
+			throw new GameOpenException("Es kann gerade kein weiteres Spiel geöffnet werden. Die Platform ist voll ausgelastet!");
+		}
+		
 		currentId++;
 
 		g.setGameId(currentId);
