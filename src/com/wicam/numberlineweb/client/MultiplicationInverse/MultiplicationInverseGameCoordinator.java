@@ -5,7 +5,9 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.HistoryChangeHandler;
@@ -22,8 +24,10 @@ import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameContr
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
-public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoordinator {
+public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 
+	protected MultiplicationInverseGameController controller;
+	
 	public MultiplicationInverseGameCoordinator(
 			GameCommunicationServiceAsync commServ,
 			ChatCommunicationServiceAsync chatCommServ, Panel root,
@@ -34,7 +38,6 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	/**
 	 * returns the name of the game
 	 */
-	@Override
 	public String getGameName() {
 
 		return "MultplicationInverse";
@@ -59,7 +62,6 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	/**
 	 * Initializes the coordinator
 	 */
-	@Override
 	public void init() {
 		
 		// Don't show the game selector page, but precede to the game description instead.
@@ -111,7 +113,7 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 		this.playerID = playerID;
 
 		//construct game
-		controller = new MultiplicationGameController(this);
+		controller = new MultiplicationInverseGameController(this);
 		
 		this.view = new MultiplicationInverseGameView(controller, numberOfPlayers, numberOfNPCs);
 		
@@ -239,9 +241,7 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 	protected void handleWaitingForPlayersState(){
 		setRefreshRate(2000);
 		((MultiplicationInverseGameView) view).setInfoText("Warte auf Spieler...");
-	}
-
-	
+	}	
 	
 	/**
 	 * Points are displayed and "Warte auf zweiten/andere Spieler..."
@@ -278,5 +278,39 @@ public class MultiplicationInverseGameCoordinator extends MultiplicationGameCoor
 		//if (!g.isPlayerReady(playerID))
 			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 	}
+	
+	/**
+	 * Clicked at position (x,y)
+	 * @param x x-position
+	 * @param y y-position
+	 * @param w Widget, that was clicked
+	 */
+	public void clickAt(Widget w, int x, int y) {
+	}
+	
+	public void clickAt(String answer) {
+		((MultiplicationInverseGameCommunicationServiceAsync)commServ).clickedAt(
+				Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + answer, updateCallback);
+	}
 
+	/**
+	 * Mouse was moved to (x,y)
+	 * @param x x-position
+	 * @param y y-position
+	 * @param w Widget, that was hovered
+	 */
+	public void mouseMovedTo(Widget w, int x, int y) {
+	}
+
+	
+	
+	/**
+	 * User clicked on "Start game"
+	 */
+	public void startButtonClicked() {
+		if (!openGame.isPlayerReady(this.playerID)) {
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		}		
+	}
+	
 }

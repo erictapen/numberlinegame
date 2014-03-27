@@ -24,7 +24,7 @@ import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameStateTask
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationNPC;
 
 public class MultiplicationInverseGameCommunicationServiceServlet extends
-	MultiplicationGameCommunicationServiceServlet implements MultiplicationInverseGameCommunicationService  {
+GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicationService  {
 
 
 	/**
@@ -33,9 +33,9 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 	private static final long serialVersionUID = -7757604373406891094L;
 	protected ArrayList<Integer> npcIds = new ArrayList<Integer>();
 	
-	// The response times from which to chose from.
-	protected ArrayList<Integer> simpleResponseTimes = new ArrayList<Integer>();
-	protected ArrayList<Integer> complexResponseTimes = new ArrayList<Integer>();
+	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	// The string used as multiplication sign
+	protected String sign = " x ";
 	
 	protected ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();
 	
@@ -43,16 +43,14 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 	
 	public MultiplicationInverseGameCommunicationServiceServlet() {
 		
-		super("multiplication");
+		super("multiplication inverse");
 		//this.handicapAdjustment = new NumberLineGameHandicap();
 		
-		// Set the response times.
-		setResponseTimes();
 		// Set the items.
 		setItems();
+		
 		// Set the number of presentations of each item.
 		numberOfPresentationsPerItem = 7;
-		
 		
 //		// Test if the items are produced 112 times each 7 times.
 //		MultiplicationInverseItem item = nextRandomItem();
@@ -71,10 +69,25 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		GWT.log("before opening game");
 		GameState retGameState = super.openGame(g);
 		GWT.log("after opening game");
-		//return super.openGame(g);
 		newResults((MultiplicationInverseGameState) g);
 		
 		return retGameState;
+	}
+
+	public String getGameProperties(GameState gameState) {
+		
+		MultiplicationInverseGameState numberlineGameState = (MultiplicationInverseGameState) gameState;
+		
+		String gamePropertiesStr = "{";
+				
+		gamePropertiesStr += "num_players : " + numberlineGameState.getPlayerCount() + ", ";
+		
+		//TODO gameproperties
+		
+		gamePropertiesStr += "}";
+		
+		return gamePropertiesStr;
+		
 	}
 	
 	/**
@@ -97,13 +110,6 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		// Set the possible answers.
 		ArrayList<Integer> answerNumbers = item.getShuffledPossibleAnsers();
 		for (int x : answerNumbers) {
-			// Add a space to answers less than 10.
-//			String answerStr = "";
-//			if (x < 10) {
-//				answerStr = " " + x;
-//			} else {
-//				answerStr = String.valueOf(x);
-//			}
 			MultiplicationAnswer newAnswer = new MultiplicationAnswer(String.valueOf(x), (x == item.getResult()));
 			answers.add(newAnswer);
 		}
@@ -113,46 +119,17 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		
 		state.setResult(item.getResult());
 		
-		state.setAnswers(answers);
+		state.setSimpleTask(item.isSimple());
 		
-		state.setNPCResponseTime(getRandomResponseTimeForItem(item));
+		state.setAnswers(answers);
 		
 		return state;
 	}
 	
-	@Override
 	public void showNextItem(int id) {
 		
 		Timer t = new Timer(true);
 		t.schedule(new MultiplicationInverseGameStateTask(id, 6, this), 6000);
-	}
-	
-	/**
-	 * Set the response times of the trials.
-	 */
-	private void setResponseTimes() {
-		simpleResponseTimes.add(3000);
-		simpleResponseTimes.add(3400);
-		simpleResponseTimes.add(3800);
-		simpleResponseTimes.add(4200);
-		simpleResponseTimes.add(4600);
-		simpleResponseTimes.add(5000);
-		simpleResponseTimes.add(5400);
-		simpleResponseTimes.add(5800);
-		simpleResponseTimes.add(6200);
-		simpleResponseTimes.add(6600);
-		simpleResponseTimes.add(7000);
-		complexResponseTimes.add(8500);
-		complexResponseTimes.add(10100);
-		complexResponseTimes.add(11700);
-		complexResponseTimes.add(13300);
-		complexResponseTimes.add(14900);
-		complexResponseTimes.add(16500);
-		complexResponseTimes.add(18100);
-		complexResponseTimes.add(19700);
-		complexResponseTimes.add(21300);
-		complexResponseTimes.add(22900);
-		complexResponseTimes.add(24500);
 	}
 	
 	/**
@@ -428,34 +405,207 @@ public class MultiplicationInverseGameCommunicationServiceServlet extends
 		return item;
 	}
 	
-	/**
-	 * Returns a random response time depending on the given difficulty of the item.
-	 * @param item
-	 * @return
-	 */
-	private int getRandomResponseTimeForItem(MultiplicationInverseItem item) {
-		ArrayList<Integer> responseTimes = new ArrayList<Integer>();
-		// Choose the corresponding response time list and clone it.
-		if (item.isSimple()) {
-			for (int x : simpleResponseTimes) {
-				responseTimes.add(x);
-			}
-		}
-		else {
-			for (int x : complexResponseTimes) {
-				responseTimes.add(x);
-			}
-		}
-		// Choose a random time and return it.
-		Collections.shuffle(responseTimes);
-		return responseTimes.get(0);
-	}
-	
 	@Override
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
 		npcIds.add(playerid);
-		npcs.add(new MultiplicationInverseNPC(this, game.getId(), playerid, game.getNPCResponseTime()));
+		GWT.log("Trying to build an NPC");
+		npcs.add(new MultiplicationInverseNPC(this, game.getId(), playerid));
+	}
+	
+	protected boolean isNPC(int playerId){
+		return npcIds.contains(playerId);
+	}	
+	
+	/**
+	 * @param newAnswer Answer to check
+	 * @param answers All answers
+	 * @return Returns true, if the newAnswer is in answers
+	 */
+	protected boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.equals(newAnswer)) {
+				return true;
+			}
+		}
+		return false;
+	}
+		
+	/**
+	 * Disables all answers
+	 * @param answers Set of answers to delete from
+	 */
+	protected void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
+		for (MultiplicationAnswer answer : answers) {
+			answer.setTaken();
+		}
+	}
+		
+	/**
+	 * @param toFind Answer to be checked
+	 * @param answers All answers
+	 * @return Returns 1, if the given answer was a correct and free one. 
+	 * 		   Returns 0, if user was too slow and answer is already taken. 
+	 * 		   Returns -1, if answer was a false and free one
+	 */
+	protected int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.getAnswer().equals(toFind)) {				
+				if (answer.isTaken()) {
+					return 0;
+				} else {
+					answer.setTaken();
+					answer.setColor(playerColors[player.getColorId()]);
+					if (answer.isCorrect()) {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+			}
+		}
+		return 0;
+	}	
+	
+	/**
+	 * @param answers Set of answers to check
+	 * @return True, if at least one correct answer is not yet taken
+	 */
+	protected boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
+		Boolean res = false;
+		for (MultiplicationAnswer answer : answers) {
+			if (answer.isCorrect()) {
+				res = res || !answer.isTaken();				
+			}
+		}
+		return res;
+	}	
+	
+	/**
+	 * @param clicked gameid:playerid:clickedAnswer
+	 * @return New MultiplicationGameState
+	 */
+	synchronized public MultiplicationInverseGameState clickedAt(String clicked) {
+		
+		int gameid = Integer.parseInt(clicked.split(":")[0]);
+		return clickedAt(clicked,getPlayerId(gameid));
+		
+	}		
+
+	/**
+	 * User has clicked.
+	 * @param clicked gameid:playerid:clickedAnswer
+	 * @param playerid Playerid
+	 * @return New MultiplicationGameState
+	 */
+	synchronized public MultiplicationInverseGameState clickedAt(String clicked, int playerid) {
+
+		int gameid = Integer.parseInt(clicked.split(":")[0]);
+
+		String answer = clicked.split(":")[2];
+		MultiplicationInverseGameState g = (MultiplicationInverseGameState) this.getGameById(gameid);
+		
+		HttpServletRequest request = this.getThreadLocalRequest();
+		int uid = -2;
+		if(request != null){
+			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
+					request.getSession().getAttribute("game2pid2uid");
+			uid = map.get(internalName).get(gameid).get(playerid);
+		}
+		
+		// check answers and flag/colorize taken answers
+		int answerState = checkAnswer(answer, g.getAnswers(), (MultiplicationPlayer) g.getPlayers().get(playerid-1));
+
+		// give/take points
+		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);
+		
+		if (oneCorrectLeft(g.getAnswers())) { // keep going
+			this.setGameState(this.getGameById(gameid),3);
+			this.setChanged(gameid);
+		} else { // New round or end of game
+			
+			disableAllAnswers(g.getAnswers());
+			
+			this.setGameState(this.getGameById(gameid),5);
+			
+			if (g.getRound() >= g.getMaxRound()){
+				this.endGame(gameid);
+				this.handicapAction(gameid);
+			}
+			else {
+				this.showNextItem(gameid);			
+			}
+			
+		}
+
+		g.setServerSendTime(System.currentTimeMillis());
+		return g;
+	}
+
+	protected void handicapAction(int gameid) {
+		
+		//TODO The current formula is just a proof of concept. 
+		//At the moment, it will produce bad handicaps for
+		//simpler games (e.g., when there are only few players and rounds) and good handicaps
+		//for more complex games. 
+		
+		/*
+		 * A user score is calculated by taking into account the following factors:
+		 * 
+		 * 1) Number of players (2 - 5)
+		 *    Weight: 5
+		 * 
+		 * 2) Number of rounds (5 - 30)
+		 *    Weight: 2
+		 * 
+		 * 3) Number of points (0 - 30)
+		 *    Weight: 10
+		 * 
+		 * 4) The user gets 30 points if he won the game.
+		 * 
+		 * 
+		 * ==> This results in a minimal score of 20 and a maximal score of 415 points. Normalizing this value yields
+		 * the handicap where 1.0 is the best and 0.0 the worst possible value.
+		 */
+		
+		MultiplicationInverseGameState numberlineGameState = (MultiplicationInverseGameState) this.getGameById(gameid);
+		ArrayList<? extends Player> players = numberlineGameState.getPlayers();
+		Collections.sort(players);
+		
+		int winnerUid = players.get(0).getUid();
+		
+		//TODO Find a reasonable use for number range.
+		//int numRange = (numberlineGameState.getNumberRange().getMaxNumber() - numberlineGameState.getNumberRange().getMinNumber());
+		
+		int numPlayers = numberlineGameState.getPlayerCount();
+		int numRounds = numberlineGameState.getMaxRound(); //Number of items equals number of rounds
+		
+		//General game properties that are not influenced by user performance
+		//but contribute to the score
+		double gamePropertyScore = 5*numPlayers + 2*numRounds;
+		
+		for(Player player : numberlineGameState.getPlayers()){
+			if(player.getUid() != -2){
+				
+				
+				double hasWon = (player.getUid() == winnerUid) ? 30 : 0;
+				double points = player.getPoints();
+				
+				double minimalScore = 20;
+				double maximalScore = 415;
+				
+				double userScore = hasWon + 10*points + gamePropertyScore;
+				
+				/*
+				 * Normalize score to get handicap.
+				 */
+				double userHandicapNormalized = (userScore - minimalScore) / (maximalScore - minimalScore);
+				
+				//this.logger.log(gameid, player.getUid(), System.currentTimeMillis(), LogActionType.NUMBERLINE_HANDICAP,
+					//"{\"handicap\" :" + userHandicapNormalized + "}", this.getClass().getName(), LogActionTrigger.USER);
+			}
+		}
+		
 	}
 	
 }

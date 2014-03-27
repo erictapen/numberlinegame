@@ -57,6 +57,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		//this.handicapAdjustment = new NumberLineGameHandicap();
 		
 	}
+    
 	@Override
 	protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
@@ -74,6 +75,8 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * @return The new MultiplicationGameState
 	 */
 	public MultiplicationGameState newResults(MultiplicationGameState state) {
+		
+		System.out.println("-> newResults() of old mult game");
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		

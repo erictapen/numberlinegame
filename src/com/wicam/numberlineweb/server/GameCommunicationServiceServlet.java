@@ -61,7 +61,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		// Allow only one game at a time being played on the server.
 //		System.out.println("Es ist gerade " + this.getOpenGames().size() + " Spiel offen.");
 		if (this.getOpenGames().size() > 0) {
-			throw new GameOpenException("Es kann gerade kein weiteres Spiel geöffnet werden. Die Platform ist voll ausgelastet!");
+			throw new GameOpenException("Es kann gerade kein Spiel geöffnet werden, da die Platform bereits von einem anderen Spieler genutzt wird! Bitte versuche es später noch einmal.");
 		}
 		
 		currentId++;

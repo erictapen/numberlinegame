@@ -36,7 +36,7 @@ public class MultiplicationInverseGameView extends GameView  {
 		@Override
 		public void onClick(ClickEvent event) {
 			initGameView();
-			((MultiplicationGameController) gameController).startButtonClicked();
+			((MultiplicationInverseGameController) gameController).startButtonClicked();
 			// In the inverse multiplication game no description sound is used.
 //			try {
 //				descriptionSound.pause();
@@ -52,7 +52,7 @@ public class MultiplicationInverseGameView extends GameView  {
 	
 	protected Audio descriptionSound = Audio.createIfSupported();
 
-	public MultiplicationInverseGameView(MultiplicationGameController gameController, int numberOfPlayers, int numberOfNPCs) {
+	public MultiplicationInverseGameView(MultiplicationInverseGameController gameController, int numberOfPlayers, int numberOfNPCs) {
 		super(numberOfPlayers);
 		this.gameController = gameController;
 		this.numberOfNPCs = numberOfNPCs;
@@ -99,7 +99,7 @@ public class MultiplicationInverseGameView extends GameView  {
 		explanationPanel.clear();
 		explanationPanel.removeFromParent();
 		
-		p.init((MultiplicationGameController) this.gameController, numberOfPlayers+numberOfNPCs);
+		p.init((MultiplicationInverseGameController) this.gameController, numberOfPlayers+numberOfNPCs);
 		p.setStyleName("multiplication-box");
 		motherPanel.add(p);
 
