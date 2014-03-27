@@ -7,7 +7,9 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunica
 
 @RemoteServiceRelativePath("multiplicationInverseGameCommunication")
 
-public interface MultiplicationInverseGameCommunicationService extends MultiplicationGameCommunicationService {
+public interface MultiplicationInverseGameCommunicationService extends GameCommunicationService {
+	
+	public GameState clickedAt(String clicked);
 	
 }
 
