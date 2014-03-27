@@ -102,8 +102,9 @@ public class MultiplicationInverseView extends AbsolutePanel {
 			}
 			
 			b.setStyleName("answer-Button"+color);
-			b.setEnabled(!answer.isTaken()); // unclickable, if already taken
-			
+			// Adjust the size to a fixed width.
+			b.setWidth("100px");
+			b.setEnabled(!answer.isTaken()); // unclickable, if already taken			
 			
 			answersBox.add(b);
 		}

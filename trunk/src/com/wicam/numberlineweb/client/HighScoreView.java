@@ -53,9 +53,9 @@ public class HighScoreView extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				System.out.println("Right place");
+//				System.out.println("Current History-Token:");
+//				System.out.println(History.getToken());
 				History.back();
-				
 			}
 			
 		});

@@ -441,7 +441,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		
 		}
 
-
+		System.out.println("Open games: " + this.openGames.size());
 	}
 
 	boolean timeOutListLocked() {
@@ -606,6 +606,8 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 				allLeft = false;
 		}
 
+//		System.out.println("all left: " + allLeft);
+		
 		// remove game if all players left
 		if(allLeft)
 			this.removeGame(gameid);
