@@ -129,6 +129,11 @@ public abstract class GameCoordinator {
 		rootPanel.clear();
 		this.view = null;
 		lastServerSendTime = -1;
+		restartGame();
+	}
+	
+	protected void restartGame()
+	{
 		init();
 	}
 

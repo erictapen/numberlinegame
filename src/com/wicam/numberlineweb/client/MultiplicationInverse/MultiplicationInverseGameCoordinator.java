@@ -95,7 +95,8 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 
 //		super.joinedGame(playerID, gameID);
 		
-		History.newItem("game-" + getGameName(),false);
+		// Don't jump back to the game but to the overview instead.
+//		History.newItem("game-" + getGameName(),false);
 		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
 
 
@@ -277,6 +278,13 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 		gameView.setInfoText("Warte auf " + notReady + " Spieler...");
 		//if (!g.isPlayerReady(playerID))
 			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+	}
+	
+	@Override
+	protected void restartGame()
+	{
+		gts.init(getRootPanel());
+		gts.showCats();
 	}
 	
 	/**

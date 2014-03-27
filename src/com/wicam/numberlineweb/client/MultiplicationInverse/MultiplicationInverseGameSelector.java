@@ -55,22 +55,23 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector {
 
 		RootPanel.get().add(motherPanel);
 		
-//		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
-//
-//			@Override
-//			public void onHistoryChanged(String historyToken) {
-//
-//				if (historyToken.equals("")) {
-//					// TODO Delete that.
-//					System.out.println("get GTS");
-//					coordinator.getRootPanel().clear();
-//					coordinator.getGTS().init(coordinator.getRootPanel());
-//
-//				}
-//			}
-//		});
+		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
 
-		History.newItem("gameSelector-" + coordinator.getGameName(),false);
+			@Override
+			public void onHistoryChanged(String historyToken) {
+
+				if (historyToken.equals("")) {
+					// TODO Delete that.
+					System.out.println("get GTS");
+					coordinator.getRootPanel().clear();
+					coordinator.getGTS().init(coordinator.getRootPanel());
+
+				}
+			}
+		});
+
+		// Don't step back to the game selector but to the overview instead.
+//		History.newItem("gameSelector-" + coordinator.getGameName(),false);
 		
 		// Don't build the page.
 		/*
