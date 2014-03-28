@@ -82,7 +82,8 @@ public class GameLogger {
 	public enum LogActionType {GAME_STARTED, GAME_ENDED, JOINED_GAME, LEFT_GAME,
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
 		NUMBERLINE_NUMBER_PRESENTED, DOPPELUNGGAME_WORD_ENTERED, DOPPELUNGGAME_WORD_CATEGORIZED,
-		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER;
+		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER, MULTIPLICATION_TASK_PRESENTED,
+		MULTIPLICATION_USER_PICKED_ANSWER, MULTIPLICATION_NPC_PICKED_ANSWER;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -113,6 +114,12 @@ public class GameLogger {
 					return 11;
 				case BUDDYNUMBER_NPC_PICKED_NUMBER:
 					return 12;
+				case MULTIPLICATION_TASK_PRESENTED:
+					return 13;
+				case MULTIPLICATION_USER_PICKED_ANSWER:
+					return 14;
+				case MULTIPLICATION_NPC_PICKED_ANSWER:
+					return 15;
 				default:
 					//Should not occur
 					return -1;
@@ -260,7 +267,7 @@ public class GameLogger {
 			return;
 		
 		try {
-			this.preparedStatementLogs.setDouble(1, logUserID);
+			this.preparedStatementLogs.setLong(1, logUserID);
 			this.userIDProvided = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -375,16 +382,21 @@ public class GameLogger {
 	
 	private void writeToTableLogs() throws SQLException{
 
-		this.preparedStatementLogs.executeUpdate();
+		int rowcount = this.preparedStatementLogs.executeUpdate();
 		
 		this.userIDProvided = false;
 		this.preparedStatementLogs = this.databaseConnection.prepareStmtReturnKeys(GameLogger.STATEMENT_LOGS);
-	
+		
+		// commit changes
+		commitChanges();
 	}
 	
 	private int writeToTableGameInstances() throws SQLException{
 
-		this.preparedStatementGameInstance.executeUpdate();
+		int rowcount = this.preparedStatementGameInstance.executeUpdate();
+		
+		// commit changes
+		commitChanges();
 		
 		ResultSet rs = this.preparedStatementGameInstance.getGeneratedKeys();
 		int id = -1;

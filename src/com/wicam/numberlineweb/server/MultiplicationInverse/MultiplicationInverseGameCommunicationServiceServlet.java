@@ -22,6 +22,9 @@ import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameStateTask;
 import com.wicam.numberlineweb.server.Multiplication.MultiplicationNPC;
+import com.wicam.numberlineweb.server.logging.GameLogger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
+import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 
 public class MultiplicationInverseGameCommunicationServiceServlet extends
 GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicationService  {
@@ -98,6 +101,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
+		GameLogger logger = this.gameId2Logger.get(state.getId());
+		
 		// Get next random item.
 		MultiplicationInverseItem item = nextRandomItem();
 		assert item != null : "There is no item left!";
@@ -105,7 +110,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		System.out.println("Round " + state.getRound() + ", " + item);
 		
 		// Set the multiplication task.
-		state.setTask(item.getFirstFactor() + sign + item.getSecondFactor());
+		String task = item.getFirstFactor() + sign + item.getSecondFactor();
+		state.setTask(task);
 		
 		// Set the possible answers.
 		ArrayList<Integer> answerNumbers = item.getShuffledPossibleAnsers();
@@ -122,6 +128,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		state.setSimpleTask(item.isSimple());
 		
 		state.setAnswers(answers);
+		
+		logger.log(state.getId(), System.currentTimeMillis(), LogActionType.MULTIPLICATION_TASK_PRESENTED, 
+				"{\"task\" : " + task + "}", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		return state;
 	}
@@ -499,8 +508,10 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @return New MultiplicationGameState
 	 */
 	synchronized public MultiplicationInverseGameState clickedAt(String clicked, int playerid) {
-
+		
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
+		
+		GameLogger logger = this.gameId2Logger.get(gameid);
 
 		String answer = clicked.split(":")[2];
 		MultiplicationInverseGameState g = (MultiplicationInverseGameState) this.getGameById(gameid);
@@ -515,6 +526,17 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		// check answers and flag/colorize taken answers
 		int answerState = checkAnswer(answer, g.getAnswers(), (MultiplicationPlayer) g.getPlayers().get(playerid-1));
+		
+		// Do the logging of the clicked answer.
+		if ((!this.isNPC(playerid)) && (uid != -2)) {
+			// Human player clicked.
+			logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_USER_PICKED_ANSWER,
+					"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.USER);
+		} else {
+			// NPC clicked.
+			logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_NPC_PICKED_ANSWER,
+					"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.NPC);
+		}
 
 		// give/take points
 		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);

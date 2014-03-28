@@ -61,8 +61,11 @@ public class NumberLineWeb implements EntryPoint {
 	protected GameCoordinator coordinator;
 	protected GameTypeSelector gts = new GameTypeSelector();
 	
-	public static int USERID = -1;
-
+	// TODO Switch that back to -1 before going live in server.
+	// Just for locale testing set the USERID to 2.
+//	public static int USERID = -1;
+	public static int USERID = 2;
+	
 	/**
 	 * Everything starts here...
 	 */
