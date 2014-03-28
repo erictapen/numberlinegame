@@ -29,7 +29,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 */
 	private static final long serialVersionUID = -5789421149680201217L;
 
-	//TODO Check this array for the number of open games to limit the number to only one game instance.
 	protected ArrayList<GameState> openGames = new ArrayList<GameState>();
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
