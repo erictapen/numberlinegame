@@ -1,7 +1,6 @@
 package com.wicam.numberlineweb.server.VowelGame.DoppelungGame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameController;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
@@ -24,7 +21,6 @@ import com.wicam.numberlineweb.server.VowelGame.ResetSoundFeedbackStateTask;
 import com.wicam.numberlineweb.server.VowelGame.ResetWordFeedbackStateTask;
 import com.wicam.numberlineweb.server.VowelGame.SetDoppelungGameStateTask;
 import com.wicam.numberlineweb.server.VowelGame.UpdateMcCoordsTimerTask;
-import com.wicam.numberlineweb.server.VowelGame.DehnungGame.DehnungGameWordList;
 import com.wicam.numberlineweb.server.logging.DoppelungGameHandicap;
 import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;

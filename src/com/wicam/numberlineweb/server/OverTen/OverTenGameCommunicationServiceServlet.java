@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gwt.core.shared.GWT;
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.OverTen.OverTenCalculation;
 import com.wicam.numberlineweb.client.OverTen.OverTenDigit;
 import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService;
@@ -19,9 +18,6 @@ import com.wicam.numberlineweb.client.OverTen.OverTenGameState;
 import com.wicam.numberlineweb.client.OverTen.OverTenPlayer;
 import com.wicam.numberlineweb.client.OverTen.OverTenCalculation.Sign;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
-//import com.wicam.numberlineweb.server.logging.Logger.LogActionTrigger;
-//import com.wicam.numberlineweb.server.logging.Logger.LogActionType;
-//import com.wicam.numberlineweb.server.logging.NumberLineGameHandicap;
 
 public class OverTenGameCommunicationServiceServlet extends
 		GameCommunicationServiceServlet implements

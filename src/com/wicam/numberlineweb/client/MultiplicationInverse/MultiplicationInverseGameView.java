@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameController;
 
 /**
  * The game view.

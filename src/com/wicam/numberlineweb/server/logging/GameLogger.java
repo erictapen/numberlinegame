@@ -252,7 +252,11 @@ public class GameLogger {
 			this.preparedStatementLogs.setTimestamp(6, new java.sql.Timestamp(logActionTime));
 			
 			//Write entry to database
-			this.writeToTableLogs();
+			// Check if connection is still open first to avoid exceptions with closed database connection.
+			// TODO This may lead to unlogged user checkouts. Fix this.
+			if (!this.databaseConnection.connectionClosed()) {
+				this.writeToTableLogs();
+			}
 		
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -12,8 +12,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameController;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationView;
 
 public class MultiplicationInverseView extends AbsolutePanel {
 

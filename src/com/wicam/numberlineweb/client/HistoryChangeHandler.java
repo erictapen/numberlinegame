@@ -1,9 +1,11 @@
 package com.wicam.numberlineweb.client;
-import com.google.gwt.core.client.GWT;
+
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 
 public class HistoryChangeHandler {
+	
+	// TODO Delete this class if the new history handling with the ValueChangeHandler works.
 
 
 	@SuppressWarnings("deprecation")

@@ -4,42 +4,15 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.GameTypeSelector.GameType;
-import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
-import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinator;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
-import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService;
-import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCoordinator;
-import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
-import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
-import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
-import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
-import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
-import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
-import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
+import com.wicam.numberlineweb.client.Resources.ImageResources;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
-import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService;
-import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
-import com.wicam.numberlineweb.client.Resources.ImageResources;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCoordinator;
@@ -92,7 +65,8 @@ public class NumberLineWeb implements EntryPoint {
 		RootPanel.getBodyElement().addClassName("visible");
 		showGameTypeSelector();
 		
-		
+		// TODO Check if that works.
+		History.fireCurrentHistoryState();
 
 	}
 

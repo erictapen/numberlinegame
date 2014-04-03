@@ -6,9 +6,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.google.gwt.core.shared.GWT;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameState;
 import com.wicam.numberlineweb.server.NPC;
 

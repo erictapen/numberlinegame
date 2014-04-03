@@ -3,7 +3,6 @@ package com.wicam.numberlineweb.client.OverTen;
 import java.io.Serializable;
 
 import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.OverTen.OverTenCalculation.Sign;
 
 public class OverTenPlayer extends Player implements Serializable{
 
