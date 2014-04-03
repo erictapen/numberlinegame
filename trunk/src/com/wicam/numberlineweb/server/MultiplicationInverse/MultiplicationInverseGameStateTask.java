@@ -2,7 +2,6 @@ package com.wicam.numberlineweb.server.MultiplicationInverse;
 
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameState;
 import com.wicam.numberlineweb.server.SetGameStateTask;
-import com.wicam.numberlineweb.server.Multiplication.MultiplicationGameStateTask;
 
 public class MultiplicationInverseGameStateTask extends SetGameStateTask {
 

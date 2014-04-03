@@ -10,8 +10,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -27,7 +29,7 @@ import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatView;
 
-public abstract class GameCoordinator {
+public abstract class GameCoordinator implements ValueChangeHandler<String> {
 
 	protected GameCommunicationServiceAsync commServ;
 	protected ChatCommunicationServiceAsync chatCommServ;
@@ -50,6 +52,8 @@ public abstract class GameCoordinator {
 	protected Queue<Long> lastTenLatencies = new LinkedList<Long>();
 	protected long timeStamp = 0;
 	protected HashMap<Long,Long> pingTimes= new HashMap<Long,Long>();
+	
+	protected HandlerRegistration handlerReg;
 
 
 	/**
@@ -159,28 +163,23 @@ public abstract class GameCoordinator {
 	 * @param playerID
 	 * @param gameID
 	 */
-	@SuppressWarnings("deprecation")
 	protected void joinedGame(int playerID, int gameID) {
 
-
-
-
 		History.newItem("game-" + getGameName(),false);
-		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
-
-
-			@Override
-			public void onHistoryChanged(String historyToken) {
-
-				if (historyToken.matches("gameSelector.*")) {
-					new GameCloseQuestion();
-				}
-
-
-			}
-		});
-
-
+		
+		this.handlerReg = History.addValueChangeHandler(this);
+		
+	}
+	
+	/**
+	 * Action in case of history back event.
+	 * @param event
+	 */
+	public void onValueChange(ValueChangeEvent<String> event) {
+		if (event.getValue().matches("gameSelector.*")) {
+			this.handlerReg.removeHandler();
+			new GameCloseQuestion();
+		}	
 	}
 
 	/**
@@ -502,7 +501,7 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			// Do nothing.
 		}
 
 		@Override
@@ -518,7 +517,7 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			// Do nothing.
 		}
 
 		@Override
@@ -533,7 +532,7 @@ public abstract class GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			// Do nothing.
 		}
 
 		@Override
@@ -574,6 +573,7 @@ public abstract class GameCoordinator {
 			no.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					History.newItem("game-" + getGameName(),false);
+					GWT.log(this.getClass() + " pushed new HistoryToken: " + History.getToken());
 					GameCloseQuestion.this.hide();
 
 				}

@@ -1,8 +1,9 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,21 +11,11 @@ import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
-import com.wicam.numberlineweb.client.HistoryChangeHandler;
 import com.wicam.numberlineweb.client.NumberLineWeb;
 import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameController;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameSelector;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameView;
-import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameView;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameController;
-import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameState;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
-public class MultiplicationInverseGameCoordinator extends GameCoordinator {
+public class MultiplicationInverseGameCoordinator extends GameCoordinator implements ValueChangeHandler<String> {
 
 	protected MultiplicationInverseGameController controller;
 	
@@ -95,21 +86,9 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 
 //		super.joinedGame(playerID, gameID);
 		
-		// Don't jump back to the game but to the overview instead.
-//		History.newItem("game-" + getGameName(),false);
-		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
-
-
-			@Override
-			public void onHistoryChanged(String historyToken) {
-
-				if (historyToken.matches("gameSelector.*")) {
-					new GameCloseQuestion();
-				}
-
-
-			}
-		});
+		History.newItem("game-" + getGameName(),false);
+		
+		this.handlerReg = History.addValueChangeHandler(this);
 		
 		this.playerID = playerID;
 
@@ -133,6 +112,18 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 		
 		if (this.numberOfPlayers > 1){
 			this.addChatView();
+		}
+	}
+	
+	/**
+	 * Action in case of history back event.
+	 * @param event
+	 */
+	@Override
+	public void onValueChange(ValueChangeEvent<String> event) {
+		if (event.getValue().matches("gameSelector.*")) {
+			this.handlerReg.removeHandler();
+			new GameCloseQuestion();
 		}
 	}
 	
@@ -283,6 +274,7 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator {
 	@Override
 	protected void restartGame()
 	{
+		// TODO Perhaps I have to initialize the coordinator here?
 		gts.init(getRootPanel());
 		gts.showCats();
 	}

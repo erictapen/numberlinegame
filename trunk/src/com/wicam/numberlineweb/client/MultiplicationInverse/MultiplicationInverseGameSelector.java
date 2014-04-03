@@ -1,43 +1,19 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.wicam.numberlineweb.client.AbstractGameSelector;
-import com.wicam.numberlineweb.client.GameCell;
-import com.wicam.numberlineweb.client.GameCoordinator;
-import com.wicam.numberlineweb.client.GameCreatePopupBox;
-import com.wicam.numberlineweb.client.GameJoinException;
-import com.wicam.numberlineweb.client.GameSelector;
-import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.HistoryChangeHandler;
 import com.wicam.numberlineweb.client.NumberLineWeb;
-import com.wicam.numberlineweb.client.TextPopupBox;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameSelector;
-import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
-import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 
-public class MultiplicationInverseGameSelector extends AbstractGameSelector {
+public class MultiplicationInverseGameSelector extends AbstractGameSelector implements ValueChangeHandler<String> {
+	
+	protected HandlerRegistration handlerReg;
 	
 	public MultiplicationInverseGameSelector(MultiplicationInverseGameCoordinator coordinator) {
 
@@ -49,29 +25,13 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector {
 
 	}
 
-
-	@SuppressWarnings("deprecation")
 	protected void init() {
 
 		RootPanel.get().add(motherPanel);
 		
-		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
+		this.handlerReg = History.addValueChangeHandler(this);
 
-			@Override
-			public void onHistoryChanged(String historyToken) {
-
-				if (historyToken.equals("")) {
-					// TODO Delete that.
-					System.out.println("get GTS");
-					coordinator.getRootPanel().clear();
-					coordinator.getGTS().init(coordinator.getRootPanel());
-
-				}
-			}
-		});
-
-		// Don't step back to the game selector but to the overview instead.
-//		History.newItem("gameSelector-" + coordinator.getGameName(),false);
+		History.newItem("gameSelector-" + coordinator.getGameName(),false);
 		
 		// Don't build the page.
 		/*
@@ -183,6 +143,18 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector {
 	}
 	
 	/**
+	 * Action in case of history back event.
+	 * @param event
+	 */
+	public void onValueChange(ValueChangeEvent<String> event) {
+		if (event.getValue().equals("")) {
+			this.handlerReg.removeHandler();
+			coordinator.getRootPanel().clear();
+			coordinator.getGTS().init(coordinator.getRootPanel());
+		}
+	}
+	
+	/**
 	 * Set the properties of this game.
 	 */
 	protected void addGameCreationHandler() {
@@ -192,7 +164,7 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector {
 		gameState.setNumberOfPlayers(1);
 		gameState.setNumberOfMaxNPCs(1);
 		// Set the number of rounds per subject.
-		gameState.setMaxRound(2);
+		gameState.setMaxRound(112);
 		MultiplicationInverseGameSelector.this.coordinator.openGame(gameState);
 	}
 	

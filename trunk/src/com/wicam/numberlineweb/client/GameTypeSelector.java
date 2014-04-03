@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -19,7 +21,7 @@ import com.wicam.numberlineweb.client.Resources.ImageResources;
  *
  */
 
-public class GameTypeSelector extends Composite{
+public class GameTypeSelector extends Composite implements ValueChangeHandler<String> {
 
 
 	protected FlowPanel p = new FlowPanel();
@@ -32,8 +34,9 @@ public class GameTypeSelector extends Composite{
 	private ArrayList<GameTypeSelectorItem> grammarGames = new ArrayList<GameTypeSelectorItem>();
 	
 	GameTypeSelectorItem backButton = new GameTypeSelectorItem();
+	
+	protected HandlerRegistration handlerReg;
 
-	@SuppressWarnings("deprecation")
 	public GameTypeSelector() {
 
 		resetContent();
@@ -49,7 +52,6 @@ public class GameTypeSelector extends Composite{
 			}
 		});
 		backButton.setImage(ImageResources.INSTANCE.pre_backButton().getSafeUri().asString());
-	
 
 		RootPanel.get().add(p);
 		this.initWidget(p);
@@ -71,29 +73,30 @@ public class GameTypeSelector extends Composite{
 
 	public void init(Panel panel) {
 		
-		
-		
-		HistoryChangeHandler.setHistoryListener(new HistoryListener() {
-
-			@Override
-			public void onHistoryChanged(String historyToken) {
-				if (historyToken.matches("gameSelector.*")) {
-					
-					System.out.println("Baam");
-
-					String gameName = historyToken.split("-")[1];
-					
-					getGameSelectorItemByGameName(gameName).start();
-
-				}
-
-			}
-
-		});
+		// TODO Check if that works.
+//		this.handlerReg = History.addValueChangeHandler(this);
 		
 		History.newItem("");
 		
 		panel.add(this);
+	}
+	
+	/**
+	 * Action in case of history back event.
+	 * @param event
+	 */
+	public void onValueChange(ValueChangeEvent<String> event) {
+		GWT.log("onValueChange fired in " + this.getClass());
+		GWT.log("Histroy token: " + event.getValue());
+		if (event.getValue().matches("gameSelector.*")) {
+			
+			// TODO Check if the value change handler has to be removed. 
+
+			String gameName = event.getValue().split("-")[1];
+
+			getGameSelectorItemByGameName(gameName).start();
+
+		}			
 	}
 
 	/**

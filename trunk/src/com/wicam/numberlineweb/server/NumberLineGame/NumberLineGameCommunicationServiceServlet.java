@@ -7,7 +7,6 @@ import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Player;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 
 /**
