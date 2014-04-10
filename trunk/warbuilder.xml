@@ -4,10 +4,10 @@
  
 	<target name="buildwar">
 		<war basedir="war" destfile="NumberLineWeb.war" webxml="war/WEB-INF/web.xml">
-			<exclude name="WEB-INF/**" />
+			<!--  <exclude name="WEB-INF/**" />
 			<webinf dir="war/WEB-INF/">
 				<include name="**/*.jar" />
-			</webinf>
+			</webinf>-->
 		</war>
 	</target>
  
