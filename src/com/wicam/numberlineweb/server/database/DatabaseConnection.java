@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class DatabaseConnection {
 	
 	public PreparedStatement prepareStmtReturnKeys(String stmt) throws SQLException{
 		
-		return conn.prepareStatement(stmt, PreparedStatement.RETURN_GENERATED_KEYS);
+		return conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 			
 	}
 	

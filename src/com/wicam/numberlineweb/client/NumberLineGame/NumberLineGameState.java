@@ -100,6 +100,7 @@ public class NumberLineGameState extends GameState implements Serializable{
 
 	}
 
+	@Override
 	public int addPlayer(String newName, int uid) {
 		int countSameName = 1;
 		for (Player player: players){
@@ -115,7 +116,7 @@ public class NumberLineGameState extends GameState implements Serializable{
 		}
 		NumberLineGamePlayer newPlayer = new NumberLineGamePlayer();
 		newPlayer.setName(newName);
-		((NumberLineGamePlayer) newPlayer).setColorId(players.size());
+		newPlayer.setColorId(players.size());
 		newPlayer.setUid(uid);
 		players.add(newPlayer);
 		return players.size();

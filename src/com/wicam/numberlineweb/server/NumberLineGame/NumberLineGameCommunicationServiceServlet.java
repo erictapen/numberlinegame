@@ -57,6 +57,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		System.out.println("NPC with ELO " + npcEloNumber + " was selected.");
 	}
 	
+	@Override
 	protected boolean isNPC(int playerId){
 		return npcIds.contains(playerId);
 	}
@@ -96,6 +97,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 	}
 	
 	
+	@Override
 	synchronized public NumberLineGameState clickedAt(String clicked) {
 		
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -299,8 +301,8 @@ public class NumberLineGameCommunicationServiceServlet extends
 						sumPoints += otherPlayer.getPoints();
 					}
 					
-					averageElo = (int) (sumEloValues / (double) playersCopy.size()); 
-					averagePoints = sumPoints / (double) playersCopy.size();
+					averageElo = (int) (sumEloValues / playersCopy.size()); 
+					averagePoints = sumPoints / playersCopy.size();
 					
 					dummyPlayer.setPoints((int) averagePoints);
 					
@@ -427,6 +429,7 @@ public class NumberLineGameCommunicationServiceServlet extends
 		t.schedule(new SetNumberLineGameStateTask(id, 6, this), 6000);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 		
 		NumberLineGameState numberlineGameState = (NumberLineGameState) gameState;

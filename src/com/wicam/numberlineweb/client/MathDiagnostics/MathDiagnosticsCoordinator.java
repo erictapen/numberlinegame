@@ -46,10 +46,11 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 
 	@Override
 	public void init() {
-		gameSelector = new MathDiagnosticsSelector((MathDiagnosticsCoordinator) this);
+		gameSelector = new MathDiagnosticsSelector(this);
 		rootPanel.add(gameSelector);
 
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}
@@ -158,6 +159,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	 */
 	@Override
 	protected void handleWaitingForPlayersState(){}
+	@Override
 	protected void handleAwaitingStartState(GameState gameState){}
 	
 	

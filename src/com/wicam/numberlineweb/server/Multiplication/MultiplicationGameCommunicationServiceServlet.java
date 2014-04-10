@@ -61,6 +61,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		npcs.add(new MultiplicationNPC(this, game.getId(), playerid));
 	}
 	
+	@Override
 	protected boolean isNPC(int playerId){
 		return npcIds.contains(playerId);
 	}
@@ -199,6 +200,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * @param clicked gameid:playerid:clickedAnswer
 	 * @return New MultiplicationGameState
 	 */
+	@Override
 	synchronized public MultiplicationGameState clickedAt(String clicked) {
 		
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -347,6 +349,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 		t.schedule(new MultiplicationGameStateTask(id, 6, this), 6000);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 		
 		MultiplicationGameState numberlineGameState = (MultiplicationGameState) gameState;

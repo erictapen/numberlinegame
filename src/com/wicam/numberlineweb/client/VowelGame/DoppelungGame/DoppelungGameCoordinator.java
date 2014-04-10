@@ -68,10 +68,11 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	@Override
 	public void init() {
-		gameSelector = new DoppelungGameSelector((DoppelungGameCoordinator) this);
+		gameSelector = new DoppelungGameSelector(this);
 		rootPanel.add(gameSelector);
 		
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}
@@ -672,6 +673,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 		t.cancel();
 
 		updateMyPositionTimer = new Timer() {
+			@Override
 			public void run() {
 				updateMyPosition();
 			}

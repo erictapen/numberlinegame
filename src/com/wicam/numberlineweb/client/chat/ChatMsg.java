@@ -58,6 +58,7 @@ public class ChatMsg implements IsSerializable{
 		return gameid;
 	}
 
+	@Override
 	public String toString() {
 		return "From: " + from + "(" + Integer.toString(gameid) + ") Msg:" + msg; 
 	}

@@ -37,7 +37,7 @@ public class WordFamilyTextBox extends Label {
 		this.setText(text);
 		this.setVisible(true);
 		this.state = UPDATE_STEPS;
-		this.t.scheduleRepeating((int)(duration/UPDATE_STEPS));
+		this.t.scheduleRepeating(duration/UPDATE_STEPS);
 	}
 	
 	public void updateStyle() {

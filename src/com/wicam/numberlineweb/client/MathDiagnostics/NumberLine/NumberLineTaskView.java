@@ -48,6 +48,7 @@ public class NumberLineTaskView extends MathDiagnosticsView implements MathDiagn
 	 * mouse handling
 	 */
 
+	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
 		NumberLineTaskController mouseHandler = (NumberLineTaskController) gameController;

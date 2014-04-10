@@ -45,6 +45,7 @@ public abstract class Player implements IsSerializable, Comparable<Player>{
 	public boolean hasLeftGame() {
 		return leftGame;
 	}
+	@Override
 	public int compareTo(Player p) {
 		return p.getPoints() - this.getPoints();
 	}

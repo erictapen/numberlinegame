@@ -51,6 +51,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		this.internalName=internalName;
 	}
 
+	@Override
 	public ArrayList<GameState> getOpenGames() {
 		return openGames;		
 	}
@@ -114,6 +115,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * 
 	 */
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public String joinGame(String ids) throws GameJoinException {
 
@@ -260,6 +262,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * @return
 	 */
 
+	@Override
 	public GameState getGameById(int i) {
 
 		Iterator<GameState> it = openGames.iterator();
@@ -485,6 +488,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	/**
 	 * Send game states to users
 	 */
+	@Override
 	public GameState update(String ids) {
 
 
@@ -516,6 +520,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		}
 	}
 
+	@Override
 	synchronized public boolean updateReadyness(String ids) {
 
 		int gameid = Integer.parseInt(ids.split(":")[0]);
@@ -554,6 +559,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		return true;
 	}
 	
+	@Override
 	synchronized public boolean loggingOn(boolean b){
 		if(b)
 			GameLogger.loggingActive = LoggingActive.ON;
@@ -578,6 +584,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	}
 
+	@Override
 	public boolean leaveGame(String ids){
 
 		int gameid = Integer.parseInt(ids.split(":")[0]);

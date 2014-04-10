@@ -51,6 +51,7 @@ public class WordStemGameCommunicationServiceServlet extends
 		npcs.add(new WordStemNPC(this, game.getId(), playerid));
 	}
 
+	@Override
 	protected boolean isNPC(int playerId) {
 		return npcIds.contains(playerId);
 	}
@@ -176,6 +177,7 @@ public class WordStemGameCommunicationServiceServlet extends
 	 *            gameid:playerid:cickedValue:clickedID:word/stem
 	 * @return New WordStemGameState
 	 */
+	@Override
 	synchronized public WordStemGameState clickedAt(String clicked) {
 
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -362,6 +364,7 @@ public class WordStemGameCommunicationServiceServlet extends
 		t.schedule(new WordStemGameStateTask(id, 6, this), 6000);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 
 		WordStemGameState numberlineGameState = (WordStemGameState) gameState;

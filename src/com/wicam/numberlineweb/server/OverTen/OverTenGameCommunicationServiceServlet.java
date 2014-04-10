@@ -50,6 +50,7 @@ public class OverTenGameCommunicationServiceServlet extends
 		this.npcs.add(new OverTenNPC(this, game.getId(), playerid));
 	}
 
+	@Override
 	protected boolean isNPC(int playerId) {
 		return npcIds.contains(playerId);
 	}
@@ -217,6 +218,7 @@ public class OverTenGameCommunicationServiceServlet extends
 	 *            gameid:playerid:clickedAnswer
 	 * @return New OverTenGameState
 	 */
+	@Override
 	synchronized public OverTenGameState clickedAt(String clicked) {
 
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -437,6 +439,7 @@ public class OverTenGameCommunicationServiceServlet extends
 		t.schedule(new OverTenGameStateTask(id, 6, this), 6000);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 
 		OverTenGameState numberlineGameState = (OverTenGameState) gameState;

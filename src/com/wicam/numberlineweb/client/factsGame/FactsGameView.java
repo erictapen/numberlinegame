@@ -40,6 +40,7 @@ public class FactsGameView extends GameView {
 	 * mouse handling
 	 */
 
+	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
 		if (controller != null) {

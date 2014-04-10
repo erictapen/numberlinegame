@@ -38,6 +38,7 @@ public class ChatCoordinator {
 		open=true;
 
 		Timer t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}

@@ -36,12 +36,13 @@ public class NumberLineWeb implements EntryPoint {
 	
 	// TODO Switch that back to -1 before going live in server.
 	// Just for locale testing set the USERID to 2.
-//	public static int USERID = -1;
-	public static int USERID = 2;
+	public static int USERID = -1;
+//	public static int USERID = 2;
 	
 	/**
 	 * Everything starts here...
 	 */
+	@Override
 	public void onModuleLoad() {
 		
 		if (Window.Location.getParameter("embedded") != null) {
@@ -201,7 +202,7 @@ public class NumberLineWeb implements EntryPoint {
 				GWT.log("gurr");
 
 				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
-				coordinator = new MultiplicationInverseGameCoordinator((MultiplicationInverseGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

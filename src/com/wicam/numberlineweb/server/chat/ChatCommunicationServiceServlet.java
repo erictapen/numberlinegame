@@ -16,6 +16,7 @@ public class ChatCommunicationServiceServlet extends CustomRemoteServiceServlet 
 
 	ArrayList<ChatMsg> chatMsgs = new ArrayList<ChatMsg>();
 	
+	@Override
 	public boolean sendChatMsg(ChatMsg msg) {
 
 
@@ -46,6 +47,7 @@ public class ChatCommunicationServiceServlet extends CustomRemoteServiceServlet 
 	}
 
 
+	@Override
 	public ChatMsg[] getNewChatMsgs(String ids) {
 
 		String uname = ids.split(":")[1];

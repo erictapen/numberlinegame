@@ -11,21 +11,25 @@ public class OverTenCalculation implements IsSerializable {
 	
 	public enum Sign implements IsSerializable{
 		ADD {
+			@Override
 			public String toString() {
 				return "+";
 			}
 		},
 		SUB {
+			@Override
 			public String toString() {
 				return "-";
 			}
 		},
 		MULT {
+			@Override
 			public String toString() {
 				return "x";
 			}
 		},
 		DIV {
+			@Override
 			public String toString() {
 				return "÷";
 			}

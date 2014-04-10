@@ -34,12 +34,14 @@ public class WordFamilyGameCoordinator extends GameCoordinator {
 	/**
 	 * Initializes the coordinator
 	 */
+	@Override
 	public void init() {
 
-		gameSelector = new WordFamilyGameSelector((WordFamilyGameCoordinator) this);
+		gameSelector = new WordFamilyGameSelector(this);
 		rootPanel.add(gameSelector);
 
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}
@@ -60,6 +62,7 @@ public class WordFamilyGameCoordinator extends GameCoordinator {
 	 * Open a game name 'name'. Call back will get state of opened game
 	 * @param name
 	 */
+	@Override
 	public void openGame(GameState gameState) {
 		
 		GWT.log("opening! in WordFamilyGameCoord");
@@ -80,6 +83,7 @@ public class WordFamilyGameCoordinator extends GameCoordinator {
 	 * @param playerID
 	 * @param gameID
 	 */
+	@Override
 	protected void joinedGame(int playerID, int gameID) {
 
 		super.joinedGame(playerID, gameID);
@@ -114,6 +118,7 @@ public class WordFamilyGameCoordinator extends GameCoordinator {
 	 * Called after game state was received.
 	 * @param gameState The GameState to update
 	 */
+	@Override
 	protected void updateGame(GameState gameState) {
 		super.updateGame(gameState);
 

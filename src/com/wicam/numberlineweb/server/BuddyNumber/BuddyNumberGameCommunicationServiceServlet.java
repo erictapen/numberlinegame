@@ -49,6 +49,7 @@ public class BuddyNumberGameCommunicationServiceServlet extends
 		npcs.add(new BuddyNumberNPC(this, game.getId(), playerid));
 	}
 
+	@Override
 	protected boolean isNPC(int playerId) {
 		return npcIds.contains(playerId);
 	}
@@ -146,6 +147,7 @@ public class BuddyNumberGameCommunicationServiceServlet extends
 	 *            gameid:playerid:clickedAnswer
 	 * @return New BuddyNumberGameState
 	 */
+	@Override
 	synchronized public BuddyNumberGameState clickedAt(String clicked) {
 
 		int gameid = Integer.parseInt(clicked.split(":")[0]);
@@ -350,6 +352,7 @@ public class BuddyNumberGameCommunicationServiceServlet extends
 		t.schedule(new BuddyNumberGameStateTask(id, 6, this), 6000);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 
 		BuddyNumberGameState buddyGameState = (BuddyNumberGameState) gameState;

@@ -46,12 +46,14 @@ public class GameTypeSelectorItem extends HTML{
 		builtHTML();
 	}
 
+	@Override
 	public void setTitle(String title) {
 
 		this.title=title;
 		builtHTML();
 	}
 	
+	@Override
 	public String getTitle() {
 
 		return title;

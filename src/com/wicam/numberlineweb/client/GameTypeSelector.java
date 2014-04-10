@@ -85,6 +85,7 @@ public class GameTypeSelector extends Composite implements ValueChangeHandler<St
 	 * Action in case of history back event.
 	 * @param event
 	 */
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		GWT.log("onValueChange fired in " + this.getClass());
 		GWT.log("Histroy token: " + event.getValue());

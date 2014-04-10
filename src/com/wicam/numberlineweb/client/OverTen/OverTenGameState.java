@@ -196,6 +196,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 * @param uid The new player's ID
 	 * @return Returns the new number of players
 	 */
+	@Override
 	public int addPlayer(String newName, int uid) {
 		int countSameName = 1;
 		for (Player player: players){
@@ -211,7 +212,7 @@ public class OverTenGameState extends GameState implements Serializable{
 		}
 		OverTenPlayer newPlayer = new OverTenPlayer();
 		newPlayer.setName(newName);
-		((OverTenPlayer) newPlayer).setColorId(players.size());
+		newPlayer.setColorId(players.size());
 		newPlayer.setUid(uid);
 		players.add(newPlayer);
 		return players.size();

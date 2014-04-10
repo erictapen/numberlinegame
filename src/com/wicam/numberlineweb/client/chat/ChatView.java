@@ -65,7 +65,7 @@ public class ChatView extends Composite{
 		sendButton.setHeight("106px");
 		sendButton.setText("Senden");
 
-		sendButton.addClickHandler((ClickHandler) c);
+		sendButton.addClickHandler(c);
 
 		motherPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		motherPanel.setHeight("110px");
