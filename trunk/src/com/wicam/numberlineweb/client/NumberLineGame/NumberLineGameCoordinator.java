@@ -33,12 +33,14 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	 * Initializes the coordinator
 	 */
 
+	@Override
 	public void init() {
 
-		gameSelector = new NumberLineGameSelector((NumberLineGameCoordinator) this);
+		gameSelector = new NumberLineGameSelector(this);
 		rootPanel.add(gameSelector);
 
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}
@@ -58,6 +60,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	 * @param name
 	 */
 
+	@Override
 	public void openGame(GameState gameState) {
 		
 		GWT.log("opening!");
@@ -77,6 +80,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	 * @param gameID
 	 */
 
+	@Override
 	protected void joinedGame(int playerID, int gameID) {
 
 		super.joinedGame(playerID, gameID);
@@ -110,6 +114,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	 * @param g
 	 */
 
+	@Override
 	protected void updateGame(GameState gameState) {
 		super.updateGame(gameState);
 

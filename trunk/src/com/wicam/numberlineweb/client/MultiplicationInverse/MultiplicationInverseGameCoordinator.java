@@ -29,6 +29,7 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 	/**
 	 * returns the name of the game
 	 */
+	@Override
 	public String getGameName() {
 
 		return "MultplicationInverse";
@@ -53,14 +54,16 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 	/**
 	 * Initializes the coordinator
 	 */
+	@Override
 	public void init() {
 		
 		// Don't show the game selector page, but precede to the game description instead.
-		gameSelector = new MultiplicationInverseGameSelector((MultiplicationInverseGameCoordinator) this);
+		gameSelector = new MultiplicationInverseGameSelector(this);
 //		rootPanel.add(gameSelector);
 		
 
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}
@@ -149,6 +152,7 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 	 * Called after game state was received.
 	 * @param gameState The GameState to update
 	 */
+	@Override
 	protected void updateGame(GameState gameState) {
 //		super.updateGame(gameState);
 		

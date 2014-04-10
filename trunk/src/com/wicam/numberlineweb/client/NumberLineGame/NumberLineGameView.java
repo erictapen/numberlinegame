@@ -188,6 +188,7 @@ public class NumberLineGameView extends GameView  {
 	 * mouse handling
 	 */
 
+	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
 		NumberLineController mouseHandler = (NumberLineController) gameController;

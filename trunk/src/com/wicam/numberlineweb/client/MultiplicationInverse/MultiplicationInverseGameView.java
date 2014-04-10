@@ -131,7 +131,7 @@ public class MultiplicationInverseGameView extends GameView  {
 	}
 	
 	public void setTaskText(String task) {
-		((MultiplicationInverseView) p).setTaskText(task);
+		p.setTaskText(task);
 	}
 
 	/**

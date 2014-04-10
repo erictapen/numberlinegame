@@ -50,6 +50,7 @@ public class NumberComparisonView extends MathDiagnosticsView {
 		}
 	}
 	
+	@Override
 	public void setExplanationText(){
 		if (hasKeyboard){
 			explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Zahlenvergleich - Beschreibung</b></div>" +
@@ -71,6 +72,7 @@ public class NumberComparisonView extends MathDiagnosticsView {
 		}
 	}
 
+	@Override
 	public void showItem (isItem item){
 		
 		// show item

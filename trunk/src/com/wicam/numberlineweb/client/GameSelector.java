@@ -1,6 +1,5 @@
 package com.wicam.numberlineweb.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -136,6 +135,7 @@ public abstract class GameSelector extends AbstractGameSelector implements Value
 
 		t = new Timer() {
 
+			@Override
 			public void run() {
 
 				coordinator.refreshGameList();
@@ -151,6 +151,7 @@ public abstract class GameSelector extends AbstractGameSelector implements Value
 	 * Action in case of history back event.
 	 * @param event
 	 */
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		if (event.getValue().equals("")) {
 			this.handlerReg.removeHandler();

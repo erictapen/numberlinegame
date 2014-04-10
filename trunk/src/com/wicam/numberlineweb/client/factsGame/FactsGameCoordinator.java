@@ -21,10 +21,11 @@ public class FactsGameCoordinator extends GameCoordinator {
 
 	@Override
 	public void init() {
-		gameSelector = new FactsGameSelector((FactsGameCoordinator) this);
+		gameSelector = new FactsGameSelector(this);
 		rootPanel.add(gameSelector);
 
 		t = new Timer() {
+			@Override
 			public void run() {
 				update();
 			}

@@ -71,6 +71,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		return retGameState;
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 		
 		MultiplicationInverseGameState numberlineGameState = (MultiplicationInverseGameState) gameState;
@@ -416,6 +417,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		npcs.add(new MultiplicationInverseNPC(this, game.getId(), playerid));
 	}
 	
+	@Override
 	protected boolean isNPC(int playerId){
 		return npcIds.contains(playerId);
 	}	
@@ -488,6 +490,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @param clicked gameid:playerid:clickedAnswer
 	 * @return New MultiplicationGameState
 	 */
+	@Override
 	synchronized public MultiplicationInverseGameState clickedAt(String clicked) {
 		
 		int gameid = Integer.parseInt(clicked.split(":")[0]);

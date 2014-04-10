@@ -35,6 +35,7 @@ public abstract class AbstractGameSelector extends Composite {
 	 */
 
 	protected ProvidesKey<GameState> keyProvider = new ProvidesKey<GameState>() {
+		@Override
 		public Object getKey(GameState game) {
 
 			return (game == null) ? null : game.getId();

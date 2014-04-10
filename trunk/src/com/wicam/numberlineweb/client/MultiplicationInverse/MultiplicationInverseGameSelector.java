@@ -1,6 +1,5 @@
 package com.wicam.numberlineweb.client.MultiplicationInverse;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -131,6 +130,7 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector impl
 
 		t = new Timer() {
 
+			@Override
 			public void run() {
 
 				coordinator.refreshGameList();
@@ -146,6 +146,7 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector impl
 	 * Action in case of history back event.
 	 * @param event
 	 */
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		if (event.getValue().equals("")) {
 			this.handlerReg.removeHandler();
@@ -157,6 +158,7 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector impl
 	/**
 	 * Set the properties of this game.
 	 */
+	@Override
 	protected void addGameCreationHandler() {
 		// Do not show a popup.
 		MultiplicationInverseGameState gameState = new MultiplicationInverseGameState();
@@ -168,6 +170,7 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector impl
 		MultiplicationInverseGameSelector.this.coordinator.openGame(gameState);
 	}
 	
+	@Override
 	public void joinGame() {
 
 		if (this.getSelectedGameId() < 0) return;

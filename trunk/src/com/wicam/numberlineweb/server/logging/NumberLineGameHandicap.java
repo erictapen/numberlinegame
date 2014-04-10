@@ -6,6 +6,7 @@ import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameState;
 
 public class NumberLineGameHandicap implements IHandicap{
 	
+	@Override
 	public void adjustGameSetting(int eloValue, GameState gameState) {
 		NumberLineGameState numberLineGameState = (NumberLineGameState) gameState;
 		

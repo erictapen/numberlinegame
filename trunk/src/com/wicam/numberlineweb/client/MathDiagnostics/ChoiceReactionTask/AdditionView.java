@@ -8,6 +8,7 @@ public class AdditionView extends ChoiceReactionTaskView{
 		super(numberOfPlayers, gameController);
 	}
 	
+	@Override
 	public void setExplanationText(){
 		if (hasKeyboard){
 			explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Addition - Beschreibung</b></div>" +

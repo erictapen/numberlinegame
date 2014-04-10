@@ -53,6 +53,7 @@ public abstract class VerificationTaskView extends MathDiagnosticsView {
 		}
 	}
 
+	@Override
 	public void showItem (isItem item){
 		
 		// show item

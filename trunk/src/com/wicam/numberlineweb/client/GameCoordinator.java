@@ -175,6 +175,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 * Action in case of history back event.
 	 * @param event
 	 */
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		if (event.getValue().matches("gameSelector.*")) {
 			this.handlerReg.removeHandler();
@@ -391,7 +392,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 
 		}
 
-		averageLatency = temp / ((long) lastTenLatencies.size());
+		averageLatency = temp / (lastTenLatencies.size());
 
 		RootPanel.get("ping_view").getElement().setInnerHTML("avg. latency: " + averageLatency + " ms");
 
@@ -565,12 +566,14 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 			ok.setWidth("60px");
 			no.setWidth("60px");
 			ok.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent event) {
 					GameCloseQuestion.this.hide();
 					handleCloseGameState();
 				}
 			});
 			no.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent event) {
 					History.newItem("game-" + getGameName(),false);
 					GWT.log(this.getClass() + " pushed new HistoryToken: " + History.getToken());
@@ -614,6 +617,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 			ok.setWidth("60px");
 
 			ok.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent event) {
 
 					PlayerLeftInfo.this.hide();

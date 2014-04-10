@@ -40,6 +40,7 @@ public class WordFamilyGameCommunicationServiceServlet extends
 
 	}
 
+	@Override
 	protected boolean isNPC(int playerId) {
 		return npcIds.contains(playerId);
 	}
@@ -99,6 +100,7 @@ public class WordFamilyGameCommunicationServiceServlet extends
 	 *            gameid:playerid:submittedValue
 	 * @return New WordFamilyGameState
 	 */
+	@Override
 	synchronized public WordFamilyGameState clickedAt(String clicked) {
 
 		if (clicked.split(":")[1].equals("cleared")) {
@@ -204,6 +206,7 @@ public class WordFamilyGameCommunicationServiceServlet extends
 		t.schedule(new WordFamilyGameStateTask(id, 42, this), 6500);
 	}
 
+	@Override
 	public String getGameProperties(GameState gameState) {
 
 		WordFamilyGameState numberlineGameState = (WordFamilyGameState) gameState;

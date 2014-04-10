@@ -29,6 +29,7 @@ public class AnimationTimer extends Timer {
 	/**
 	 * run every task in our task lists, remove tasks marked for deletion
 	 */
+	@Override
 	public void run() {
 
 		Iterator<AnimationTimerTask> it = tasks.iterator();

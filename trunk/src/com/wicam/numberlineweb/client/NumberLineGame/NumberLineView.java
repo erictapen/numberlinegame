@@ -137,6 +137,7 @@ public class NumberLineView extends AbsolutePanel {
 	 * mouse handling
 	 */
 
+	@Override
 	public void onBrowserEvent(Event event) {
 		super.onBrowserEvent(event);
 		if (mouseHandler != null) {

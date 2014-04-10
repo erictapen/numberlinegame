@@ -83,6 +83,7 @@ public class TextPopupBox extends DialogBox {
 		//this adds ok-functionality when pressing enter
 		text.addKeyDownHandler(new KeyDownHandler() {
 
+			@Override
 			public void onKeyDown(KeyDownEvent event) {
 
 				if (event.getNativeKeyCode() == 13)
