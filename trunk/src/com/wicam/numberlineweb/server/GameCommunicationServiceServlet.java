@@ -633,13 +633,19 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		return emptyGameTimeOutStates;
 	}
 
-	protected int getPlayerId(int gameid) {
+	protected int getPlayerId(int gameid) throws NullPointerException {
 
-
-
-		HttpServletRequest request = this.getThreadLocalRequest();
-
-		HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
+		// Check the idMap object not to be null and try to get it as often as
+		// necessary so that it won't be null.
+		HashMap<String,HashMap<Integer,Integer>> idMap = null;
+		while (idMap == null) {
+			HttpServletRequest request = this.getThreadLocalRequest();
+	
+			idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
+		}
+		
+		// Test if there is a table for the given internal name, e.g. the game name.
+		// assert (idMap.get(internalName) != null) : "internal name: " + internalName + ", gameid: " + gameid + "idMap:\n" + idMap;
 		return idMap.get(internalName).get(gameid);
 
 	}
@@ -648,6 +654,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 		HttpServletRequest request = this.getThreadLocalRequest();
 		
+		// TODO Does this method do its job in a deterministic fashion? What about the two null-checks? What if they don't become true?
 		if(request != null){
 
 			HashMap<String,HashMap<Integer,Integer>> idMap = (HashMap<String,HashMap<Integer,Integer>>) request.getSession().getAttribute("pids");
