@@ -16,6 +16,7 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.SetGameStateTask;
 import com.wicam.numberlineweb.server.logging.GameLogger;
 import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
 import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
@@ -93,6 +94,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @return The new MultiplicationGameState
 	 */
 	public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
+		
+		// TODO Make this method dependent on WHICH game wants to get new results.
+		// Currently the method assumes that there is only ONE game on the server at a time.
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
@@ -624,6 +628,31 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 					//"{\"handicap\" :" + userHandicapNormalized + "}", this.getClass().getName(), LogActionTrigger.USER);
 			}
 		}
+		
+	}
+	
+	@Override
+	public void endGame(int id) {
+
+		Timer t = new Timer("TimerEndGame", true);
+		
+		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
+		
+		this.gameId2Logger.get(id).updateGameProperties(id, this.getClass().getName(), gamePropertiesStr);
+		
+		this.gameId2Logger.get(id).log(id, System.currentTimeMillis(), LogActionType.GAME_ENDED, "", 
+				this.getClass().getName(), LogActionTrigger.APPLICATION);
+
+		this.writeLogToDatabase(id);
+		
+		this.terminateNPCTimers();
+		
+		// Reset the item list.
+		items = new ArrayList<MultiplicationInverseItem>();
+		setItems();
+		
+		// winner screen
+		t.schedule(new SetGameStateTask(id, 97, this), 6000);
 		
 	}
 	
