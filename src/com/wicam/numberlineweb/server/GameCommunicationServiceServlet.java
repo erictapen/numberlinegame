@@ -672,7 +672,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 //
 //	}
 	
-	private void writeLogToDatabase(int gameid) {
+	protected void writeLogToDatabase(int gameid) {
 		
 		GameState g = this.getGameById(gameid);
 		GameLogger logger = this.gameId2Logger.get(gameid);
