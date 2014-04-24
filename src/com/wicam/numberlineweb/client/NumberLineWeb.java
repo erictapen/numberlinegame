@@ -10,9 +10,33 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.wicam.numberlineweb.client.GameTypeSelector.GameType;
 import com.wicam.numberlineweb.client.Resources.ImageResources;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinator;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCoordinator;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCoordinator;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.WordStem.WordStemGameCoordinator;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCoordinator;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
+import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCoordinator;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCoordinator;
@@ -81,20 +105,20 @@ public class NumberLineWeb implements EntryPoint {
 	public void showGameTypeSelector() {
 		//boolean numberLineGame = false;
 
-		final AsyncCallback<Boolean> dummyCallback = new AsyncCallback<Boolean>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onSuccess(Boolean result) {
-
-
-			}
-
-		};
+//		final AsyncCallback<Boolean> dummyCallback = new AsyncCallback<Boolean>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//			}
+//
+//			@Override
+//			public void onSuccess(Boolean result) {
+//
+//
+//			}
+//
+//		};
 		
 		// add math games container
 		gts.addGame(GameType.CAT, "Mathespiele", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
@@ -107,62 +131,63 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// add grammar games container
-//		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-//				"Alle Spiele mit Wörtern", new GameItemStarter() {
-//			
-//			@Override
-//			public void run() {
-//				gts.showGrammar();
-//			}
-//		});
+		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Alle Spiele mit Wörtern", new GameItemStarter() {
+			
+			@Override
+			public void run() {
+				gts.showGrammar();
+			}
+		});
 		
 		//adds the numberlinegame
-//		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//
-//				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
-//				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 
 		//adds the doppelung game
-//		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-//				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//
-//				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
-//				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
+				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
-//		//adds the mathe game
-//		gts.addGame("Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//
-//				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
-//				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		//adds the mathe game
+		gts.addGame(GameType.MATH, "Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
+				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
-//		//adds the doppelung game
-//		gts.addGame("Dehnungspiel", "pre_dehnung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+		//adds the dehnung game
+		// TODO This game seems not to be working correctly.
+//		gts.addGame(GameType.GRAMMAR, "Dehnungspiel", "pre_dehnung.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 //
 //			@Override
 //			public void run() {
@@ -176,23 +201,6 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 		
 		//adds the Multiplication game
-//		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
-//				"Rechne schnell!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//				
-//				GWT.log("gurr");
-//
-//				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
-//				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
-		
-		//adds the inverse Multiplication game
 		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
 				"Rechne schnell!", new GameItemStarter() {
 
@@ -201,87 +209,104 @@ public class NumberLineWeb implements EntryPoint {
 				
 				GWT.log("gurr");
 
-				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
-				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
+				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();
 			}
-		});		
+		});
 		
-		
-		//adds the BuddyNumber game
-//		gts.addGame(GameType.MATH, "Partnerzahl", ImageResources.INSTANCE.pre_buddyNumber().getSafeUri().asString(), 
-//				"Kombiniere gut!", new GameItemStarter() {
+		//adds the inverse Multiplication game
+//		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+//				"Rechne schnell!", new GameItemStarter() {
 //
 //			@Override
 //			public void run() {
 //				
 //				GWT.log("gurr");
 //
-//				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
-//				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
+//				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
+//				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//
 //				gts.hide(RootPanel.get("game"));
 //				coordinator.init();
 //			}
-//		});
+//		});		
+		
+		
+		//adds the BuddyNumber game
+		gts.addGame(GameType.MATH, "Partnerzahl", ImageResources.INSTANCE.pre_buddyNumber().getSafeUri().asString(), 
+				"Kombiniere gut!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
+				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
 		
 		//adds the WordStem game
-//		gts.addGame(GameType.GRAMMAR, "Wortbausteine", ImageResources.INSTANCE.pre_wordstem().getSafeUri().asString(), 
-//				"Ordne zu!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//				
-//				GWT.log("gurr");
-//
-//				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
-//				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.GRAMMAR, "Wortbausteine", ImageResources.INSTANCE.pre_wordstem().getSafeUri().asString(), 
+				"Ordne zu!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
+				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
 		
 		//adds the OverTen game
-//		gts.addGame(GameType.MATH, "Über 10", ImageResources.INSTANCE.pre_overten().getSafeUri().asString(), 
-//				"Summiere auf!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//				
-//				GWT.log("gurr");
-//
-//				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
-//				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.MATH, "Über 10", ImageResources.INSTANCE.pre_overten().getSafeUri().asString(), 
+				"Summiere auf!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
+				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
 		//adds the WordFamily game
-//		gts.addGame(GameType.GRAMMAR, "Wortfamilien", ImageResources.INSTANCE.pre_wordfamily().getSafeUri().asString(), 
-//				"Merke dir viel!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//				
-//				GWT.log("gurr");
-//
-//				commService = (WordFamilyGameCommunicationServiceAsync) GWT.create(WordFamilyGameCommunicationService.class);
-//				coordinator = new WordFamilyGameCoordinator((WordFamilyGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.GRAMMAR, "Wortfamilien", ImageResources.INSTANCE.pre_wordfamily().getSafeUri().asString(), 
+				"Merke dir viel!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (WordFamilyGameCommunicationServiceAsync) GWT.create(WordFamilyGameCommunicationService.class);
+				coordinator = new WordFamilyGameCoordinator((WordFamilyGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 
 		
 		
