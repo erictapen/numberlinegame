@@ -126,7 +126,7 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 	public void onValueChange(ValueChangeEvent<String> event) {
 		if (event.getValue().matches("gameSelector.*")) {
 			this.handlerReg.removeHandler();
-			new GameCloseQuestion();
+			new GameCloseQuestion(this);
 		}
 	}
 	

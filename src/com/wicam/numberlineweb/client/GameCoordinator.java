@@ -179,7 +179,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	public void onValueChange(ValueChangeEvent<String> event) {
 		if (event.getValue().matches("gameSelector.*")) {
 			this.handlerReg.removeHandler();
-			new GameCloseQuestion();
+			new GameCloseQuestion(this);
 		}	
 	}
 
@@ -550,14 +550,15 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	};
 
 	protected class GameCloseQuestion extends DialogBox {
+		
+		GameCoordinator coord;
 
-		public GameCloseQuestion() {
+		public GameCloseQuestion(GameCoordinator coord) {
 			// Set the dialog box's caption.
 			setText("Möchtest du das Spiel wirklich verlassen?");
 
 			this.setAnimationEnabled(true);
-
-
+			this.coord = coord;
 
 			// DialogBox is a SimplePanel, so you have to set its widget property to
 			// whatever you want its contents to be.
@@ -577,8 +578,10 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 				public void onClick(ClickEvent event) {
 					History.newItem("game-" + getGameName(),false);
 					GWT.log(this.getClass() + " pushed new HistoryToken: " + History.getToken());
+					// The prior value change handler was removed when the user gave the "back" command,
+					// so add it again now.
+					History.addValueChangeHandler(GameCloseQuestion.this.coord);
 					GameCloseQuestion.this.hide();
-
 				}
 			});
 
