@@ -21,14 +21,14 @@ public class TimeOutCheckerTask extends TimerTask {
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 
 		checkPlayerTimeOut();
 		checkEmptyGameTimeout();
 
 	}
 
-	private void checkPlayerTimeOut() {
+	private synchronized void checkPlayerTimeOut() {
 		Iterator<TimeOutState> i = timeOutStates.iterator();
 
 		while (gameComm.timeOutListLocked()) {
@@ -60,7 +60,7 @@ public class TimeOutCheckerTask extends TimerTask {
 		gameComm.timeOutListUnLock();
 	}
 
-	private void checkEmptyGameTimeout() {
+	private synchronized void checkEmptyGameTimeout() {
 
 		Iterator<EmptyGameTimeOutState> i = emptyGameTimeOutStates.iterator();
 
