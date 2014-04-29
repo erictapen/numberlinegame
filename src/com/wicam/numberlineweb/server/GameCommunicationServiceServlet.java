@@ -52,12 +52,12 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	}
 
 	@Override
-	public ArrayList<GameState> getOpenGames() {
+	public synchronized ArrayList<GameState> getOpenGames() {
 		return openGames;		
 	}
 
 	@Override
-	public GameState openGame(GameState g) throws GameOpenException {
+	public synchronized GameState openGame(GameState g) throws GameOpenException {
 		// Allow only one game at a time being played on the server.
 //		System.out.println("Es ist gerade " + this.getOpenGames().size() + " Spiel offen.");
 		if (this.getOpenGames().size() > 0) {
@@ -86,7 +86,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		return g;
 	}
 
-	public void endGame(int id) {
+	public synchronized void endGame(int id) {
 
 		Timer t = new Timer("TimerEndGame", true);
 		
@@ -117,7 +117,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String joinGame(String ids) throws GameJoinException {
+	public synchronized String joinGame(String ids) throws GameJoinException {
 
 		String player = ids.split(":")[1];
 		int uid = -2;
@@ -250,9 +250,9 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	}
 
-	protected void addNPC(GameState game){}
+	protected synchronized void addNPC(GameState game){}
 
-	protected boolean isNPC(int playerId){
+	protected synchronized boolean isNPC(int playerId){
 		return false;
 	}
 
@@ -263,7 +263,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 */
 
 	@Override
-	public GameState getGameById(int i) {
+	public synchronized GameState getGameById(int i) {
 
 		Iterator<GameState> it = openGames.iterator();
 
@@ -285,7 +285,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * @param gameID
 	 */
 
-	public void setChanged(int gameID) {
+	public synchronized void setChanged(int gameID) {
 
 
 
@@ -314,7 +314,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * @param player
 	 */
 
-	public void setUpToDate(int id, int player) {
+	public synchronized void setUpToDate(int id, int player) {
 
 
 		Iterator<UpdateState> i = getUpdateStates().iterator();
@@ -337,7 +337,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * @return
 	 */
 
-	public boolean isUpToDate(int id, int player) {
+	public synchronized boolean isUpToDate(int id, int player) {
 
 
 
@@ -356,7 +356,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		return false;
 	}
 
-	protected void resetUpdateTimer(int player, int game) {
+	protected synchronized void resetUpdateTimer(int player, int game) {
 
 
 
@@ -386,7 +386,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	}
 
 
-	protected void removeGame(int gameid) {
+	protected synchronized void removeGame(int gameid) {
 
 
 		openGames.remove(getGameById(gameid));
@@ -446,25 +446,25 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		System.out.println("Open games: " + this.openGames.size());
 	}
 
-	boolean timeOutListLocked() {
+	synchronized boolean timeOutListLocked() {
 
 		return timeOutListLock;
 
 	}
 
-	void timeOutListLock() {
+	synchronized void timeOutListLock() {
 
 		timeOutListLock = true;
 
 	}
 
-	void timeOutListUnLock() {
+	synchronized void timeOutListUnLock() {
 
 		timeOutListLock = false;
 
 	}
 
-	void leavePlayer(int uid, int playerid, int gameid) {
+	synchronized void leavePlayer(int uid, int playerid, int gameid) {
 
 		if(uid != -2)
 			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
@@ -489,7 +489,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * Send game states to users
 	 */
 	@Override
-	public GameState update(String ids) {
+	public synchronized GameState update(String ids) {
 
 
 		final int id = Integer.parseInt(ids.split(":")[0]);
@@ -574,7 +574,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 * @param state
 	 */
 
-	public void setGameState(GameState g, int state) {
+	public synchronized void setGameState(GameState g, int state) {
 
 		if (g != null) {
 			
@@ -585,7 +585,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	}
 
 	@Override
-	public boolean leaveGame(String ids){
+	public synchronized boolean leaveGame(String ids){
 
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 		int playerid = getPlayerId(gameid);
@@ -594,7 +594,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	}
 
 
-	public boolean leaveGame(String ids, int playerid){
+	public synchronized boolean leaveGame(String ids, int playerid){
 
 		int gameid = Integer.parseInt(ids.split(":")[0]);
 
@@ -623,19 +623,19 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		return true;
 	}
 
-	public ArrayList<UpdateState> getUpdateStates() {
+	public synchronized ArrayList<UpdateState> getUpdateStates() {
 		return updateStates;
 	}
 
-	public ArrayList<TimeOutState> getTimeOutStates() {
+	public synchronized ArrayList<TimeOutState> getTimeOutStates() {
 		return timeOutStates;
 	}
 
-	public ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
+	public synchronized ArrayList<EmptyGameTimeOutState> getEmptyGameTimeOutStates() {
 		return emptyGameTimeOutStates;
 	}
 
-	protected int getPlayerId(int gameid) throws NullPointerException {
+	protected synchronized int getPlayerId(int gameid) throws NullPointerException {
 
 		// Check the idMap object not to be null and try to get it as often as
 		// necessary so that it won't be null.
@@ -652,7 +652,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	}
 
-	protected void removePlayerId(int gameid) {
+	protected synchronized void removePlayerId(int gameid) {
 
 		HttpServletRequest request = this.getThreadLocalRequest();
 		
@@ -674,7 +674,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 //
 //	}
 	
-	protected void writeLogToDatabase(int gameid) {
+	protected synchronized void writeLogToDatabase(int gameid) {
 		
 		GameState g = this.getGameById(gameid);
 		GameLogger logger = this.gameId2Logger.get(gameid);
@@ -688,7 +688,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 		
 	}
 	
-	protected void terminateNPCTimers() {
+	protected synchronized void terminateNPCTimers() {
 		
 		for (NPC npc : this.npcs)
 			npc.terminateTimer();
@@ -699,7 +699,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	//caused by Firefox not adding the X-GWT-PERMUTATION header 
 	//(see http://code.google.com/p/gwteventservice/issues/detail?id=30).
 	@Override
-	protected void checkPermutationStrongName() throws SecurityException {
+	protected synchronized void checkPermutationStrongName() throws SecurityException {
 	    return;
 	}
 
