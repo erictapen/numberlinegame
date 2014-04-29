@@ -3,6 +3,7 @@ package com.wicam.numberlineweb.server.MultiplicationInverse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	// The string used as multiplication sign
 	protected String sign = " x ";
 	
-	protected ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();
+	protected Map<Integer, ArrayList<MultiplicationInverseItem>> gameId2Items = new HashMap<Integer, ArrayList<MultiplicationInverseItem>>();
 	
 	protected int numberOfPresentationsPerItem;
 	
@@ -43,9 +44,6 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		super("multiplication inverse");
 		//this.handicapAdjustment = new NumberLineGameHandicap();
-		
-		// Set the items.
-		setItems();
 		
 		// Set the number of presentations of each item.
 		numberOfPresentationsPerItem = 7;
@@ -67,6 +65,10 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		GWT.log("before opening game");
 		GameState retGameState = super.openGame(g);
 		GWT.log("after opening game");
+		
+		// Reset the item list.
+		setItems(retGameState.getId());
+		
 		newResults((MultiplicationInverseGameState) g);
 		
 		return retGameState;
@@ -95,15 +97,12 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 */
 	public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
 		
-		// TODO Make this method dependent on WHICH game wants to get new results.
-		// Currently the method assumes that there is only ONE game on the server at a time.
-		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
 		GameLogger logger = this.gameId2Logger.get(state.getId());
 		
 		// Get next random item.
-		MultiplicationInverseItem item = nextRandomItem();
+		MultiplicationInverseItem item = nextRandomItem(state.getId());
 		assert item != null : "There is no item left!";
 		// Log the current round and item.
 		System.out.println("Round " + state.getRound() + ", " + item);
@@ -145,7 +144,10 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * To generate the Java code use the script itemsToJavaCode.awk and
 	 * a csv file with the items.
 	 */
-	private void setItems() {
+	private void setItems(int currentId) {
+		
+		ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();
+		
 		// The complex items.
 		MultiplicationInverseItem item1 = new MultiplicationInverseItem(13, 4, 52, false);
 		item1.addPossibleAnswer(56);
@@ -387,6 +389,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item16.addPossibleAnswer(23);
 		item16.addPossibleAnswer(32);
 		items.add(item16);
+		
+		this.gameId2Items.put(currentId, items);
 	}
 	
 	/**
@@ -395,22 +399,43 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * with a counter less than the numberOfPresentationsPerItem.
 	 * @return
 	 */
-	private MultiplicationInverseItem nextRandomItem() {
+	private MultiplicationInverseItem nextRandomItem(int gameId) {
 		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
+		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
+		
 		// Find the items that havn't reached the max number of presentations.
 		for (MultiplicationInverseItem item : items) {
 			if (item.getNumberOfPresentations() < numberOfPresentationsPerItem) {
 				availableItems.add(item);
 			}
 		}
-		if (availableItems.isEmpty()) {
-			return null;
-		}
 		// Choose a random item of the remaining ones.
 		Collections.shuffle(availableItems);
-		MultiplicationInverseItem item = availableItems.get(0);
-		item.increaseNumberOfPresentations();
+		MultiplicationInverseItem item = null;
+		if (!availableItems.isEmpty()){
+			item = availableItems.get(0);
+			item.increaseNumberOfPresentations();
+		}
 		return item;
+	}
+	
+	/**
+	 * Test if items are left
+	 * @return boolean value whether items are left
+	 */
+	private boolean itemListIsEmpty(int gameId) {
+		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
+		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
+		
+		// Find the items that havn't reached the max number of presentations.
+		for (MultiplicationInverseItem item : items) {
+			System.out.println(item.getFirstFactor() + " x " + item.getFirstFactor() + ": " + item.getNumberOfPresentations());
+			if (item.getNumberOfPresentations() < numberOfPresentationsPerItem) {
+				availableItems.add(item);
+			}
+		}
+		System.out.println("availableItems: " + availableItems.size());
+		return availableItems.isEmpty();
 	}
 	
 	@Override
@@ -551,7 +576,10 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 			
 			this.setGameState(this.getGameById(gameid),5);
 			
-			if (g.getRound() >= g.getMaxRound()){
+			//TODO: change to test whether items are left
+			boolean isEmpty = itemListIsEmpty(gameid);
+			
+			if (isEmpty){
 				this.endGame(gameid);
 				this.handicapAction(gameid);
 			}
@@ -647,13 +675,16 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		this.terminateNPCTimers();
 		
-		// Reset the item list.
-		items = new ArrayList<MultiplicationInverseItem>();
-		setItems();
-		
 		// winner screen
 		t.schedule(new SetGameStateTask(id, 97, this), 6000);
 		
+	}
+	
+	@Override
+	protected void removeGame(int gameid) {
+		super.removeGame(gameid);
+		// remove items
+		this.gameId2Items.remove(gameid);
 	}
 	
 }
