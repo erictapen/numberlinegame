@@ -466,22 +466,26 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	synchronized void leavePlayer(int uid, int playerid, int gameid) {
 
+		System.out.println("leave player: uid = " + uid + ", playerid = " + playerid + ", gameid = " + gameid);
 		if(uid != -2)
 			this.gameId2Logger.get(gameid).log(gameid, uid, System.currentTimeMillis(), LogActionType.LEFT_GAME, 
 					"", this.getClass().getName(), LogActionTrigger.USER);
 
-		setGameState(getGameById(gameid),99);
-		getGameById(gameid).setHasLeftGame(playerid,true);
-
-		if ((getGameById(gameid).getPlayerCount()-getGameById(gameid).getNumberOfMaxNPCs()) <= 0) {
-
-			removeGame(gameid);
-
-
-		}
-
-
-		this.setChanged(gameid);
+//		setGameState(getGameById(gameid),99);
+//		getGameById(gameid).setHasLeftGame(playerid,true);
+//
+//		System.out.println("players left: " + (getGameById(gameid).getPlayerCount()));
+//		System.out.println("NPCs left: " + getGameById(gameid).getNumberOfMaxNPCs());
+//		
+//		if ((getGameById(gameid).getPlayerCount()-getGameById(gameid).getNumberOfMaxNPCs()) <= 0) {
+//
+//			removeGame(gameid);
+//
+//		}
+//
+//		this.setChanged(gameid);
+		
+		leaveGame(gameid + ":",playerid);
 		
 	}
 
