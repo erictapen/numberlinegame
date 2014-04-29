@@ -429,7 +429,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		// Find the items that havn't reached the max number of presentations.
 		for (MultiplicationInverseItem item : items) {
-			System.out.println(item.getFirstFactor() + " x " + item.getFirstFactor() + ": " + item.getNumberOfPresentations());
+			System.out.println(item.getFirstFactor() + " x " + item.getSecondFactor() + ": " + item.getNumberOfPresentations());
 			if (item.getNumberOfPresentations() < numberOfPresentationsPerItem) {
 				availableItems.add(item);
 			}
