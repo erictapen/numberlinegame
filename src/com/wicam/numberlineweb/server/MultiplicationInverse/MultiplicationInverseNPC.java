@@ -72,28 +72,28 @@ public class MultiplicationInverseNPC extends NPC{
 	 * Set the response times of the trials.
 	 */
 	private void setResponseTimes() {
-		simpleResponseTimes.add(3000);
-		simpleResponseTimes.add(3400);
-		simpleResponseTimes.add(3800);
-		simpleResponseTimes.add(4200);
+		simpleResponseTimes.add(4000);
 		simpleResponseTimes.add(4600);
-		simpleResponseTimes.add(5000);
-		simpleResponseTimes.add(5400);
+		simpleResponseTimes.add(5200);
 		simpleResponseTimes.add(5800);
-		simpleResponseTimes.add(6200);
-		simpleResponseTimes.add(6600);
+		simpleResponseTimes.add(6400);
 		simpleResponseTimes.add(7000);
-		complexResponseTimes.add(8500);
-		complexResponseTimes.add(10100);
-		complexResponseTimes.add(11700);
-		complexResponseTimes.add(13300);
-		complexResponseTimes.add(14900);
-		complexResponseTimes.add(16500);
-		complexResponseTimes.add(18100);
-		complexResponseTimes.add(19700);
-		complexResponseTimes.add(21300);
-		complexResponseTimes.add(22900);
-		complexResponseTimes.add(24500);
+		simpleResponseTimes.add(7600);
+		simpleResponseTimes.add(8200);
+		simpleResponseTimes.add(8800);
+		simpleResponseTimes.add(9400);
+		simpleResponseTimes.add(10000);
+		complexResponseTimes.add(10000);
+		complexResponseTimes.add(12000);
+		complexResponseTimes.add(14000);
+		complexResponseTimes.add(16000);
+		complexResponseTimes.add(18000);
+		complexResponseTimes.add(20000);
+		complexResponseTimes.add(22000);
+		complexResponseTimes.add(24000);
+		complexResponseTimes.add(26000);
+		complexResponseTimes.add(28000);
+		complexResponseTimes.add(30000);
 	}
 
 

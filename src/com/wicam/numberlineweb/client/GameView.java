@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Composite;
 
 public abstract class GameView extends Composite {
 
-	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	public final static String[] playerColors = {"blue", "red", "orange", "Magenta", "DarkKhaki"};
 	protected int numberOfPlayers;
 	protected GameController gameController;
 	

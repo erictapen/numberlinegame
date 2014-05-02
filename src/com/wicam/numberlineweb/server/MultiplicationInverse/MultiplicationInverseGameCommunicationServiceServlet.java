@@ -32,7 +32,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	private static final long serialVersionUID = -7757604373406891094L;
 	protected ArrayList<Integer> npcIds = new ArrayList<Integer>();
 	
-	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	public final static String[] playerColors = {"blue", "red", "orange", "Magenta", "DarkKhaki"};
 	// The string used as multiplication sign
 	protected String sign = " x ";
 	
