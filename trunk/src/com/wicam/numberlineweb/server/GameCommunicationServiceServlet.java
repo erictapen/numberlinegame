@@ -619,8 +619,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 //		System.out.println("all left: " + allLeft);
 		
 		// remove game if all players left
-		// TODO This might be buggy if not all the players leave the game by ending it but by hitting
-		// the back-button of their browser?
 		if(allLeft)
 			this.removeGame(gameid);
 
