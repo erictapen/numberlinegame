@@ -17,6 +17,7 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService;
 import com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
+import com.wicam.numberlineweb.server.NPC;
 import com.wicam.numberlineweb.server.SetGameStateTask;
 import com.wicam.numberlineweb.server.logging.GameLogger;
 import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
@@ -584,7 +585,12 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 				this.handicapAction(gameid);
 			}
 			else {
-				this.showNextItem(gameid);			
+				this.showNextItem(gameid);	
+				// ensure that makeClick is set to false
+				for (NPC npc :this.npcs)
+				{
+					((MultiplicationInverseNPC)npc).makeClick = false;
+				}
 			}
 			
 		}

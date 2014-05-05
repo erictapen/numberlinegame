@@ -157,12 +157,12 @@ public class MultiplicationInverseNPC extends NPC{
 //									time = 5000;
 								// Find a random response time.
 								time = getRandomResponseTime(game.isSimpleTask());
-//								System.out.println("Time set to: " + time);
-//								System.out.println("Task set: " + System.currentTimeMillis());
+								System.out.println("Time set to: " + time);
+								System.out.println("Task set: " + System.currentTimeMillis());
 								makeClick = true;
 							}
 							else{
-//								System.out.println("NPC clicks: " + System.currentTimeMillis());
+								System.out.println("NPC clicks: " + System.currentTimeMillis());
 								makeClick = false;
 								String answer;
 								if (new Random().nextDouble() < skill) { 
@@ -181,6 +181,7 @@ public class MultiplicationInverseNPC extends NPC{
 						makeClick = false;
 					break;
 					case 6:
+						makeClick = false;
 						if (!game.isPlayerReady(playerid))
 							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid),playerid);
 					break;
