@@ -38,8 +38,20 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	protected String sign = " x ";
 	
 	protected Map<Integer, ArrayList<MultiplicationInverseItem>> gameId2Items = new HashMap<Integer, ArrayList<MultiplicationInverseItem>>();
-	
+	/**
+	 * Store the maximum number of presentations of an item.
+	 * This is also the number of trials an item is used for.
+	 */
 	protected int numberOfPresentationsPerItem;
+	/**
+	 * Here the pseudo-random presentation round is stored.
+	 */
+	protected int pseudoRandomPresentationRound;
+	/**
+	 * If true present the items in a pseudo random ordering (see nextPseudoRandomItem()).
+	 * If false, use completely random item presentation (see nextRandomItem()).
+	 */
+	protected boolean usePseudoRandomItemOrdering;
 	
 	public MultiplicationInverseGameCommunicationServiceServlet() {
 		
@@ -48,6 +60,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		// Set the number of presentations of each item.
 		numberOfPresentationsPerItem = 7;
+		pseudoRandomPresentationRound = 1;
+		
+		usePseudoRandomItemOrdering = true;
 		
 //		// Test if the items are produced 112 times each 7 times.
 //		MultiplicationInverseItem item = nextRandomItem();
@@ -93,6 +108,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	/**
+	 * Return results for the next game round. 
 	 * @param state MultiplicationGameState to alter
 	 * @return The new MultiplicationGameState
 	 */
@@ -103,7 +119,12 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		GameLogger logger = this.gameId2Logger.get(state.getId());
 		
 		// Get next random item.
-		MultiplicationInverseItem item = nextRandomItem(state.getId());
+		MultiplicationInverseItem item = null;
+		if (usePseudoRandomItemOrdering) {
+			item = nextPseudoRandomItem(state.getId());
+		} else {
+			item = nextRandomItem(state.getId());
+		}
 		assert item != null : "There is no item left!";
 		// Log the current round and item.
 		System.out.println("Round " + state.getRound() + ", " + item);
@@ -411,6 +432,48 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 			}
 		}
 		// Choose a random item of the remaining ones.
+		Collections.shuffle(availableItems);
+		MultiplicationInverseItem item = null;
+		if (!availableItems.isEmpty()){
+			item = availableItems.get(0);
+			item.increaseNumberOfPresentations();
+		}
+		return item;
+	}
+	
+	/**
+	 * Return the items in a pseudo-random ordering.
+	 * E.g. all items are presented a first time in some random order.
+	 * After that all items are presented again in another random order.
+	 * Iterate until the number of presentations is reached.  
+	 * @param gameId
+	 * @return
+	 */
+	private MultiplicationInverseItem nextPseudoRandomItem(int gameId) {
+		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
+		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
+		boolean itemForThisPseudoRandomRoundFound = false;
+		
+		// Find the items that havn't reached the max number of presentations.
+		for (MultiplicationInverseItem item : items) {
+			if (item.getNumberOfPresentations() < pseudoRandomPresentationRound) {
+				availableItems.add(item);
+				itemForThisPseudoRandomRoundFound = true;
+			}
+		}
+		
+		// If there is no item left for the last pseudo random round
+		// increase the round counter and set all items available if
+		// the pseudo random round counter is smaller or equals the
+		// number of presentations per item.
+		if (!itemForThisPseudoRandomRoundFound) {
+			pseudoRandomPresentationRound++;
+			if (pseudoRandomPresentationRound <= numberOfPresentationsPerItem) {
+				availableItems = items;
+			}
+		}
+		
+		// Choose a random item of the available ones.
 		Collections.shuffle(availableItems);
 		MultiplicationInverseItem item = null;
 		if (!availableItems.isEmpty()){

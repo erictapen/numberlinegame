@@ -118,6 +118,7 @@ public class MultiplicationNPC extends NPC{
 						makeClick = false;
 					break;
 					case 6:
+						makeClick = false;
 						if (!game.isPlayerReady(playerid))
 							comm.updateReadyness(Integer.toString(gameid) + ":" + Integer.toString(playerid),playerid);
 					break;
