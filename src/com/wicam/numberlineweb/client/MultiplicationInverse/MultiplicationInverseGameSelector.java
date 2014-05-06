@@ -166,6 +166,10 @@ public class MultiplicationInverseGameSelector extends AbstractGameSelector impl
 		gameState.setNumberOfPlayers(1);
 		gameState.setNumberOfMaxNPCs(1);
 		// Set the number of rounds/trials per subject.
+		// This number has no effect in this game since the rounds only
+		// depend on the number of trials available for a game (see
+		// variable isEmpty in method MultiplicationInverseGameCommunicationServiceServlet.
+		// clicketAt().
 		gameState.setMaxRound(112);
 		MultiplicationInverseGameSelector.this.coordinator.openGame(gameState);
 	}
