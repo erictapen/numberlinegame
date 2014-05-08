@@ -59,7 +59,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		//this.handicapAdjustment = new NumberLineGameHandicap();
 		
 		// Set the number of presentations of each item.
-		numberOfPresentationsPerItem = 7;
+		numberOfPresentationsPerItem = 6;
 		pseudoRandomPresentationRound = 1;
 		
 		usePseudoRandomItemOrdering = true;
