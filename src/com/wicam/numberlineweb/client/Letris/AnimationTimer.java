@@ -2,10 +2,8 @@ package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.rpc.IsSerializable;
-import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock.Move;
+import com.wicam.numberlineweb.client.Letris.LetrisGameMoveLetterBlockTask;
 
 /**
  * A _single_ timer user for animation purposes. The timer is stopped when no animations
@@ -76,9 +74,9 @@ public class AnimationTimer extends Timer {
 		
 		// Set the timer speed in a move object.
 		// TODO Check if this is being reached.
-		if (t.getClass().getName().equals("Move")) {
+		if (t.getClass().getName().equals("LetrisGameMoveLetterBlockTask")) {
 			System.out.println("Set timer speed to " + TIMER_SPEED + ".");
-			Move m = (Move) t;
+			LetrisGameMoveLetterBlockTask m = (LetrisGameMoveLetterBlockTask) t;
 			m.setTimerSpeed(TIMER_SPEED);
 		}
 		

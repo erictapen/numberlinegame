@@ -24,6 +24,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 public class LetrisGameCoordinator extends GameCoordinator {
 
 	// TODO Add descriptions.
+	// TODO Include the game model.
 	
 	protected LetrisGameController controller;
 	private AnimationTimer aniTimer = new AnimationTimer();
@@ -31,6 +32,8 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	public static double STARTING_ROTATED_LETTER_RATIO = 0.3;
 	public static int STARTING_TIME_PER_BLOCK = 1000;
 	private ArrayList<String> targetWords;
+	private LetrisGameState gameState;
+	private LetrisGameModel gameModel;
 
 	public LetrisGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root, GameTypeSelector gts) {
@@ -80,9 +83,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		LetrisGameView gameView =  (LetrisGameView) view;
 
 		//construct an empty game-state with the given information
-		LetrisGameState g = new LetrisGameState(this, targetWords,
-				STARTING_FOREIGN_LETTER_RATIO, STARTING_ROTATED_LETTER_RATIO,
-				STARTING_TIME_PER_BLOCK);
+		LetrisGameState g = new LetrisGameState();
 		g.setGameId(gameID);
 		g.setState(-1);
 		openGame = g;

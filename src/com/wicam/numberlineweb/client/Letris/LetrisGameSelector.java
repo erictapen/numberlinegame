@@ -31,12 +31,7 @@ public class LetrisGameSelector extends GameSelector {
 					public void onClick(ClickEvent event) {
 						
 						LetrisGameCoordinator letrisCoordinator = (LetrisGameCoordinator) coordinator;
-						LetrisGameState gameState = new LetrisGameState(letrisCoordinator,
-								letrisCoordinator.getTargetWords(), LetrisGameCoordinator.STARTING_FOREIGN_LETTER_RATIO,
-								LetrisGameCoordinator.STARTING_ROTATED_LETTER_RATIO,
-								LetrisGameCoordinator.STARTING_TIME_PER_BLOCK);
-						// TODO Delete that.
-						GWT.log("Type name of class LetrisGameState: " + GWT.getTypeName(gameState));
+						LetrisGameState gameState = new LetrisGameState();
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
 						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
