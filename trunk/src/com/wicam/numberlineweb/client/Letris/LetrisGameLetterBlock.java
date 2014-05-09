@@ -1,10 +1,9 @@
 package com.wicam.numberlineweb.client.Letris;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.PushButton;
-import com.wicam.numberlineweb.client.Letris.AnimationTimerTask;
-import com.wicam.numberlineweb.client.Letris.LetrisGameState.MovementDirection;
+import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
+import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 
 /**
  * Class for the letter blocks in the LeTris game
@@ -13,16 +12,12 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameState.MovementDirection;
  *
  */
 
-public class LetrisGameLetterBlock extends PushButton {
-	
-	/**
-	 * The timer task for moving the block.
-	 */
-	private Move move;
+public class LetrisGameLetterBlock extends PushButton implements IsSerializable {
+
 	/**
 	 * The model which this block is part of.
 	 */
-	private LetrisGameState gameState;
+//	private LetrisGameModel gameModel;
 	/**
 	 * The letter the letter block is representing.
 	 */
@@ -67,11 +62,6 @@ public class LetrisGameLetterBlock extends PushButton {
 	 */
 	private Orientation orientation;
 	/**
-	 * Static current version if the letter block id that is used for generating the
-	 * new ids.
-	 */
-	private static long currentID = 0;
-	/**
 	 * Milliseconds to wait between the movement from
 	 * one block position to the next in the dropping
 	 * of the letter block.
@@ -83,62 +73,13 @@ public class LetrisGameLetterBlock extends PushButton {
 	 * dropped onto the static blocks.
 	 */
 	private MovementDirection lastMovingDirection;
-
-
-	/**
-	 * Enum for possible orientations of a letter block.
-	 * The orientation gives the direction from which
-	 * one could read the letter properly. 
-	 * @author timfissler
-	 *
-	 */
-	public enum Orientation implements IsSerializable {
-		NORTH, SOUTH, EAST, WEST;
-		
-		public String toString() {
-			String s = "";
-			switch (this) {
-			case NORTH:
-				s = "NORTH";
-				break;
-			case SOUTH:
-				s = "SOUTH";
-				break;
-			case EAST:
-				s = "EAST";
-				break;
-			case WEST:
-				s = "WEST";
-				break;
-			default:
-				break;
-			}
-			return s;
-		}
-		
-	}
-	
-	public LetrisGameLetterBlock(String letter, int x, int y, Orientation orientation, int timePerBlock, LetrisGameState gameState){				
-		// TODO Configure the button style and disable it.
-		super(letter.toUpperCase());
-		this.setEnabled(false);
-		this.setSize("80px", "80px");
-		
-		this.letter = letter;
-		this.gameState = gameState;
-		this.orientation = orientation;
-		this.x = x;
-		this.y = y;
-		this.recoverX = x;
-		this.recoverY = y;
-		this.timePerBlock = timePerBlock;
-		this.id = currentID;
-		currentID++;
-		move = new Move(this);
-	}
 	
 	public void setTimePerBlock(int timePerBlock){
 		this.timePerBlock = timePerBlock;
+	}
+	
+	public int getTimePerBlock() {
+		return this.timePerBlock;
 	}
 	
 	public Orientation getOrientation() {
@@ -149,17 +90,17 @@ public class LetrisGameLetterBlock extends PushButton {
 		this.orientation = orientation;
 	}
 	
+	// TODO Migrate these methods to the model.
+//	public void startMoving(){
+//		
+//		gameModel.registerAnimationTask(move);
+//
+//	}
 	
-	public void startMoving(){
-		
-		gameState.registerAnimationTask(move);
-
-	}
-	
-	public void startMoving(int delay){
-		move.setDelay(delay);
-		gameState.registerAnimationTask(move);
-	}
+//	public void startMoving(int delay){
+//		move.setDelay(delay);
+//		gameModel.registerAnimationTask(move);
+//	}
 	
 	public void moveTo(MovementDirection direction){
 		lastMovingDirection = direction;
@@ -183,7 +124,7 @@ public class LetrisGameLetterBlock extends PushButton {
 		// TODO Implement this.
 	}
 	
-	public boolean removed() {
+	public boolean isRemoved() {
 		return removed;
 	}
 
@@ -204,7 +145,7 @@ public class LetrisGameLetterBlock extends PushButton {
 	}
 
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -233,61 +174,48 @@ public class LetrisGameLetterBlock extends PushButton {
 		return ((this.x == otherBlock.x) && (this.y == otherBlock.y));
 	}
 	
-	// TODO Implement a second task for the blocks being dropped by player
-	// or by the deletion of other blocks? Could also be solved by checking if the
-	// Move is active and then setting the y position to the lowest available one
-	// or reactivating the move before, if it isn't active. But then the swap
-	// handling must be done differently.
-	
-	public class Move extends AnimationTimerTask{
-		
-		private LetrisGameLetterBlock letterBlock;
-
-		private int droppingCounter;
-		private int timerSpeed;
-		
-		Move(LetrisGameLetterBlock letterBlock){
-			this.letterBlock = letterBlock;
-			droppingCounter = 0;
-			timerSpeed = 40;
-		}
-		
-		public void setTimerSpeed(int timerSpeed) {
-			this.timerSpeed = timerSpeed;
-		}
-		
-		@Override
-		public void run() {
-			if (!removed){
-				// Only move the letter block automatically if the time per block has been over.
-				if ((droppingCounter >= (timePerBlock / timerSpeed)) && (y - 1 > toY)) {
-					y = y - 1;
-					lastMovingDirection = MovementDirection.DOWN;
-					droppingCounter = 0;
-				}
-				else {
-					y = toY;
-					droppingCounter++;
-				}
-				// Check for collision or reaching the end of the playground.
-				if (!gameState.isCollidingWithStaticLetterBlocks(letterBlock) &&
-						!(x < 0) && !(x > 9) && !(y < 0)) {
-					recoverX = x;
-					recoverY = y;
-					gameState.updateMovingLetterBlock(letterBlock);
-				} else {
-					// Don't update the position further if there has been a collision, but
-					// restore the old position.
-					x = recoverX;
-					y = recoverY;
-					// Here is an extra case needed for being dropped vs. just hitting another
-					// block from left or right. Therefore the last movement direction is being used.
-					if (lastMovingDirection == MovementDirection.DOWN) {
-						gameState.swapMovingLetterBlock();
-						this.markForDelete();
-					}
-				}
-			}
-		}
+	public void setLetter(String letter) {
+		this.letter = letter;
 	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	public int getToY() {
+		return this.toY;
+	}
+	
+	public void setLastMovingDirection(MovementDirection direction) {
+		this.lastMovingDirection = direction;
+	}
+	
+	public int getRecoverX() {
+		return this.recoverX;
+	}
+
+	public int getRecoverY() {
+		return recoverY;
+	}
+
+	public void setRecoverY(int recoverY) {
+		this.recoverY = recoverY;
+	}
+
+	public MovementDirection getLastMovingDirection() {
+		return lastMovingDirection;
+	}
+
+	public void setToY(int toY) {
+		this.toY = toY;
+	}
+
+	public void setRecoverX(int recoverX) {
+		this.recoverX = recoverX;
+	}
+	
 }

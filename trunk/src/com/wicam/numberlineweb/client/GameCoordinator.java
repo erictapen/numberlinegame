@@ -91,14 +91,12 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	/**
 	 * Initializes the coordinator
 	 */
-
 	abstract public void init();
 
 	/**
 	 * Open a game name 'name'. Call back will get state of opened game
 	 * @param name
 	 */
-
 	public void openGame(GameState gameState){
 		GWT.log("opening!");
 		
@@ -114,17 +112,12 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 * Returns the game's name. Must be overwritten.
 	 * @param name
 	 */
-
-
 	abstract public String getGameName();
-
-
 
 	/**
 	 * Close a game
 	 * @param name
 	 */
-
 	public void handleCloseGameState(){
 		commServ.leaveGame(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		if (this.numberOfPlayers > 1){

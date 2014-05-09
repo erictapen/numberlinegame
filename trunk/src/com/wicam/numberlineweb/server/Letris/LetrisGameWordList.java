@@ -3,8 +3,6 @@ package com.wicam.numberlineweb.server.Letris;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
-
 /**
  * Create the list of target words for the Letris game.
  * @author timfissler

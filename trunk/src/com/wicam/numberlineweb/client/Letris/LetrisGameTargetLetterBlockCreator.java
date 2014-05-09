@@ -1,10 +1,7 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
-import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock.Orientation;
+import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 
 /**
  * Take the given target word, divide it into separate letters, put them into a list
@@ -16,6 +13,11 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock.Orientation;
 
 public class LetrisGameTargetLetterBlockCreator {
 	
+	/**
+	 * Current version of the letter block id that is used for generating the
+	 * new ids.
+	 */
+	private static long currentID = 0;
 	/**
 	 * Ratio of the letters per word (depending on the word size)
 	 * that are NOT members of the word itself.
@@ -48,7 +50,6 @@ public class LetrisGameTargetLetterBlockCreator {
 	 */
 	private int startY;
 
-	private LetrisGameState gameState;
 	/**
 	 * Holds all wrong orientations of the letter blocks.
 	 */
@@ -59,11 +60,10 @@ public class LetrisGameTargetLetterBlockCreator {
 	private int timePerBlock;
 	
 	public LetrisGameTargetLetterBlockCreator(double foreignLetterRatio, double rotatedLetterRatio,
-			int timePerBlock, LetrisGameState gameState) {
+			int timePerBlock) {
 		this.foreignLetterRatio = foreignLetterRatio;
 		this.rotatedLetterRatio = rotatedLetterRatio;
 		this.timePerBlock = timePerBlock;
-		this.gameState = gameState;
 		// The playground should be 10 blocks in width, so set the starting x position
 		// to the middle of the playground and choose 5.
 		this.startX = 5;
@@ -115,14 +115,34 @@ public class LetrisGameTargetLetterBlockCreator {
 	}
 	
 	/**
+	 * Make a new instance of a letter block with a unique version id.
+	 * @param letter
+	 * @param x
+	 * @param y
+	 * @param orientation
+	 * @param timePerBlock
+	 * @return the new letter block
+	 */
+	private LetrisGameLetterBlock makeNewLetterBlock(String letter, int x, int y,
+			Orientation orientation, int timePerBlock) {
+		LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock();
+		letterBlock.setId(currentID);
+		letterBlock.setLetter(letter);
+		letterBlock.setX(x);
+		letterBlock.setY(y);
+		letterBlock.setOrientation(orientation);
+		letterBlock.setTimePerBlock(timePerBlock);
+		return letterBlock;
+	}
+	
+	/**
 	 * Add those letter blocks to the list that are members of the target word.
 	 */
 	private void addMemberLetterBlocks() {
 		String[] letterArray= targetWord.split("");
 		for (String s : letterArray) {
 			if (!s.equals("")) {
-				LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock(s, startX, startY,
-															Orientation.SOUTH, timePerBlock, gameState);
+				LetrisGameLetterBlock letterBlock = makeNewLetterBlock(s, startX, startY, Orientation.SOUTH, timePerBlock);
 				targetLetterBlocks.add(letterBlock);
 			}
 		}
@@ -140,8 +160,7 @@ public class LetrisGameTargetLetterBlockCreator {
 		for (int i = 0; i < foreignLetters; i++) {
 			// Estimate randomly the foreign letter to add.
 			String foreignLetter = getRandomLetter();
-			LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock(foreignLetter, startX, startY,
-														Orientation.SOUTH, timePerBlock, gameState);
+			LetrisGameLetterBlock letterBlock = makeNewLetterBlock(foreignLetter, startX, startY, Orientation.SOUTH, timePerBlock);
 			targetLetterBlocks.add(letterBlock);
 		}
 	}

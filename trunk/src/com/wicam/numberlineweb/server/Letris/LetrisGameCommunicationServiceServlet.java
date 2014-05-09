@@ -1,20 +1,10 @@
 package com.wicam.numberlineweb.server.Letris;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Timer;
-import javax.servlet.http.HttpServletRequest;
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
-import com.wicam.numberlineweb.client.Letris.LetrisGameController;
-import com.wicam.numberlineweb.client.Letris.LetrisGameState;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
-import com.wicam.numberlineweb.server.SetGameStateTask;
-import com.wicam.numberlineweb.server.logging.GameLogger.LogActionTrigger;
-import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 import com.wicam.numberlineweb.server.logging.LetrisGameHandicap;
 
 /**
