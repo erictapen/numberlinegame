@@ -3,7 +3,7 @@ package com.wicam.numberlineweb.client.chat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public interface ChatCommunicationServiceAsync extends IsSerializable {
+public interface ChatCommunicationServiceAsync {
 	
 	public void sendChatMsg(ChatMsg msg, AsyncCallback<Boolean> callback);
 

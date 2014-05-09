@@ -30,7 +30,7 @@ import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatView;
 
-public abstract class GameCoordinator implements ValueChangeHandler<String>, IsSerializable {
+public abstract class GameCoordinator implements ValueChangeHandler<String> {
 
 	protected GameCommunicationServiceAsync commServ;
 	protected ChatCommunicationServiceAsync chatCommServ;

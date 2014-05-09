@@ -10,7 +10,7 @@ import com.google.gwt.user.server.rpc.RPC;
 import com.wicam.numberlineweb.client.GameCoordinator;
 import com.wicam.numberlineweb.client.GameSelector;
 
-public class LetrisGameSelector extends GameSelector implements IsSerializable {
+public class LetrisGameSelector extends GameSelector {
 	
 	protected final LetrisGameCreatePopupBox gamePopUp = new LetrisGameCreatePopupBox("Neues Spiel erstellen", "Mein Spiel");
 	

@@ -15,7 +15,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock.Move;
  *
  */
 
-public class AnimationTimer extends Timer implements IsSerializable {
+public class AnimationTimer extends Timer {
 
 	private ArrayList<AnimationTimerTask> tasks = new ArrayList<AnimationTimerTask>();
 	private boolean isRunning = false;

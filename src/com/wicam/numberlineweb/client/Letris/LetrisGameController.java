@@ -16,7 +16,7 @@ import com.wicam.numberlineweb.client.GameController;
  *
  */
 
-public class LetrisGameController extends GameController implements KeyDownHandler, KeyUpHandler, DirectionHandler, IsSerializable {
+public class LetrisGameController extends GameController implements KeyDownHandler, KeyUpHandler, DirectionHandler {
 
 	private boolean arrowKeysEnabled = false;
 

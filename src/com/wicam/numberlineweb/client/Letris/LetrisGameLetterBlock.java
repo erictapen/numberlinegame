@@ -13,7 +13,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameState.MovementDirection;
  *
  */
 
-public class LetrisGameLetterBlock extends PushButton implements IsSerializable {
+public class LetrisGameLetterBlock extends PushButton {
 	
 	/**
 	 * The timer task for moving the block.

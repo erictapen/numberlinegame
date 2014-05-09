@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public abstract class AbstractGameSelector extends Composite implements IsSerializable {
+public abstract class AbstractGameSelector extends Composite {
 
 	protected final AbsolutePanel motherPanel = new AbsolutePanel();
 	protected GameCoordinator coordinator;
