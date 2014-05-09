@@ -31,6 +31,9 @@ import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
+import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
+import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.Letris.LetrisGameCoordinator;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
@@ -131,14 +134,14 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// add grammar games container
-//		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-//				"Alle Spiele mit Wörtern", new GameItemStarter() {
-//			
-//			@Override
-//			public void run() {
-//				gts.showGrammar();
-//			}
-//		});
+		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Alle Spiele mit Wörtern", new GameItemStarter() {
+			
+			@Override
+			public void run() {
+				gts.showGrammar();
+			}
+		});
 		
 		//adds the numberlinegame
 //		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
@@ -155,19 +158,35 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 
 		//adds the doppelung game
-//		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-//				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//
-//				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
-//				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
+				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		//adds the Letris game
+		// TODO Change the image of the game.
+		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (LetrisGameCommunicationServiceAsync) GWT.create(LetrisGameCommunicationService.class);
+				coordinator = new LetrisGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 		
 		
 		//adds the mathe game
@@ -218,21 +237,21 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 		
 		//adds the inverse Multiplication game
-		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
-				"Rechne schnell!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
-				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});		
+//		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+//				"Rechne schnell!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
+//				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});		
 		
 		
 		//adds the BuddyNumber game
