@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  */
 
-public class ListShuffler implements IsSerializable {
+public class ListShuffler {
 	
 	public static <T> void shuffleList(ArrayList<T> list){
 		for (int i = 0; i < list.size(); i++){

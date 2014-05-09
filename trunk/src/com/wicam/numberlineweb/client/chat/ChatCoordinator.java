@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  */
 
-public class ChatCoordinator implements IsSerializable {
+public class ChatCoordinator {
 
 
 	ChatView view;

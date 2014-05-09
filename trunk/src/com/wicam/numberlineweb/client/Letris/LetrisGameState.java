@@ -15,7 +15,7 @@ import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
  *
  */
 
-public class LetrisGameState extends GameState implements IsSerializable {
+public class LetrisGameState extends GameState {
 
 	// TODO Add multiplayer support.
 	// TODO Add increasing game speed and/or more rotated letter blocks

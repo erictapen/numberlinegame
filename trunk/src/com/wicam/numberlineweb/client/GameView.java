@@ -3,7 +3,7 @@ package com.wicam.numberlineweb.client;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Composite;
 
-public abstract class GameView extends Composite implements IsSerializable {
+public abstract class GameView extends Composite {
 
 	public final static String[] playerColors = {"blue", "red", "orange", "Magenta", "DarkKhaki"};
 	protected int numberOfPlayers;

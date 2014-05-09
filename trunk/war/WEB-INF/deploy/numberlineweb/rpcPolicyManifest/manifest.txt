@@ -1,5 +1,2 @@
 # Module numberlineweb
 # RPC service class, partial path of RPC policy file
-com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService, E939A34861ACA0F0AC489B35E1AB3D6C.gwt.rpc
-com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService, E74D95B8FCC3DD96CF97BCC2D8704501.gwt.rpc
-com.wicam.numberlineweb.client.chat.ChatCommunicationService, 1EAA8D62FC3CA0EDD488E559FF7C173C.gwt.rpc

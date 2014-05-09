@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author patrick
  *
  */
-public class AnimationTimerTask implements IsSerializable {
+public class AnimationTimerTask {
 
 
 	private boolean deletionMark = false;

@@ -19,7 +19,7 @@ import com.wicam.numberlineweb.client.GameCreatePopupBox;
  *
  */
 
-public class LetrisGameCreatePopupBox extends GameCreatePopupBox implements IsSerializable {
+public class LetrisGameCreatePopupBox extends GameCreatePopupBox {
 	
 	ListBox npcsCount = new ListBox();
 	

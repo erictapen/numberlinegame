@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.FocusPanel;
 
 
-public class LetrisGameView extends GameView implements IsSerializable {
+public class LetrisGameView extends GameView {
 
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
 	protected final AbsolutePanel gamePanel = new AbsolutePanel();

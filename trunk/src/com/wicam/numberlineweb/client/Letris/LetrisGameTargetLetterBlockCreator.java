@@ -14,7 +14,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock.Orientation;
  *
  */
 
-public class LetrisGameTargetLetterBlockCreator implements IsSerializable {
+public class LetrisGameTargetLetterBlockCreator {
 	
 	/**
 	 * Ratio of the letters per word (depending on the word size)

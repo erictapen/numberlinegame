@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public interface GameCommunicationServiceAsync extends IsSerializable {
+public interface GameCommunicationServiceAsync {
 
 	public void getOpenGames(AsyncCallback<ArrayList<GameState>> callback);
 

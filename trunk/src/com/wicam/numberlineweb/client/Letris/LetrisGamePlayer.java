@@ -3,7 +3,7 @@ package com.wicam.numberlineweb.client.Letris;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wicam.numberlineweb.client.Player;
 
-public class LetrisGamePlayer extends Player implements IsSerializable {
+public class LetrisGamePlayer extends Player {
 	
 	// TODO Change that appropriately for the use in the Letris game.
 	

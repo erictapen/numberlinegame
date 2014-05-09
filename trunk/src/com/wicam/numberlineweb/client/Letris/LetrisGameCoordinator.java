@@ -21,7 +21,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  *
  */
 
-public class LetrisGameCoordinator extends GameCoordinator implements IsSerializable {
+public class LetrisGameCoordinator extends GameCoordinator {
 
 	// TODO Add descriptions.
 	

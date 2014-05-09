@@ -22,7 +22,7 @@ import com.wicam.numberlineweb.client.Resources.ImageResources;
  *
  */
 
-public class GameTypeSelector extends Composite implements ValueChangeHandler<String>, IsSerializable {
+public class GameTypeSelector extends Composite implements ValueChangeHandler<String> {
 
 
 	protected FlowPanel p = new FlowPanel();
