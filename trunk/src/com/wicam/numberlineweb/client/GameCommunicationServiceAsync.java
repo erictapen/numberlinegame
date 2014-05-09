@@ -3,8 +3,9 @@ package com.wicam.numberlineweb.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public interface GameCommunicationServiceAsync {
+public interface GameCommunicationServiceAsync extends IsSerializable {
 
 	public void getOpenGames(AsyncCallback<ArrayList<GameState>> callback);
 

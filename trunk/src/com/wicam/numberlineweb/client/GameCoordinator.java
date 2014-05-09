@@ -17,6 +17,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -29,7 +30,7 @@ import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
 import com.wicam.numberlineweb.client.chat.ChatView;
 
-public abstract class GameCoordinator implements ValueChangeHandler<String> {
+public abstract class GameCoordinator implements ValueChangeHandler<String>, IsSerializable {
 
 	protected GameCommunicationServiceAsync commServ;
 	protected ChatCommunicationServiceAsync chatCommServ;

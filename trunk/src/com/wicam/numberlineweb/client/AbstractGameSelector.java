@@ -9,13 +9,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public abstract class AbstractGameSelector extends Composite {
+public abstract class AbstractGameSelector extends Composite implements IsSerializable {
 
 	protected final AbsolutePanel motherPanel = new AbsolutePanel();
 	protected GameCoordinator coordinator;

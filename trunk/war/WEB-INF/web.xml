@@ -58,7 +58,14 @@
     <servlet-name>WordFamilyGameCommunicationServiceServlet</servlet-name>
     <servlet-class>com.wicam.numberlineweb.server.WordFamily.WordFamilyGameCommunicationServiceServlet</servlet-class>
   </servlet>
-  
+  <servlet>
+    <servlet-name>LetrisGameCommunicationServiceServlet</servlet-name>
+    <servlet-class>com.wicam.numberlineweb.server.Letris.LetrisGameCommunicationServiceServlet</servlet-class>
+  </servlet>
+  <servlet>
+	<servlet-name>remoteLoggingServiceImpl</servlet-name>
+	<servlet-class>com.google.gwt.libideas.logging.server.RemoteLoggingServiceImpl</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -111,6 +118,14 @@
   <servlet-mapping>
     <servlet-name>WordFamilyGameCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/wordFamilyGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LetrisGameCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/letrisGameCommunication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>remoteLoggingServiceImpl</servlet-name>
+	<url-pattern>/numberlineweb/logging</url-pattern>
   </servlet-mapping>
   
   

@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.chat;
 
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * Providing the chat backbone
@@ -9,7 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  */
 
-public class ChatCoordinator {
+public class ChatCoordinator implements IsSerializable {
 
 
 	ChatView view;
