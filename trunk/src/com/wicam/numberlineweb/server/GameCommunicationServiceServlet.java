@@ -44,7 +44,7 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	int gamePending;
 	protected String internalName;
 
-	protected List<NPC> npcs = new ArrayList<NPC>();;
+	protected List<NPC> npcs = new ArrayList<NPC>();
 	
 	public GameCommunicationServiceServlet (String internalName){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
