@@ -73,6 +73,9 @@ public class GameLogger {
 
 		tempMap.put("com.wicam.numberlineweb.server.MultiplicationInverse." +
 				"MultiplicationInverseGameCommunicationServiceServlet", LogGame.MULTIPLICATION_INVERSE);
+		
+		tempMap.put("com.wicam.numberlineweb.server.Letris." +
+				"LetrisGameCommunicationServiceServlet", LogGame.LETRIS);
 
 		
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
@@ -83,7 +86,8 @@ public class GameLogger {
 		NUMBERLINE_SUCCESSFUL_CLICK, NUMBERLINE_POSITION_TAKEN, NUMBERLINE_NPC_GUESS,
 		NUMBERLINE_NUMBER_PRESENTED, DOPPELUNGGAME_WORD_ENTERED, DOPPELUNGGAME_WORD_CATEGORIZED,
 		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER, MULTIPLICATION_TASK_PRESENTED,
-		MULTIPLICATION_USER_PICKED_ANSWER, MULTIPLICATION_NPC_PICKED_ANSWER;
+		MULTIPLICATION_USER_PICKED_ANSWER, MULTIPLICATION_NPC_PICKED_ANSWER, LETRIS_BLOCK_SET,
+		LETRIS_WORD_FOUND;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -120,6 +124,10 @@ public class GameLogger {
 					return 14;
 				case MULTIPLICATION_NPC_PICKED_ANSWER:
 					return 15;
+				case LETRIS_BLOCK_SET:
+					return 16;
+				case LETRIS_WORD_FOUND:
+					return 17;
 				default:
 					//Should not occur
 					return -1;
@@ -155,7 +163,7 @@ public class GameLogger {
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
 		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, MULTIPLICATION_INVERSE, BUDDY_NUMBER,
-		WORD_STEM, OVER_TEN, WORD_FAMILY;
+		WORD_STEM, OVER_TEN, WORD_FAMILY, LETRIS;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -182,6 +190,8 @@ public class GameLogger {
 					return 9;
 				case MULTIPLICATION_INVERSE:
 					return 10;
+				case LETRIS:
+					return 11;
 				default:
 					//Should not occur
 					return -1;

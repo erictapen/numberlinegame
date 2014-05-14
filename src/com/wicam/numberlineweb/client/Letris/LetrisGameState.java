@@ -1,8 +1,8 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import com.google.gwt.dev.util.collect.HashMap;
 import com.wicam.numberlineweb.client.GameState;
 
 /**

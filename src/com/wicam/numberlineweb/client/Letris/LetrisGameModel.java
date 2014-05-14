@@ -15,6 +15,7 @@ public class LetrisGameModel {
 	// TODO Add logging outputs to see if the game works correctly.
 	// TODO Add a movement object for the moving block.
 	// TODO Add optional movement objects for the dropping blocks after deletion of a word.
+	// TODO Tell the GameLogger that the user set a block and that a word was found.
 	
 	/**
 	 * The target letter block creator is used to build a list of letter blocks from the current target word. 

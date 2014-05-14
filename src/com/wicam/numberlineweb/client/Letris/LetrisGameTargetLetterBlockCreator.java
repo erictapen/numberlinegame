@@ -13,6 +13,9 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 
 public class LetrisGameTargetLetterBlockCreator {
 	
+	// TODO Draw the foreign letter blocks from the letters of the outstanding words and
+	// from the current word. This assures the possibility to build outstanding words more easily.
+	
 	/**
 	 * Current version of the letter block id that is used for generating the
 	 * new ids.
