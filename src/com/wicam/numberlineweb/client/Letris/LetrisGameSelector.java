@@ -35,6 +35,10 @@ public class LetrisGameSelector extends GameSelector {
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
 						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
+//						// Set target words.
+//						gameState.setTargetWords(letrisCoordinator.getTargetWords());
+						// TODO Delete that.
+						GWT.log(gameState.toString());
 						coordinator.openGame(gameState);
 						gamePopUp.hide();
 					}
