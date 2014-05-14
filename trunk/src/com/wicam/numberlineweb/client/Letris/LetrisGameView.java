@@ -35,7 +35,6 @@ public class LetrisGameView extends GameView {
 
 	protected final HTML explanationText = new HTML();
 	protected final HTML feedBackText = new HTML();
-//	protected final HTML feedBackText2 = new HTML();
 	private final HTML wordText = new HTML();
 	private final HTML canvas = new HTML("<div id='canvas' style='width:600px;height:400px;border-right:solid #333 1px'></div>");
 	private final HTML canvasScore = new HTML("<div id='canvas' style='width:150px;height:30px;'></div>");
@@ -43,19 +42,12 @@ public class LetrisGameView extends GameView {
 	final FlexTable playerNamesFlexTable = new FlexTable();
 
 	protected final Button startGameButton = new Button("Spiel Starten");
-//	protected final ShortVowelImage shortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.knall_small().getSafeUri().asString(), 
-//            270, 330);
-//	protected ShortVowelImage movingShortVowelImage;
-//	protected ShortVowelImage enemyMovingShortVowelImage;
-
-//	protected final Image feedbackImage = new Image(DoppelungGameResourcesImages.INSTANCE.beide_daumen());
-
-//	protected final Image longVowelImage = new Image(DoppelungGameResourcesImages.INSTANCE.ziehen1().getSafeUri());
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final HTML textBoxLabel = new HTML("<div style='font-size:18px'>Gib das zuletzt gehörte Wort ein!</div>");
 	private final TextBox textBox = new TextBox();
 	
-	protected Audio descriptionSound = Audio.createIfSupported();
+	// TODO Add correct sound file.
+//	protected Audio descriptionSound = Audio.createIfSupported();
 
 	public LetrisGameView(int numberOfPlayers, LetrisGameController doppelungGameController) {
 		super(numberOfPlayers, doppelungGameController);
@@ -66,9 +58,6 @@ public class LetrisGameView extends GameView {
 
 
 	private void init() {
-		
-//		longVowelImage.addStyleName("vowel_img");
-//		shortVowelImage.addStyleName("vowel_img");
 
 		final LetrisGameController letrisGameController = (LetrisGameController) gameController;
 
@@ -79,27 +68,13 @@ public class LetrisGameView extends GameView {
 			@Override
 			public void onClick(ClickEvent event) {
 				letrisGameController.onStartButtonClick();
-				try {
-					descriptionSound.pause();
-					descriptionSound.setCurrentTime(0);
-				} catch (Exception e) {
-				}
+//				try {
+//					descriptionSound.pause();
+//					descriptionSound.setCurrentTime(0);
+//				} catch (Exception e) {
+//				}
 			}
 		});
-
-//		shortVowelImage.addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				doppelungGameController.onShortVowelButtonClick();
-//			}
-//		});
-
-//		longVowelImage.addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				doppelungGameController.onLongVowelButtonClick();
-//			}
-//		});
 		
 		setExplanationText();
 		gamePanel.add(explanationText);
@@ -108,23 +83,6 @@ public class LetrisGameView extends GameView {
 		gamePanel.setWidgetPosition(startGameButton, 480, 350);
 		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
-
-//		textBox.setMaxLength(25);
-//		textBox.addKeyPressHandler(new KeyPressHandler(){
-//
-//			@Override
-//			public void onKeyPress(KeyPressEvent event) {
-//				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER){
-//					String enteredWord = textBox.getText().trim();
-//					if (!enteredWord.equals("")){
-//						gamePanel.remove(textBoxLabel);
-//						gamePanel.remove(textBox);
-//						letrisGameController.wordEntered(enteredWord);
-//					}
-//				}
-//			}
-//
-//		});
 
 		pointsPanel.add(pointsText);
 		pointsPanel.setWidgetPosition(pointsText, 27, 10);
@@ -142,15 +100,15 @@ public class LetrisGameView extends GameView {
 		motherPanel.add(gamePanel);
 		motherPanel.add(pointsPanel);
 		
-		if (Audio.isSupported() && descriptionSound != null) {
-			
-			// TODO Change sound to actual description of the LeTris game.
-			descriptionSound.addSource("desc/Doppelung.ogg", "audio/ogg; codecs=vorbis");
-			descriptionSound.addSource("desc/Doppelung.mp3", "audio/mpeg; codecs=MP3");
-			
-			descriptionSound.play();
-			
-		}
+//		if (Audio.isSupported() && descriptionSound != null) {
+//			
+//			// TODO Change sound to actual description of the LeTris game.
+//			descriptionSound.addSource("desc/Doppelung.ogg", "audio/ogg; codecs=vorbis");
+//			descriptionSound.addSource("desc/Doppelung.mp3", "audio/mpeg; codecs=MP3");
+//			
+//			descriptionSound.play();
+//			
+//		}
 	}
 	
 	protected void setExplanationText() {
@@ -160,21 +118,6 @@ public class LetrisGameView extends GameView {
 				"Enter description of the LeTris game here." +
 		"</div>");
 	}
-
-//	public void initializeMovingShortVowelImages(int playerid){
-//		if (playerid == 1){
-//			movingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.roter_knall().getSafeUri().asString(),
-//					270, 330);
-//			enemyMovingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.blauer_knall().getSafeUri().asString(),
-//					270, 330);
-//		}
-//		if (playerid == 2){
-//			movingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.blauer_knall().getSafeUri().asString(), 
-//					270, 330);
-//			enemyMovingShortVowelImage = new ShortVowelImage(DoppelungGameResourcesImages.INSTANCE.roter_knall().getSafeUri().asString(), 
-//					270, 330);
-//		}
-//	}
 	
 
 	/**
