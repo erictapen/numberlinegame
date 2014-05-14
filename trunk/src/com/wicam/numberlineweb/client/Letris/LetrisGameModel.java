@@ -49,14 +49,14 @@ public class LetrisGameModel {
 		// Set up all the lists and the moving block.
 		setNextRandomCurrentWord();
 		// Add current word to outstanding words.
-		gameState.getPlayerId2OutstandingWords().get(this.playerId).add(gameState.getPlayerId2CurrentWord().get(this.playerId));
+		gameState.addOutstandingWord(playerId, gameState.getCurrentWord(playerId));
 		// Create new letter blocks and retrieve them.
-		letterBlockCreator.createTargetLetterBlocks(gameState.getPlayerId2CurrentWord().get(this.playerId));
-		gameState.getPlayerId2LetterBlocksToBeDisplayed().put(this.playerId, letterBlockCreator.getTargetLetterBlocks());
+		letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord(playerId), gameState.getOutstandingWords(playerId));
+		gameState.setLetterBlocksToBeDisplayed(playerId, letterBlockCreator.getTargetLetterBlocks());
 		// Set the first letter block to be displayed as the moving letter block and
 		// remove it from the list.
-		gameState.getPlayerId2MovingLetterBlock().put(this.playerId, gameState.getPlayerId2LetterBlocksToBeDisplayed().get(this.playerId).get(0));
-		gameState.getPlayerId2LetterBlocksToBeDisplayed().get(this.playerId).remove(0);
+		gameState.setMovingLetterBlock(playerId, gameState.getLetterBlocksToBeDisplayed(playerId).get(0));
+		gameState.removeLetterBlockToBeDisplayed(playerId, gameState.getMovingLetterBlock(playerId));
 	}
 
 	public double getForeignLetterRatio() {
@@ -88,8 +88,9 @@ public class LetrisGameModel {
 	 * as next current word.
 	 */
 	private void setNextRandomCurrentWord() {
-		ListShuffler.shuffleList(gameState.getTargetWords());
-		gameState.getPlayerId2CurrentWord().put(this.playerId, gameState.getTargetWords().get(0));
+		// TODO Does the shuffling work this way?
+		ListShuffler.shuffleList(coordinator.getTargetWords());
+		gameState.setCurrentWord(playerId, coordinator.getTargetWords().get(0));
 	}
 	
 	/**
@@ -100,7 +101,7 @@ public class LetrisGameModel {
 	 */
 	public boolean isCollidingWithStaticLetterBlocks(LetrisGameLetterBlock letterBlock) {
 		boolean collides = false;
-		ArrayList<LetrisGameLetterBlock> staticLetterBlocks = gameState.getPlayerId2StaticLetterBlocks().get(this.playerId);
+		ArrayList<LetrisGameLetterBlock> staticLetterBlocks = gameState.getStaticLetterBlocks(playerId);
 		for (int i = 0; i < staticLetterBlocks.size(); i++) {
 			if (letterBlock.isColliding(staticLetterBlocks.get(i))) {
 				collides = true;
@@ -157,14 +158,14 @@ public class LetrisGameModel {
 	 * @param movementDirection
 	 */
 	public void moveLetterBlock(MovementDirection movementDirection) {
-		gameState.getPlayerId2MovingLetterBlock().get(this.playerId).moveTo(movementDirection);
+		gameState.getMovingLetterBlock(playerId).moveTo(movementDirection);
 	}
 	
 	/**
 	 * Drop the currently moving letter block instantly.
 	 */
 	public void dropLetterBlock() {
-		gameState.getPlayerId2MovingLetterBlock().get(this.playerId).drop();
+		gameState.getMovingLetterBlock(playerId).drop();
 	}
 	
 	/**
@@ -172,7 +173,7 @@ public class LetrisGameModel {
 	 * by the player.
 	 */
 	public void rotateLetterBlock(RotationDirection rotationDirection) {
-		LetrisGameLetterBlock movingLetterBlock = gameState.getPlayerId2MovingLetterBlock().get(this.playerId);
+		LetrisGameLetterBlock movingLetterBlock = gameState.getMovingLetterBlock(playerId);
 		switch (rotationDirection) {
 		case CLOCKWISE:
 			switch (movingLetterBlock.getOrientation()) {
@@ -257,7 +258,7 @@ public class LetrisGameModel {
 		}
 		String foundWord = "";
 		// Loop over outstanding words and compare them with the string.
-		ArrayList<String> outstandingWords = gameState.getPlayerId2OutstandingWords().get(this.playerId);
+		ArrayList<String> outstandingWords = gameState.getOutstandingWords(playerId);
 		for (String outstandingWord : outstandingWords) {
 			startIdx = rowStr.indexOf(outstandingWord);
 			if (startIdx >= 0) {
@@ -268,7 +269,7 @@ public class LetrisGameModel {
 			}
 		}
 		outstandingWords.remove(foundWord);
-		gameState.getPlayerId2CorrectWords().get(this.playerId).add(foundWord);
+		gameState.addCorrectWord(playerId, foundWord);
 		coordinator.foundCorrectWord(foundWord);
 		// Build up an array of letter blocks with the given indices and return it.
 		ArrayList<LetrisGameLetterBlock> foundLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
@@ -306,18 +307,18 @@ public class LetrisGameModel {
 		// sorted from top to bottom. That is useful for collision check, because we start
 		// to look for possible collisions at the beginning of the static letter block
 		// list.
-		LetrisGameLetterBlock movingLetterBlock = gameState.getPlayerId2MovingLetterBlock().get(this.playerId);
-		gameState.getPlayerId2StaticLetterBlocks().get(this.playerId).add(movingLetterBlock);
+		LetrisGameLetterBlock movingLetterBlock = gameState.getMovingLetterBlock(playerId);
+		gameState.addStaticLetterBlock(playerId, movingLetterBlock);
 		playground[movingLetterBlock.getY()][movingLetterBlock.getX()] = movingLetterBlock;
 		checkForCorrectWord();
-		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = gameState.getPlayerId2LetterBlocksToBeDisplayed().get(this.playerId);
+		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = gameState.getLetterBlocksToBeDisplayed(playerId);
 		if (letterBlocksToBeDisplayed.size() == 0) {
 			setNextRandomCurrentWord();
 			// Add current word to outstanding words.
-			gameState.getPlayerId2OutstandingWords().get(this.playerId).add(gameState.getPlayerId2CurrentWord().get(this.playerId));
+			gameState.addOutstandingWord(playerId, gameState.getCurrentWord(playerId));
 			// Create new letter blocks and retrieve them.
-			letterBlockCreator.createTargetLetterBlocks(gameState.getPlayerId2CurrentWord().get(this.playerId));
-			gameState.getPlayerId2LetterBlocksToBeDisplayed().put(this.playerId, letterBlockCreator.getTargetLetterBlocks());
+			letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord(playerId), gameState.getOutstandingWords(playerId));
+			gameState.setLetterBlocksToBeDisplayed(playerId, letterBlockCreator.getTargetLetterBlocks());
 		}		
 		movingLetterBlock = letterBlocksToBeDisplayed.get(0);
 		letterBlocksToBeDisplayed.remove(0);

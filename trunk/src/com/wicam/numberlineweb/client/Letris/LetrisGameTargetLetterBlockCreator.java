@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
+
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 
 /**
@@ -12,9 +13,6 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
  */
 
 public class LetrisGameTargetLetterBlockCreator {
-	
-	// TODO Draw the foreign letter blocks from the letters of the outstanding words and
-	// from the current word. This assures the possibility to build outstanding words more easily.
 	
 	/**
 	 * Current version of the letter block id that is used for generating the
@@ -32,13 +30,17 @@ public class LetrisGameTargetLetterBlockCreator {
 	 */
 	private double rotatedLetterRatio;
 	/**
-	 * List containing the whole alphabet.
+	 * List containing the single letters of the outstanding words.
 	 */
-	private ArrayList<String> alphabet = new ArrayList<String>();
+	private ArrayList<String> outstandingLetters;
 	/**
 	 * List containing all the target letter blocks to be returned.
 	 */
 	private ArrayList<LetrisGameLetterBlock> targetLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
+	/**
+	 * The words that are not correctly build yet.
+	 */
+	private ArrayList<String> outstandingWords;
 	/**
 	 * The current word being processed.
 	 */
@@ -73,25 +75,25 @@ public class LetrisGameTargetLetterBlockCreator {
 		// The playground should be 20 blocks in height starting from
 		// 0 at the bottom. Set the starting position to the top.
 		this.startY = 19;
-		fillAlphabet();
+//		fillAlphabet();
 		// Fill the wrong orientations.
 		wrongOrientations.add(Orientation.EAST);
 		wrongOrientations.add(Orientation.NORTH);
 		wrongOrientations.add(Orientation.WEST);
 	}
 	
-	/**
-	 * Fill up the alphabet list with all the letters of the alphabet.
-	 */
-	private void fillAlphabet() {
-		for(char letter = 'A'; letter <= 'Z';letter++){
-			 alphabet.add(String.valueOf(letter));
-		}
-		alphabet.add("Ä");
-		alphabet.add("Ö");
-		alphabet.add("Ü");
-		alphabet.add("ß");
-	}
+//	/**
+//	 * Fill up the outstandingLetters list with all the letters of the outstandingLetters.
+//	 */
+//	private void fillAlphabet() {
+//		for(char letter = 'A'; letter <= 'Z';letter++){
+//			 outstandingLetters.add(String.valueOf(letter));
+//		}
+//		outstandingLetters.add("Ä");
+//		outstandingLetters.add("Ö");
+//		outstandingLetters.add("Ü");
+//		outstandingLetters.add("ß");
+//	}
 	
 	public void setTimePerBlock(int timePerBlock) {
 		this.timePerBlock = timePerBlock;
@@ -119,6 +121,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	
 	/**
 	 * Make a new instance of a letter block with a unique version id.
+	 * Always use capital letters for the letter blocks. 
 	 * @param letter
 	 * @param x
 	 * @param y
@@ -130,7 +133,7 @@ public class LetrisGameTargetLetterBlockCreator {
 			Orientation orientation, int timePerBlock) {
 		LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock();
 		letterBlock.setId(currentID);
-		letterBlock.setLetter(letter);
+		letterBlock.setLetter(letter.toUpperCase());
 		letterBlock.setX(x);
 		letterBlock.setY(y);
 		letterBlock.setOrientation(orientation);
@@ -153,16 +156,18 @@ public class LetrisGameTargetLetterBlockCreator {
 	
 	/**
 	 * Add those letter blocks that are not members of the target word.
-	 * Estimate them randomly from the alphabet.
+	 * Draw the foreign letter blocks from the letters of the outstanding words and
+	 * from the current word. This assures the possibility to build outstanding words more easily.
 	 */
-	private void addForeignLetterBlocks() {
+	private void addOutstandingLetterBlocks() {
 		// Estimate number of foreign letters.
 		int targetWordSize = targetWord.length();
-		int foreignLetters = (int) Math.floor(targetWordSize * foreignLetterRatio); 
+		int foreignLetters = (int) Math.floor(targetWordSize * foreignLetterRatio);
+		updateOutstandingLetters();
 		// Loop over number of foreign letters.
 		for (int i = 0; i < foreignLetters; i++) {
 			// Estimate randomly the foreign letter to add.
-			String foreignLetter = getRandomLetter();
+			String foreignLetter = getRandomOutstandingLetter();
 			LetrisGameLetterBlock letterBlock = makeNewLetterBlock(foreignLetter, startX, startY, Orientation.SOUTH, timePerBlock);
 			targetLetterBlocks.add(letterBlock);
 		}
@@ -200,22 +205,55 @@ public class LetrisGameTargetLetterBlockCreator {
 	}
 	
 	/**
-	 * Return a random letter of the alphabet. 
+	 * Update the list of outstanding letters from the list of outstanding
+	 * words from the game state.
+	 */
+	private void updateOutstandingLetters() {
+		// Add the target word to the outstanding words.
+		outstandingWords.add(targetWord);
+		outstandingLetters = new ArrayList<String>();
+		for (String word : outstandingWords) {
+			String[] letters = word.split("");
+			for (String letter : letters) {
+				if (!letter.equals("")) {
+					outstandingLetters.add(letter);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Return a random letter of the outstandingLetters. 
 	 * @return random letter
 	 */
-	private String getRandomLetter() {
-		ListShuffler.shuffleList(alphabet);
-		return alphabet.get(0);
+	private String getRandomOutstandingLetter() {
+		ListShuffler.shuffleList(outstandingLetters);
+		return outstandingLetters.get(0);
 	}
 
-	public void createTargetLetterBlocks(String targetWord) {
+	/**
+	 * Set a new target word and create the letter blocks
+	 * for being displayed later according to this word
+	 * and the outstanding words. The target letter blocks
+	 * that were created can be returned with getTargetLetterBlocks().
+	 * @param targetWord
+	 * @param outstandingWords
+	 */
+	public void createTargetLetterBlocks(String targetWord, ArrayList<String> outstandingWords) {
 		this.targetWord = targetWord;
+		// Copy the original list to a new instance so that internal changes won't
+		// affect the original list.
+		this.outstandingWords = new ArrayList<String>(outstandingWords);
 		addMemberLetterBlocks();
-		addForeignLetterBlocks();
+		addOutstandingLetterBlocks();
 		randomRotateLetterBlocks();
 		ListShuffler.shuffleList(targetLetterBlocks);
 	}
 	
+	/**
+	 * Get the created target letter blocks. 
+	 * @return
+	 */
 	// TODO Should I clone the list before passing it further?
 	public ArrayList<LetrisGameLetterBlock> getTargetLetterBlocks() {
 		return targetLetterBlocks;

@@ -183,4 +183,18 @@ public abstract class GameState implements IsSerializable{
 	public void setGameOpenedUserId(int gameOpenedUserId) {
 		this.gameOpenedUserId = gameOpenedUserId;
 	}
+	
+	public String toString() {
+		String s = "game name: " + getName();
+		s += "\ngame ID: " + getId();
+		s += "\nstate: " + getState();
+		s += "\nserver send time: " + getServerSendTime();
+		s += "\nping ID: " + getPingId();
+		s += "\ngame opened user ID: " + getGameOpenedUserId();
+		s += "\nplayers: " + getPlayers();
+		s += "\nnumber of max players: " + getPlayerCount();
+		s += "\nnumber of max NPCs: " + getNumberOfMaxNPCs();
+		s += "\nNPS response time: " + getNPCResponseTime();
+		return s;
+	}
 }

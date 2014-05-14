@@ -70,4 +70,19 @@ public abstract class Player implements IsSerializable, Comparable<Player>{
 		this.reactionTimes.add(reactionTime);
 	}
 	
+	public List<Double> getReactionTimes() {
+		return this.reactionTimes;
+	}
+	
+	public String toString() {
+		String s = "name: " + getName();
+		s += ", points: " + getPoints();
+		s += ", left game: " + hasLeftGame();
+		s += ", ready: " + isReady();
+		s += ", color ID: " + getColorId();
+		s += ", user ID: " + getUid();
+		s += ", reaction times: " + getReactionTimes();
+		return s;
+	}
+	
 }

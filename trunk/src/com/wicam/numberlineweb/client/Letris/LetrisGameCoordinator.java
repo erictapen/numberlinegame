@@ -31,8 +31,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	public static double STARTING_FOREIGN_LETTER_RATIO = 0.2;
 	public static double STARTING_ROTATED_LETTER_RATIO = 0.3;
 	public static int STARTING_TIME_PER_BLOCK = 1000;
+	/**
+	 * The list of target words from that the current word is drawn randomly.
+	 */
 	private ArrayList<String> targetWords;
-	private LetrisGameState gameState;
 	private LetrisGameModel gameModel;
 
 	public LetrisGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -88,6 +90,14 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		g.setState(-1);
 		openGame = g;
 		update();
+		
+		// Set up the game model.
+		gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
+				STARTING_FOREIGN_LETTER_RATIO,
+				STARTING_ROTATED_LETTER_RATIO,
+				STARTING_TIME_PER_BLOCK, g, playerID);
+		// TODO Delete that.
+		GWT.log(g.toString(playerID));
 
 		//clear the root panel and draw the game
 		rootPanel.clear();
@@ -99,9 +109,13 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	}
 	
 	public ArrayList<String> getTargetWords() {
-		return this.targetWords;
+		return targetWords;
 	}
-	
+
+	public void setTargetWords(ArrayList<String> targetWords) {
+		this.targetWords = targetWords;
+	}
+
 	protected void createControllerAndView(){
 		controller = new LetrisGameController(this);
 		this.view = new LetrisGameView(numberOfPlayers, controller);
@@ -443,7 +457,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		
 		@Override
 		public void onSuccess(ArrayList<String> targetWords) {
-			LetrisGameCoordinator.this.targetWords = targetWords;
+			setTargetWords(targetWords);
 			// TODO Hide waiting screen.
 			GWT.log("LeTris game coordinator loaded.");
 		}
