@@ -1,11 +1,9 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.GameCoordinator;
@@ -13,6 +11,7 @@ import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.Letris.AnimationTimer;
 import com.wicam.numberlineweb.client.Letris.AnimationTimerTask;
+import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 /**
@@ -22,19 +21,35 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  */
 
 public class LetrisGameCoordinator extends GameCoordinator {
-
-	// TODO Add descriptions.
-	// TODO Include the game model.
 	
+	/**
+	 * The controller of the LeTris game.
+	 */
 	protected LetrisGameController controller;
+	/**
+	 * The timer for movement animation.
+	 */
 	private AnimationTimer aniTimer = new AnimationTimer();
-	public static double STARTING_FOREIGN_LETTER_RATIO = 0.2;
+	/**
+	 * The ratio of letters of a target word that don't belong to that word
+	 * but are drawn from the outstanding words list.
+	 */
+	public static double STARTING_OUTSTANDING_LETTER_RATIO = 0.2;
+	/**
+	 * The ratio of all letter blocks of a target word that are not oriented correctly.
+	 */
 	public static double STARTING_ROTATED_LETTER_RATIO = 0.3;
+	/**
+	 * The time in milliseconds a block movement needs from one block to another.
+	 */
 	public static int STARTING_TIME_PER_BLOCK = 1000;
 	/**
 	 * The list of target words from that the current word is drawn randomly.
 	 */
 	private ArrayList<String> targetWords;
+	/**
+	 * The model of the LeTris game.
+	 */
 	private LetrisGameModel gameModel;
 
 	public LetrisGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
@@ -51,26 +66,15 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		return "LeTris";
 
 	}
+	
+	public LetrisGameState getGameState() {
+		return (LetrisGameState) this.openGame;
+	}
 
 
 	@Override
 	public void init() {
-		gameSelector = new LetrisGameSelector(this);
-		rootPanel.add(gameSelector);
-		
-		t = new Timer() {
-			@Override
-			public void run() {
-				update();
-			}
-		};
-
-		//main loop-timer
-		t.scheduleRepeating(500);
-		refreshGameList();
-		
 		// Get the target words from the server.
-		// TODO Display waiting screen while loading.
 		LetrisGameCommunicationServiceAsync letrisCommServ = (LetrisGameCommunicationServiceAsync) commServ;
 		letrisCommServ.getTargetWords(targetWordsCallback);
 	}
@@ -92,12 +96,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		update();
 		
 		// Set up the game model.
-		gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
-				STARTING_FOREIGN_LETTER_RATIO,
-				STARTING_ROTATED_LETTER_RATIO,
-				STARTING_TIME_PER_BLOCK, g, playerID);
-		// TODO Delete that.
-		GWT.log(g.toString(playerID));
+//		gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
+//				STARTING_OUTSTANDING_LETTER_RATIO,
+//				STARTING_ROTATED_LETTER_RATIO,
+//				STARTING_TIME_PER_BLOCK, playerID);
 
 		//clear the root panel and draw the game
 		rootPanel.clear();
@@ -132,6 +134,31 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 		switch (g.getState()) {
 			// TODO Implement this.
+			//started
+		case 3:
+			
+			this.controller.setKeysEnabled(true);
+			
+//			updateViewIngame(g, gameView);
+			
+			gameModel.setupGameState();
+//			gameModel.startMoving();
+			
+			GWT.log(((LetrisGameState)openGame).toString(playerID));
+
+			break;
+
+			//evaluation, who has won?
+		case 5:
+			
+//			updateViewIngame(g, gameView);
+				
+			break;
+			
+			// for synchronization
+		case 6:
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+			break;
 		}
 
 		openGame = g;
@@ -141,7 +168,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	
 	/**
 	 * Sets user name in chat and sets points
-	 * "Warte auf [other player name] is displayed
+	 * "Warte auf [other player name]" is displayed
 	 * 
 	 */
 	@Override
@@ -220,7 +247,8 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		@Override
 		public void run() {
 			((LetrisGameView)view).moveStepLeft(true);
-			//updateMyPosition();
+			gameModel.moveLetterBlock(MovementDirection.LEFT);
+			GWT.log("Move left");
 		}
 
 	};
@@ -229,9 +257,9 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 		@Override
 		public void run() {
-
 			((LetrisGameView)view).moveStepRight(true);
-			//updateMyPosition();
+			gameModel.moveLetterBlock(MovementDirection.RIGHT);
+			GWT.log("Move right");
 		}
 
 	};
@@ -241,14 +269,23 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 		@Override
 		public void run() {
-
 			((LetrisGameView)view).moveStepDown(true);
-			//updateMyPosition();
-
+			gameModel.moveLetterBlock(MovementDirection.DOWN);
+			GWT.log("Move down");
 		}
 
 	};
 
+	private AnimationTimerTask dropTask = new AnimationTimerTask() {
+
+		@Override
+		public void run() {
+			((LetrisGameView)view).moveStepDown(true);
+			gameModel.moveLetterBlock(MovementDirection.DOWN);
+			GWT.log("Drop");
+		}
+
+	};
 
 	/**
 	 * We only want a click to be registered ONCE.
@@ -259,9 +296,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	private boolean keyDownDown = false;
 	private boolean keyLeftDown = false;
 	private boolean keyRightDown = false;
+	private boolean keySpaceDown = false;
 
 
-	public void moveImageOnGamePanel(boolean up, int key){
+	public void moveBlock(boolean up, int key){
 
 
 		if (!up) {
@@ -304,6 +342,15 @@ public class LetrisGameCoordinator extends GameCoordinator {
 				}
 
 				break;
+			case 5:
+				// TODO dropTask.markForDelete(); after block touched ground in GameModel.
+				if (!keySpaceDown) {
+					keySpaceDown = true;
+
+					registerAniTask(dropTask);
+				}
+
+				break;
 			}
 		}
 		if (up) {
@@ -333,7 +380,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 					keyUpDown = false;
 					// TODO Implement rotation here.
-//					moveUpTask.markForDelete();
 				}
 
 				break;
@@ -356,19 +402,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	/**
 	 * Sets a moving letter block to a new position
 	 * 
-	 * @param letterBlock	the moving consonant
-	 * @param x		new x-coordinate
-	 * @param y		new y-coordinate
+	 * @param letterBlock	the moving letter block
 	 */
 	public void updateMovingLetterBlock(LetrisGameLetterBlock letterBlock){
-		// TODO Check if letter crashes with any other static letter block. If yes set it static itself with a delay of one second.
-//		if (((LetrisGameView) view).isOnCanvas(y)){
-			((LetrisGameView) view).updateMovingLetterBlock(letterBlock);
-//		}
-//		else{
-//			letterBlock.setRemoved(true);
-//			removeMovingConsonants(letterBlock);
-//		}
+		((LetrisGameView) view).updateMovingLetterBlock(letterBlock);
 	}
 	
 	/**
@@ -387,42 +424,15 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		moveLeftTask.markForDelete();
 		moveRightTask.markForDelete();
 		// TODO Implement rotation here.
-//		moveUpTask.markForDelete();
 		moveDownTask.markForDelete();
 		updatePositionTask.markForDelete();
+		dropTask.markForDelete();
 
 		keyUpDown = false;
 		keyDownDown = false;
 		keyLeftDown = false;
 		keyRightDown = false;
-
-//		GWT.log("canceled updateMyPositionTimer, started standard update timer again..");
-//		updateMyPositionTimer.cancel();
-//		t.scheduleRepeating(200);
-
-	}
-
-
-	public void startGame(String word, LetrisGameState g){
-
-		((LetrisGameView)view).showShortVowelGame(this.playerID,
-				this.numberOfPlayers, 
-				270, 
-				330);
-
-//		GWT.log("cancelled normal timer, starded updateMyPositionTimer...");
-//
-//		t.cancel();
-//
-//		updateMyPositionTimer = new Timer() {
-//			@Override
-//			public void run() {
-//				// TODO Update the current block position.
-////				updateMyPosition();
-//			}
-//		};
-//
-//		updateMyPositionTimer.scheduleRepeating(POSITION_TIMER_INTERVALL);
+		keySpaceDown = false;
 
 	}
 
@@ -437,7 +447,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -452,13 +462,34 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			caught.printStackTrace();
 		}
 		
 		@Override
 		public void onSuccess(ArrayList<String> targetWords) {
 			setTargetWords(targetWords);
-			// TODO Hide waiting screen.
+			
+			// Initialize the game model.
+			gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
+					STARTING_OUTSTANDING_LETTER_RATIO,
+					STARTING_ROTATED_LETTER_RATIO,
+					STARTING_TIME_PER_BLOCK, playerID);
+			
+			// Set up the game selector.
+			gameSelector = new LetrisGameSelector(LetrisGameCoordinator.this);
+			rootPanel.add(gameSelector);
+			
+			t = new Timer() {
+				@Override
+				public void run() {
+					update();
+				}
+			};
+
+			//main loop-timer
+			t.scheduleRepeating(500);
+			refreshGameList();
+			
 			GWT.log("LeTris game coordinator loaded.");
 		}
 		
