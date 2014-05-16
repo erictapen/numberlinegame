@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wicam.numberlineweb.client.Letris.LetrisGameState;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.chat.ChatController;
 import com.wicam.numberlineweb.client.chat.ChatCoordinator;
@@ -181,6 +182,14 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 * @param g
 	 */
 	protected void updateGame(GameState gameState){
+		
+		// TODO Delete that. Check in what state the gameState
+		// is returned after call to update from server.
+		// Why are the specific fields of the LetrisGameState null? 
+		GWT.log("GameState after update()-call");
+//		GWT.log(((LetrisGameState)gameState).toString(1));
+		GWT.log(gameState.toString());
+		
 		// handle basic cases
 		switch (gameState.getState()){
 		// game closed

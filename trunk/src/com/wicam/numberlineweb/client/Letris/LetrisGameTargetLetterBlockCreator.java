@@ -23,16 +23,16 @@ public class LetrisGameTargetLetterBlockCreator {
 	 * Ratio of the letters per word (depending on the word size)
 	 * that are NOT members of the word itself.
 	 */
-	private double outstandingLetterRatio;
+	private double missingLetterRatio;
 	/**
 	 * Ratio of all letters (including the foreign ones)
 	 * that are being returned in a rotated fashion.
 	 */
 	private double rotatedLetterRatio;
 	/**
-	 * List containing the single letters of the outstanding words.
+	 * List containing the single letters of the missing words.
 	 */
-	private ArrayList<String> outstandingLetters;
+	private ArrayList<String> missingLetters;
 	/**
 	 * List containing all the target letter blocks to be returned.
 	 */
@@ -40,7 +40,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	/**
 	 * The words that are not correctly build yet.
 	 */
-	private ArrayList<String> outstandingWords;
+	private ArrayList<String> missingWords;
 	/**
 	 * The current word being processed.
 	 */
@@ -66,7 +66,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	
 	public LetrisGameTargetLetterBlockCreator(double foreignLetterRatio, double rotatedLetterRatio,
 			int timePerBlock) {
-		this.outstandingLetterRatio = foreignLetterRatio;
+		this.missingLetterRatio = foreignLetterRatio;
 		this.rotatedLetterRatio = rotatedLetterRatio;
 		this.timePerBlock = timePerBlock;
 		// The playground should be 10 blocks in width, so set the starting x position
@@ -83,16 +83,16 @@ public class LetrisGameTargetLetterBlockCreator {
 	}
 	
 //	/**
-//	 * Fill up the outstandingLetters list with all the letters of the outstandingLetters.
+//	 * Fill up the missingLetters list with all the letters of the missingLetters.
 //	 */
 //	private void fillAlphabet() {
 //		for(char letter = 'A'; letter <= 'Z';letter++){
-//			 outstandingLetters.add(String.valueOf(letter));
+//			 missingLetters.add(String.valueOf(letter));
 //		}
-//		outstandingLetters.add("Ä");
-//		outstandingLetters.add("Ö");
-//		outstandingLetters.add("Ü");
-//		outstandingLetters.add("ß");
+//		missingLetters.add("Ä");
+//		missingLetters.add("Ö");
+//		missingLetters.add("Ü");
+//		missingLetters.add("ß");
 //	}
 	
 	public void setTimePerBlock(int timePerBlock) {
@@ -103,12 +103,12 @@ public class LetrisGameTargetLetterBlockCreator {
 		return this.timePerBlock;
 	}
 	
-	public double getOutstandingLetterRatio() {
-		return outstandingLetterRatio;
+	public double getMissingLetterRatio() {
+		return missingLetterRatio;
 	}
 
-	public void setOutstandingLetterRatio(double foreignLetterRatio) {
-		this.outstandingLetterRatio = foreignLetterRatio;
+	public void setMissingLetterRatio(double foreignLetterRatio) {
+		this.missingLetterRatio = foreignLetterRatio;
 	}
 
 	public double getRotatedLetterRatio() {
@@ -159,16 +159,16 @@ public class LetrisGameTargetLetterBlockCreator {
 	 * Draw the foreign letter blocks from the letters of the outstanding words and
 	 * from the current word. This assures the possibility to build outstanding words more easily.
 	 */
-	private void addOutstandingLetterBlocks() {
-		// Estimate number of foreign letters.
+	private void addMissingLetterBlocks() {
+		// Estimate number of missing letters.
 		int targetWordSize = targetWord.length();
-		int foreignLetters = (int) Math.floor(targetWordSize * outstandingLetterRatio);
-		updateOutstandingLetters();
-		// Loop over number of foreign letters.
-		for (int i = 0; i < foreignLetters; i++) {
-			// Estimate randomly the foreign letter to add.
-			String foreignLetter = getRandomOutstandingLetter();
-			LetrisGameLetterBlock letterBlock = makeNewLetterBlock(foreignLetter, startX, startY, Orientation.SOUTH, timePerBlock);
+		int missingLetters = (int) Math.floor(targetWordSize * missingLetterRatio);
+		updateMissingLetters();
+		// Loop over number of missing letters.
+		for (int i = 0; i < missingLetters; i++) {
+			// Estimate randomly the missing letter to add.
+			String missingLetter = getRandomMissingLetter();
+			LetrisGameLetterBlock letterBlock = makeNewLetterBlock(missingLetter, startX, startY, Orientation.SOUTH, timePerBlock);
 			targetLetterBlocks.add(letterBlock);
 		}
 	}
@@ -205,47 +205,47 @@ public class LetrisGameTargetLetterBlockCreator {
 	}
 	
 	/**
-	 * Update the list of outstanding letters from the list of outstanding
+	 * Update the list of missing letters from the list of missing
 	 * words from the game state.
 	 */
-	private void updateOutstandingLetters() {
+	private void updateMissingLetters() {
 		// Add the target word to the outstanding words.
-		outstandingWords.add(targetWord);
-		outstandingLetters = new ArrayList<String>();
-		for (String word : outstandingWords) {
+		missingWords.add(targetWord);
+		missingLetters = new ArrayList<String>();
+		for (String word : missingWords) {
 			String[] letters = word.split("");
 			for (String letter : letters) {
 				if (!letter.equals("")) {
-					outstandingLetters.add(letter);
+					missingLetters.add(letter);
 				}
 			}
 		}
 	}
 	
 	/**
-	 * Return a random letter of the outstandingLetters. 
+	 * Return a random letter of the missing letters. 
 	 * @return random letter
 	 */
-	private String getRandomOutstandingLetter() {
-		ListShuffler.shuffleList(outstandingLetters);
-		return outstandingLetters.get(0);
+	private String getRandomMissingLetter() {
+		ListShuffler.shuffleList(missingLetters);
+		return missingLetters.get(0);
 	}
 
 	/**
 	 * Set a new target word and create the letter blocks
 	 * for being displayed later according to this word
-	 * and the outstanding words. The target letter blocks
+	 * and the missing words. The target letter blocks
 	 * that were created can be returned with getTargetLetterBlocks().
 	 * @param targetWord
-	 * @param outstandingWords
+	 * @param missingWords
 	 */
-	public void createTargetLetterBlocks(String targetWord, ArrayList<String> outstandingWords) {
+	public void createTargetLetterBlocks(String targetWord, ArrayList<String> missingWords) {
 		this.targetWord = targetWord;
 		// Copy the original list to a new instance so that internal changes won't
 		// affect the original list.
-		this.outstandingWords = new ArrayList<String>(outstandingWords);
+		this.missingWords = new ArrayList<String>(missingWords);
 		addMemberLetterBlocks();
-		addOutstandingLetterBlocks();
+		addMissingLetterBlocks();
 		randomRotateLetterBlocks();
 		ListShuffler.shuffleList(targetLetterBlocks);
 	}
@@ -263,14 +263,4 @@ public class LetrisGameTargetLetterBlockCreator {
 		return targetWord;
 	}
 	
-	/*
-	// Test the class.
-	public static void main(String[] args) {
-		LetrisGameTargetLetterBlockListCreater c = new LetrisGameTargetLetterBlockListCreater(0.2, 0.5, null);
-		c.createTargetLetterBlocks("Strand");
-		System.out.println(c.getTargetLetterBlocks());
-		c.createTargetLetterBlocks("Hallöchen");
-		System.out.println(c.getTargetLetterBlocks());
-	}
-	//*/
 }

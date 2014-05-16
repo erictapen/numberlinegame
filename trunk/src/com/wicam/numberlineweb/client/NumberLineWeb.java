@@ -144,18 +144,18 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		//adds the numberlinegame
-//		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//
-//				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
-//				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-//				
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});
+		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
 
 		//adds the doppelung game
 		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 

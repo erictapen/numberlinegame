@@ -2,9 +2,6 @@ package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.commons.collections.map.HashedMap;
-
 import com.wicam.numberlineweb.client.GameState;
 
 /**
@@ -139,6 +136,17 @@ public class LetrisGameState extends GameState {
 	
 	public void removeMissingWord(int playerId, String missingWord) {
 		playerId2MissingWords.get(playerId).remove(missingWord);
+	}
+	
+	public String toString(int playerId) {
+		String s = super.toString();
+		s += "\ncurrent word: " + getCurrentWord(playerId);
+		s += "\nstatic letter blocks: " + getStaticLetterBlocks(playerId);
+		s += "\nmoving letter block: " + getMovingLetterBlock(playerId);
+		s += "\nletter blocks to be displayed: " + getLetterBlocksToBeDisplayed(playerId);
+		s += "\ncorrect words: " + getCorrectWords(playerId);
+		s += "\nmissing words: " + getMissingWords(playerId);
+		return s;
 	}
 	
 }
