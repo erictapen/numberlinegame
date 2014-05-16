@@ -11,8 +11,8 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
  * @author timfissler
  *
  */
-
-public class LetrisGameLetterBlock extends PushButton implements IsSerializable {
+// TODO Add image-URL for the view.
+public class LetrisGameLetterBlock implements IsSerializable {
 
 	/**
 	 * The letter the letter block is representing.

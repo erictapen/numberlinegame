@@ -56,8 +56,10 @@ public class LetrisGameModel {
 	 * @param gameState the empty game state
 	 * @return gameState the functional game state
 	 */
-	public LetrisGameState setupGameState(LetrisGameState gameState) {
+	public void setupGameState(LetrisGameState gameState) {
 		gameState.setStaticLetterBlocks(playerId, new ArrayList<LetrisGameLetterBlock>());
+		gameState.setMissingWords(playerId, new ArrayList<String>());
+		gameState.setCorrectWords(playerId, new ArrayList<String>());
 		// Set up all the lists and the moving block.
 		gameState.setCurrentWord(playerId, getNextRandomCurrentWord());
 		// Add current word to outstanding words.
@@ -69,9 +71,6 @@ public class LetrisGameModel {
 		// remove it from the list.
 		gameState.setMovingLetterBlock(playerId, gameState.getLetterBlocksToBeDisplayed(playerId).get(0));
 		gameState.removeLetterBlockToBeDisplayed(playerId, gameState.getMovingLetterBlock(playerId));
-		// Setup the movement task.
-		this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(gameState.getMovingLetterBlock(playerId), this);
-		return gameState;
 	}
 	
 	/**
@@ -81,13 +80,13 @@ public class LetrisGameModel {
 	 * that might be influenced). 
 	 */
 	public void startMoving() {
-//		if (this.movingLetterBlockTask == null) {
-//			if (this.coordinator.getGameState().getMovingLetterBlock(playerId) != null) {
-//				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(playerId), this);
-//			} else {
-//				GWT.log("Moving block hasn't been set yet!");
-//			}
-//		}
+		if (this.movingLetterBlockTask == null) {
+			if (this.coordinator.getGameState().getMovingLetterBlock(playerId) != null) {
+				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(playerId), this);
+			} else {
+				GWT.log("Moving block hasn't been set yet!");
+			}
+		}
 		coordinator.registerAniTask(movingLetterBlockTask);
 	}
 	
@@ -98,12 +97,12 @@ public class LetrisGameModel {
 		movingLetterBlockTask.markForDelete();
 	}
 
-	public double getForeignLetterRatio() {
-		return letterBlockCreator.getOutstandingLetterRatio();
+	public double getMissingLetterRatio() {
+		return letterBlockCreator.getMissingLetterRatio();
 	}
 
-	public void setForeignLetterRatio(double foreignLetterRatio) {
-		letterBlockCreator.setOutstandingLetterRatio(foreignLetterRatio);
+	public void setMissingLetterRatio(double missingLetterRatio) {
+		letterBlockCreator.setMissingLetterRatio(missingLetterRatio);
 	}
 
 	public double getRotatedLetterRatio() {
@@ -120,6 +119,10 @@ public class LetrisGameModel {
 	
 	public int getTimePerBlock() {
 		return letterBlockCreator.getTimePerBlock();
+	}
+	
+	public int getPlayerId() {
+		return playerId;
 	}
 	
 	/**

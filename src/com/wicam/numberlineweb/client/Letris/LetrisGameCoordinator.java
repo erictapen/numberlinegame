@@ -94,12 +94,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		g.setState(-1);
 		openGame = g;
 		update();
-		
-		// Set up the game model.
-//		gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
-//				STARTING_OUTSTANDING_LETTER_RATIO,
-//				STARTING_ROTATED_LETTER_RATIO,
-//				STARTING_TIME_PER_BLOCK, playerID);
 
 		//clear the root panel and draw the game
 		rootPanel.clear();
@@ -122,6 +116,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		controller = new LetrisGameController(this);
 		this.view = new LetrisGameView(numberOfPlayers, controller);
 	}
+	
+	public LetrisGameModel getGameModel() {
+		return gameModel;
+	}
 
 	@Override
 	protected void updateGame(GameState gameState) {
@@ -141,10 +139,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			
 //			updateViewIngame(g, gameView);
 			
-			gameModel.setupGameState();
 //			gameModel.startMoving();
-			
-			GWT.log(((LetrisGameState)openGame).toString(playerID));
 
 			break;
 

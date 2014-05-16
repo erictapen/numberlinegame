@@ -305,7 +305,7 @@ public class LetrisGameView extends GameView {
 
 	public void updateMovingLetterBlock(LetrisGameLetterBlock letterBlock) {
 		// TODO Update position and rotation of the letter block.
-		gamePanel.setWidgetPosition(letterBlock, letterBlock.getX(), letterBlock.getY());
+//		gamePanel.setWidgetPosition(letterBlock, letterBlock.getX(), letterBlock.getY());
 	}
 
 }
