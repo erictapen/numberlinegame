@@ -18,7 +18,7 @@ import com.wicam.numberlineweb.client.GameController;
 
 public class LetrisGameController extends GameController implements KeyDownHandler, KeyUpHandler, DirectionHandler {
 
-	private boolean arrowKeysEnabled = false;
+	private boolean keysEnabled = false;
 
 	public LetrisGameController(LetrisGameCoordinator coordinator) {
 		super(coordinator);
@@ -49,7 +49,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		// TODO Implement listening for space-key for dropping a letter.
-		if (arrowKeysEnabled){
+		if (keysEnabled){
 			event.preventDefault();
 
 			int dir = 1;
@@ -68,7 +68,9 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 			case KeyCodes.KEY_RIGHT:
 				dir=3;
 				break;
-
+			case KeyCodes.KEY_SPACE:
+				dir=5;
+				break;
 			}
 
 			directionDown(dir);
@@ -78,7 +80,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
 		// TODO Implement listening for space-key for dropping a letter.
-		if (arrowKeysEnabled){
+		if (keysEnabled){
 			int dir = 1;
 
 			switch(event.getNativeKeyCode()) {
@@ -95,29 +97,31 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 			case KeyCodes.KEY_RIGHT:
 				dir=3;
 				break;
-
+			case KeyCodes.KEY_SPACE:
+				dir=5;
+				break;
 			}
 
 			directionUp(dir);
 		}
 	}
 
-	public boolean isArrowKeysEnabled() {
-		return arrowKeysEnabled;
+	public boolean isKeysEnabled() {
+		return keysEnabled;
 	}
 
-	public void setArrowKeysEnabled(boolean arrowKeysEnabled) {
-		this.arrowKeysEnabled = arrowKeysEnabled;
+	public void setKeysEnabled(boolean arrowKeysEnabled) {
+		this.keysEnabled = arrowKeysEnabled;
 	}
 
 	@Override
 	public void directionDown(int dir) {
-		((LetrisGameCoordinator) coordinator).moveImageOnGamePanel(false,dir);
+		((LetrisGameCoordinator) coordinator).moveBlock(false,dir);
 	}
 
 	@Override
 	public void directionUp(int dir) {
-		((LetrisGameCoordinator) coordinator).moveImageOnGamePanel(true,dir);
+		((LetrisGameCoordinator) coordinator).moveBlock(true,dir);
 	}
 
 }

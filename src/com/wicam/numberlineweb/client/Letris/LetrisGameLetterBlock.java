@@ -15,10 +15,6 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 public class LetrisGameLetterBlock extends PushButton implements IsSerializable {
 
 	/**
-	 * The model which this block is part of.
-	 */
-//	private LetrisGameModel gameModel;
-	/**
 	 * The letter the letter block is representing.
 	 */
 	private String letter;

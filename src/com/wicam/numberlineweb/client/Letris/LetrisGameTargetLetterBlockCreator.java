@@ -23,7 +23,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	 * Ratio of the letters per word (depending on the word size)
 	 * that are NOT members of the word itself.
 	 */
-	private double foreignLetterRatio;
+	private double outstandingLetterRatio;
 	/**
 	 * Ratio of all letters (including the foreign ones)
 	 * that are being returned in a rotated fashion.
@@ -66,7 +66,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	
 	public LetrisGameTargetLetterBlockCreator(double foreignLetterRatio, double rotatedLetterRatio,
 			int timePerBlock) {
-		this.foreignLetterRatio = foreignLetterRatio;
+		this.outstandingLetterRatio = foreignLetterRatio;
 		this.rotatedLetterRatio = rotatedLetterRatio;
 		this.timePerBlock = timePerBlock;
 		// The playground should be 10 blocks in width, so set the starting x position
@@ -103,12 +103,12 @@ public class LetrisGameTargetLetterBlockCreator {
 		return this.timePerBlock;
 	}
 	
-	public double getForeignLetterRatio() {
-		return foreignLetterRatio;
+	public double getOutstandingLetterRatio() {
+		return outstandingLetterRatio;
 	}
 
-	public void setForeignLetterRatio(double foreignLetterRatio) {
-		this.foreignLetterRatio = foreignLetterRatio;
+	public void setOutstandingLetterRatio(double foreignLetterRatio) {
+		this.outstandingLetterRatio = foreignLetterRatio;
 	}
 
 	public double getRotatedLetterRatio() {
@@ -162,7 +162,7 @@ public class LetrisGameTargetLetterBlockCreator {
 	private void addOutstandingLetterBlocks() {
 		// Estimate number of foreign letters.
 		int targetWordSize = targetWord.length();
-		int foreignLetters = (int) Math.floor(targetWordSize * foreignLetterRatio);
+		int foreignLetters = (int) Math.floor(targetWordSize * outstandingLetterRatio);
 		updateOutstandingLetters();
 		// Loop over number of foreign letters.
 		for (int i = 0; i < foreignLetters; i++) {
