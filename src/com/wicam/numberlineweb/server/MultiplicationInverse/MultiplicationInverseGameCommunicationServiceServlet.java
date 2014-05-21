@@ -42,7 +42,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * Store the maximum number of presentations of an item.
 	 * This is also the number of trials an item is used for.
 	 */
-	protected int numberOfPresentationsPerItem;
+	protected final int numberOfPresentationsPerItem = 6;
 	/**
 	 * Here the pseudo-random presentation round is stored.
 	 */
@@ -51,7 +51,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * If true present the items in a pseudo random ordering (see nextPseudoRandomItem()).
 	 * If false, use completely random item presentation (see nextRandomItem()).
 	 */
-	protected boolean usePseudoRandomItemOrdering;
+	protected final boolean usePseudoRandomItemOrdering = true;
+	
+	private Timer t;
 	
 	public MultiplicationInverseGameCommunicationServiceServlet() {
 		
@@ -59,10 +61,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		//this.handicapAdjustment = new NumberLineGameHandicap();
 		
 		// Set the number of presentations of each item.
-		numberOfPresentationsPerItem = 6;
+//		numberOfPresentationsPerItem = 6;
 		pseudoRandomPresentationRound = 1;
-		
-		usePseudoRandomItemOrdering = true;
 		
 //		// Test if the items are produced 112 times each 7 times.
 //		MultiplicationInverseItem item = nextRandomItem();
@@ -75,7 +75,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	@Override
-	public GameState openGame(GameState g) throws GameOpenException {
+	synchronized public GameState openGame(GameState g) throws GameOpenException {
 		
 		g.setServerSendTime(System.currentTimeMillis());
 		GWT.log("before opening game");
@@ -91,7 +91,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 
 	@Override
-	public String getGameProperties(GameState gameState) {
+	synchronized public String getGameProperties(GameState gameState) {
 		
 		MultiplicationInverseGameState numberlineGameState = (MultiplicationInverseGameState) gameState;
 		
@@ -112,7 +112,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @param state MultiplicationGameState to alter
 	 * @return The new MultiplicationGameState
 	 */
-	public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
+	synchronized public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		
@@ -155,9 +155,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		return state;
 	}
 	
-	public void showNextItem(int id) {
+	synchronized public void showNextItem(int id) {
 		
-		Timer t = new Timer(true);
+		t = new Timer(true);
 		t.schedule(new MultiplicationInverseGameStateTask(id, 6, this), 6000);
 	}
 	
@@ -166,7 +166,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * To generate the Java code use the script itemsToJavaCode.awk and
 	 * a csv file with the items.
 	 */
-	private void setItems(int currentId) {
+	synchronized private void setItems(int currentId) {
 		
 		ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();
 		
@@ -421,7 +421,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * with a counter less than the numberOfPresentationsPerItem.
 	 * @return
 	 */
-	private MultiplicationInverseItem nextRandomItem(int gameId) {
+	synchronized private MultiplicationInverseItem nextRandomItem(int gameId) {
 		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
 		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
 		
@@ -449,7 +449,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @param gameId
 	 * @return
 	 */
-	private MultiplicationInverseItem nextPseudoRandomItem(int gameId) {
+	synchronized private MultiplicationInverseItem nextPseudoRandomItem(int gameId) {
 		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
 		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
 		boolean itemForThisPseudoRandomRoundFound = false;
@@ -487,7 +487,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * Test if items are left
 	 * @return boolean value whether items are left
 	 */
-	private boolean itemListIsEmpty(int gameId) {
+	synchronized private boolean itemListIsEmpty(int gameId) {
 		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
 		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
 		
@@ -503,7 +503,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	@Override
-	protected void addNPC(GameState game){
+	synchronized protected void addNPC(GameState game){
 		int playerid = game.addPlayer("NPC", -2);
 		npcIds.add(playerid);
 		GWT.log("Trying to build an NPC");
@@ -511,7 +511,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	@Override
-	protected boolean isNPC(int playerId){
+	synchronized protected boolean isNPC(int playerId){
 		return npcIds.contains(playerId);
 	}	
 	
@@ -520,7 +520,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @param answers All answers
 	 * @return Returns true, if the newAnswer is in answers
 	 */
-	protected boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
+	synchronized protected boolean answerExists(MultiplicationAnswer newAnswer, ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.equals(newAnswer)) {
 				return true;
@@ -533,7 +533,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * Disables all answers
 	 * @param answers Set of answers to delete from
 	 */
-	protected void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
+	synchronized protected void disableAllAnswers(ArrayList<MultiplicationAnswer> answers) {
 		for (MultiplicationAnswer answer : answers) {
 			answer.setTaken();
 		}
@@ -546,7 +546,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * 		   Returns 0, if user was too slow and answer is already taken. 
 	 * 		   Returns -1, if answer was a false and free one
 	 */
-	protected int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
+	synchronized protected int checkAnswer(String toFind, ArrayList<MultiplicationAnswer> answers, MultiplicationPlayer player) {
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.getAnswer().equals(toFind)) {				
 				if (answer.isTaken()) {
@@ -569,7 +569,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * @param answers Set of answers to check
 	 * @return True, if at least one correct answer is not yet taken
 	 */
-	protected boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
+	synchronized protected boolean oneCorrectLeft(ArrayList<MultiplicationAnswer> answers) {
 		Boolean res = false;
 		for (MultiplicationAnswer answer : answers) {
 			if (answer.isCorrect()) {
@@ -606,63 +606,69 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		String answer = clicked.split(":")[2];
 		MultiplicationInverseGameState g = (MultiplicationInverseGameState) this.getGameById(gameid);
 		
-		HttpServletRequest request = this.getThreadLocalRequest();
-		int uid = -2;
-		if(request != null){
-			HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
-					request.getSession().getAttribute("game2pid2uid");
-			uid = map.get(internalName).get(gameid).get(playerid);
-		}
-		
-		// check answers and flag/colorize taken answers
-		int answerState = checkAnswer(answer, g.getAnswers(), (MultiplicationPlayer) g.getPlayers().get(playerid-1));
-		
-		// Do the logging of the clicked answer.
-		if ((!this.isNPC(playerid)) && (uid != -2)) {
-			// Human player clicked.
-			logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_USER_PICKED_ANSWER,
-					"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.USER);
-		} else {
-			// NPC clicked.
-			logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_NPC_PICKED_ANSWER,
-					"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.NPC);
-		}
-
-		// give/take points
-		this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);
-		
-		if (oneCorrectLeft(g.getAnswers())) { // keep going
-			this.setGameState(this.getGameById(gameid),3);
-			this.setChanged(gameid);
-		} else { // New round or end of game
-			
-			disableAllAnswers(g.getAnswers());
-			
-			this.setGameState(this.getGameById(gameid),5);
-			
-			//TODO: change to test whether items are left
-			boolean isEmpty = itemListIsEmpty(gameid);
-			
-			if (isEmpty){
-				this.endGame(gameid);
-				this.handicapAction(gameid);
+		// clicking only allowed when in game state 3
+		// to prevent multiple clicks
+		if (g.getState() == 3)
+		{
+			HttpServletRequest request = this.getThreadLocalRequest();
+			int uid = -2;
+			if(request != null){
+				HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>> map = (HashMap<String, HashMap<Integer, HashMap<Integer, Integer>>>) 
+						request.getSession().getAttribute("game2pid2uid");
+				uid = map.get(internalName).get(gameid).get(playerid);
 			}
-			else {
-				this.showNextItem(gameid);	
-				// ensure that makeClick is set to false
-				for (NPC npc :this.npcs)
-				{
-					((MultiplicationInverseNPC)npc).makeClick = false;
+			
+			// check answers and flag/colorize taken answers
+			int answerState = checkAnswer(answer, g.getAnswers(), (MultiplicationPlayer) g.getPlayers().get(playerid-1));
+			
+			// Do the logging of the clicked answer.
+			if ((!this.isNPC(playerid)) && (uid != -2)) {
+				// Human player clicked.
+				logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_USER_PICKED_ANSWER,
+						"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.USER);
+			} else {
+				// NPC clicked.
+				logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_NPC_PICKED_ANSWER,
+						"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.NPC);
+			}
+
+			// give/take points
+			this.getGameById(gameid).setPlayerPoints(playerid,this.getGameById(gameid).getPlayerPoints(playerid) + answerState);
+			
+			if (oneCorrectLeft(g.getAnswers())) { // keep going
+				this.setGameState(this.getGameById(gameid),3);
+				this.setChanged(gameid);
+			} else { // New round or end of game
+				
+				disableAllAnswers(g.getAnswers());
+				
+				this.setGameState(this.getGameById(gameid),5);
+				
+				//TODO: change to test whether items are left
+				boolean isEmpty = itemListIsEmpty(gameid);
+				
+				if (isEmpty){
+					this.endGame(gameid);
+					this.handicapAction(gameid);
 				}
+				else {
+					this.showNextItem(gameid);	
+					// ensure that makeClick is set to false
+					for (NPC npc :this.npcs)
+					{
+						((MultiplicationInverseNPC)npc).makeClick = false;
+					}
+				}
+				
 			}
-			
-		}
 
+		}
+		
 		g.setServerSendTime(System.currentTimeMillis());
 		return g;
 	}
 
-	protected void handicapAction(int gameid) {
+	synchronized protected void handicapAction(int gameid) {
 		
 		//TODO The current formula is just a proof of concept. 
 		//At the moment, it will produce bad handicaps for
@@ -729,9 +735,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	@Override
-	public void endGame(int id) {
+	synchronized public void endGame(int id) {
 
-		Timer t = new Timer("TimerEndGame", true);
+		t = new Timer("TimerEndGame", true);
 		
 		String gamePropertiesStr = this.getGameProperties(this.getGameById(id));
 		
@@ -750,7 +756,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	}
 	
 	@Override
-	protected void removeGame(int gameid) {
+	synchronized protected void removeGame(int gameid) {
 		super.removeGame(gameid);
 		// remove items
 		this.gameId2Items.remove(gameid);
