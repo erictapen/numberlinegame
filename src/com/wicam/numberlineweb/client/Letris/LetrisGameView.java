@@ -174,15 +174,15 @@ public class LetrisGameView extends GameView {
 	/**
 	 * Displays the short vowel image
 	 */
-	public void showShortVowelGame(int playerid, int players, int startX, int startY) {
+	public void showLetrisGame() {
 		// TODO Change the logic.
-//		gamePanel.clear();
-//		textBox.setText("");
+		gamePanel.clear();
+		textBox.setText("");
 //		gamePanel.add(movingShortVowelImage);
 //
-//		gamePanel.add(canvas);
-//
-//		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
+		gamePanel.add(canvas);
+
+		gamePanel.add(focusPanel, 0, 0); // additionally the focus panel makes the short vowel image unclickable
 //		movingShortVowelImage.setX(startX);
 //		movingShortVowelImage.setY(startY);
 //
@@ -201,12 +201,12 @@ public class LetrisGameView extends GameView {
 //		movingShortVowelImage.setPixelSize(48, 47);
 //		enemyMovingShortVowelImage.setPixelSize(48, 47);
 //
-//		if (MobileDeviceChecker.checkForKeyboard()) {
-//			kbd = new KeyboardDummy((LetrisGameController)super.gameController);
-//			gamePanel.add(kbd, 440, 240);
-//		}
-//
-//		focusPanel.setFocus(true);
+		if (MobileDeviceChecker.checkForKeyboard()) {
+			kbd = new KeyboardDummy((LetrisGameController)super.gameController);
+			gamePanel.add(kbd, 440, 240);
+		}
+
+		focusPanel.setFocus(true);
 
 	}
 

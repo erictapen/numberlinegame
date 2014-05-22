@@ -30,10 +30,6 @@ public class LetrisGameModel {
 	 */
 	private LetrisGameCoordinator coordinator;
 	/**
-	 * The playerId of the client.
-	 */
-	private int playerId;
-	/**
 	 * Hold the position of all static letter blocks in a matrix.
 	 */
 	private LetrisGameLetterBlock[][] playground = new LetrisGameLetterBlock[20][10];
@@ -44,10 +40,9 @@ public class LetrisGameModel {
 	
 	
 	public LetrisGameModel(LetrisGameCoordinator coordinator, double foreignLetterRatio,
-			double rotatedLetterRatio, int timePerBlock, int playerId) {
+			double rotatedLetterRatio, int timePerBlock) {
 		super();
 		this.coordinator = coordinator;
-		this.playerId = playerId;
 		this.letterBlockCreator = new LetrisGameTargetLetterBlockCreator(foreignLetterRatio, rotatedLetterRatio, timePerBlock);
 	}
 	
@@ -57,20 +52,20 @@ public class LetrisGameModel {
 	 * @return gameState the functional game state
 	 */
 	public void setupGameState(LetrisGameState gameState) {
-		gameState.setStaticLetterBlocks(playerId, new ArrayList<LetrisGameLetterBlock>());
-		gameState.setMissingWords(playerId, new ArrayList<String>());
-		gameState.setCorrectWords(playerId, new ArrayList<String>());
+		gameState.setStaticLetterBlocks(new ArrayList<LetrisGameLetterBlock>());
+		gameState.setMissingWords(new ArrayList<String>());
+		gameState.setCorrectWords(new ArrayList<String>());
 		// Set up all the lists and the moving block.
-		gameState.setCurrentWord(playerId, getNextRandomCurrentWord());
+		gameState.setCurrentWord(getNextRandomCurrentWord());
 		// Add current word to outstanding words.
-		gameState.addMissingWord(playerId, gameState.getCurrentWord(playerId));
+		gameState.addMissingWord(gameState.getCurrentWord());
 		// Create new letter blocks and retrieve them.
-		letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord(playerId), gameState.getMissingWords(playerId));
-		gameState.setLetterBlocksToBeDisplayed(playerId, letterBlockCreator.getTargetLetterBlocks());
+		letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord(), gameState.getMissingWords());
+		gameState.setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
 		// Set the first letter block to be displayed as the moving letter block and
 		// remove it from the list.
-		gameState.setMovingLetterBlock(playerId, gameState.getLetterBlocksToBeDisplayed(playerId).get(0));
-		gameState.removeLetterBlockToBeDisplayed(playerId, gameState.getMovingLetterBlock(playerId));
+		gameState.setMovingLetterBlock(gameState.getLetterBlocksToBeDisplayed().get(0));
+		gameState.removeLetterBlockToBeDisplayed(gameState.getMovingLetterBlock());
 	}
 	
 	/**
@@ -81,8 +76,8 @@ public class LetrisGameModel {
 	 */
 	public void startMoving() {
 		if (this.movingLetterBlockTask == null) {
-			if (this.coordinator.getGameState().getMovingLetterBlock(playerId) != null) {
-				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(playerId), this);
+			if (this.coordinator.getGameState().getMovingLetterBlock() != null) {
+				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(), this);
 			} else {
 				GWT.log("Moving block hasn't been set yet!");
 			}
@@ -121,10 +116,6 @@ public class LetrisGameModel {
 		return letterBlockCreator.getTimePerBlock();
 	}
 	
-	public int getPlayerId() {
-		return playerId;
-	}
-	
 	/**
 	 * Draw a random word from the word list. And set it
 	 * as next current word.
@@ -143,7 +134,7 @@ public class LetrisGameModel {
 	 */
 	public boolean isCollidingWithStaticLetterBlocks(LetrisGameLetterBlock letterBlock) {
 		boolean collides = false;
-		ArrayList<LetrisGameLetterBlock> staticLetterBlocks = this.coordinator.getGameState().getStaticLetterBlocks(playerId);
+		ArrayList<LetrisGameLetterBlock> staticLetterBlocks = this.coordinator.getGameState().getStaticLetterBlocks();
 		for (int i = 0; i < staticLetterBlocks.size(); i++) {
 			if (letterBlock.isColliding(staticLetterBlocks.get(i))) {
 				collides = true;
@@ -200,14 +191,14 @@ public class LetrisGameModel {
 	 * @param movementDirection
 	 */
 	public void moveLetterBlock(MovementDirection movementDirection) {
-		this.coordinator.getGameState().getMovingLetterBlock(playerId).moveTo(movementDirection);
+		this.coordinator.getGameState().getMovingLetterBlock().moveTo(movementDirection);
 	}
 	
 	/**
 	 * Drop the currently moving letter block instantly.
 	 */
 	public void dropLetterBlock() {
-		coordinator.getGameState().getMovingLetterBlock(playerId).drop();
+		coordinator.getGameState().getMovingLetterBlock().drop();
 	}
 	
 	/**
@@ -215,7 +206,7 @@ public class LetrisGameModel {
 	 * by the player.
 	 */
 	public void rotateLetterBlock(RotationDirection rotationDirection) {
-		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock(playerId);
+		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
 		switch (rotationDirection) {
 		case CLOCKWISE:
 			switch (movingLetterBlock.getOrientation()) {
@@ -294,13 +285,13 @@ public class LetrisGameModel {
 		// Build up string from given array.
 		String rowStr = "";
 		int startIdx = -1;
-		int endIdx = -1; 
+		int endIdx = -1;
 		for (int i = 0; i < letterBlockRow.length; i++) {
 			rowStr += letterBlockRow[i].getLetter();
 		}
 		String foundWord = "";
 		// Loop over outstanding words and compare them with the string.
-		ArrayList<String> outstandingWords = this.coordinator.getGameState().getMissingWords(playerId);
+		ArrayList<String> outstandingWords = this.coordinator.getGameState().getMissingWords();
 		for (String outstandingWord : outstandingWords) {
 			startIdx = rowStr.indexOf(outstandingWord);
 			if (startIdx >= 0) {
@@ -311,7 +302,7 @@ public class LetrisGameModel {
 			}
 		}
 		outstandingWords.remove(foundWord);
-		this.coordinator.getGameState().addCorrectWord(playerId, foundWord);
+		this.coordinator.getGameState().addCorrectWord(foundWord);
 		coordinator.foundCorrectWord(foundWord);
 		// Build up an array of letter blocks with the given indices and return it.
 		ArrayList<LetrisGameLetterBlock> foundLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
@@ -349,39 +340,21 @@ public class LetrisGameModel {
 		// sorted from top to bottom. That is useful for collision check, because we start
 		// to look for possible collisions at the beginning of the static letter block
 		// list.
-		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock(playerId);
-		this.coordinator.getGameState().addStaticLetterBlock(playerId, movingLetterBlock);
+		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
+		this.coordinator.getGameState().addStaticLetterBlock(movingLetterBlock);
 		playground[movingLetterBlock.getY()][movingLetterBlock.getX()] = movingLetterBlock;
 		checkForCorrectWord();
-		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed(playerId);
+		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
 		if (letterBlocksToBeDisplayed.size() == 0) {
-			coordinator.getGameState().setCurrentWord(playerId, getNextRandomCurrentWord());
+			coordinator.getGameState().setCurrentWord(getNextRandomCurrentWord());
 			// Add current word to outstanding words.
-			this.coordinator.getGameState().addMissingWord(playerId, this.coordinator.getGameState().getCurrentWord(playerId));
+			this.coordinator.getGameState().addMissingWord(this.coordinator.getGameState().getCurrentWord());
 			// Create new letter blocks and retrieve them.
-			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord(playerId), this.coordinator.getGameState().getMissingWords(playerId));
-			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(playerId, letterBlockCreator.getTargetLetterBlocks());
+			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord(), this.coordinator.getGameState().getMissingWords());
+			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
 		}		
 		movingLetterBlock = letterBlocksToBeDisplayed.get(0);
 		letterBlocksToBeDisplayed.remove(0);
-	}
-	
-	/**
-	 * Check if the given letter block would collide with on of the static
-	 * letter blocks.
-	 * @param letterBlock to check
-	 * @return true, if the given block would collide
-	 */
-	public boolean isCollidingWithStaticLetterBlocks(int playerId, LetrisGameLetterBlock letterBlock) {
-		boolean collides = false;
-		ArrayList<LetrisGameLetterBlock> staticLetterBlocks = coordinator.getGameState().getStaticLetterBlocks(playerId);
-		for (int i = 0; i < staticLetterBlocks.size(); i++) {
-			if (letterBlock.isColliding(staticLetterBlocks.get(i))) {
-				collides = true;
-				break;
-			}
-		}
-		return collides;
 	}
 	
 	/**

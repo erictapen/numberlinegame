@@ -32,9 +32,8 @@ public class LetrisGameSelector extends GameSelector {
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
 						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
+						// TODO Put this line into the join game method?
 						letrisCoordinator.getGameModel().setupGameState(gameState);
-						// TODO Delete that.
-						GWT.log(gameState.toString(letrisCoordinator.getGameModel().getPlayerId()));
 						coordinator.openGame(gameState);
 						gamePopUp.hide();
 					}

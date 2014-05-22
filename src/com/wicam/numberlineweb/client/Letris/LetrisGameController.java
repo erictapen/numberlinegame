@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.Letris;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -26,19 +27,16 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 
 	@Override
 	public void onMouseDown(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onMouseUp(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onMouseMove(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -48,7 +46,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
-		// TODO Implement listening for space-key for dropping a letter.
+		GWT.log("onKeyDown, keysEnabled = " + keysEnabled);
 		if (keysEnabled){
 			event.preventDefault();
 
@@ -72,14 +70,14 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 				dir=5;
 				break;
 			}
-
+			GWT.log(dir + "down");
 			directionDown(dir);
 		}
 	}
 
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
-		// TODO Implement listening for space-key for dropping a letter.
+		GWT.log("onKeyUp, keysEnabled = " + keysEnabled);
 		if (keysEnabled){
 			int dir = 1;
 
@@ -101,7 +99,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 				dir=5;
 				break;
 			}
-
+			GWT.log(dir + "up");
 			directionUp(dir);
 		}
 	}

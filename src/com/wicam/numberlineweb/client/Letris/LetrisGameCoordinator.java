@@ -1,6 +1,7 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -134,14 +135,28 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			// TODO Implement this.
 			//started
 		case 3:
+			GWT.log("State 3");
 			
 			this.controller.setKeysEnabled(true);
 			
+			GWT.log(g.toString());
+			
+			// TODO Why doesn't the controller respond to key strokes?
+			
 //			updateViewIngame(g, gameView);
 			
-//			gameModel.startMoving();
+			gameModel.startMoving();
+			
+			gameView.showLetrisGame();
 
 			break;
+			
+//			// Game starts.
+//		case 4:
+//			GWT.log("State 4");
+//			
+//			GWT.log(g.toString(playerID));
+//			GWT.log(g.toString(0));
 
 			//evaluation, who has won?
 		case 5:
@@ -468,7 +483,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
 					STARTING_OUTSTANDING_LETTER_RATIO,
 					STARTING_ROTATED_LETTER_RATIO,
-					STARTING_TIME_PER_BLOCK, playerID);
+					STARTING_TIME_PER_BLOCK);
 			
 			// Set up the game selector.
 			gameSelector = new LetrisGameSelector(LetrisGameCoordinator.this);

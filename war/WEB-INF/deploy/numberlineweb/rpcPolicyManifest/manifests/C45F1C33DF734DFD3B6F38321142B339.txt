@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService
+path: 2AE0E53B0896B607270AD2D0DE55DCB3.gwt.rpc

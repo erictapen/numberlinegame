@@ -87,6 +87,14 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	public GameTypeSelector getGTS() {
 		return gts;
 	}
+	
+	/**
+	 * Return the ID of the player.
+	 * @return ID of the player
+	 */
+	public int getPlayerID() {
+		return this.playerID;
+	}
 
 	/**
 	 * Initializes the coordinator
@@ -182,13 +190,6 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 * @param g
 	 */
 	protected void updateGame(GameState gameState){
-		
-		// TODO Delete that. Check in what state the gameState
-		// is returned after call to update from server.
-		// Why are the specific fields of the LetrisGameState null? 
-		GWT.log("GameState after update()-call");
-//		GWT.log(((LetrisGameState)gameState).toString(1));
-		GWT.log(gameState.toString());
 		
 		// handle basic cases
 		switch (gameState.getState()){
@@ -481,7 +482,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 
 	};
 
-	AsyncCallback<String> gameJoinedCallback = new AsyncCallback<String>() {
+	protected AsyncCallback<String> gameJoinedCallback = new AsyncCallback<String>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
