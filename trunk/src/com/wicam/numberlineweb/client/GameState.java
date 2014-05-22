@@ -194,7 +194,7 @@ public abstract class GameState implements IsSerializable{
 		s += "\nplayers: " + getPlayers();
 		s += "\nnumber of max players: " + getPlayerCount();
 		s += "\nnumber of max NPCs: " + getNumberOfMaxNPCs();
-		s += "\nNPS response time: " + getNPCResponseTime();
+		s += "\nNPC response time: " + getNPCResponseTime();
 		return s;
 	}
 }

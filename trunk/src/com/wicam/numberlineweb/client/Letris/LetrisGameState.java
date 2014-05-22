@@ -15,67 +15,67 @@ public class LetrisGameState extends GameState {
 	/**
 	 * The word that is currently being displayed letter block by letter block. 
 	 */
-	private HashMap<Integer, String> playerId2CurrentWord = new HashMap<Integer, String>();
+	private String currentWord;
 	/**
 	 * The letter blocks that have already been set on the bottom of the playground. 
 	 */
-	private HashMap<Integer, ArrayList<LetrisGameLetterBlock>> playerId2StaticLetterBlocks = new HashMap<Integer, ArrayList<LetrisGameLetterBlock>>();
+	private ArrayList<LetrisGameLetterBlock> staticLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
 	/**
 	 * The one letter block that currently moves from top to bottom, e.g. is being dropped.
 	 */
-	private HashMap<Integer, LetrisGameLetterBlock> playerId2MovingLetterBlock = new HashMap<Integer, LetrisGameLetterBlock>();
+	private LetrisGameLetterBlock movingLetterBlock;
 	/**
 	 * The letter blocks that are waiting to be displayed.
 	 */
-	private HashMap<Integer, ArrayList<LetrisGameLetterBlock>> playerId2LetterBlocksToBeDisplayed = new HashMap<Integer, ArrayList<LetrisGameLetterBlock>>();
+	private ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = new ArrayList<LetrisGameLetterBlock>();
 	/**
 	 * The words that were build correctly by the player. 
 	 */
-	private HashMap<Integer, ArrayList<String>> playerId2CorrectWords = new HashMap<Integer, ArrayList<String>>();
+	private ArrayList<String> correctWords = new ArrayList<String>();
 	/**
 	 * The words to be recognized. E.g. the words that are being or have been displayed
 	 * but weren't build correctly by the player yet.
 	 */
-	private HashMap<Integer, ArrayList<String>> playerId2MissingWords = new HashMap<Integer, ArrayList<String>>();
+	private ArrayList<String> missingWords = new ArrayList<String>();
 	
-	public LetrisGameLetterBlock getMovingLetterBlock(int playerId) {
-		return playerId2MovingLetterBlock.get(playerId);
+	public LetrisGameLetterBlock getMovingLetterBlock() {
+		return movingLetterBlock;
 	}
 	
-	public void setMovingLetterBlock(int playerId, LetrisGameLetterBlock letterBlock) {
-		playerId2MovingLetterBlock.put(playerId, letterBlock);
+	public void setMovingLetterBlock(LetrisGameLetterBlock letterBlock) {
+		movingLetterBlock = letterBlock;
 	}
 
-	public ArrayList<LetrisGameLetterBlock> getStaticLetterBlocks(int playerId) {
-		return playerId2StaticLetterBlocks.get(playerId);
+	public ArrayList<LetrisGameLetterBlock> getStaticLetterBlocks() {
+		return staticLetterBlocks;
 	}
 	
-	public void setStaticLetterBlocks(int playerId, ArrayList<LetrisGameLetterBlock> letterBlocks) {
-		playerId2StaticLetterBlocks.put(playerId, letterBlocks);
+	public void setStaticLetterBlocks(ArrayList<LetrisGameLetterBlock> letterBlocks) {
+		staticLetterBlocks = letterBlocks;
 	}
 	
-	public void addStaticLetterBlock(int playerId, LetrisGameLetterBlock letterBlock) {
-		playerId2StaticLetterBlocks.get(playerId).add(letterBlock);
+	public void addStaticLetterBlock(LetrisGameLetterBlock letterBlock) {
+		staticLetterBlocks.add(letterBlock);
 	}
 	
-	public void removeStaticLetterBlock(int playerId, LetrisGameLetterBlock letterBlock) {
-		playerId2StaticLetterBlocks.get(playerId).remove(letterBlock);
+	public void removeStaticLetterBlock(LetrisGameLetterBlock letterBlock) {
+		staticLetterBlocks.remove(letterBlock);
 	}
 
-	public ArrayList<LetrisGameLetterBlock> getLetterBlocksToBeDisplayed(int playerId) {
-		return playerId2LetterBlocksToBeDisplayed.get(playerId);
+	public ArrayList<LetrisGameLetterBlock> getLetterBlocksToBeDisplayed() {
+		return letterBlocksToBeDisplayed;
 	}
 	
-	public void setLetterBlocksToBeDisplayed(int playerId, ArrayList<LetrisGameLetterBlock> letterBlocks) {
-		playerId2LetterBlocksToBeDisplayed.put(playerId, letterBlocks);
+	public void setLetterBlocksToBeDisplayed(ArrayList<LetrisGameLetterBlock> letterBlocks) {
+		letterBlocksToBeDisplayed = letterBlocks;
 	}
 	
-	public void addLetterBlockToBeDisplayed(int playerId, LetrisGameLetterBlock letterBlock) {
-		playerId2LetterBlocksToBeDisplayed.get(playerId).add(letterBlock);
+	public void addLetterBlockToBeDisplayed(LetrisGameLetterBlock letterBlock) {
+		letterBlocksToBeDisplayed.add(letterBlock);
 	}
 	
-	public void removeLetterBlockToBeDisplayed(int playerId, LetrisGameLetterBlock letterBlock) {
-		playerId2LetterBlocksToBeDisplayed.get(playerId).remove(letterBlock);
+	public void removeLetterBlockToBeDisplayed(LetrisGameLetterBlock letterBlock) {
+		letterBlocksToBeDisplayed.remove(letterBlock);
 	}
 	
 	@Override
@@ -98,54 +98,54 @@ public class LetrisGameState extends GameState {
 		return false;
 	}
 
-	public String getCurrentWord(int playerId) {
-		return playerId2CurrentWord.get(playerId);
+	public String getCurrentWord() {
+		return currentWord;
 	}
 	
-	public void setCurrentWord(int playerId, String currentWord) {
-		playerId2CurrentWord.put(playerId, currentWord);
+	public void setCurrentWord(String currentWord) {
+		this.currentWord = currentWord;
 	}
 	
-	public ArrayList<String> getCorrectWords(int playerId) {
-		return this.playerId2CorrectWords.get(playerId);
+	public ArrayList<String> getCorrectWords() {
+		return correctWords;
 	}
 	
-	public void setCorrectWords(int playerId, ArrayList<String> correctWords) {
-		playerId2CorrectWords.put(playerId, correctWords);
+	public void setCorrectWords(ArrayList<String> correctWords) {
+		this.correctWords = correctWords;
 	}
 	
-	public void addCorrectWord(int playerId, String correctWord) {
-		playerId2CorrectWords.get(playerId).add(correctWord);
+	public void addCorrectWord(String correctWord) {
+		correctWords.add(correctWord);
 	}
 	
-	public void removeCorrectWord(int playerId, String correctWord) {
-		playerId2CorrectWords.get(playerId).remove(correctWord);
+	public void removeCorrectWord(String correctWord) {
+		correctWords.remove(correctWord);
 	}
 	
-	public ArrayList<String> getMissingWords(int playerId) {
-		return this.playerId2MissingWords.get(playerId);
+	public ArrayList<String> getMissingWords() {
+		return missingWords;
 	}
 	
-	public void setMissingWords(int playerId, ArrayList<String> missingWords) {
-		playerId2MissingWords.put(playerId, missingWords);
+	public void setMissingWords(ArrayList<String> missingWords) {
+		this.missingWords = missingWords;
 	}
 	
-	public void addMissingWord(int playerId, String missingWord) {
-		playerId2MissingWords.get(playerId).add(missingWord);
+	public void addMissingWord(String missingWord) {
+		missingWords.add(missingWord);
 	}
 	
-	public void removeMissingWord(int playerId, String missingWord) {
-		playerId2MissingWords.get(playerId).remove(missingWord);
+	public void removeMissingWord(String missingWord) {
+		missingWords.remove(missingWord);
 	}
 	
-	public String toString(int playerId) {
+	public String toString() {
 		String s = super.toString();
-		s += "\ncurrent word: " + getCurrentWord(playerId);
-		s += "\nstatic letter blocks: " + getStaticLetterBlocks(playerId);
-		s += "\nmoving letter block: " + getMovingLetterBlock(playerId);
-		s += "\nletter blocks to be displayed: " + getLetterBlocksToBeDisplayed(playerId);
-		s += "\ncorrect words: " + getCorrectWords(playerId);
-		s += "\nmissing words: " + getMissingWords(playerId);
+		s += "\ncurrent word: " + getCurrentWord();
+		s += "\nstatic letter blocks: " + getStaticLetterBlocks();
+		s += "\nmoving letter block: " + getMovingLetterBlock();
+		s += "\nletter blocks to be displayed: " + getLetterBlocksToBeDisplayed();
+		s += "\ncorrect words: " + getCorrectWords();
+		s += "\nmissing words: " + getMissingWords();
 		return s;
 	}
 	

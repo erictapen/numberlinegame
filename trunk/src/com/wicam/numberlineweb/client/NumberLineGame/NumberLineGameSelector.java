@@ -48,8 +48,6 @@ public class NumberLineGameSelector extends GameSelector {
 						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
 						gameState.setMaxItems(gamePopUp.getRoundCount());
 						gameState.setNumberRange(gamePopUp.getNumberRange());
-						// TODO Delete that.
-						GWT.log(gameState.toString());
 						NumberLineGameSelector.this.coordinator.openGame(gameState);
 						gamePopUp.hide();
 
