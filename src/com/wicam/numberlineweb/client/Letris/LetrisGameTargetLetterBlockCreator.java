@@ -69,12 +69,12 @@ public class LetrisGameTargetLetterBlockCreator {
 		this.missingLetterRatio = foreignLetterRatio;
 		this.rotatedLetterRatio = rotatedLetterRatio;
 		this.timePerBlock = timePerBlock;
-		// The playground should be 10 blocks in width, so set the starting x position
-		// to the middle of the playground and choose 5.
-		this.startX = 5;
-		// The playground should be 20 blocks in height starting from
+		// The playground should be 15 blocks in width, so set the starting x position
+		// to the middle of the playground and choose 7.
+		this.startX = 7;
+		// The playground should be 19 blocks in height starting from
 		// 0 at the bottom. Set the starting position to the top.
-		this.startY = 19;
+		this.startY = 18;
 //		fillAlphabet();
 		// Fill the wrong orientations.
 		wrongOrientations.add(Orientation.EAST);

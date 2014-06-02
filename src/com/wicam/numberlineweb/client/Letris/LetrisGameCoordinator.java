@@ -13,6 +13,7 @@ import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.Letris.AnimationTimer;
 import com.wicam.numberlineweb.client.Letris.AnimationTimerTask;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
+import com.wicam.numberlineweb.client.Letris.LetrisGameModel.RotationDirection;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 /**
@@ -20,6 +21,9 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  * @author timfissler
  *
  */
+
+// TODO Jumping back during game causes null pointer exception.
+// TODO Moving block to left or right causes block to stop from being droped.
 
 public class LetrisGameCoordinator extends GameCoordinator {
 	
@@ -63,9 +67,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 */
 	@Override
 	public String getGameName() {
-
 		return "LeTris";
-
 	}
 	
 	public LetrisGameState getGameState() {
@@ -115,11 +117,38 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 	protected void createControllerAndView(){
 		controller = new LetrisGameController(this);
-		this.view = new LetrisGameView(numberOfPlayers, controller);
+		this.view = new LetrisGameView(numberOfPlayers, controller, gameModel.getPlaygroundWidth(), gameModel.getPlaygroundHeight());
 	}
 	
 	public LetrisGameModel getGameModel() {
 		return gameModel;
+	}
+	
+	/**
+	 * Pushes the current game state to the server where it is
+	 * used for updating the old game state.
+	 */
+	public void pushGameStateToServer() {
+		// TODO Implement this with an RPC call.
+	}
+	
+	/**
+	 * Redraw the playground in the game view according to the current
+	 * game state.
+	 */
+	public void updatePlaygroundInView() {
+		LetrisGameView gameView = (LetrisGameView) view;
+		gameView.updatePlayground((LetrisGameState) openGame);
+	}
+	
+	/**
+	 * Redraw the preview of the opponent's playground in the
+	 * game view according to the given game state.
+	 */
+	public void updatePreviewInView() {
+		LetrisGameView gameView = (LetrisGameView) view;
+		// TODO Implement this by using one of the open game states?
+//		gameView.updatePreview(gameState);
 	}
 
 	@Override
@@ -127,52 +156,27 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		super.updateGame(gameState);
 		LetrisGameState g = (LetrisGameState) gameState;
 		LetrisGameView gameView =  (LetrisGameView) view;
+		
 		//we already have the lates state
 		if (g==null) return;
-
-
+		
 		switch (g.getState()) {
-			// TODO Implement this.
 			//started
 		case 3:
-			GWT.log("State 3");
-			
 			this.controller.setKeysEnabled(true);
-			
-			GWT.log(g.toString());
-			
-			// TODO Why doesn't the controller respond to key strokes?
-			
-//			updateViewIngame(g, gameView);
-			
-			gameModel.startMoving();
-			
+			gameModel.startMoving();		
 			gameView.showLetrisGame();
-
 			break;
-			
-//			// Game starts.
-//		case 4:
-//			GWT.log("State 4");
-//			
-//			GWT.log(g.toString(playerID));
-//			GWT.log(g.toString(0));
-
 			//evaluation, who has won?
 		case 5:
-			
-//			updateViewIngame(g, gameView);
-				
+			// TODO Implement this.
 			break;
-			
 			// for synchronization
 		case 6:
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			break;
 		}
-
 		openGame = g;
-
 	}
 	
 	
@@ -187,7 +191,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		if (this.numberOfPlayers > 1)
 			chatC.setUserName(g.getPlayerName(this.playerID));
 		for (int i = 0; i < g.getPlayers().size(); i++){
-			gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			gameView.updatePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 		}
 		if (g.isPlayerReady(this.playerID)){
 			// other player ready ?
@@ -217,7 +221,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		LetrisGameView gameView =  (LetrisGameView) view;
 		setRefreshRate(2000);
 		for (int i = 0; i < g.getPlayers().size(); i++){
-			gameView.actualizePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+			gameView.updatePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
 		}
 		if (g.isPlayerReady(this.playerID)){
 			// other player ready ?
@@ -241,57 +245,67 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * Animation tasks will later be registered in the animation timer.
 	 * a task exists for every direction the player can move.
 	 */
-	private AnimationTimerTask updatePositionTask = new AnimationTimerTask() {
-
-		@Override
-		public void run() {
-			// TODO Insert the method that updates the position of the current block.
-//			updateMyPosition();
-		}
-
-	};
-
-
+	
+	/**
+	 * Timer task for moving the current moving letter block to the left.
+	 */
 	private AnimationTimerTask moveLeftTask = new AnimationTimerTask() {
 
 		@Override
 		public void run() {
-			((LetrisGameView)view).moveStepLeft(true);
 			gameModel.moveLetterBlock(MovementDirection.LEFT);
 			GWT.log("Move left");
 		}
 
 	};
-
+	
+	/**
+	 * Timer task for moving the current moving letter block to the right.
+	 */
 	private AnimationTimerTask moveRightTask = new AnimationTimerTask() {
 
 		@Override
 		public void run() {
-			((LetrisGameView)view).moveStepRight(true);
 			gameModel.moveLetterBlock(MovementDirection.RIGHT);
 			GWT.log("Move right");
 		}
 
 	};
 
-
+	/**
+	 * Timer task for moving the current moving letter block downwards.
+	 */
 	private AnimationTimerTask moveDownTask = new AnimationTimerTask() {
 
 		@Override
 		public void run() {
-			((LetrisGameView)view).moveStepDown(true);
 			gameModel.moveLetterBlock(MovementDirection.DOWN);
 			GWT.log("Move down");
 		}
 
 	};
+	
+	/**
+	 * Timer task for rotating the current moving letter block anticlockwise.
+	 */
+	private AnimationTimerTask rotateTask = new AnimationTimerTask() {
 
+		@Override
+		public void run() {
+			gameModel.rotateLetterBlock(RotationDirection.ANTICLOCKWISE);
+			GWT.log("Rotate left");
+		}
+
+	};
+
+	/**
+	 * Timer task for dropping the current moving letter block at once.
+	 */
 	private AnimationTimerTask dropTask = new AnimationTimerTask() {
 
 		@Override
 		public void run() {
-			((LetrisGameView)view).moveStepDown(true);
-			gameModel.moveLetterBlock(MovementDirection.DOWN);
+			gameModel.dropLetterBlock();
 			GWT.log("Drop");
 		}
 
@@ -308,114 +322,93 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	private boolean keyRightDown = false;
 	private boolean keySpaceDown = false;
 
-
+	/**
+	 * Takes key actions from the controller and fires movement
+	 * or rotation commands in the model.
+	 * @param up true, if the key went up; false, if the key went down
+	 * @param key number representing the key
+	 */
 	public void moveBlock(boolean up, int key){
-
-
+		// If key went down ...
 		if (!up) {
-
-
-
 			switch(key){
-
+			// Down key
 			case 1:
-
 				if (!keyDownDown) {
 					keyDownDown = true;
-
 					registerAniTask(moveDownTask);
-
 				}
-
 				break;
+			// Right key
 			case 3:
 				if (!keyRightDown) {
 					keyRightDown = true;
-
 					registerAniTask(moveRightTask);
 				}
-
 				break;
+			// Up key
 			case 2:
 				if (!keyUpDown) {
 					keyUpDown = true;
-					// TODO Implement rotation here.
-//					registerAniTask(moveUpTask);
+					registerAniTask(rotateTask);
 				}
-
 				break;
+			// Left Key
 			case 4:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
-
 					registerAniTask(moveLeftTask);
 				}
-
 				break;
+			// Space
 			case 5:
-				// TODO dropTask.markForDelete(); after block touched ground in GameModel.
 				if (!keySpaceDown) {
 					keySpaceDown = true;
-
 					registerAniTask(dropTask);
 				}
-
 				break;
 			}
 		}
-		if (up) {
-
-
+		// If key went up ...
+		else {
 			switch(key){
-
+			// Key down
 			case 1:
-
 				if (keyDownDown) {
-
 					keyDownDown = false;
 					moveDownTask.markForDelete();
 				}
-
 				break;
+			// Key right
 			case 3:
 				if (keyRightDown) {
-
 					keyRightDown = false;
 					moveRightTask.markForDelete();
 				}
-
 				break;
+			// Key up
 			case 2:
 				if (keyUpDown) {
-
 					keyUpDown = false;
-					// TODO Implement rotation here.
+					rotateTask.markForDelete();
 				}
-
 				break;
+			// Key left
 			case 4:
 				if (keyLeftDown) {
-
 					keyLeftDown = false;
 					moveLeftTask.markForDelete();
 				}
-
+				break;
+			// Space
+			case 5:
+				if (keySpaceDown) {
+					keySpaceDown = false;
+					dropTask.markForDelete();
+				}
 				break;
 			}
-
-
-
 		}
-
-	}
-	
-	/**
-	 * Sets a moving letter block to a new position
-	 * 
-	 * @param letterBlock	the moving letter block
-	 */
-	public void updateMovingLetterBlock(LetrisGameLetterBlock letterBlock){
-		((LetrisGameView) view).updateMovingLetterBlock(letterBlock);
 	}
 	
 	/**
@@ -428,14 +421,14 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		// TODO Implement this.
 	}
 
-
+	/**
+	 * Remove the timer tasks when the game should be ended.
+	 */
 	public void endGame() {
-
 		moveLeftTask.markForDelete();
 		moveRightTask.markForDelete();
-		// TODO Implement rotation here.
+		rotateTask.markForDelete();
 		moveDownTask.markForDelete();
-		updatePositionTask.markForDelete();
 		dropTask.markForDelete();
 
 		keyUpDown = false;
@@ -443,7 +436,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		keyLeftDown = false;
 		keyRightDown = false;
 		keySpaceDown = false;
-
 	}
 
 	public void startButtonClicked(){
@@ -452,22 +444,19 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		}
 	}
 	
-
-	AsyncCallback<LetrisGameState> keyEventCallback = new AsyncCallback<LetrisGameState>() {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			caught.printStackTrace();
-		}
-
-		@Override
-		public void onSuccess(LetrisGameState result) {
-
-
-		}
-
-	};
+//	AsyncCallback<LetrisGameState> keyEventCallback = new AsyncCallback<LetrisGameState>() {
+//		@Override
+//		public void onFailure(Throwable caught) {
+//			caught.printStackTrace();
+//		}
+//		@Override
+//		public void onSuccess(LetrisGameState result) {
+//		}
+//	};
 	
+	/**
+	 * What is to be done when the list of target words has been retrieved from the server.
+	 */
 	AsyncCallback<ArrayList<String>> targetWordsCallback = new AsyncCallback<ArrayList<String>>() {
 		
 		@Override

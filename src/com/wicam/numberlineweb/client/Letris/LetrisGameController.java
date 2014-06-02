@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Widget;
 import com.wicam.numberlineweb.client.DirectionHandler;
 import com.wicam.numberlineweb.client.GameController;
@@ -46,7 +45,6 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
-		GWT.log("onKeyDown, keysEnabled = " + keysEnabled);
 		if (keysEnabled){
 			event.preventDefault();
 
@@ -70,14 +68,12 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 				dir=5;
 				break;
 			}
-			GWT.log(dir + "down");
 			directionDown(dir);
 		}
 	}
 
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
-		GWT.log("onKeyUp, keysEnabled = " + keysEnabled);
 		if (keysEnabled){
 			int dir = 1;
 
@@ -99,7 +95,6 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 				dir=5;
 				break;
 			}
-			GWT.log(dir + "up");
 			directionUp(dir);
 		}
 	}
