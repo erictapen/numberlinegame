@@ -36,7 +36,7 @@ public abstract class GameState implements IsSerializable{
 	}
 
 	public void setState(int state) {
-
+		
 		this.state=state;
 	}
 

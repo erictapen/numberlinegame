@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.Letris;
 
+import com.google.gwt.core.shared.GWT;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 
 /**
@@ -32,36 +33,47 @@ public class LetrisGameMoveLetterBlockTask extends AnimationTimerTask {
 	public void setTimerSpeed(int timerSpeed) {
 		this.timerSpeed = timerSpeed;
 	}
+	
+	/**
+	 * Updates the letter block being moved with the given one.
+	 * @param letterBlock
+	 */
+	public void updateMovingLetterBlock(LetrisGameLetterBlock letterBlock) {
+		this.letterBlock = letterBlock;
+	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
+		// TODO Do we still need the isRemoved property?
 		if (!letterBlock.isRemoved()){
+			boolean needsUpdate = false;
 			// Only move the letter block automatically if the time per block has been over.
-			if ((droppingCounter >= (letterBlock.getTimePerBlock() / timerSpeed)) && (letterBlock.getY() - 1 > letterBlock.getToY())) {
-				letterBlock.setY(letterBlock.getY() - 1);
-				letterBlock.setLastMovingDirection(MovementDirection.DOWN);
+			if (droppingCounter >= (letterBlock.getTimePerBlock() / timerSpeed)) {
+				letterBlock.move(MovementDirection.DOWN);
 				droppingCounter = 0;
+				needsUpdate = true;
 			}
 			else {
-				letterBlock.setY(letterBlock.getToY());
 				droppingCounter++;
 			}
 			// Check for collision or reaching the end of the playground.
-			if (!gameModel.isCollidingWithStaticLetterBlocks(letterBlock) &&
-					!(letterBlock.getX() < 0) && !(letterBlock.getX() > 9) && !(letterBlock.getY() < 0)) {
-				letterBlock.setRecoverX(letterBlock.getX());
-				letterBlock.setRecoverY(letterBlock.getY());
-				gameModel.updateMovingLetterBlock(letterBlock);
-			} else {
-				// Don't update the position further if there has been a collision, but
-				// restore the old position.
-				letterBlock.setX(letterBlock.getRecoverX());
-				letterBlock.setY(letterBlock.getRecoverY());
-				// Here is an extra case needed for being dropped vs. just hitting another
-				// block from left or right. Therefore the last movement direction is being used.
-				if (letterBlock.getLastMovingDirection() == MovementDirection.DOWN) {
-					gameModel.swapMovingLetterBlock();
-					this.markForDelete();
+			// TODO Do this checking also in the model.
+			// TODO Do only collision and vertical checking here. Horizontal checking: !(letterBlock.getX() < 0) && !(letterBlock.getX() > 9)
+			if (needsUpdate) {
+				if (!gameModel.isCollidingWithStaticLetterBlocks(letterBlock)
+						&& !(letterBlock.getY() < 0)) {
+					gameModel.updateMovingLetterblock(letterBlock);
+					gameModel.updateViewAndServer();
+				} else {
+					// Don't update the position further if there has been a collision, but
+					// restore the old position.
+					letterBlock.undoLastMovement();
+					// Here is an extra case needed for being dropped vs. just hitting another
+					// block from left or right. Therefore the last movement direction is being used.
+					if (letterBlock.getLastMovingDirection() == MovementDirection.DOWN) {
+						this.markForDelete();
+						gameModel.swapMovingLetterBlock();
+					}
 				}
 			}
 		}

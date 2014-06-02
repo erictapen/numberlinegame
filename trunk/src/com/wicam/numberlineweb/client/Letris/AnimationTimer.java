@@ -1,7 +1,14 @@
 package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.wicam.numberlineweb.client.Letris.LetrisGameMoveLetterBlockTask;
 
@@ -9,13 +16,27 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameMoveLetterBlockTask;
  * A _single_ timer user for animation purposes. The timer is stopped when no animations
  * are left to animate.
  * The timer is started when an animation is added and the timer isn't running yet.
- * @author patrick
+ * Adding new tasks while iterating over the list now is safe.
+ * @author timfissler
  *
  */
 
 public class AnimationTimer extends Timer {
 
+	// TODO This list should be thread-save. How could we achieve that?
+	// Thread-save Vector doesn't solve the ConcurrentModificationException.
+	// What else could I try? Perhaps see what causes the exception?
+	/**
+	 * The list containing all the tasks that should be performed regularly.
+	 */
 	private ArrayList<AnimationTimerTask> tasks = new ArrayList<AnimationTimerTask>();
+	/**
+	 * A temporary list of new tasks that are added to the main list each iteration.
+	 */
+	private ArrayList<AnimationTimerTask> tasksToAdd = new ArrayList<AnimationTimerTask>();
+	/**
+	 * Indicates whether the timer is running.
+	 */
 	private boolean isRunning = false;
 
 	
@@ -32,7 +53,7 @@ public class AnimationTimer extends Timer {
 	public void run() {
 
 		Iterator<AnimationTimerTask> it = tasks.iterator();
-
+		
 		while (it.hasNext()) {
 
 			AnimationTimerTask t = it.next();
@@ -49,6 +70,10 @@ public class AnimationTimer extends Timer {
 			
 			}
 		}
+		
+		// Add new tasks.
+		tasks.addAll(tasksToAdd);
+		tasksToAdd.clear();
 		
 		if (tasks.size() == 0) this.cancel();
 
@@ -70,19 +95,22 @@ public class AnimationTimer extends Timer {
 	 */
 	public void registerTask(AnimationTimerTask t) {
 		
-		if (tasks.contains(t)) return;
+		if (tasks.contains(t)) {
+			return;
+		}
 		
 		// Set the timer speed in a move object.
 		// TODO Check if this is being reached.
 		if (t.getClass().getName().equals("LetrisGameMoveLetterBlockTask")) {
-			System.out.println("Set timer speed to " + TIMER_SPEED + ".");
 			LetrisGameMoveLetterBlockTask m = (LetrisGameMoveLetterBlockTask) t;
 			m.setTimerSpeed(TIMER_SPEED);
 		}
-		
-		this.tasks.add(t);
+//		this.tasks.add(t);
+		this.tasksToAdd.add(t);
 		t.unmarkForDelete();
-		if (!this.isRunning) this.scheduleRepeating(TIMER_SPEED);
+		if (!this.isRunning) {
+			this.scheduleRepeating(TIMER_SPEED);
+		}
 
 	}
 

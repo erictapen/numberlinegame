@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-incubator-20101117-r1766.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-voices-2.1.8.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT (1)"/>
+	<classpathentry kind="lib" path="/Users/timfissler/Documents/EclipseWorkspace/NumberLineWeb/war/WEB-INF/lib/gwt-graphics-1.0.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

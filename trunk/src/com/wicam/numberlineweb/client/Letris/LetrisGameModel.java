@@ -22,6 +22,14 @@ public class LetrisGameModel {
 	// TODO Fire update method in coordinator after changes in GameState?
 	
 	/**
+	 * The width of the playground in blocks. 
+	 */
+	private int playgroundWidth = 15;
+	/**
+	 * The height of the playground in blocks.
+	 */
+	private int playgroundHeight = 19;
+	/**
 	 * The target letter block creator is used to build a list of letter blocks from the current target word. 
 	 */
 	private LetrisGameTargetLetterBlockCreator letterBlockCreator;
@@ -32,7 +40,7 @@ public class LetrisGameModel {
 	/**
 	 * Hold the position of all static letter blocks in a matrix.
 	 */
-	private LetrisGameLetterBlock[][] playground = new LetrisGameLetterBlock[20][10];
+	private LetrisGameLetterBlock[][] playground = new LetrisGameLetterBlock[playgroundHeight][playgroundWidth];
 	/**
 	 * Moves the current moving letter block.
 	 */
@@ -78,6 +86,8 @@ public class LetrisGameModel {
 		if (this.movingLetterBlockTask == null) {
 			if (this.coordinator.getGameState().getMovingLetterBlock() != null) {
 				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(), this);
+				// TODO Present current target word.
+				GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
 			} else {
 				GWT.log("Moving block hasn't been set yet!");
 			}
@@ -90,6 +100,14 @@ public class LetrisGameModel {
 	 */
 	public void stopMoving() {
 		movingLetterBlockTask.markForDelete();
+	}
+
+	public int getPlaygroundWidth() {
+		return playgroundWidth;
+	}
+
+	public int getPlaygroundHeight() {
+		return playgroundHeight;
 	}
 
 	public double getMissingLetterRatio() {
@@ -153,7 +171,7 @@ public class LetrisGameModel {
 	}
 	
 	/**
-	 * Enum for possible orientations of a letter block.
+	 * Enumeration for possible orientations of a letter block.
 	 * The orientation gives the direction from which
 	 * one could read the letter properly. 
 	 * @author timfissler
@@ -186,19 +204,62 @@ public class LetrisGameModel {
 	}
 	
 	/**
+	 * Update view and server with the current game state.
+	 */
+	public void updateViewAndServer() {
+		coordinator.updatePlaygroundInView();
+		coordinator.pushGameStateToServer();
+	}
+	
+	/**
+	 * Updates the game state with the latest version of the currently moving
+	 * letter block.
+	 * @param letterBlock
+	 */
+	public void updateMovingLetterblock(LetrisGameLetterBlock letterBlock) {
+		coordinator.getGameState().setMovingLetterBlock(letterBlock);
+	}
+	
+	/**
 	 * Handle movement of the currently moving letter block caused
 	 * by the player.
 	 * @param movementDirection
 	 */
 	public void moveLetterBlock(MovementDirection movementDirection) {
-		this.coordinator.getGameState().getMovingLetterBlock().moveTo(movementDirection);
+		// TODO Add collision checking.
+		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock(); 
+		movingLetterBlock.move(movementDirection);
+		this.movingLetterBlockTask.updateMovingLetterBlock(movingLetterBlock);
+		updateViewAndServer();
 	}
 	
 	/**
 	 * Drop the currently moving letter block instantly.
 	 */
 	public void dropLetterBlock() {
-		coordinator.getGameState().getMovingLetterBlock().drop();
+		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
+		int yPos = findLowestFreePosition(movingLetterBlock.getX());
+		movingLetterBlock.setY(yPos);
+		this.movingLetterBlockTask.updateMovingLetterBlock(movingLetterBlock);
+		updateViewAndServer();
+		this.movingLetterBlockTask.markForDelete();
+		swapMovingLetterBlock();
+	}
+	
+	/**
+	 * Given a fixed x position find the lowest y
+	 * position that is not occupied with
+	 * another letter block.
+	 * @param x
+	 * @return
+	 */
+	private int findLowestFreePosition(int x) {
+		int y = 18;
+		while (y > -1 && playground[y][x] == null) {
+			y--;
+		}
+		y++;
+		return y;
 	}
 	
 	/**
@@ -241,15 +302,7 @@ public class LetrisGameModel {
 			}
 			break;
 		}
-	}
-	
-	/**
-	 * Pass the given letter block for the position update to the coordinator.
-	 * @param letterBlock
-	 */
-	public void updateMovingLetterBlock(LetrisGameLetterBlock letterBlock) {
-		// Update coordinator.
-		coordinator.updateMovingLetterBlock(letterBlock);
+		updateViewAndServer();
 	}
 	
 	/**
@@ -281,13 +334,18 @@ public class LetrisGameModel {
 	 * @param letterBlockRow
 	 * @return a list of the found letter blocks that build up the word.
 	 */
+	// TODO Add checking of the letters are all oriented south.
 	private ArrayList<LetrisGameLetterBlock> findCorrectWord(LetrisGameLetterBlock[] letterBlockRow) {
 		// Build up string from given array.
 		String rowStr = "";
 		int startIdx = -1;
 		int endIdx = -1;
 		for (int i = 0; i < letterBlockRow.length; i++) {
-			rowStr += letterBlockRow[i].getLetter();
+			if (letterBlockRow[i] != null) {
+				rowStr += letterBlockRow[i].getLetter();
+			} else {
+				rowStr += "";
+			}
 		}
 		String foundWord = "";
 		// Loop over outstanding words and compare them with the string.
@@ -301,13 +359,16 @@ public class LetrisGameModel {
 				break;
 			}
 		}
-		outstandingWords.remove(foundWord);
-		this.coordinator.getGameState().addCorrectWord(foundWord);
-		coordinator.foundCorrectWord(foundWord);
-		// Build up an array of letter blocks with the given indices and return it.
 		ArrayList<LetrisGameLetterBlock> foundLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
-		for (int i = startIdx; i <= endIdx; i++) {
-			foundLetterBlocks.add(letterBlockRow[i]);
+		// If there was a word found ...
+		if (startIdx >= 0) {
+			outstandingWords.remove(foundWord);
+			this.coordinator.getGameState().addCorrectWord(foundWord);
+			coordinator.foundCorrectWord(foundWord);
+			// Build up an array of letter blocks with the given indices and return it.
+			for (int i = startIdx; i <= endIdx; i++) {
+				foundLetterBlocks.add(letterBlockRow[i]);
+			}
 		}
 		return foundLetterBlocks;
 	}
@@ -347,20 +408,27 @@ public class LetrisGameModel {
 		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
 		if (letterBlocksToBeDisplayed.size() == 0) {
 			coordinator.getGameState().setCurrentWord(getNextRandomCurrentWord());
-			// Add current word to outstanding words.
+			// Add current word to missing words and present it.
 			this.coordinator.getGameState().addMissingWord(this.coordinator.getGameState().getCurrentWord());
+			// TODO Present current target word.
+			GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
 			// Create new letter blocks and retrieve them.
 			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord(), this.coordinator.getGameState().getMissingWords());
 			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
+			letterBlocksToBeDisplayed = coordinator.getGameState().getLetterBlocksToBeDisplayed();
 		}		
 		movingLetterBlock = letterBlocksToBeDisplayed.get(0);
 		letterBlocksToBeDisplayed.remove(0);
+		coordinator.getGameState().setMovingLetterBlock(movingLetterBlock);
+		// Create new movement task for new letter block.
+		movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(movingLetterBlock, this);
+		coordinator.registerAniTask(movingLetterBlockTask);
 	}
 	
 	/**
 	 * Call the appropriate method of the coordinator.
 	 */
-	public void registerAnimationTask(AnimationTimerTask task) {
-		coordinator.registerAniTask(task);
-	}
+//	public void registerAnimationTask(AnimationTimerTask task) {
+//		coordinator.registerAniTask(task);
+//	}
 }

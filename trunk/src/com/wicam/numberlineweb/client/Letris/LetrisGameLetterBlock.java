@@ -1,7 +1,7 @@
 package com.wicam.numberlineweb.client.Letris;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.google.gwt.user.client.ui.PushButton;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 
@@ -11,7 +11,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
  * @author timfissler
  *
  */
-// TODO Add image-URL for the view.
+// TODO Include LetrisGameCoordinates.
 public class LetrisGameLetterBlock implements IsSerializable {
 
 	/**
@@ -20,18 +20,14 @@ public class LetrisGameLetterBlock implements IsSerializable {
 	private String letter;
 	/**
 	 * The x position of the letter block on the playground.
+	 * Increases from left to right.
 	 */
 	private int x;
 	/**
 	 * The y position of the letter block on the playground.
+	 * Increases from bottom to top.
 	 */
 	private int y;
-	/**
-	 * The y position the block should move next. This cannot
-	 * be set directly because it might interfere with the automatic
-	 * downward movement of the block.
-	 */
-	private int toY;
 	/**
 	 * The recovered x position. It is used for backup of the last position.
 	 */
@@ -69,6 +65,10 @@ public class LetrisGameLetterBlock implements IsSerializable {
 	 * dropped onto the static blocks.
 	 */
 	private MovementDirection lastMovingDirection;
+	/**
+	 * Recover the last moving direction.
+	 */
+	private MovementDirection recoverLastMovingDirection;
 	
 	public void setTimePerBlock(int timePerBlock){
 		this.timePerBlock = timePerBlock;
@@ -86,38 +86,29 @@ public class LetrisGameLetterBlock implements IsSerializable {
 		this.orientation = orientation;
 	}
 	
-	// TODO Migrate these methods to the model.
-//	public void startMoving(){
-//		
-//		gameModel.registerAnimationTask(move);
-//
-//	}
+	public void undoLastMovement() {
+		this.x = this.recoverX;
+		this.y = this.recoverY;
+		this.lastMovingDirection = this.recoverLastMovingDirection;
+	}
 	
-//	public void startMoving(int delay){
-//		move.setDelay(delay);
-//		gameModel.registerAnimationTask(move);
-//	}
-	
-	public void moveTo(MovementDirection direction){
+	public void move(MovementDirection direction) {
+		this.recoverLastMovingDirection = this.lastMovingDirection;
 		lastMovingDirection = direction;
 		switch (direction) {
 		case RIGHT:
+			this.recoverX = this.x;
 			this.x++;
 			break;
 		case LEFT:
+			this.recoverX = this.x;
 			this.x--;
 			break;
 		case DOWN:
-			this.toY = this.y - 1;
+			this.recoverY = this.y;
+			this.y--;
 			break;
 		}
-	}
-	
-	/**
-	 * Drop the letter block instantly onto the other static blocks.
-	 */
-	public void drop() {
-		// TODO Implement this.
 	}
 	
 	public boolean isRemoved() {
@@ -126,6 +117,14 @@ public class LetrisGameLetterBlock implements IsSerializable {
 
 	public void setRemoved(boolean stopped) {
 		this.removed = stopped;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	public int getX() {
@@ -158,7 +157,7 @@ public class LetrisGameLetterBlock implements IsSerializable {
 	}
 
 	public String toString() {
-		return "[" + this.letter + ", id: " + id + ", " + orientation + "]";
+		return "[" + this.letter + ", id: " + id + ", " + orientation + ", position: " + x + ", " + y + "]";
 	}
 
 	/**
@@ -174,44 +173,12 @@ public class LetrisGameLetterBlock implements IsSerializable {
 		this.letter = letter;
 	}
 	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public int getToY() {
-		return this.toY;
-	}
-	
 	public void setLastMovingDirection(MovementDirection direction) {
 		this.lastMovingDirection = direction;
-	}
-	
-	public int getRecoverX() {
-		return this.recoverX;
-	}
-
-	public int getRecoverY() {
-		return recoverY;
-	}
-
-	public void setRecoverY(int recoverY) {
-		this.recoverY = recoverY;
 	}
 
 	public MovementDirection getLastMovingDirection() {
 		return lastMovingDirection;
-	}
-
-	public void setToY(int toY) {
-		this.toY = toY;
-	}
-
-	public void setRecoverX(int recoverX) {
-		this.recoverX = recoverX;
 	}
 	
 }

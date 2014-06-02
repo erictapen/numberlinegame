@@ -28,4 +28,7 @@
   <!-- ClientBundle -->
   <inherits name="com.google.gwt.resources.Resources" />
   
+  <!-- GWT Graphics package -->
+  <inherits name='org.vaadin.gwtgraphics.GWTGraphics'/>
+  
 </module>
