@@ -131,7 +131,7 @@ public class AdaptationFunctions {
 		double theta_step = 0.5;
 		double tolerance = 1e-5;
 		double diff_iter = 1.0;
-		int maxSteps = 1000;
+		int maxSteps = 10;
 		
 		if(respItem.get(slct) == Integer.MIN_VALUE)
 			return theta;
@@ -174,7 +174,10 @@ public class AdaptationFunctions {
 		ArrayList<Double> multList = new ArrayList<Double>();
 		for(int i = 0; i < list.size(); i++)
 		{
-			multList.add(value-list.get(i));
+			if (value == Integer.MIN_VALUE || list.get(i).isNaN())
+				multList.add(Double.NaN);
+			else
+				multList.add(value-list.get(i));
 		}
 		return multList;
 	}
@@ -184,7 +187,10 @@ public class AdaptationFunctions {
 		ArrayList<Double> multList = new ArrayList<Double>();
 		for(int i = 0; i < list1.size(); i++)
 		{
-			multList.add(list1.get(i)-list2.get(i));
+			if (list1.get(i) == Integer.MIN_VALUE || list2.get(i).isNaN())
+				multList.add(Double.NaN);
+			else
+				multList.add(list1.get(i)-list2.get(i));
 		}
 		return multList;
 	}
@@ -194,7 +200,10 @@ public class AdaptationFunctions {
 		ArrayList<Double> multList = new ArrayList<Double>();
 		for(int i = 0; i < list1.size(); i++)
 		{
-			multList.add(list1.get(i)*list2.get(i));
+			if (list1.get(i).isNaN() || list2.get(i).isNaN())
+				multList.add(Double.NaN);
+			else
+				multList.add(list1.get(i)*list2.get(i));
 		}
 		return multList;
 	}
@@ -210,12 +219,15 @@ public class AdaptationFunctions {
 		return count;
 	}
 	
-	private static ArrayList<Double> mult(ArrayList<Double> list, double d)
+	private static ArrayList<Double> mult(ArrayList<Double> list, Double d)
 	{
 		ArrayList<Double> multList = new ArrayList<Double>();
-		for(double ld : list)
+		for(Double ld : list)
 		{
-			multList.add(ld*d);
+			if (ld.isNaN() || d.isNaN())
+				multList.add(Double.NaN);
+			else
+				multList.add(ld*d);
 		}
 		return multList;
 	}
