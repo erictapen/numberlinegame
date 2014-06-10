@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService
+path: A08BF4E999C6F90CC141031ABDD1F604.gwt.rpc

@@ -20,6 +20,7 @@ public class LetrisGameModel {
 	// TODO Add game over condition.
 	// TODO Change outstanding to missing.
 	// TODO Fire update method in coordinator after changes in GameState?
+	// TODO Manual downward movement leads to bug.
 	
 	/**
 	 * The width of the playground in blocks. 
@@ -344,14 +345,14 @@ public class LetrisGameModel {
 			if (letterBlockRow[i] != null) {
 				rowStr += letterBlockRow[i].getLetter();
 			} else {
-				rowStr += "";
+				rowStr += "#";
 			}
 		}
 		String foundWord = "";
 		// Loop over outstanding words and compare them with the string.
 		ArrayList<String> outstandingWords = this.coordinator.getGameState().getMissingWords();
 		for (String outstandingWord : outstandingWords) {
-			startIdx = rowStr.indexOf(outstandingWord);
+			startIdx = rowStr.indexOf(outstandingWord.toUpperCase());
 			if (startIdx >= 0) {
 				// Break if a substring is found and save the indices of the substring.
 				foundWord = outstandingWord;
@@ -374,15 +375,17 @@ public class LetrisGameModel {
 	}
 	
 	/**
-	 * Delete the given list of blocks from the static list and force the
-	 * reminding static list to update the position of letter blocks
-	 * that might have been upon the deleted blocks. E.g. they should
-	 * be dropped. Update the view and then check again for a correct word
-	 * that might be build out of the dropped letter blocks.
+	 * Delete the given list of blocks from the static list, 
+	 * remove the blocks from the playground
+	 * and update the view and the state.
 	 * @param correctLetterBlocks
 	 */
 	private void deleteCorrectLetterBlocks(ArrayList<LetrisGameLetterBlock> correctLetterBlocks) {
-		// TODO Implement this.
+		this.coordinator.getGameState().getStaticLetterBlocks().removeAll(correctLetterBlocks);
+		for (LetrisGameLetterBlock letterBlock : correctLetterBlocks) {
+			playground[letterBlock.getY()][letterBlock.getX()] = null;
+		}
+		updateViewAndServer();
 	}
 	
 	
