@@ -2,16 +2,17 @@ package com.wicam.numberlineweb.server;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TimerTask;
 
 public class TimeOutCheckerTask extends TimerTask {
 
-	private ArrayList<TimeOutState> timeOutStates;
-	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates;
+	private List<TimeOutState> timeOutStates;
+	private List<EmptyGameTimeOutState> emptyGameTimeOutStates;
 	private GameCommunicationServiceServlet gameComm;
 
-	public TimeOutCheckerTask(ArrayList<TimeOutState> timeOutStates,
-			ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates,
+	public TimeOutCheckerTask(List<TimeOutState> timeOutStates,
+			List<EmptyGameTimeOutState> emptyGameTimeOutStates,
 			GameCommunicationServiceServlet gameComm) {
 
 		this.timeOutStates = timeOutStates;

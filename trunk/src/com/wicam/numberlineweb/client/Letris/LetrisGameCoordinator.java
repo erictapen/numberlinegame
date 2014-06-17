@@ -23,7 +23,9 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  */
 
 // TODO Jumping back during game causes null pointer exception.
-// TODO Moving block to left or right causes block to stop from being droped.
+// TODO Moving block to left or right causes block to stop from being dropped.
+// TODO Add letter block 'ghost' to display the horizontal position of the current block
+// on the bottom of the playground.
 
 public class LetrisGameCoordinator extends GameCoordinator {
 	
@@ -35,11 +37,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * The timer for movement animation.
 	 */
 	private AnimationTimer aniTimer = new AnimationTimer();
-	/**
-	 * The ratio of letters of a target word that don't belong to that word
-	 * but are drawn from the outstanding words list.
-	 */
-	public static double STARTING_OUTSTANDING_LETTER_RATIO = 0.2;
 	/**
 	 * The ratio of all letter blocks of a target word that are not oriented correctly.
 	 */
@@ -80,6 +77,31 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		// Get the target words from the server.
 		LetrisGameCommunicationServiceAsync letrisCommServ = (LetrisGameCommunicationServiceAsync) commServ;
 		letrisCommServ.getTargetWords(targetWordsCallback);
+	}
+	
+//	/**
+//	 * (Re-)Set the focus so that commands are being recognized.
+//	 */
+//	public void setFocused() {
+//		LetrisGameView gameView = (LetrisGameView) view;
+//		gameView.setFocused();
+//	}
+	
+	/**
+	 * Set the next word that should be built by the player in the view.
+	 */
+	public void updateNextWord() {
+		LetrisGameView gameView = (LetrisGameView) view;
+		gameView.updateTargetWord(getGameState().getCurrentWord());
+	}
+	
+	/**
+	 * Set the next letter block that will be dropped after the current one.
+	 * @param nextLetterBlock	the letter block to be shown
+	 */
+	public void updateNextBlock(LetrisGameLetterBlock nextLetterBlock) {
+		LetrisGameView gameView = (LetrisGameView) view;
+		gameView.updateNextBlock(nextLetterBlock);
 	}
 
 	@Override
@@ -149,6 +171,17 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		LetrisGameView gameView = (LetrisGameView) view;
 		// TODO Implement this by using one of the open game states?
 //		gameView.updatePreview(gameState);
+	}
+	
+	/**
+	 * Update the points from the game state in the view.
+	 * @param points
+	 */
+	public void updatePoints() {
+		LetrisGameView gameView = (LetrisGameView) view;
+		for (int i = 0; i < getGameState().getPlayers().size(); i++){
+			gameView.updatePoints(i+1,getGameState().getPlayerPoints(i+1),getGameState().getPlayerName(i+1));
+		}
 	}
 
 	@Override
@@ -410,16 +443,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			}
 		}
 	}
-	
-	/**
-	 * Compute the current number of points according to the given
-	 * word and send them to the view for being displayed. Also
-	 * show a kind of popup that again displays the correct word.
-	 * @param correctLetters number of correct letters
-	 */
-	public void foundCorrectWord(String foundWord) {
-		// TODO Implement this.
-	}
 
 	/**
 	 * Remove the timer tasks when the game should be ended.
@@ -470,7 +493,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			
 			// Initialize the game model.
 			gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
-					STARTING_OUTSTANDING_LETTER_RATIO,
 					STARTING_ROTATED_LETTER_RATIO,
 					STARTING_TIME_PER_BLOCK);
 			

@@ -15,12 +15,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
@@ -32,7 +34,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
  *
  */
 
-// TODO How could I draw the grid and a letter block?
 // TODO Add descriptions.
 // TODO How can the view be more efficient?
 
@@ -47,8 +48,12 @@ public class LetrisGameView extends GameView {
 	protected final HTML feedBackText = new HTML();
 //	private final HTML canvas = new HTML("<div id='canvas' style='width:600px;height:400px;border-right:solid #333 1px'></div>");
 	private final HTML canvasScore = new HTML("<div id='canvas' style='width:150px;height:30px;'></div>");
-	private final HTML pointsText = new HTML("<div style='font-size:30px;color:black'>Punkte</div>");
-	final FlexTable playerNamesFlexTable = new FlexTable();
+	private final HTML pointsText = new HTML("<div style='font-size:24px;color:black'>Punkte</div>");
+	private final FlexTable playerNamesFlexTable = new FlexTable();
+	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>Nächster</br>Stein</div>");
+	private final HTML targetWordHeader = new HTML("<div style='font-size:24px;color:black'>Zielwort</div>");
+	private HTML targetWordText = new HTML("<div style='font-size:20px;color:black'></div>");
+	// TODO Add field for showing next block and implement the according code.
 
 	protected final Button startGameButton = new Button("Spiel Starten");
 	private final FocusPanel focusPanel = new FocusPanel();
@@ -56,6 +61,7 @@ public class LetrisGameView extends GameView {
 	
 	private LetrisGameCoordinates viewSize = new LetrisGameCoordinates(600, 400);
 	private final DrawingArea canvas = new DrawingArea(viewSize.x, viewSize.y);
+	private final DrawingArea nextBlockCanvas = new DrawingArea(20, 20);
 	private LetrisGameCoordinates modelSize;
 	private LetrisGameCoordinateTransform transform;
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
@@ -105,6 +111,8 @@ public class LetrisGameView extends GameView {
 		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
 
+		pointsPanel.setHeight("400px");
+		pointsPanel.setWidth("200px");
 		pointsPanel.add(pointsText);
 		pointsPanel.setWidgetPosition(pointsText, 27, 10);
 		pointsPanel.add(canvasScore);
@@ -112,8 +120,18 @@ public class LetrisGameView extends GameView {
 		playerNamesFlexTable.setStyleName("playerList");
 		playerNamesFlexTable.setCellPadding(5);
 
-
 		pointsPanel.add(playerNamesFlexTable);
+		
+		pointsPanel.add(nextBlockText);
+		pointsPanel.setWidgetPosition(nextBlockText, 27, 130);
+		pointsPanel.add(nextBlockCanvas);
+		pointsPanel.setWidgetPosition(nextBlockCanvas, 50, 210);
+		pointsPanel.add(targetWordHeader);
+		pointsPanel.setWidgetPosition(targetWordHeader, 27, 260);
+		pointsPanel.add(targetWordText);
+		pointsPanel.setWidgetPosition(targetWordText, 27, 300);
+		updateTargetWord("");
+		updateNextBlock(null);
 
 		focusPanel.addKeyDownHandler(letrisGameController);
 		focusPanel.addKeyUpHandler(letrisGameController);
@@ -130,6 +148,31 @@ public class LetrisGameView extends GameView {
 //			descriptionSound.play();
 //			
 //		}
+	}
+	
+	/**
+	 * Show the target word that should be built by the player.
+	 * @param targetWord
+	 */
+	public void updateTargetWord(String targetWord) {
+		targetWordText.setHTML("<div style='font-size:20px;color:red'>" + targetWord + "</div>");
+		TargetWordTimer timer = new TargetWordTimer(targetWordText);
+		// Hide the target word after 2s.
+		timer.schedule(2000);
+	}
+	
+	/**
+	 * Show the next letter block that will be dropped after the current one.
+	 * @param letterBlock
+	 */
+	public void updateNextBlock(LetrisGameLetterBlock letterBlock) {
+		if (letterBlock == null) {
+			nextBlockCanvas.clear();
+		} else {
+			Group letterBlockImage = drawLetterBlock(letterBlock, false);
+			nextBlockCanvas.clear();
+			nextBlockCanvas.add(letterBlockImage);
+		}
 	}
 	
 	private void setupLetterColors() {
@@ -185,10 +228,10 @@ public class LetrisGameView extends GameView {
 	 */
 	public void updatePlayground(LetrisGameState gameState) {
 		Group grid = drawPlaygroundGrid();
-		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock());
+		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true);
 		Group staticLetterBlockImages = new Group();
 		for (LetrisGameLetterBlock letterBlock : gameState.getStaticLetterBlocks()) {
-			Group letterBlockImage = drawLetterBlock(letterBlock);
+			Group letterBlockImage = drawLetterBlock(letterBlock, true);
 			staticLetterBlockImages.add(letterBlockImage);
 		}
 		canvas.clear();
@@ -247,23 +290,38 @@ public class LetrisGameView extends GameView {
 	}
 	
 	/**
-	 * Draws the given letter block on the playgroundSize.
-	 * @param letterBlock
+	 * Draws the given letter block.
+	 * @param letterBlock 			the letter block to be drawn
+	 * @param useViewCoordinates	if true, use the coordinates of the view, else use (0,0)
+	 * @return 						the group containing the letter block
 	 */
-	private Group drawLetterBlock(LetrisGameLetterBlock letterBlock) {
+	private Group drawLetterBlock(LetrisGameLetterBlock letterBlock, boolean useViewCoordinates) {
 		Group letterBlockImage = new Group();
+		
+		// Check if the letter block is empty.
+		if (letterBlock == null) {
+			return letterBlockImage;
+		}
 		
 		String letterStr = letterBlock.getLetter();
 
 		// Get letter color.
 		String colorStr = letter2HexColor.get(letterStr);
 		
-		// Calculate the appropriate coordinates for the view.
-		LetrisGameCoordinates viewCoordinates = transform.transformModelToView(new LetrisGameCoordinates(letterBlock.getX(), letterBlock.getY()));
-		viewCoordinates.add(playgroundOrigin);
+		Rectangle box;
+		LetrisGameCoordinates viewCoordinates = new LetrisGameCoordinates();
 		
-		// Draw box.
-		Rectangle box = new Rectangle(viewCoordinates.x, viewCoordinates.y, blockSize, blockSize);
+		if (useViewCoordinates) {
+			// Calculate the appropriate coordinates for the view.
+			viewCoordinates = transform.transformModelToView(new LetrisGameCoordinates(letterBlock.getX(), letterBlock.getY()));
+			viewCoordinates.add(playgroundOrigin);
+
+			// Draw box.
+			box = new Rectangle(viewCoordinates.x, viewCoordinates.y, blockSize, blockSize);
+		} else {
+			// Draw box.
+			box = new Rectangle(0, 0, blockSize, blockSize);
+		}
 		
 		// Draw letter.
 		Text letter = new Text(0, 0, letterStr);
@@ -296,8 +354,13 @@ public class LetrisGameView extends GameView {
 		// Center letter.
 		int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
 		int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) + letter.getTextHeight() - 2;
-		letter.setX(viewCoordinates.x + xOffset);
-		letter.setY(viewCoordinates.y + yOffset);
+		if (useViewCoordinates) {
+			letter.setX(viewCoordinates.x + xOffset);
+			letter.setY(viewCoordinates.y + yOffset);
+		} else {
+			letter.setX(xOffset);
+			letter.setY(yOffset);
+		}
 		
 		letterBlockImage.add(box);
 		letterBlockImage.add(letter);
@@ -349,11 +412,40 @@ public class LetrisGameView extends GameView {
 			gamePanel.add(kbd, 440, 240);
 		}
 
+		setFocused();
+	}
+
+
+	/**
+	 * Set the current focus to the focus panel of the game view,
+	 * so that the movement commands are recognized.
+	 */
+	public void setFocused() {
 		focusPanel.setFocus(true);
 	}
 
 	public boolean isOnCanvas(int y) {
 		return y < gamePanel.getOffsetHeight();
+	}
+	
+	/**
+	 * Timer for automatically switching off the target word display
+	 * after a time delay.
+	 * @author timfissler
+	 *
+	 */
+	private class TargetWordTimer extends Timer {
+		
+		private HTML targetWordText;
+		
+		public TargetWordTimer(HTML targetWordText) {
+			this.targetWordText = targetWordText;
+		}
+		
+		public void run() {
+			targetWordText.setHTML("<div style='font-size:20px;color:grey'>???</div>");
+		}
+		
 	}
 
 }

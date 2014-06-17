@@ -16,6 +16,7 @@ public class LetrisGameWordList {
 	public static ArrayList<String> createWordList(){
 		ArrayList<String> wordList = new ArrayList<String>();
 		
+		/* Sample words.
 		wordList.add("Ball");
 		wordList.add("billig");
 		wordList.add("Biss");
@@ -227,6 +228,13 @@ public class LetrisGameWordList {
 		wordList.add("zehn");
 		wordList.add("ziehen");
 		wordList.add("ziemlich");
+		//*/
+		
+		//* Test words.
+		wordList.add("LeTris");
+		wordList.add("stop");
+		wordList.add("Block");
+		//*/
 		
 		Collections.shuffle(wordList);
 		

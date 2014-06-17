@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Parametermatrix {
 
+	// TODO Make ArrayLists thread safe by wrapping it with Collections.synchronizedList()?
 	private ArrayList<String> itemList = new ArrayList<String>(); 
 	private ArrayList<Integer> idxList = new ArrayList<Integer>(); 
 	private ArrayList<Double> CorResp_bm_epsiList = new ArrayList<Double>();  

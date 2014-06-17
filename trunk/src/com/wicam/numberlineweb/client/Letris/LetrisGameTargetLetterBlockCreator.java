@@ -7,7 +7,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
 /**
  * Take the given target word, divide it into separate letters, put them into a list
  * and return it shuffled so that the single letter blocks can be displayed in the Letris game field.
- * Also include foreign letters that are not members of the given word and rotate some of the letter blocks.
+ * Also rotate some of the letter blocks.
  * @author timfissler
  *
  */
@@ -20,27 +20,14 @@ public class LetrisGameTargetLetterBlockCreator {
 	 */
 	private static long currentID = 0;
 	/**
-	 * Ratio of the letters per word (depending on the word size)
-	 * that are NOT members of the word itself.
-	 */
-	private double missingLetterRatio;
-	/**
 	 * Ratio of all letters (including the foreign ones)
 	 * that are being returned in a rotated fashion.
 	 */
 	private double rotatedLetterRatio;
 	/**
-	 * List containing the single letters of the missing words.
-	 */
-	private ArrayList<String> missingLetters;
-	/**
 	 * List containing all the target letter blocks to be returned.
 	 */
 	private ArrayList<LetrisGameLetterBlock> targetLetterBlocks = new ArrayList<LetrisGameLetterBlock>();
-	/**
-	 * The words that are not correctly build yet.
-	 */
-	private ArrayList<String> missingWords;
 	/**
 	 * The current word being processed.
 	 */
@@ -54,7 +41,6 @@ public class LetrisGameTargetLetterBlockCreator {
 	 * The y position of a letter block at the start of its falling.
 	 */
 	private int startY;
-
 	/**
 	 * Holds all wrong orientations of the letter blocks.
 	 */
@@ -64,9 +50,8 @@ public class LetrisGameTargetLetterBlockCreator {
 	 */
 	private int timePerBlock;
 	
-	public LetrisGameTargetLetterBlockCreator(double foreignLetterRatio, double rotatedLetterRatio,
+	public LetrisGameTargetLetterBlockCreator(double rotatedLetterRatio,
 			int timePerBlock) {
-		this.missingLetterRatio = foreignLetterRatio;
 		this.rotatedLetterRatio = rotatedLetterRatio;
 		this.timePerBlock = timePerBlock;
 		// The playground should be 15 blocks in width, so set the starting x position
@@ -75,25 +60,11 @@ public class LetrisGameTargetLetterBlockCreator {
 		// The playground should be 19 blocks in height starting from
 		// 0 at the bottom. Set the starting position to the top.
 		this.startY = 18;
-//		fillAlphabet();
 		// Fill the wrong orientations.
 		wrongOrientations.add(Orientation.EAST);
 		wrongOrientations.add(Orientation.NORTH);
 		wrongOrientations.add(Orientation.WEST);
 	}
-	
-//	/**
-//	 * Fill up the missingLetters list with all the letters of the missingLetters.
-//	 */
-//	private void fillAlphabet() {
-//		for(char letter = 'A'; letter <= 'Z';letter++){
-//			 missingLetters.add(String.valueOf(letter));
-//		}
-//		missingLetters.add("Ä");
-//		missingLetters.add("Ö");
-//		missingLetters.add("Ü");
-//		missingLetters.add("ß");
-//	}
 	
 	public void setTimePerBlock(int timePerBlock) {
 		this.timePerBlock = timePerBlock;
@@ -101,14 +72,6 @@ public class LetrisGameTargetLetterBlockCreator {
 	
 	public int getTimePerBlock() {
 		return this.timePerBlock;
-	}
-	
-	public double getMissingLetterRatio() {
-		return missingLetterRatio;
-	}
-
-	public void setMissingLetterRatio(double foreignLetterRatio) {
-		this.missingLetterRatio = foreignLetterRatio;
 	}
 
 	public double getRotatedLetterRatio() {
@@ -133,6 +96,7 @@ public class LetrisGameTargetLetterBlockCreator {
 			Orientation orientation, int timePerBlock) {
 		LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock();
 		letterBlock.setId(currentID);
+		currentID++;
 		letterBlock.setLetter(letter.toUpperCase());
 		letterBlock.setX(x);
 		letterBlock.setY(y);
@@ -144,32 +108,13 @@ public class LetrisGameTargetLetterBlockCreator {
 	/**
 	 * Add those letter blocks to the list that are members of the target word.
 	 */
-	private void addMemberLetterBlocks() {
+	private void addLetterBlocks() {
 		String[] letterArray= targetWord.split("");
 		for (String s : letterArray) {
 			if (!s.equals("")) {
 				LetrisGameLetterBlock letterBlock = makeNewLetterBlock(s, startX, startY, Orientation.SOUTH, timePerBlock);
 				targetLetterBlocks.add(letterBlock);
 			}
-		}
-	}
-	
-	/**
-	 * Add those letter blocks that are not members of the target word.
-	 * Draw the foreign letter blocks from the letters of the outstanding words and
-	 * from the current word. This assures the possibility to build outstanding words more easily.
-	 */
-	private void addMissingLetterBlocks() {
-		// Estimate number of missing letters.
-		int targetWordSize = targetWord.length();
-		int missingLetters = (int) Math.floor(targetWordSize * missingLetterRatio);
-		updateMissingLetters();
-		// Loop over number of missing letters.
-		for (int i = 0; i < missingLetters; i++) {
-			// Estimate randomly the missing letter to add.
-			String missingLetter = getRandomMissingLetter();
-			LetrisGameLetterBlock letterBlock = makeNewLetterBlock(missingLetter, startX, startY, Orientation.SOUTH, timePerBlock);
-			targetLetterBlocks.add(letterBlock);
 		}
 	}
 	
@@ -203,58 +148,39 @@ public class LetrisGameTargetLetterBlockCreator {
 		ListShuffler.shuffleList(this.wrongOrientations);
 		return this.wrongOrientations.get(0);
 	}
-	
-	/**
-	 * Update the list of missing letters from the list of missing
-	 * words from the game state.
-	 */
-	private void updateMissingLetters() {
-		// Add the target word to the outstanding words.
-		missingWords.add(targetWord);
-		missingLetters = new ArrayList<String>();
-		for (String word : missingWords) {
-			String[] letters = word.split("");
-			for (String letter : letters) {
-				if (!letter.equals("")) {
-					missingLetters.add(letter);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Return a random letter of the missing letters. 
-	 * @return random letter
-	 */
-	private String getRandomMissingLetter() {
-		ListShuffler.shuffleList(missingLetters);
-		return missingLetters.get(0);
-	}
 
 	/**
 	 * Set a new target word and create the letter blocks
-	 * for being displayed later according to this word
-	 * and the missing words. The target letter blocks
-	 * that were created can be returned with getTargetLetterBlocks().
+	 * for being displayed later according to this word.
+	 * The target letter blocks that were created can be
+	 * returned with getTargetLetterBlocks().
 	 * @param targetWord
-	 * @param missingWords
 	 */
-	public void createTargetLetterBlocks(String targetWord, ArrayList<String> missingWords) {
+	public void createTargetLetterBlocks(String targetWord) {
 		this.targetWord = targetWord;
-		// Copy the original list to a new instance so that internal changes won't
-		// affect the original list.
-		this.missingWords = new ArrayList<String>(missingWords);
-		addMemberLetterBlocks();
-		addMissingLetterBlocks();
+		targetLetterBlocks.clear();
+		addLetterBlocks();
 		randomRotateLetterBlocks();
 		ListShuffler.shuffleList(targetLetterBlocks);
+	}
+	
+	/**
+	 * Copy the given letter block.
+	 * @param letterBlock
+	 * @return
+	 */
+	public LetrisGameLetterBlock copyLetterBlock(LetrisGameLetterBlock letterBlock) {
+		return makeNewLetterBlock(letterBlock.getLetter(),
+				letterBlock.getX(),
+				letterBlock.getY(),
+				letterBlock.getOrientation(),
+				letterBlock.getTimePerBlock());
 	}
 	
 	/**
 	 * Get the created target letter blocks. 
 	 * @return
 	 */
-	// TODO Should I clone the list before passing it further?
 	public ArrayList<LetrisGameLetterBlock> getTargetLetterBlocks() {
 		return targetLetterBlocks;
 	}

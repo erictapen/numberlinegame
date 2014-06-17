@@ -12,6 +12,7 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
  *
  */
 // TODO Include LetrisGameCoordinates.
+// TODO Debug the undo mechanism.
 public class LetrisGameLetterBlock implements IsSerializable {
 
 	/**
@@ -86,12 +87,23 @@ public class LetrisGameLetterBlock implements IsSerializable {
 		this.orientation = orientation;
 	}
 	
+	/**
+	 * Undo the last movement that was made using the method move().
+	 */
 	public void undoLastMovement() {
-		this.x = this.recoverX;
-		this.y = this.recoverY;
+		if (this.lastMovingDirection == MovementDirection.DOWN) {
+			this.y = this.recoverY;
+		} else {
+			this.x = this.recoverX;
+		}
 		this.lastMovingDirection = this.recoverLastMovingDirection;
 	}
 	
+	/**
+	 * Move the block into the given direction. This can be made undone
+	 * by using the undoLastMovement() method.
+	 * @param direction
+	 */
 	public void move(MovementDirection direction) {
 		this.recoverLastMovingDirection = this.lastMovingDirection;
 		lastMovingDirection = direction;
@@ -121,10 +133,12 @@ public class LetrisGameLetterBlock implements IsSerializable {
 	
 	public void setX(int x) {
 		this.x = x;
+		this.recoverX = x;
 	}
 	
 	public void setY(int y) {
 		this.y = y;
+		this.recoverY = y;
 	}
 	
 	public int getX() {
@@ -138,7 +152,6 @@ public class LetrisGameLetterBlock implements IsSerializable {
 	public String getLetter() {
 		return letter;
 	}
-
 
 	public void setId(long id) {
 		this.id = id;
