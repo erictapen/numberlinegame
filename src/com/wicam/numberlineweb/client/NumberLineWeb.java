@@ -93,7 +93,6 @@ public class NumberLineWeb implements EntryPoint {
 		RootPanel.getBodyElement().addClassName("visible");
 		showGameTypeSelector();
 		
-		// TODO Check if that works.
 		History.fireCurrentHistoryState();
 
 	}
@@ -174,7 +173,7 @@ public class NumberLineWeb implements EntryPoint {
 		
 		//adds the Letris game
 		// TODO Change the image of the game.
-		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
 				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
 			@Override

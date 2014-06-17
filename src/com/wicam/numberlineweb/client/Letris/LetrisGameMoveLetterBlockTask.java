@@ -57,20 +57,21 @@ public class LetrisGameMoveLetterBlockTask extends AnimationTimerTask {
 				droppingCounter++;
 			}
 			// Check for collision or reaching the end of the playground.
-			// TODO Do this checking also in the model.
-			// TODO Do only collision and vertical checking here. Horizontal checking: !(letterBlock.getX() < 0) && !(letterBlock.getX() > 9)
+			// Do only collision and vertical checking here.
 			if (needsUpdate) {
 				if (!gameModel.isCollidingWithStaticLetterBlocks(letterBlock)
 						&& !(letterBlock.getY() < 0)) {
-					gameModel.updateMovingLetterblock(letterBlock);
+					gameModel.updateMovingLetterBlock(letterBlock);
 					gameModel.updateViewAndServer();
 				} else {
+					// Store last moving direction to be checked later.
+					MovementDirection lastDirection = letterBlock.getLastMovingDirection();
 					// Don't update the position further if there has been a collision, but
 					// restore the old position.
 					letterBlock.undoLastMovement();
 					// Here is an extra case needed for being dropped vs. just hitting another
 					// block from left or right. Therefore the last movement direction is being used.
-					if (letterBlock.getLastMovingDirection() == MovementDirection.DOWN) {
+					if (lastDirection == MovementDirection.DOWN) {
 						this.markForDelete();
 						gameModel.swapMovingLetterBlock();
 					}

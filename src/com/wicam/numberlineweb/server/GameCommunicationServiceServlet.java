@@ -1,11 +1,13 @@
 package com.wicam.numberlineweb.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,17 +25,24 @@ import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
 import com.wicam.numberlineweb.server.logging.GameLogger.LoggingActive;
 import com.wicam.numberlineweb.server.logging.IHandicap;
 
+// TODO Why do the wrapped ArrayLists lead to this amount of pinging.
 public abstract class GameCommunicationServiceServlet extends CustomRemoteServiceServlet implements GameCommunicationService{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5789421149680201217L;
-
+	// TODO Use thread safe wrappers for array lists?
+//	protected List<GameState> openGames = Collections.synchronizedList(new ArrayList<GameState>());
+//	private List<UpdateState> updateStates = Collections.synchronizedList(new ArrayList<UpdateState>());
+//	private List<TimeOutState> timeOutStates = Collections.synchronizedList(new ArrayList<TimeOutState>());
+//	private List<EmptyGameTimeOutState> emptyGameTimeOutStates = Collections.synchronizedList(new ArrayList<EmptyGameTimeOutState>());
+//	protected List<NPC> npcs = Collections.synchronizedList(new ArrayList<NPC>());
 	protected ArrayList<GameState> openGames = new ArrayList<GameState>();
 	private ArrayList<UpdateState> updateStates = new ArrayList<UpdateState>();
 	private ArrayList<TimeOutState> timeOutStates = new ArrayList<TimeOutState>();
 	private ArrayList<EmptyGameTimeOutState> emptyGameTimeOutStates = new ArrayList<EmptyGameTimeOutState>();
+	protected ArrayList<NPC> npcs = new ArrayList<NPC>();
 	protected IHandicap handicapAdjustment;
 	GameCommunicationServiceServlet comm;
 
@@ -44,8 +53,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	protected int currentId=0;
 	int gamePending;
 	protected String internalName;
-
-	protected List<NPC> npcs = new ArrayList<NPC>();
 	
 	public GameCommunicationServiceServlet (String internalName){
 		timeOutTimer.scheduleAtFixedRate(new TimeOutCheckerTask(getTimeOutStates(),getEmptyGameTimeOutStates(), this), 0, 4000);
@@ -340,8 +347,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	public synchronized boolean isUpToDate(int id, int player) {
 
-
-
 		Iterator<UpdateState> i = getUpdateStates().iterator();
 
 		while(i.hasNext()) {
@@ -359,36 +364,23 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 	protected synchronized void resetUpdateTimer(int player, int game) {
 
-
-
 		Iterator<TimeOutState> i = getTimeOutStates().iterator();
 
 		TimeOutState current;
 
 		while (i.hasNext()) {
 
-
 			current = i.next();
 
-
 			if (current.getGameId() == game && current.getPlayerId() == player) {
-
 				current.reset();
 				return;
-
 			}
-
-
 		}
-
-
-
-
 	}
 
 
 	protected synchronized void removeGame(int gameid) {
-
 
 		openGames.remove(getGameById(gameid));
 
@@ -406,27 +398,20 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 				break;
 			}
 
-
 		}
 
-
-
 		while (timeOutListLocked()) {
-
-
 		}
 
 		timeOutListLock();
 
 		Iterator<TimeOutState> it = getTimeOutStates().iterator();
 
-
 		while (it.hasNext()) {
 
 			TimeOutState current = it.next();
 
 			if (current.getGameId() == gameid) it.remove();
-
 
 		}
 
@@ -495,7 +480,6 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 	 */
 	@Override
 	public synchronized GameState update(String ids) {
-
 
 		final int id = Integer.parseInt(ids.split(":")[0]);
 		final int pingid = Integer.parseInt(ids.split(":")[2]);

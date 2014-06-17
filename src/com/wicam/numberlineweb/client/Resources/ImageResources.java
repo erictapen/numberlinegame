@@ -38,5 +38,8 @@ public interface ImageResources extends ClientBundle{
 
 	@Source("com/wicam/numberlineweb/client/Resources/images/pre_backButton.png")
 	ImageResource pre_backButton();
+	
+	@Source("com/wicam/numberlineweb/client/Resources/images/pre_letris.png")
+	ImageResource pre_letris();
 
 }
