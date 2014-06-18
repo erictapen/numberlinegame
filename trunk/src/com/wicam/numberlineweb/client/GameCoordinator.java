@@ -138,6 +138,9 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 		restartGame();
 	}
 	
+	/**
+	 * Implement here what has to be done for restarting the (individual) game.
+	 */
 	protected void restartGame()
 	{
 		init();
