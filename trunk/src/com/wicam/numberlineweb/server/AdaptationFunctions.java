@@ -67,6 +67,19 @@ public class AdaptationFunctions {
 	}
 	
 	// random initialization (may incorporate prior information on user)
+		public static ArrayList<Double> setTheta(double[] thetas)
+		{
+			ArrayList<Double> thetaList = new ArrayList<Double>();
+			
+			for(Double d: thetas)
+			{
+				thetaList.add(d);
+			}
+			
+			return thetaList;
+		}
+	
+	// random initialization (may incorporate prior information on user)
 	public static ArrayList<Double> initInfo(int n)
 	{	
 		return initilizeList(0.0, n);
@@ -95,7 +108,7 @@ public class AdaptationFunctions {
 			infoTmp.set(r, mult(infoList.get(r), weightsRule.get(r)));
 		}
 		
-		ArrayList<Double> infoVec = initilizeList(0.0, nrule);
+		ArrayList<Double> infoVec = initilizeList(0.0, nitems);
 		
 		for (int i = 0; i < nitems; i++)
 		{
@@ -113,6 +126,7 @@ public class AdaptationFunctions {
 		for (int i = 0; i < presentedItems.size(); i++)
 		{
 			double cur = 0;
+			
 			if (presentedItems.get(i) == 0)
 			{
 				cur = infoVec.get(i);
@@ -123,6 +137,7 @@ public class AdaptationFunctions {
 				maxIndex = i;
 			}
 		}
+
 		return maxIndex;
 	}
 	
@@ -131,7 +146,7 @@ public class AdaptationFunctions {
 		double theta_step = 0.5;
 		double tolerance = 1e-5;
 		double diff_iter = 1.0;
-		int maxSteps = 10;
+		int maxSteps = 1000;
 		
 		if(respItem.get(slct) == Integer.MIN_VALUE)
 			return theta;
@@ -155,16 +170,32 @@ public class AdaptationFunctions {
 				{
 					ii = ii + 1;
 					ArrayList<Double> p = getProbCorrectResponseBM(theta, epsi, delta);
-					Double theta_new = theta - getSum(mult(delta, sub(respItem, p))) / getSum(mult(mult(delta,delta),mult(p, sub(1,p))));
 					
-					if (theta_new.isNaN())
-						theta_new = theta + (Math.random()<0.5?-1.1:1.1) * tolerance;
+					//System.out.println("getSum(mult(delta, sub(respItem, p))) " + getSum(mult(delta, sub(respItem, p))));
+					//System.out.println("getSum(mult(mult(delta,delta),mult(p, sub(1,p))) " + getSum(mult(mult(delta,delta),mult(p, sub(1,p)))));
+					
+					Double theta_new = theta - getSum(mult(delta, sub(respItem, p))) / (- getSum(mult(mult(delta,delta),mult(p, sub(1,p)))));
+					
+					//System.out.println("theta_new 1: " + theta_new);
+					
+					if (theta_new.isNaN()){
+						if(Math.random()<0.5)
+							theta_new = theta + -1.1 * tolerance;
+						else
+							theta_new = theta + 1.1 * tolerance;
+					}
+						
 					if(theta_new.isInfinite())
 						theta_new = theta + Math.signum(theta_new) * 1.1 * tolerance;
 					
+					//System.out.println("theta_new 2: " + theta_new);
+					
 					diff_iter = Math.abs(theta_new - theta);
 					theta = theta_new;
+					
+					//System.out.println(getSum(mult(delta, sub(respItem, p))) / getSum(mult(mult(delta,delta),mult(p, sub(1,p)))));
 				}
+
 				return theta;
 			}
 	}
@@ -335,7 +366,7 @@ public class AdaptationFunctions {
 		return list;
 	}
 	
-	public static ArrayList<Double> getNotPresented(ArrayList<Double> list, ArrayList<Integer> presented)
+	public static ArrayList<Double> getPresented(ArrayList<Double> list, ArrayList<Integer> presented)
 	{
 		ArrayList<Double> newList = new ArrayList<Double>();
 		for (int i = 0; i < presented.size(); i++)
@@ -359,7 +390,7 @@ public class AdaptationFunctions {
 		
 		int max_iter = 20;
 		
-		ArrayList<Integer> presented = initilizeListInteger(0, nrules);
+		ArrayList<Integer> presented = initilizeListInteger(0, nitems);
 		ArrayList<ArrayList<Integer>> respItem = initilizeListOfListNAsInteger(nrules,nitems);
 		ArrayList<ArrayList<Double>> thetaVec = initilizeListOfList(nrules,nitems,(double)max_iter);
 		ArrayList<Double> infoVec = initilizeList(0.0, nitems);
@@ -372,7 +403,7 @@ public class AdaptationFunctions {
 		ArrayList<Double> infoTotal = initilizeList(0.0, nrules);
 		ArrayList<Double> weightsRule = initilizeList(0.0, nrules);
 		
-		for (int iter = 0; iter < max_iter; iter++)
+		for (int iter = 1; iter <= max_iter; iter++)
 		{
 			for(int r = 0; r < nrules; r++)
 			{
@@ -385,7 +416,10 @@ public class AdaptationFunctions {
 			{
 				for (int r = 0; r < nrules; r++)
 				{
-					infoVec.set(i, infoVec.get(i) + infoTmp.get(r).get(i)==Double.NaN?0:infoTmp.get(r).get(i));
+					if(infoTmp.get(r).get(i).isNaN())
+						infoVec.set(i, infoVec.get(i) + 0);
+					else
+						infoVec.set(i, infoVec.get(i) + infoTmp.get(r).get(i));
 				}
 			}
 			
@@ -400,16 +434,130 @@ public class AdaptationFunctions {
 			for(int r = 0; r < nrules; r++)
 			{
 				theta.set(r, updateTheta(theta.get(r),epsi.get(r),delta.get(r),respItem.get(r),slct));
-				infoSum.set(r, getSum(getInfoBM(theta.get(r),getNotPresented(epsi.get(r),presented),getNotPresented(delta.get(r),presented))));
+				infoSum.set(r, getSum(getInfoBM(theta.get(r),getPresented(epsi.get(r),presented),getPresented(delta.get(r),presented))));
 			}
+			
+			//printArrayList(theta);
 		}
 		
 		printArrayList(theta_true);
 		printArrayList(theta);
 	}
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args){
 		simulate();
 	}
+	
+//	public static void main(String[] args)
+//	{
+//		Parametermatrix pm = new Parametermatrix();
+//		ArrayList<ArrayList<Double>> epsi = pm.getEpsiThree();
+//		ArrayList<ArrayList<Double>> delta = pm.getDeltaThree();
+//		
+//		int nitems = epsi.get(0).size();
+//		int nrules = epsi.size();
+//		
+//		ArrayList<Double> theta_true = initilizeRandomList(-2.0, 0.0, nrules);
+//		
+//		int max_iter = 20;
+//		
+//		ArrayList<Integer> presented = initilizeListInteger(0, nitems);
+//		ArrayList<ArrayList<Integer>> respItem = initilizeListOfListNAsInteger(nrules,nitems);
+//		ArrayList<ArrayList<Double>> thetaVec = initilizeListOfList(nrules,nitems,(double)max_iter);
+//		ArrayList<Double> infoVec = initilizeList(0.0, nitems);
+//		ArrayList<Double> theta = setTheta(new double[]{-0.5850971,-1.394633,-1.228299});
+//		ArrayList<Double> theta0 = setTheta(new double[]{-0.5850971,-1.394633,-1.228299});
+//		ArrayList<Double> infoSum = initInfo(nrules);
+//		
+//		ArrayList<ArrayList<Double>> infoList = initilizeListOfList(nrules,nitems);
+//		ArrayList<ArrayList<Double>> infoTmp = initilizeListOfList(nrules,nitems);
+//		ArrayList<Double> infoTotal = initilizeList(0.0, nrules);
+//		ArrayList<Double> weightsRule = initilizeList(0.0, nrules);
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			infoList.set(r, getInfoBM(theta.get(r), epsi.get(r), delta.get(r)));
+//			infoTotal.set(r, getSum(getInfoBM(theta.get(r), epsi.get(r), delta.get(r))));
+//			weightsRule.set(r, 1.0 - infoSum.get(r)/infoTotal.get(r));
+//			infoTmp.set(r, mult(infoList.get(r), weightsRule.get(r)));
+//			//System.out.println(infoList.get(r));
+//			//System.out.println(infoTotal.get(r));
+//			//System.out.println(weightsRule.get(r));
+//			//System.out.println(infoTmp.get(r));
+//		}
+//		for(int i = 0; i < nitems; i++)
+//		{
+//			for (int r = 0; r < nrules; r++)
+//			{
+//				if(infoTmp.get(r).get(i).isNaN())
+//					infoVec.set(i, infoVec.get(i) + 0);
+//				else
+//					infoVec.set(i, infoVec.get(i) + infoTmp.get(r).get(i));
+//			}
+//			//System.out.println(infoVec.get(i));
+//		}
+//		
+//		int slct = selectItem(theta, epsi, delta, infoSum, presented);
+//		presented.set(slct, 1);
+//		System.out.println(slct);
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			respItem.get(r).set(slct, simulateResponse(theta_true.get(r), epsi.get(r).get(slct),delta.get(r).get(slct)));
+//		}
+//		
+//		//System.out.println(respItem);
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			theta.set(r, updateTheta(theta.get(r),epsi.get(r),delta.get(r),respItem.get(r),slct));
+//			infoSum.set(r, getSum(getInfoBM(theta.get(r),getPresented(epsi.get(r),presented),getPresented(delta.get(r),presented))));
+//		}
+//		
+//		System.out.println(theta);
+//		System.out.println(infoSum);
+//		
+//		System.out.println();
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			infoList.set(r, getInfoBM(theta.get(r), epsi.get(r), delta.get(r)));
+//			infoTotal.set(r, getSum(getInfoBM(theta.get(r), epsi.get(r), delta.get(r))));
+//			weightsRule.set(r, 1.0 - infoSum.get(r)/infoTotal.get(r));
+//			infoTmp.set(r, mult(infoList.get(r), weightsRule.get(r)));
+//		}
+//		for(int i = 0; i < nitems; i++)
+//		{
+//			for (int r = 0; r < nrules; r++)
+//			{
+//				if(infoTmp.get(r).get(i).isNaN())
+//					infoVec.set(i, infoVec.get(i) + 0);
+//				else
+//					infoVec.set(i, infoVec.get(i) + infoTmp.get(r).get(i));
+//			}
+//			//System.out.println(infoVec.get(i));
+//		}
+//		
+//		slct = selectItem(theta, epsi, delta, infoSum, presented);
+//		presented.set(slct, 2);
+//		System.out.println(slct);
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			respItem.get(r).set(slct, simulateResponse(theta_true.get(r), epsi.get(r).get(slct),delta.get(r).get(slct)));
+//		}
+//		
+//		//System.out.println(respItem);
+//		
+//		for(int r = 0; r < nrules; r++)
+//		{
+//			theta.set(r, updateTheta(theta.get(r),epsi.get(r),delta.get(r),respItem.get(r),slct));
+//			infoSum.set(r, getSum(getInfoBM(theta.get(r),getPresented(epsi.get(r),presented),getPresented(delta.get(r),presented))));
+//			System.out.println(r);
+//			System.out.println(getInfoBM(theta.get(r),getPresented(epsi.get(r),presented),getPresented(delta.get(r),presented)));
+//		}
+//		System.out.println();
+//		System.out.println(theta);
+//		System.out.println(infoSum);
+//	}
 }
