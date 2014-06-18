@@ -339,4 +339,18 @@ public class Parametermatrix {
 		deltaThree.add(LenHIE_bm_deltaList);
 		return deltaThree;
 	}
+	
+	ArrayList<ArrayList<Double>> getEpsiOne ()
+	{
+		ArrayList<ArrayList<Double>> epsiThree = new ArrayList<ArrayList<Double>>();
+		epsiThree.add(Cap_bm_epsiList);
+		return epsiThree;
+	}
+	
+	ArrayList<ArrayList<Double>> getDeltaOne ()
+	{
+		ArrayList<ArrayList<Double>> deltaThree = new ArrayList<ArrayList<Double>>();
+		deltaThree.add(Cap_bm_deltaList);
+		return deltaThree;
+	}
 }
