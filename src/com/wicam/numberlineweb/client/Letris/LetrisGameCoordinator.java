@@ -88,11 +88,14 @@ public class LetrisGameCoordinator extends GameCoordinator {
 //	}
 	
 	/**
-	 * Set the next word that should be built by the player in the view.
+	 * Set the target word that should be built by the player in the view.
 	 */
-	public void updateNextWord() {
-		LetrisGameView gameView = (LetrisGameView) view;
-		gameView.updateTargetWord(getGameState().getCurrentWord());
+	public void updateTargetWord() {
+		// Update only if there is still a view.
+		if (view != null) {
+			LetrisGameView gameView = (LetrisGameView) view;
+			gameView.updateTargetWord(getGameState().getCurrentWord());
+		}
 	}
 	
 	/**
@@ -100,8 +103,11 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * @param nextLetterBlock	the letter block to be shown
 	 */
 	public void updateNextBlock(LetrisGameLetterBlock nextLetterBlock) {
-		LetrisGameView gameView = (LetrisGameView) view;
-		gameView.updateNextBlock(nextLetterBlock);
+		// Update only if there is still a view.
+		if (view != null) {
+			LetrisGameView gameView = (LetrisGameView) view;
+			gameView.updateNextBlock(nextLetterBlock);
+		}
 	}
 
 	@Override
@@ -159,8 +165,11 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * game state.
 	 */
 	public void updatePlaygroundInView() {
-		LetrisGameView gameView = (LetrisGameView) view;
-		gameView.updatePlayground((LetrisGameState) openGame);
+		// Update only if there is still a view.
+		if (view != null) {
+			LetrisGameView gameView = (LetrisGameView) view;
+			gameView.updatePlayground((LetrisGameState) openGame);
+		}
 	}
 	
 	/**
@@ -443,11 +452,18 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			}
 		}
 	}
+	
+	protected void restartGame() {
+		endGame();
+		init();
+	}
 
 	/**
 	 * Remove the timer tasks when the game should be ended.
 	 */
-	public void endGame() {
+	public void endGame() {		
+		gameModel.stopMoving();
+		
 		moveLeftTask.markForDelete();
 		moveRightTask.markForDelete();
 		rotateTask.markForDelete();
@@ -459,6 +475,8 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		keyLeftDown = false;
 		keyRightDown = false;
 		keySpaceDown = false;
+		
+		this.openGame = null;
 	}
 
 	public void startButtonClicked(){

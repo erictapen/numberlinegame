@@ -18,7 +18,6 @@ public class LetrisGameModel {
 	// TODO Add optional movement objects for the dropping blocks after deletion of a word.
 	// TODO Tell the GameLogger that the user set a block and that a word was found.
 	// TODO Add game over condition. 
-	// TODO Implement correctly ending the game when back-button of browser is pressed.
 	
 	/**
 	 * The width of the playground in blocks. 
@@ -87,7 +86,7 @@ public class LetrisGameModel {
 				this.movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(), this);
 				// TODO Present current target word auditively.
 				GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
-				coordinator.updateNextWord();
+				coordinator.updateTargetWord();
 				// Copy the letter block.
 				LetrisGameLetterBlock nextLetterBlock = letterBlockCreator.copyLetterBlock(
 						coordinator.getGameState().getLetterBlocksToBeDisplayed().get(0));
@@ -103,7 +102,10 @@ public class LetrisGameModel {
 	 * Stop the movement of all blocks of the LeTris game.
 	 */
 	public void stopMoving() {
-		movingLetterBlockTask.markForDelete();
+		// Only stop if there is a moving task to stop.
+		if (movingLetterBlockTask != null) {
+			movingLetterBlockTask.markForDelete();
+		}
 	}
 
 	public int getPlaygroundWidth() {
@@ -445,7 +447,7 @@ public class LetrisGameModel {
 			this.coordinator.getGameState().addMissingWord(this.coordinator.getGameState().getCurrentWord());
 			// TODO Present current target word auditively
 			GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
-			coordinator.updateNextWord();
+			coordinator.updateTargetWord();
 			// Create new letter blocks and retrieve them.
 			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord());
 			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
