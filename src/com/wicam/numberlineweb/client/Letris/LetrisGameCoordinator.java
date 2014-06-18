@@ -74,6 +74,14 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 	@Override
 	public void init() {
+		// Setup animation tasks with delayed continuous running.
+		int delay = 1000;
+		moveLeftTask.setDelayForContinuousRunning(delay);
+		moveRightTask.setDelayForContinuousRunning(delay);
+		moveDownTask.setDelayForContinuousRunning(delay);
+		rotateTask.setDelayForContinuousRunning(delay);
+		dropTask.setDelayForContinuousRunning(delay);
+		
 		// Get the target words from the server.
 		LetrisGameCommunicationServiceAsync letrisCommServ = (LetrisGameCommunicationServiceAsync) commServ;
 		letrisCommServ.getTargetWords(targetWordsCallback);

@@ -17,15 +17,13 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameMoveLetterBlockTask;
  * are left to animate.
  * The timer is started when an animation is added and the timer isn't running yet.
  * Adding new tasks while iterating over the list now is safe.
+ * The timer now can handle tasks with delayed continuous running.
  * @author timfissler
  *
  */
 
 public class AnimationTimer extends Timer {
 
-	// TODO This list should be thread-save. How could we achieve that?
-	// Thread-save Vector doesn't solve the ConcurrentModificationException.
-	// What else could I try? Perhaps see what causes the exception?
 	/**
 	 * The list containing all the tasks that should be performed regularly.
 	 */
@@ -58,6 +56,7 @@ public class AnimationTimer extends Timer {
 
 			AnimationTimerTask t = it.next();
 			if (t.isMarkedForDeletion()) {
+				t.setDelay(0);
 				it.remove();
 			}else{
 				
@@ -66,6 +65,14 @@ public class AnimationTimer extends Timer {
 					t.run();
 				}else{
 					t.setDelay(t.getDelay() - TIMER_SPEED);
+				}
+				
+				// Handle the continuous running delay.
+				if (t.getDelayForContinuousRunning() > 0) {
+					if (t.isFirstRun()) {
+						t.setFirstRun(false);
+						t.setDelay(t.getDelayForContinuousRunning() - TIMER_SPEED);
+					}
 				}
 			
 			}
@@ -107,6 +114,7 @@ public class AnimationTimer extends Timer {
 		}
 //		this.tasks.add(t);
 		this.tasksToAdd.add(t);
+		t.setFirstRun(true);
 		t.unmarkForDelete();
 		if (!this.isRunning) {
 			this.scheduleRepeating(TIMER_SPEED);
