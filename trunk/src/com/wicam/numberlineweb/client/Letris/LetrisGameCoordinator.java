@@ -22,7 +22,6 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  *
  */
 
-// TODO Jumping back during game causes null pointer exception.
 // TODO Moving block to left or right causes block to stop from being dropped.
 // TODO Add letter block 'ghost' to display the horizontal position of the current block
 // on the bottom of the playground.
@@ -37,6 +36,11 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * The timer for movement animation.
 	 */
 	private AnimationTimer aniTimer = new AnimationTimer();
+	/**
+     * The ratio of letters of a target word that don't belong to that word
+     * but are drawn from the alphabet.
+     */
+    public static double STARTING_DISTRACTOR_LETTER_RATIO = 0.3;
 	/**
 	 * The ratio of all letter blocks of a target word that are not oriented correctly.
 	 */
@@ -75,7 +79,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	@Override
 	public void init() {
 		// Setup animation tasks with delayed continuous running.
-		int delay = 1000;
+		int delay = 500;
 		moveLeftTask.setDelayForContinuousRunning(delay);
 		moveRightTask.setDelayForContinuousRunning(delay);
 		moveDownTask.setDelayForContinuousRunning(delay);
@@ -520,6 +524,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			// Initialize the game model.
 			gameModel = new LetrisGameModel(LetrisGameCoordinator.this,
 					STARTING_ROTATED_LETTER_RATIO,
+					STARTING_DISTRACTOR_LETTER_RATIO,
 					STARTING_TIME_PER_BLOCK);
 			
 			// Set up the game selector.

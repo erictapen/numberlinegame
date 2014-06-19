@@ -29,6 +29,10 @@ public class LetrisGameState extends GameState {
 	 */
 	private ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = new ArrayList<LetrisGameLetterBlock>();
 	/**
+	 * The letter blocks that are waiting to be deleted after presentation.
+	 */
+	private ArrayList<LetrisGameLetterBlock> letterBlocksToBeDeleted = new ArrayList<LetrisGameLetterBlock>();
+	/**
 	 * The words that were build correctly by the player. 
 	 */
 	private ArrayList<String> correctWords = new ArrayList<String>();
@@ -37,7 +41,21 @@ public class LetrisGameState extends GameState {
 	 * but weren't build correctly by the player yet.
 	 */
 	private ArrayList<String> missingWords = new ArrayList<String>();
+	/**
+	 * Level of the highest filler row displayed on the playground.
+	 * 0 means lowest row is filled. -1 means no row is filled. 
+	 */
+	private int fillerRowLevel = -1;
 	
+	
+	public int getFillerLevel() {
+		return fillerRowLevel;
+	}
+
+	public void setFillerLevel(int fillerRows) {
+		this.fillerRowLevel = fillerRows;
+	}
+
 	public LetrisGameLetterBlock getMovingLetterBlock() {
 		return movingLetterBlock;
 	}
@@ -76,6 +94,22 @@ public class LetrisGameState extends GameState {
 	
 	public void removeLetterBlockToBeDisplayed(LetrisGameLetterBlock letterBlock) {
 		letterBlocksToBeDisplayed.remove(letterBlock);
+	}
+	
+	public ArrayList<LetrisGameLetterBlock> getLetterBlocksToBeDeleted() {
+		return letterBlocksToBeDeleted;
+	}
+	
+	public void setLetterBlocksToBeDeleted(ArrayList<LetrisGameLetterBlock> letterBlocks) {
+		letterBlocksToBeDeleted = letterBlocks;
+	}
+	
+	public void addLetterBlockToBeDeleted(LetrisGameLetterBlock letterBlock) {
+		letterBlocksToBeDeleted.add(letterBlock);
+	}
+	
+	public void removeLetterBlockToBeDeleted(LetrisGameLetterBlock letterBlock) {
+		letterBlocksToBeDeleted.remove(letterBlock);
 	}
 	
 	@Override
@@ -144,6 +178,7 @@ public class LetrisGameState extends GameState {
 		s += "\nstatic letter blocks: " + getStaticLetterBlocks();
 		s += "\nmoving letter block: " + getMovingLetterBlock();
 		s += "\nletter blocks to be displayed: " + getLetterBlocksToBeDisplayed();
+		s += "\nletter blocks to be deleted: " + getLetterBlocksToBeDeleted();
 		s += "\ncorrect words: " + getCorrectWords();
 		s += "\nmissing words: " + getMissingWords();
 		return s;

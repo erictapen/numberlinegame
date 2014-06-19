@@ -15,9 +15,11 @@ public class LetrisGameModel {
 
 	// TODO Add increasing game speed and/or more rotated letter blocks
 	// depending on how much words have been displayed.
-	// TODO Add optional movement objects for the dropping blocks after deletion of a word.
 	// TODO Tell the GameLogger that the user set a block and that a word was found.
-	// TODO Add game over condition. 
+	// TODO Add game over condition. E.g. when the fillerRows of the game state exceed 16.
+	// TODO Recognize one word at a time.
+	// TODO Remove filler rows when there is more than one correct built word in a row.
+	// TODO Implement points for dropping blocks depending on their height.
 	
 	/**
 	 * The width of the playground in blocks. 
@@ -45,11 +47,11 @@ public class LetrisGameModel {
 	private LetrisGameMoveLetterBlockTask movingLetterBlockTask;
 	
 	
-	public LetrisGameModel(LetrisGameCoordinator coordinator,
+	public LetrisGameModel(LetrisGameCoordinator coordinator, double distractorLetterRatio, 
 			double rotatedLetterRatio, int timePerBlock) {
 		super();
 		this.coordinator = coordinator;
-		this.letterBlockCreator = new LetrisGameTargetLetterBlockCreator(rotatedLetterRatio, timePerBlock);
+		this.letterBlockCreator = new LetrisGameTargetLetterBlockCreator(rotatedLetterRatio, distractorLetterRatio, timePerBlock);
 	}
 	
 	/**
@@ -68,6 +70,9 @@ public class LetrisGameModel {
 		// Create new letter blocks and retrieve them.
 		letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord());
 		gameState.setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
+		// Copy the list so that the blocks to be deleted aren't influenced by the successive
+		// Deletion of the blocks to be displayed.
+		gameState.setLetterBlocksToBeDeleted(new ArrayList<LetrisGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
 		// Set the first letter block to be displayed as the moving letter block and
 		// remove it from the list.
 		gameState.setMovingLetterBlock(gameState.getLetterBlocksToBeDisplayed().get(0));
@@ -327,20 +332,53 @@ public class LetrisGameModel {
 	 * words list. Also increase the correct amount of letters.
 	 * Delete the letter blocks that build the correct word from the
 	 * list of static letter blocks.
+	 * @param handleOnlyCorrectWord
 	 * @return true, if a correct word was found
 	 */
-	private void checkForCorrectWord() {
+	private void checkForCorrectWord(boolean handleOnlyCorrectWord) {
 		ArrayList<LetrisGameLetterBlock> foundLetterBlocks;
-		// Iterate over all rows.
-		for (int i = 0; i < playground.length; i++) {
-			foundLetterBlocks = findCorrectWord(playground[i]);
-			if (foundLetterBlocks.size() > 0) {
-				// Delete the letter blocks from the static ones.
-				deleteCorrectLetterBlocks(foundLetterBlocks);
-				// Break if one row contains a word.
-				break;
-			}
+		// Look for correct word one row above the fillerRow level.
+		int fillerRows = coordinator.getGameState().getFillerLevel();
+		int row = fillerRows + 1;
+		foundLetterBlocks = findCorrectWord(playground[row]);
+		boolean foundCorrectWord = (foundLetterBlocks.size() > 0);
+		ArrayList<LetrisGameLetterBlock> blocksToBeDeleted = coordinator.getGameState().getLetterBlocksToBeDeleted();
+		
+		// Delay the removing of the blocks and the creation of filler blocks.  
+		HandleWordFinishedTimer timer = new HandleWordFinishedTimer(foundCorrectWord, handleOnlyCorrectWord, blocksToBeDeleted);
+		timer.schedule(1000);
+	}
+	
+	/**
+	 * When a word is either correctly finished or finished but wrong,
+	 * this method deletes the letter blocks of the word from the playground
+	 * and adds or removes filler rows.
+	 * @param foundCorrectWord
+	 * @param handleOnlyCorrectWord
+	 * @param blocksToBeDeleted
+	 */
+	private void handleWordFinished(boolean foundCorrectWord, boolean handleOnlyCorrectWord, 
+			ArrayList<LetrisGameLetterBlock> blocksToBeDeleted) {
+		int fillerRows = coordinator.getGameState().getFillerLevel();
+		int row = fillerRows + 1;
+		if (foundCorrectWord) {
+			// Delete the letter blocks from the static ones.
+			deleteSetLetterBlocks(blocksToBeDeleted);
+			/* 
+			 * TODO If the word was correct two times in a row
+			 * decrease the filler row level and delete the upper
+			 * filler row.
+			 */
 		}
+		if (!foundCorrectWord && !handleOnlyCorrectWord) {
+			// Delete the letter blocks from the static ones.
+			deleteSetLetterBlocks(blocksToBeDeleted);
+			// Increase the filler row level.
+			coordinator.getGameState().setFillerLevel(row);
+			letterBlockCreator.createFillerRow(row);
+			addFillerRow(letterBlockCreator.getFillerRow());
+		}
+		// TODO Continue with the next word AFTER this method. Move code appropriately.
 	}
 	
 	/**
@@ -360,7 +398,7 @@ public class LetrisGameModel {
 			if (letterBlockRow[i] != null) {
 				rowStr += letterBlockRow[i].getLetter();
 			} else {
-				rowStr += "#";
+				rowStr += "*";
 			}
 		}
 		String foundWord = "";
@@ -407,12 +445,25 @@ public class LetrisGameModel {
 	 * Delete the given list of blocks from the static list, 
 	 * remove the blocks from the playground
 	 * and update the view and the state.
-	 * @param correctLetterBlocks
+	 * @param letterBlocks
 	 */
-	private void deleteCorrectLetterBlocks(ArrayList<LetrisGameLetterBlock> correctLetterBlocks) {
-		this.coordinator.getGameState().getStaticLetterBlocks().removeAll(correctLetterBlocks);
-		for (LetrisGameLetterBlock letterBlock : correctLetterBlocks) {
+	private void deleteSetLetterBlocks(ArrayList<LetrisGameLetterBlock> letterBlocks) {
+		this.coordinator.getGameState().getStaticLetterBlocks().removeAll(letterBlocks);
+		for (LetrisGameLetterBlock letterBlock : letterBlocks) {
 			playground[letterBlock.getY()][letterBlock.getX()] = null;
+		}
+		updateViewAndServer();
+	}
+	
+	/**
+	 * Add the given list of filler letter blocks to the static list,
+	 * add them to the playground and update the view and the state.
+	 * @param fillerBlocks
+	 */
+	private void addFillerRow(ArrayList<LetrisGameLetterBlock> fillerBlocks) {
+		for (LetrisGameLetterBlock fillerBlock : fillerBlocks) {
+			this.coordinator.getGameState().addStaticLetterBlock(fillerBlock);
+			playground[fillerBlock.getY()][fillerBlock.getX()] = fillerBlock;
 		}
 		updateViewAndServer();
 	}
@@ -436,11 +487,12 @@ public class LetrisGameModel {
 		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
 		this.coordinator.getGameState().addStaticLetterBlock(movingLetterBlock);
 		playground[movingLetterBlock.getY()][movingLetterBlock.getX()] = movingLetterBlock;
-		coordinator.getGameState().setMovingLetterBlock(null);
-		// Wait one second before searching for correct words.
-		WaitForCorrectWordSearchTimer timer = new WaitForCorrectWordSearchTimer();
-		timer.schedule(1000);
+		coordinator.getGameState().setMovingLetterBlock(null);		
 		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
+		// Wait one second before removing the correct words.
+		boolean letterBlockToBeDisplayedIsEmpty = (letterBlocksToBeDisplayed.size() == 0);
+		checkForCorrectWord(!letterBlockToBeDisplayedIsEmpty);
+		
 		if (letterBlocksToBeDisplayed.size() == 0) {
 			coordinator.getGameState().setCurrentWord(getNextRandomCurrentWord());
 			// Add current word to missing words and present it.
@@ -451,8 +503,12 @@ public class LetrisGameModel {
 			// Create new letter blocks and retrieve them.
 			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord());
 			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
+			// Copy the list so that the blocks to be deleted aren't influenced by the successive
+			// Deletion of the blocks to be displayed.
+			this.coordinator.getGameState().setLetterBlocksToBeDeleted(new ArrayList<LetrisGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
 			letterBlocksToBeDisplayed = coordinator.getGameState().getLetterBlocksToBeDisplayed();
-		}		
+		}
+		
 		movingLetterBlock = letterBlocksToBeDisplayed.get(0);
 		coordinator.getGameState().removeLetterBlockToBeDisplayed(movingLetterBlock);
 		coordinator.getGameState().setMovingLetterBlock(movingLetterBlock);
@@ -483,17 +539,28 @@ public class LetrisGameModel {
 
 	/**
 	 * Timer for handling the delay between the drop of the last
-	 * letter block and the start of the search for a
-	 * correct word. This delay is needed so that the player has
+	 * letter block and the removing of the letters of the
+	 * word. This delay is needed so that the player has
 	 * a chance to see which word he has built.
 	 * @author timfissler
 	 *
 	 */
-	private class WaitForCorrectWordSearchTimer extends Timer {
+	private class HandleWordFinishedTimer extends Timer {
 
+		private boolean foundCorrectWord;
+		private boolean handleOnlyCorrectWord;
+		private ArrayList<LetrisGameLetterBlock> blocksToBeDeleted;
+		
+		public HandleWordFinishedTimer(boolean foundCorrectWord, boolean handleOnlyCorrectWord, 
+				ArrayList<LetrisGameLetterBlock> blocksToBeDeleted) {
+			this.foundCorrectWord = foundCorrectWord;
+			this.handleOnlyCorrectWord = handleOnlyCorrectWord;
+			this.blocksToBeDeleted = blocksToBeDeleted;
+		}
+		
 		@Override
 		public void run() {
-			checkForCorrectWord();
+			handleWordFinished(foundCorrectWord, handleOnlyCorrectWord, blocksToBeDeleted);
 		}
 		
 	}

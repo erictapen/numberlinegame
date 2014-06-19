@@ -1,6 +1,5 @@
 package com.wicam.numberlineweb.client.Letris;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
@@ -171,6 +170,21 @@ public class LetrisGameLetterBlock implements IsSerializable {
 
 	public String toString() {
 		return "[" + this.letter + ", id: " + id + ", " + orientation + ", position: " + x + ", " + y + "]";
+	}
+	
+	/**
+	 * Compare this with another given object and return true if both objects
+	 * are letter blocks and have the same id.
+	 */
+	public boolean equals(Object obj) {
+		boolean result = false;
+		if (obj.getClass() == this.getClass()) {
+			LetrisGameLetterBlock otherLetterBlock = (LetrisGameLetterBlock) obj;
+			if (otherLetterBlock.id == this.id) {
+				result = true;
+			}
+		}
+		return result; 
 	}
 
 	/**
