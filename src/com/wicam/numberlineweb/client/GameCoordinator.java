@@ -270,7 +270,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 * 
 	 * @param gameState		current game state
 	 */
-	protected void handlePerformanceState(GameState gameState){
+	public void handlePerformanceState(GameState gameState){
 		HighScoreView h = new HighScoreView(openGame.getPlayers(),GameView.playerColors);
 		rootPanel.clear();
 		h.init(rootPanel);

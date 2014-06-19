@@ -232,9 +232,12 @@ public class LetrisGameWordList {
 		
 		//* Test words.
 		// TODO Switch that back.
-		wordList.add("LeTris");
-		wordList.add("stop");
-		wordList.add("Block");
+//		wordList.add("LeTris");
+//		wordList.add("stop");
+//		wordList.add("Block");
+		wordList.add("one");
+		wordList.add("two");
+		wordList.add("three");
 		//*/
 		
 		Collections.shuffle(wordList);
