@@ -304,13 +304,10 @@ public class LetrisGameView extends GameView {
 		}
 		
 		String letterStr = letterBlock.getLetter();
-
-		// Get letter color.
-		String colorStr = letter2HexColor.get(letterStr);
 		
 		Rectangle box;
 		LetrisGameCoordinates viewCoordinates = new LetrisGameCoordinates();
-		
+
 		if (useViewCoordinates) {
 			// Calculate the appropriate coordinates for the view.
 			viewCoordinates = transform.transformModelToView(new LetrisGameCoordinates(letterBlock.getX(), letterBlock.getY()));
@@ -323,47 +320,67 @@ public class LetrisGameView extends GameView {
 			box = new Rectangle(0, 0, blockSize, blockSize);
 		}
 		
-		// Draw letter.
-		Text letter = new Text(0, 0, letterStr);
-		letter.setFontSize(17);
-		letter.setFillColor(colorStr);
-		letter.setStrokeColor(colorStr);
-		letter.setFontFamily("Andale Mono");
-		
-		// Rotate letter.
-		// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
-//		switch (letterBlock.getOrientation()) {
-//		case EAST:
-//			letter.setRotation(0); // -90
-//			GWT.log("EAST");
-//			break;
-//		case WEST:
-//			letter.setRotation(0); // 90
-//			GWT.log("WEST");
-//			break;
-//		case NORTH:
-//			letter.setRotation(0); // 180
-//			GWT.log("NORTH");
-//			break;
-//		case SOUTH:
-//			letter.setRotation(0);
-//			GWT.log("SOUTH");
-//			break;
-//		}
-		
-		// Center letter.
-		int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
-		int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) + letter.getTextHeight() - 2;
-		if (useViewCoordinates) {
-			letter.setX(viewCoordinates.x + xOffset);
-			letter.setY(viewCoordinates.y + yOffset);
+		// Handle filler or letter blocks.
+		if (letterStr.equals("#")) {
+			
+			// Filler block.
+			
+			// Set fill color to grey.
+			box.setFillColor("grey");
+			box.setFillOpacity(1.0);
+			
+			letterBlockImage.add(box);
+			
 		} else {
-			letter.setX(xOffset);
-			letter.setY(yOffset);
-		}
+			
+			// Letter block.
+
+			// Get letter color.
+			String colorStr = letter2HexColor.get(letterStr);
+
+			// Draw letter.
+			Text letter = new Text(0, 0, letterStr);
+			letter.setFontSize(17);
+			letter.setFillColor(colorStr);
+			letter.setStrokeColor(colorStr);
+			letter.setFontFamily("Andale Mono");
+
+			// Rotate letter.
+			// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
+			//		switch (letterBlock.getOrientation()) {
+			//		case EAST:
+			//			letter.setRotation(0); // -90
+			//			GWT.log("EAST");
+			//			break;
+			//		case WEST:
+			//			letter.setRotation(0); // 90
+			//			GWT.log("WEST");
+			//			break;
+			//		case NORTH:
+			//			letter.setRotation(0); // 180
+			//			GWT.log("NORTH");
+			//			break;
+			//		case SOUTH:
+			//			letter.setRotation(0);
+			//			GWT.log("SOUTH");
+			//			break;
+			//		}
+
+			// Center letter.
+			int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
+			int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) + letter.getTextHeight() - 2;
+			if (useViewCoordinates) {
+				letter.setX(viewCoordinates.x + xOffset);
+				letter.setY(viewCoordinates.y + yOffset);
+			} else {
+				letter.setX(xOffset);
+				letter.setY(yOffset);
+			}
+
+			letterBlockImage.add(box);
+			letterBlockImage.add(letter);
 		
-		letterBlockImage.add(box);
-		letterBlockImage.add(letter);
+		}
 		
 		return letterBlockImage;
 	}

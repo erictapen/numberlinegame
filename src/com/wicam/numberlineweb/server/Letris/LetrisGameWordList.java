@@ -231,6 +231,7 @@ public class LetrisGameWordList {
 		//*/
 		
 		//* Test words.
+		// TODO Switch that back.
 		wordList.add("LeTris");
 		wordList.add("stop");
 		wordList.add("Block");

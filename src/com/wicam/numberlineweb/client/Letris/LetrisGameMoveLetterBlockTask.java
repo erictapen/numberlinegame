@@ -1,6 +1,5 @@
 package com.wicam.numberlineweb.client.Letris;
 
-import com.google.gwt.core.shared.GWT;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 
 /**
@@ -8,13 +7,6 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
  * @author timfissler
  *
  */
-
-//TODO Implement a second task(?) for the blocks being dropped by player
-// or by the deletion of other blocks? Could also be solved by checking if the
-// Move is active and then setting the y position to the lowest available one
-// or reactivating the move before, if it isn't active. But then the swap
-// handling must be done differently.
-
 public class LetrisGameMoveLetterBlockTask extends AnimationTimerTask {
 
 	private LetrisGameLetterBlock letterBlock;
