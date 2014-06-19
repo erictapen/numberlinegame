@@ -16,10 +16,8 @@ public class LetrisGameModel {
 	// TODO Add increasing game speed and/or more rotated letter blocks
 	// depending on how much words have been displayed.
 	// TODO Tell the GameLogger that the user set a block and that a word was found.
-	// TODO Add game over condition. E.g. when the fillerRows of the game state exceed 16.
-	// TODO Recognize one word at a time.
-	// TODO Remove filler rows when there is more than one correct built word in a row.
 	// TODO Implement points for dropping blocks depending on their height.
+	// TODO Implement increasing factor of points for correct words in a row.
 	
 	/**
 	 * The width of the playground in blocks. 
@@ -45,12 +43,18 @@ public class LetrisGameModel {
 	 * Moves the current moving letter block.
 	 */
 	private LetrisGameMoveLetterBlockTask movingLetterBlockTask;
+	/**
+	 * Count how much correct words the player builds without making mistakes
+	 * in between.
+	 */
+	private int correctWordsInARow;
 	
 	
 	public LetrisGameModel(LetrisGameCoordinator coordinator, double distractorLetterRatio, 
 			double rotatedLetterRatio, int timePerBlock) {
 		super();
 		this.coordinator = coordinator;
+		this.correctWordsInARow = 0;
 		this.letterBlockCreator = new LetrisGameTargetLetterBlockCreator(rotatedLetterRatio, distractorLetterRatio, timePerBlock);
 	}
 	
@@ -75,15 +79,15 @@ public class LetrisGameModel {
 		gameState.setLetterBlocksToBeDeleted(new ArrayList<LetrisGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
 		// Set the first letter block to be displayed as the moving letter block and
 		// remove it from the list.
-		gameState.setMovingLetterBlock(gameState.getLetterBlocksToBeDisplayed().get(0));
-		gameState.removeLetterBlockToBeDisplayed(gameState.getMovingLetterBlock());
+		LetrisGameLetterBlock movingLetterBlock = gameState.getLetterBlocksToBeDisplayed().get(0);
+		gameState.removeLetterBlockToBeDisplayed(movingLetterBlock);
+		gameState.setMovingLetterBlock(movingLetterBlock);
 	}
 	
 	/**
 	 * Initialize the moving task and
 	 * start the movement of the current
-	 * moving block (and all other block,
-	 * that might be influenced). 
+	 * moving block. 
 	 */
 	public void startMoving() {
 		if (this.movingLetterBlockTask == null) {
@@ -360,23 +364,37 @@ public class LetrisGameModel {
 	private void handleWordFinished(boolean foundCorrectWord, boolean handleOnlyCorrectWord, 
 			ArrayList<LetrisGameLetterBlock> blocksToBeDeleted) {
 		int fillerRows = coordinator.getGameState().getFillerLevel();
-		int row = fillerRows + 1;
 		if (foundCorrectWord) {
 			// Delete the letter blocks from the static ones.
 			deleteSetLetterBlocks(blocksToBeDeleted);
+			// Increase correct word counter.
+			correctWordsInARow++;
 			/* 
-			 * TODO If the word was correct two times in a row
+			 * If the word was correct two times in a row
 			 * decrease the filler row level and delete the upper
-			 * filler row.
+			 * filler row if the level is >= 0.
 			 */
+			if (correctWordsInARow >= 2 && fillerRows >= 0) {
+				coordinator.getGameState().setFillerLevel(fillerRows - 1);
+				removeFillerRow(fillerRows);
+			}
 		}
 		if (!foundCorrectWord && !handleOnlyCorrectWord) {
+			// Reset the correct words counter.
+			correctWordsInARow = 0;
 			// Delete the letter blocks from the static ones.
 			deleteSetLetterBlocks(blocksToBeDeleted);
-			// Increase the filler row level.
-			coordinator.getGameState().setFillerLevel(row);
-			letterBlockCreator.createFillerRow(row);
-			addFillerRow(letterBlockCreator.getFillerRow());
+			/*
+			 * Increase the filler row level if it is < 16, else
+			 * set the game to be ended -> GAME OVER.
+			 */
+			if (fillerRows < 16) {
+				coordinator.getGameState().setFillerLevel(fillerRows + 1);
+				letterBlockCreator.createFillerRow(fillerRows + 1);
+				addFillerRow(letterBlockCreator.getFillerRow());
+			} else {
+				coordinator.handlePerformanceState(coordinator.getGameState());
+			}
 		}
 		// TODO Continue with the next word AFTER this method. Move code appropriately.
 	}
@@ -449,8 +467,14 @@ public class LetrisGameModel {
 	 */
 	private void deleteSetLetterBlocks(ArrayList<LetrisGameLetterBlock> letterBlocks) {
 		this.coordinator.getGameState().getStaticLetterBlocks().removeAll(letterBlocks);
-		for (LetrisGameLetterBlock letterBlock : letterBlocks) {
-			playground[letterBlock.getY()][letterBlock.getX()] = null;
+		// Scan the whole playground and delete all blocks that are members of the given
+		// list of letter blocks.
+		for (int row = 0; row <= 18; row++) {
+			for (int column = 0; column <= 14; column++) {
+				if (playground[row][column] != null && letterBlocks.contains(playground[row][column])) {
+					playground[row][column] = null;
+				}
+			}
 		}
 		updateViewAndServer();
 	}
@@ -464,6 +488,21 @@ public class LetrisGameModel {
 		for (LetrisGameLetterBlock fillerBlock : fillerBlocks) {
 			this.coordinator.getGameState().addStaticLetterBlock(fillerBlock);
 			playground[fillerBlock.getY()][fillerBlock.getX()] = fillerBlock;
+		}
+		updateViewAndServer();
+	}
+	
+	/**
+	 * Remove the filler blocks from the playground and the static letter blocks
+	 * list for the given filler row level / y position in model coordinates.
+	 * After that update view and state.
+	 * @param fillerRowLevel
+	 */
+	private void removeFillerRow(int fillerRowLevel) {
+		for (int column = 0; column <= 14; column++) {
+			LetrisGameLetterBlock fillerBlock = playground[fillerRowLevel][column];
+			coordinator.getGameState().removeStaticLetterBlock(fillerBlock);
+			playground[fillerRowLevel][column] = null;
 		}
 		updateViewAndServer();
 	}
@@ -487,7 +526,13 @@ public class LetrisGameModel {
 		LetrisGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
 		this.coordinator.getGameState().addStaticLetterBlock(movingLetterBlock);
 		playground[movingLetterBlock.getY()][movingLetterBlock.getX()] = movingLetterBlock;
-		coordinator.getGameState().setMovingLetterBlock(null);		
+		coordinator.getGameState().setMovingLetterBlock(null);
+		
+		// If the y position of the moving letter block is greater than 16 the game is over.
+		if (movingLetterBlock.getY() > 16) {
+			coordinator.handlePerformanceState(coordinator.getGameState());
+		}
+		
 		ArrayList<LetrisGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
 		// Wait one second before removing the correct words.
 		boolean letterBlockToBeDisplayedIsEmpty = (letterBlocksToBeDisplayed.size() == 0);

@@ -11,7 +11,6 @@ import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
  *
  */
 // TODO Include LetrisGameCoordinates.
-// TODO Debug the undo mechanism.
 public class LetrisGameLetterBlock implements IsSerializable {
 
 	/**

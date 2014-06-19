@@ -174,7 +174,7 @@ public class MathDiagnosticsCoordinator extends GameCoordinator {
 	
 	
 	@Override
-	protected void handlePerformanceState(GameState gameState){
+	public void handlePerformanceState(GameState gameState){
 		MathDiagnosticsHighScoreView h = new MathDiagnosticsHighScoreView(gameState.getPlayers(),GameView.playerColors, 500);
 		rootPanel.clear();
 		h.init(rootPanel);
