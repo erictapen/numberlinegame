@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService
+path: 0A2AFE6F670CD2E7DA419CC75E1A0854.gwt.rpc

@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService
+path: EE861FD64EC96C3F921E110A6FE15F98.gwt.rpc

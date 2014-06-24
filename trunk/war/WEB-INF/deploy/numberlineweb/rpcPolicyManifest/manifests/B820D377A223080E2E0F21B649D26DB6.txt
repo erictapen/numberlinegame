@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService
+path: B91D50F205AFDF510FFE8CD528558ECB.gwt.rpc

@@ -2,7 +2,9 @@ package com.wicam.numberlineweb.client.Letris;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 
 /**
  * Class that carries the game state of the LeTris game with its letter blocks.
@@ -15,7 +17,7 @@ public class LetrisGameState extends GameState {
 	/**
 	 * The word that is currently being displayed letter block by letter block. 
 	 */
-	private String currentWord;
+	private VowelGameWord currentWord;
 	/**
 	 * The letter blocks that have already been set on the bottom of the playground. 
 	 */
@@ -35,12 +37,12 @@ public class LetrisGameState extends GameState {
 	/**
 	 * The words that were build correctly by the player. 
 	 */
-	private ArrayList<String> correctWords = new ArrayList<String>();
+	private ArrayList<VowelGameWord> correctWords = new ArrayList<VowelGameWord>();
 	/**
 	 * The words to be recognized. E.g. the words that are being or have been displayed
 	 * but weren't build correctly by the player yet.
 	 */
-	private ArrayList<String> missingWords = new ArrayList<String>();
+	private ArrayList<VowelGameWord> missingWords = new ArrayList<VowelGameWord>();
 	/**
 	 * Level of the highest filler row displayed on the playground.
 	 * 0 means lowest row is filled. -1 means no row is filled. 
@@ -132,43 +134,43 @@ public class LetrisGameState extends GameState {
 		return false;
 	}
 
-	public String getCurrentWord() {
+	public VowelGameWord getCurrentWord() {
 		return currentWord;
 	}
 	
-	public void setCurrentWord(String currentWord) {
+	public void setCurrentWord(VowelGameWord currentWord) {
 		this.currentWord = currentWord;
 	}
 	
-	public ArrayList<String> getCorrectWords() {
+	public ArrayList<VowelGameWord> getCorrectWords() {
 		return correctWords;
 	}
 	
-	public void setCorrectWords(ArrayList<String> correctWords) {
+	public void setCorrectWords(ArrayList<VowelGameWord> correctWords) {
 		this.correctWords = correctWords;
 	}
 	
-	public void addCorrectWord(String correctWord) {
+	public void addCorrectWord(VowelGameWord correctWord) {
 		correctWords.add(correctWord);
 	}
 	
-	public void removeCorrectWord(String correctWord) {
+	public void removeCorrectWord(VowelGameWord correctWord) {
 		correctWords.remove(correctWord);
 	}
 	
-	public ArrayList<String> getMissingWords() {
+	public ArrayList<VowelGameWord> getMissingWords() {
 		return missingWords;
 	}
 	
-	public void setMissingWords(ArrayList<String> missingWords) {
+	public void setMissingWords(ArrayList<VowelGameWord> missingWords) {
 		this.missingWords = missingWords;
 	}
 	
-	public void addMissingWord(String missingWord) {
+	public void addMissingWord(VowelGameWord missingWord) {
 		missingWords.add(missingWord);
 	}
 	
-	public void removeMissingWord(String missingWord) {
+	public void removeMissingWord(VowelGameWord missingWord) {
 		missingWords.remove(missingWord);
 	}
 	

@@ -1,9 +1,11 @@
 package com.wicam.numberlineweb.server.Letris;
 
 import java.util.ArrayList;
+
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.logging.LetrisGameHandicap;
 
@@ -74,7 +76,7 @@ public class LetrisGameCommunicationServiceServlet extends
 	}
 
 	@Override
-	public ArrayList<String> getTargetWords() {
+	public ArrayList<VowelGameWord> getTargetWords() {
 		return LetrisGameWordList.createWordList();
 	}
 

@@ -14,6 +14,7 @@ import com.wicam.numberlineweb.client.Letris.AnimationTimer;
 import com.wicam.numberlineweb.client.Letris.AnimationTimerTask;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.RotationDirection;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 /**
@@ -52,7 +53,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	/**
 	 * The list of target words from that the current word is drawn randomly.
 	 */
-	private ArrayList<String> targetWords;
+	private ArrayList<VowelGameWord> targetWords;
 	/**
 	 * The model of the LeTris game.
 	 */
@@ -147,11 +148,11 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		}
 	}
 	
-	public ArrayList<String> getTargetWords() {
+	public ArrayList<VowelGameWord> getTargetWords() {
 		return targetWords;
 	}
 
-	public void setTargetWords(ArrayList<String> targetWords) {
+	public void setTargetWords(ArrayList<VowelGameWord> targetWords) {
 		this.targetWords = targetWords;
 	}
 
@@ -510,7 +511,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	/**
 	 * What is to be done when the list of target words has been retrieved from the server.
 	 */
-	AsyncCallback<ArrayList<String>> targetWordsCallback = new AsyncCallback<ArrayList<String>>() {
+	AsyncCallback<ArrayList<VowelGameWord>> targetWordsCallback = new AsyncCallback<ArrayList<VowelGameWord>>() {
 		
 		@Override
 		public void onFailure(Throwable caught) {
@@ -518,7 +519,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		}
 		
 		@Override
-		public void onSuccess(ArrayList<String> targetWords) {
+		public void onSuccess(ArrayList<VowelGameWord> targetWords) {
 			setTargetWords(targetWords);
 			
 			// Initialize the game model.
