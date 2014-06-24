@@ -23,6 +23,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  *
  */
 
+// TODO Add key for repeating the sound.
 // TODO Moving block to left or right causes block to stop from being dropped.
 // TODO Add letter block 'ghost' to display the horizontal position of the current block
 // on the bottom of the playground.
@@ -376,14 +377,18 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	private boolean keyLeftDown = false;
 	private boolean keyRightDown = false;
 	private boolean keySpaceDown = false;
+	private boolean keyWDown = false;
+	private boolean keyPDown = false;
 
 	/**
 	 * Takes key actions from the controller and fires movement
-	 * or rotation commands in the model.
+	 * or rotation commands in the model. Additionally
+	 * handles repetition of the current word and toggling of
+	 * pause mode. 
 	 * @param up true, if the key went up; false, if the key went down
 	 * @param key number representing the key
 	 */
-	public void moveBlock(boolean up, int key){
+	public void handleKeyStroke(boolean up, int key){
 		// If key went down ...
 		if (!up) {
 			switch(key){
@@ -421,6 +426,18 @@ public class LetrisGameCoordinator extends GameCoordinator {
 					keySpaceDown = true;
 					registerAniTask(dropTask);
 				}
+				break;
+			// W
+			case 6:
+				if (!keyWDown) {
+					keyWDown = true;
+					LetrisGameView gameView = (LetrisGameView) view;
+					gameView.repeatTargetWord();
+				}
+				break;
+			// P
+			case 7:
+				// TODO Implement pause toggling.
 				break;
 			}
 		}
@@ -462,6 +479,16 @@ public class LetrisGameCoordinator extends GameCoordinator {
 					dropTask.markForDelete();
 				}
 				break;
+			// W
+			case 6:
+				if (keyWDown) {
+					keyWDown = false;
+				}
+				break;
+			// P
+			case 7:
+				// TODO Implement toggling of pause mode.
+				break;
 			}
 		}
 	}
@@ -488,6 +515,8 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		keyLeftDown = false;
 		keyRightDown = false;
 		keySpaceDown = false;
+		keyWDown = false;
+		keyPDown = false;
 		
 		this.openGame = null;
 	}
