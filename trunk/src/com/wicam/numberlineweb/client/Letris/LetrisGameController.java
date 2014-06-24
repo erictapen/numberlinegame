@@ -48,54 +48,66 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 		if (keysEnabled){
 			event.preventDefault();
 
-			int dir = 1;
+			int id = 1;
 
 			switch(event.getNativeKeyCode()) {
 
 			case KeyCodes.KEY_DOWN:
-				dir=1;
+				id=1;
 				break;
 			case KeyCodes.KEY_UP:
-				dir=2;
+				id=2;
 				break;
 			case KeyCodes.KEY_LEFT:
-				dir=4;
+				id=4;
 				break;
 			case KeyCodes.KEY_RIGHT:
-				dir=3;
+				id=3;
 				break;
 			case KeyCodes.KEY_SPACE:
-				dir=5;
+				id=5;
+				break;
+			case KeyCodes.KEY_W:
+				id=6;
+				break;
+			case KeyCodes.KEY_P:
+				id=7;
 				break;
 			}
-			directionDown(dir);
+			keyDown(id);
 		}
 	}
 
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
 		if (keysEnabled){
-			int dir = 1;
+			int id = 1;
 
 			switch(event.getNativeKeyCode()) {
 
 			case KeyCodes.KEY_DOWN:
-				dir=1;
+				id=1;
 				break;
 			case KeyCodes.KEY_UP:
-				dir=2;
+				id=2;
 				break;
 			case KeyCodes.KEY_LEFT:
-				dir=4;
+				id=4;
 				break;
 			case KeyCodes.KEY_RIGHT:
-				dir=3;
+				id=3;
 				break;
 			case KeyCodes.KEY_SPACE:
-				dir=5;
+				id=5;
+				break;
+			case KeyCodes.KEY_W:
+				id=6;
+				break;
+			case KeyCodes.KEY_P:
+				id=7;
 				break;
 			}
-			directionUp(dir);
+			keyUp(id);
 		}
 	}
 
@@ -108,13 +120,13 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 	}
 
 	@Override
-	public void directionDown(int dir) {
-		((LetrisGameCoordinator) coordinator).moveBlock(false,dir);
+	public void keyDown(int id) {
+		((LetrisGameCoordinator) coordinator).handleKeyStroke(false,id);
 	}
 
 	@Override
-	public void directionUp(int dir) {
-		((LetrisGameCoordinator) coordinator).moveBlock(true,dir);
+	public void keyUp(int id) {
+		((LetrisGameCoordinator) coordinator).handleKeyStroke(true,id);
 	}
 
 }

@@ -4,9 +4,9 @@ public interface DirectionHandler {
 	
 	
 	
-	public void directionDown(int dir);
+	public void keyDown(int dir);
 	
-	public void directionUp(int dir);
+	public void keyUp(int dir);
 	
 
 }

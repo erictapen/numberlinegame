@@ -43,7 +43,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
-				target.directionDown(2);
+				target.keyDown(2);
 				
 			}
 		});
@@ -53,7 +53,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
-				target.directionUp(2);
+				target.keyUp(2);
 				
 			}
 			
@@ -64,7 +64,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
-				target.directionDown(1);
+				target.keyDown(1);
 				
 			}
 		});
@@ -74,7 +74,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
-				target.directionUp(1);
+				target.keyUp(1);
 				
 			}
 			
@@ -85,7 +85,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
-				target.directionDown(4);
+				target.keyDown(4);
 				
 			}
 		});
@@ -95,7 +95,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
-				target.directionUp(4);
+				target.keyUp(4);
 				
 			}
 			
@@ -106,7 +106,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				event.preventDefault();
-				target.directionDown(3);
+				target.keyDown(3);
 				
 			}
 		});
@@ -116,7 +116,7 @@ public class KeyboardDummy extends Composite {
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
 				event.preventDefault();
-				target.directionUp(3);
+				target.keyUp(3);
 				
 			}
 			

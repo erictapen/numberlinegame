@@ -79,7 +79,7 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 
 			}
 
-			directionDown(dir);
+			keyDown(dir);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 
 			}
 
-			directionUp(dir);
+			keyUp(dir);
 		}
 	}
 
@@ -118,14 +118,14 @@ public class DoppelungGameController extends GameController implements KeyDownHa
 	}
 
 	@Override
-	public void directionDown(int dir) {
+	public void keyDown(int dir) {
 		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(false,dir);
 
 
 	}
 
 	@Override
-	public void directionUp(int dir) {
+	public void keyUp(int dir) {
 		((DoppelungGameCoordinator) coordinator).moveImageOnGamePanel(true,dir);
 
 

@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 // TODO Add descriptions.
 // TODO How can the view be more efficient?
+// TODO Increase size of block preview.
 // TODO Add game sound that increases with the speed of the game.
 // TODO Add dropping sound.
 // TODO Add game over sound.
@@ -75,6 +76,7 @@ public class LetrisGameView extends GameView {
 	private final int blockSize = 20;
 	LetrisGameCoordinates playgroundSize;
 	LetrisGameCoordinates playgroundOrigin = new LetrisGameCoordinates(200, 0);
+	private VowelGameWord targetWord;
 	
 	// TODO Add correct sound file.
 //	protected Audio descriptionSound = Audio.createIfSupported();
@@ -162,8 +164,10 @@ public class LetrisGameView extends GameView {
 	 * @param targetWord
 	 */
 	public void updateTargetWord(VowelGameWord targetWord) {
+		this.targetWord = targetWord;
+		
 		// Play the target word.
-		playWord(SoundRetriever.getAudioElement(targetWord, true), targetWord.getWordString());
+		playWord(LetrisGameSoundRetriever.getAudioElement(targetWord), targetWord.getWordString());
 		
 		// Show the target word.
 		// TODO Make this optional.
@@ -171,6 +175,14 @@ public class LetrisGameView extends GameView {
 //		TargetWordTimer timer = new TargetWordTimer(targetWordText);
 //		// Hide the target word after 2s.
 //		timer.schedule(2000);
+	}
+	
+	/**
+	 * Repeat the current target word.
+	 */
+	public void repeatTargetWord() {
+		// Play the target word.
+		playWord(LetrisGameSoundRetriever.getAudioElement(targetWord), targetWord.getWordString());
 	}
 	
 	/**
@@ -183,6 +195,8 @@ public class LetrisGameView extends GameView {
 		} else {
 			Group letterBlockImage = drawLetterBlock(letterBlock, false);
 			nextBlockCanvas.clear();
+			// TODO Scale the letter block larger. Has to be made manually.
+//			letterBlockImage.setSize("40px", "40px");
 			nextBlockCanvas.add(letterBlockImage);
 		}
 	}
