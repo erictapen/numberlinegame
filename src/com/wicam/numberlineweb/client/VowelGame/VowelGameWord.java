@@ -44,4 +44,8 @@ public class VowelGameWord implements IsSerializable{
 	public String getConsonantPair() {
 		return consonantPair;
 	}
+	
+	public String toString() {
+		return "(" + this.word + ", " + this.consonantPair + ")"; 
+	}
 }

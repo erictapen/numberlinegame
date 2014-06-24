@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.wicam.numberlineweb.client.GameCommunicationService;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 
 /**
  * Service interface for the LeTris game
@@ -21,7 +22,7 @@ public interface LetrisGameCommunicationService extends
 	
 	public GameState updatePoints(String ids);
 	
-	public ArrayList<String> getTargetWords();
+	public ArrayList<VowelGameWord> getTargetWords();
 	
 //	public GameState wordEntered(String ids);
 	

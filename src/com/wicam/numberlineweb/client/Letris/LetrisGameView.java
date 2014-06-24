@@ -26,6 +26,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.wicam.numberlineweb.client.GameView;
 import com.wicam.numberlineweb.client.KeyboardDummy;
 import com.wicam.numberlineweb.client.MobileDeviceChecker;
+import com.wicam.numberlineweb.client.VowelGame.SoundRetriever;
+import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.google.gwt.user.client.ui.FocusPanel;
 
 /**
@@ -36,6 +38,12 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 // TODO Add descriptions.
 // TODO How can the view be more efficient?
+// TODO Add game sound that increases with the speed of the game.
+// TODO Add dropping sound.
+// TODO Add game over sound.
+// TODO Add sound for wrong word.
+// TODO Add sound for correct word.
+// TODO Add changing background color of the playground that varies with the game level/speed.
 
 public class LetrisGameView extends GameView {
 
@@ -51,9 +59,8 @@ public class LetrisGameView extends GameView {
 	private final HTML pointsText = new HTML("<div style='font-size:24px;color:black'>Punkte</div>");
 	private final FlexTable playerNamesFlexTable = new FlexTable();
 	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>Nächster</br>Stein</div>");
-	private final HTML targetWordHeader = new HTML("<div style='font-size:24px;color:black'>Zielwort</div>");
-	private HTML targetWordText = new HTML("<div style='font-size:20px;color:black'></div>");
-	// TODO Add field for showing next block and implement the according code.
+//	private final HTML targetWordHeader = new HTML("<div style='font-size:24px;color:black'>Zielwort</div>");
+//	private HTML targetWordText = new HTML("<div style='font-size:20px;color:black'></div>");
 
 	protected final Button startGameButton = new Button("Spiel Starten");
 	private final FocusPanel focusPanel = new FocusPanel();
@@ -126,11 +133,11 @@ public class LetrisGameView extends GameView {
 		pointsPanel.setWidgetPosition(nextBlockText, 27, 130);
 		pointsPanel.add(nextBlockCanvas);
 		pointsPanel.setWidgetPosition(nextBlockCanvas, 50, 210);
-		pointsPanel.add(targetWordHeader);
-		pointsPanel.setWidgetPosition(targetWordHeader, 27, 260);
-		pointsPanel.add(targetWordText);
-		pointsPanel.setWidgetPosition(targetWordText, 27, 300);
-		updateTargetWord("");
+//		pointsPanel.add(targetWordHeader);
+//		pointsPanel.setWidgetPosition(targetWordHeader, 27, 260);
+//		pointsPanel.add(targetWordText);
+//		pointsPanel.setWidgetPosition(targetWordText, 27, 300);
+//		updateTargetWord("");
 		updateNextBlock(null);
 
 		focusPanel.addKeyDownHandler(letrisGameController);
@@ -151,14 +158,19 @@ public class LetrisGameView extends GameView {
 	}
 	
 	/**
-	 * Show the target word that should be built by the player.
+	 * Play the target word that should be built by the player.
 	 * @param targetWord
 	 */
-	public void updateTargetWord(String targetWord) {
-		targetWordText.setHTML("<div style='font-size:20px;color:red'>" + targetWord + "</div>");
-		TargetWordTimer timer = new TargetWordTimer(targetWordText);
-		// Hide the target word after 2s.
-		timer.schedule(2000);
+	public void updateTargetWord(VowelGameWord targetWord) {
+		// Play the target word.
+		playWord(SoundRetriever.getAudioElement(targetWord, true), targetWord.getWordString());
+		
+		// Show the target word.
+		// TODO Make this optional.
+//		targetWordText.setHTML("<div style='font-size:20px;color:red'>" + targetWord.getWordString() + "</div>");
+//		TargetWordTimer timer = new TargetWordTimer(targetWordText);
+//		// Hide the target word after 2s.
+//		timer.schedule(2000);
 	}
 	
 	/**
@@ -383,6 +395,27 @@ public class LetrisGameView extends GameView {
 		}
 		
 		return letterBlockImage;
+	}
+	
+	/**
+	 * Plays the audio file of a word or displays it in on the screen if
+	 * no sound is available.
+	 * 
+	 * @param audio	       sound which should be played
+	 * @param word         word as a string
+	 */
+	// TODO Continue the game when the playback of the word has ENDED.
+	public void playWord(Audio audio, String word){
+		
+		if (audio == null) {
+			try {
+				throw new Exception("No audio for " + word + " found!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			audio.play();
+		}
 	}
 
 	/**

@@ -134,7 +134,12 @@ public class LetrisGameTargetLetterBlockCreator {
 		LetrisGameLetterBlock letterBlock = new LetrisGameLetterBlock();
 		letterBlock.setId(currentID);
 		currentID++;
-		letterBlock.setLetter(letter.toUpperCase());
+		// Handle 'ß' separately.
+		if (letter.equals("ß")) {
+			letterBlock.setLetter(letter);
+		} else {
+			letterBlock.setLetter(letter.toUpperCase());
+		}
 		letterBlock.setX(x);
 		letterBlock.setY(y);
 		letterBlock.setOrientation(orientation);

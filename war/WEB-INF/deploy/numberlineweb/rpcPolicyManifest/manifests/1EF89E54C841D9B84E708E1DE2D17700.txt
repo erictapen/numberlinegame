@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService
+path: 4E85108D59D65723E441DAB074486099.gwt.rpc
