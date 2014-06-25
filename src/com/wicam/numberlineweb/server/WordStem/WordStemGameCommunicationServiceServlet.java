@@ -35,8 +35,7 @@ public class WordStemGameCommunicationServiceServlet extends
 
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
 
-	public final String[] playerColors = { "red", "blue", "orange", "Magenta",
-			"DarkKhaki" };
+	public final String[] playerColors = {"blue", "Magenta", "orange", "DarkGreen", "DarkCyan"};
 
 	public WordStemGameCommunicationServiceServlet() {
 

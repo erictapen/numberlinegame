@@ -23,7 +23,6 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  *
  */
 
-// TODO Add key for repeating the sound.
 // TODO Moving block to left or right causes block to stop from being dropped.
 // TODO Add letter block 'ghost' to display the horizontal position of the current block
 // on the bottom of the playground.
@@ -59,6 +58,10 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * The model of the LeTris game.
 	 */
 	private LetrisGameModel gameModel;
+	/**
+	 * Indicates whether the game is paused or not.
+	 */
+	private boolean gamePaused;
 
 	public LetrisGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
 			Panel root, GameTypeSelector gts) {
@@ -80,6 +83,8 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 	@Override
 	public void init() {
+		gamePaused = false;
+		
 		// Setup animation tasks with delayed continuous running.
 		int delay = 500;
 		moveLeftTask.setDelayForContinuousRunning(delay);
@@ -396,48 +401,63 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			case 1:
 				if (!keyDownDown) {
 					keyDownDown = true;
-					registerAniTask(moveDownTask);
+					if (!gamePaused) {
+						registerAniTask(moveDownTask);
+					}
 				}
 				break;
 			// Right key
 			case 3:
 				if (!keyRightDown) {
 					keyRightDown = true;
-					registerAniTask(moveRightTask);
+					if (!gamePaused) {
+						registerAniTask(moveRightTask);
+					}
 				}
 				break;
 			// Up key
 			case 2:
 				if (!keyUpDown) {
 					keyUpDown = true;
-					registerAniTask(rotateTask);
+					if (!gamePaused) {
+						registerAniTask(rotateTask);
+					}
 				}
 				break;
 			// Left Key
 			case 4:
 				if (!keyLeftDown) {
 					keyLeftDown = true;
-					registerAniTask(moveLeftTask);
+					if (!gamePaused) {
+						registerAniTask(moveLeftTask);
+					}
 				}
 				break;
 			// Space
 			case 5:
 				if (!keySpaceDown) {
 					keySpaceDown = true;
-					registerAniTask(dropTask);
+					if (!gamePaused) {
+						registerAniTask(dropTask);
+					}
 				}
 				break;
 			// W
 			case 6:
 				if (!keyWDown) {
 					keyWDown = true;
-					LetrisGameView gameView = (LetrisGameView) view;
-					gameView.repeatTargetWord();
+					if (!gamePaused) {
+						LetrisGameView gameView = (LetrisGameView) view;
+						gameView.repeatTargetWord();
+					}
 				}
 				break;
 			// P
 			case 7:
-				// TODO Implement pause toggling.
+				if (!keyPDown) {
+					keyPDown = true;
+					togglePauseMode();
+				}
 				break;
 			}
 		}
@@ -448,35 +468,45 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			case 1:
 				if (keyDownDown) {
 					keyDownDown = false;
-					moveDownTask.markForDelete();
+					if (!gamePaused) {
+						moveDownTask.markForDelete();
+					}
 				}
 				break;
 			// Key right
 			case 3:
 				if (keyRightDown) {
 					keyRightDown = false;
-					moveRightTask.markForDelete();
+					if (!gamePaused) {
+						moveRightTask.markForDelete();
+					}
 				}
 				break;
 			// Key up
 			case 2:
 				if (keyUpDown) {
 					keyUpDown = false;
-					rotateTask.markForDelete();
+					if (!gamePaused) {
+						rotateTask.markForDelete();
+					}
 				}
 				break;
 			// Key left
 			case 4:
 				if (keyLeftDown) {
 					keyLeftDown = false;
-					moveLeftTask.markForDelete();
+					if (!gamePaused) {
+						moveLeftTask.markForDelete();
+					}
 				}
 				break;
 			// Space
 			case 5:
 				if (keySpaceDown) {
 					keySpaceDown = false;
-					dropTask.markForDelete();
+					if (!gamePaused) {
+						dropTask.markForDelete();
+					}
 				}
 				break;
 			// W
@@ -487,7 +517,9 @@ public class LetrisGameCoordinator extends GameCoordinator {
 				break;
 			// P
 			case 7:
-				// TODO Implement toggling of pause mode.
+				if (keyPDown) {
+					keyPDown = false;
+				}
 				break;
 			}
 		}
@@ -519,6 +551,40 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		keyPDown = false;
 		
 		this.openGame = null;
+	}
+	
+	/**
+	 * Stop the game or start it again and implement
+	 * a pause mode this way.
+	 */
+	private void togglePauseMode() {
+		// TODO Display the state of the pause mode in the view.
+		if (gamePaused) {
+			// Start the game.
+			gamePaused = !gamePaused;
+			gameModel.startMoving();
+		} else {
+			// Stop the game.
+			gamePaused = !gamePaused;
+			
+			GWT.log("Game paused.");
+			
+			gameModel.stopMoving();
+			
+			moveLeftTask.markForDelete();
+			moveRightTask.markForDelete();
+			rotateTask.markForDelete();
+			moveDownTask.markForDelete();
+			dropTask.markForDelete();
+
+			keyUpDown = false;
+			keyDownDown = false;
+			keyLeftDown = false;
+			keyRightDown = false;
+			keySpaceDown = false;
+			keyWDown = false;
+			keyPDown = false;
+		}
 	}
 
 	public void startButtonClicked(){

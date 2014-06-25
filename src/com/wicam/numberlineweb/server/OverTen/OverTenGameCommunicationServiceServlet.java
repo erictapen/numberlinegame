@@ -34,8 +34,7 @@ public class OverTenGameCommunicationServiceServlet extends
 
 	private ArrayList<Integer> npcIds = new ArrayList<Integer>();
 
-	public final static String[] playerColors = { "red", "blue", "orange",
-			"Magenta", "DarkKhaki" };
+	public final static String[] playerColors = {"blue", "Magenta", "orange", "DarkGreen", "DarkCyan"};
 
 	public OverTenGameCommunicationServiceServlet() {
 
