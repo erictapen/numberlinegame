@@ -33,7 +33,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	// All possible divisors
 	protected int[] possibleDivisors = {2,3,4,5,6,7,8,9};
 	
-	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	public final static String[] playerColors = {"blue", "Magenta", "orange", "DarkGreen", "DarkCyan"};
 	
 
 	/**
@@ -74,8 +74,6 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * @return The new MultiplicationGameState
 	 */
 	public MultiplicationGameState newResults(MultiplicationGameState state) {
-		
-		System.out.println("-> newResults() of old mult game");
 		
 		ArrayList<MultiplicationAnswer> answers = new ArrayList<MultiplicationAnswer>();
 		

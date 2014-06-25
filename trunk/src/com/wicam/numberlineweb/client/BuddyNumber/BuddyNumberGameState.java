@@ -29,7 +29,7 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	// Max number of rounds to play
 	private int maxRound;
 	
-	public final static String[] playerColors = {"red", "blue", "orange", "Magenta", "DarkKhaki"};
+	public final static String[] playerColors = {"blue", "Magenta", "orange", "DarkGreen", "DarkCyan"};
 	
 	
 	public BuddyNumberGameState() {

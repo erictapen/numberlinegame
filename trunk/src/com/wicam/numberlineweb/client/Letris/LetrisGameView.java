@@ -38,7 +38,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 // TODO Add descriptions.
 // TODO How can the view be more efficient?
-// TODO Increase size of block preview.
 // TODO Add game sound that increases with the speed of the game.
 // TODO Add dropping sound.
 // TODO Add game over sound.
@@ -69,11 +68,16 @@ public class LetrisGameView extends GameView {
 	
 	private LetrisGameCoordinates viewSize = new LetrisGameCoordinates(600, 400);
 	private final DrawingArea canvas = new DrawingArea(viewSize.x, viewSize.y);
-	private final DrawingArea nextBlockCanvas = new DrawingArea(20, 20);
+	private final DrawingArea nextBlockCanvas = new DrawingArea(40, 40);
 	private LetrisGameCoordinates modelSize;
 	private LetrisGameCoordinateTransform transform;
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
-	private final int blockSize = 20;
+	private final int smallBlockSize = 10;
+	private final int normalBlockSize = 20;
+	private final int largeBlockSize = 40;
+	private final int smallFontSize = 8;
+	private final int normalFontSize = 17;
+	private final int largeFontSize = 34;
 	LetrisGameCoordinates playgroundSize;
 	LetrisGameCoordinates playgroundOrigin = new LetrisGameCoordinates(200, 0);
 	private VowelGameWord targetWord;
@@ -134,7 +138,7 @@ public class LetrisGameView extends GameView {
 		pointsPanel.add(nextBlockText);
 		pointsPanel.setWidgetPosition(nextBlockText, 27, 130);
 		pointsPanel.add(nextBlockCanvas);
-		pointsPanel.setWidgetPosition(nextBlockCanvas, 50, 210);
+		pointsPanel.setWidgetPosition(nextBlockCanvas, 27, 210);
 //		pointsPanel.add(targetWordHeader);
 //		pointsPanel.setWidgetPosition(targetWordHeader, 27, 260);
 //		pointsPanel.add(targetWordText);
@@ -193,7 +197,7 @@ public class LetrisGameView extends GameView {
 		if (letterBlock == null) {
 			nextBlockCanvas.clear();
 		} else {
-			Group letterBlockImage = drawLetterBlock(letterBlock, false);
+			Group letterBlockImage = drawLetterBlock(letterBlock, false, LetterBlockSize.LARGE);
 			nextBlockCanvas.clear();
 			// TODO Scale the letter block larger. Has to be made manually.
 //			letterBlockImage.setSize("40px", "40px");
@@ -235,11 +239,22 @@ public class LetrisGameView extends GameView {
 	}
 	
 	protected void setExplanationText() {
-		// TODO Enter description of the game.
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>LeTris - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Enter description of the LeTris game here." +
-		"</div>");
+				"In diesem Spiel werden dir Wörter vorgelesen. Versuche diese Wörter " + 
+				"- genau wie im richtigen Tetris-Spiel - nachzubauen. Verwende dazu die " +
+				"Pfeiltasten um einen Spielstein nach links, rechts oder unten zu bewegen. " +
+				"Mit der Leertaste kannst du einen Stein schnell fallen lassen. Mit der " +
+				"\"W\"-Taste wird dir das aktuelle Wort noch einmal vorgelesen. Mit der " +
+				"\"P\"-Taste kannst du das Spiel pausieren.</br></br>" + 
+				"Aufgepasst, es kommen nicht nur Buchstaben, die du für das aktuelle Wort " +
+				"brauchst, sondern auch falsche Buchstaben. Versuche sie zu finden und " +
+				"neben oder über das Wort, das du gerade baust, zu setzen. Baust du einmal " +
+				"ein Wort falsch zusammen, wird dein Platz im Spiel um eine Zeile geringer " +
+				"werden. Wenn du es schaffst zwei mal hintereinander ein Wort richtig zu " +
+				"bauen kannst du dir wieder eine Zeile \"zurück erobern\".</br></br>" + 
+				"Das Spiel endet, wenn der Platz auf dem Spielfeld voll ist." +
+				"</div>");
 	}
 
 	public void showWaitingForOtherPlayer(String msg){
@@ -254,10 +269,11 @@ public class LetrisGameView extends GameView {
 	 */
 	public void updatePlayground(LetrisGameState gameState) {
 		Group grid = drawPlaygroundGrid();
-		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true);
+		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true,
+				LetterBlockSize.NORMAL);
 		Group staticLetterBlockImages = new Group();
 		for (LetrisGameLetterBlock letterBlock : gameState.getStaticLetterBlocks()) {
-			Group letterBlockImage = drawLetterBlock(letterBlock, true);
+			Group letterBlockImage = drawLetterBlock(letterBlock, true, LetterBlockSize.NORMAL);
 			staticLetterBlockImages.add(letterBlockImage);
 		}
 		canvas.clear();
@@ -285,8 +301,8 @@ public class LetrisGameView extends GameView {
 		// Draw horizontal lines.
 		for (int i = 0; i <= modelSize.y; i++) {
 			// Create line.
-			Line l = new Line(playgroundOrigin.x, playgroundOrigin.y + (i * (blockSize + 1)), 
-					playgroundOrigin.x + playgroundSize.x, playgroundOrigin.y + (i * (blockSize + 1)));
+			Line l = new Line(playgroundOrigin.x, playgroundOrigin.y + (i * (normalBlockSize + 1)), 
+					playgroundOrigin.x + playgroundSize.x, playgroundOrigin.y + (i * (normalBlockSize + 1)));
 			// Add color.
 			if (i == 0 || i == modelSize.y) {
 				l.setStrokeColor("black");
@@ -300,8 +316,8 @@ public class LetrisGameView extends GameView {
 		// Draw vertical lines.
 		for (int i = 0; i <= modelSize.x; i++) {
 			// Create line.
-			Line l = new Line(playgroundOrigin.x + (i * (blockSize + 1)), playgroundOrigin.y,
-					playgroundOrigin.x + (i * (blockSize + 1)), playgroundOrigin.y + playgroundSize.y);
+			Line l = new Line(playgroundOrigin.x + (i * (normalBlockSize + 1)), playgroundOrigin.y,
+					playgroundOrigin.x + (i * (normalBlockSize + 1)), playgroundOrigin.y + playgroundSize.y);
 			// Add color.
 			if (i == 0 || i == modelSize.x) {
 				l.setStrokeColor("black");
@@ -315,18 +331,45 @@ public class LetrisGameView extends GameView {
 		return grid;
 	}
 	
+	private enum LetterBlockSize {
+		SMALL, NORMAL, LARGE
+	}
+	
 	/**
 	 * Draws the given letter block.
 	 * @param letterBlock 			the letter block to be drawn
 	 * @param useViewCoordinates	if true, use the coordinates of the view, else use (0,0)
 	 * @return 						the group containing the letter block
 	 */
-	private Group drawLetterBlock(LetrisGameLetterBlock letterBlock, boolean useViewCoordinates) {
+	private Group drawLetterBlock(LetrisGameLetterBlock letterBlock,
+			boolean useViewCoordinates,
+			LetterBlockSize size) {
+		
 		Group letterBlockImage = new Group();
 		
 		// Check if the letter block is empty.
 		if (letterBlock == null) {
 			return letterBlockImage;
+		}
+		
+		int blockSize = 0;
+		int fontSize = 0;
+		
+		switch (size) {
+		case SMALL:
+			blockSize = smallBlockSize;
+			fontSize = smallFontSize;
+			break;
+		case NORMAL:
+			blockSize = normalBlockSize;
+			fontSize = normalFontSize;
+			break;
+		case LARGE:
+			blockSize = largeBlockSize;
+			fontSize = largeFontSize;
+			break;
+		default:
+			break;
 		}
 		
 		String letterStr = letterBlock.getLetter();
@@ -366,7 +409,7 @@ public class LetrisGameView extends GameView {
 
 			// Draw letter.
 			Text letter = new Text(0, 0, letterStr);
-			letter.setFontSize(17);
+			letter.setFontSize(fontSize);
 			letter.setFillColor(colorStr);
 			letter.setStrokeColor(colorStr);
 			letter.setFontFamily("Andale Mono");
@@ -394,7 +437,8 @@ public class LetrisGameView extends GameView {
 
 			// Center letter.
 			int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
-			int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) + letter.getTextHeight() - 2;
+			int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) +
+					letter.getTextHeight() - (blockSize / 10); // - 2;
 			if (useViewCoordinates) {
 				letter.setX(viewCoordinates.x + xOffset);
 				letter.setY(viewCoordinates.y + yOffset);
@@ -423,7 +467,7 @@ public class LetrisGameView extends GameView {
 		
 		if (audio == null) {
 			try {
-				throw new Exception("No audio for " + word + " found!");
+				throw new Exception("No audio found for \"" + word + "\"!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
