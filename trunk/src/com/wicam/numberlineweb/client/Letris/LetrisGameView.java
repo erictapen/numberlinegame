@@ -5,10 +5,13 @@ import java.util.HashMap;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Line;
+import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +40,13 @@ import com.google.gwt.user.client.ui.FocusPanel;
  */
 
 // TODO Add descriptions.
-// TODO How can the view be more efficient?
+/*
+ *  TODO How can the view be more efficient?
+ *  Address changes in the game directly as in the model and
+ *  thereby prevent building up the whole view every drawing cycle.
+ */
+// TODO Switch from GWT Graphics to GWT HTML5 canvas. 
+// TODO Is GWT.Audio capable of playing midi-files with increasing speed?
 // TODO Add game sound that increases with the speed of the game.
 // TODO Add dropping sound.
 // TODO Add game over sound.
@@ -54,13 +63,10 @@ public class LetrisGameView extends GameView {
 
 	protected final HTML explanationText = new HTML();
 	protected final HTML feedBackText = new HTML();
-//	private final HTML canvas = new HTML("<div id='canvas' style='width:600px;height:400px;border-right:solid #333 1px'></div>");
 	private final HTML canvasScore = new HTML("<div id='canvas' style='width:150px;height:30px;'></div>");
 	private final HTML pointsText = new HTML("<div style='font-size:24px;color:black'>Punkte</div>");
 	private final FlexTable playerNamesFlexTable = new FlexTable();
 	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>Nächster</br>Stein</div>");
-//	private final HTML targetWordHeader = new HTML("<div style='font-size:24px;color:black'>Zielwort</div>");
-//	private HTML targetWordText = new HTML("<div style='font-size:20px;color:black'></div>");
 
 	protected final Button startGameButton = new Button("Spiel Starten");
 	private final FocusPanel focusPanel = new FocusPanel();
@@ -68,10 +74,12 @@ public class LetrisGameView extends GameView {
 	
 	private LetrisGameCoordinates viewSize = new LetrisGameCoordinates(600, 400);
 	private final DrawingArea canvas = new DrawingArea(viewSize.x, viewSize.y);
+	private final Group pauseMessage = new Group();
 	private final DrawingArea nextBlockCanvas = new DrawingArea(40, 40);
 	private LetrisGameCoordinates modelSize;
 	private LetrisGameCoordinateTransform transform;
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
+	private HashMap<Long, Group> id2LetterBlock = new HashMap<Long, Group>();
 	private final int smallBlockSize = 10;
 	private final int normalBlockSize = 20;
 	private final int largeBlockSize = 40;
@@ -89,7 +97,7 @@ public class LetrisGameView extends GameView {
 		super(numberOfPlayers, doppelungGameController);
 		this.modelSize = new LetrisGameCoordinates(playgroundWidth, playgroundHeight);
 		this.transform = new LetrisGameCoordinateTransform(modelSize, viewSize);
-		playgroundSize = new LetrisGameCoordinates(316, 399); //transform.transformModelToView(new LetrisGameCoordinates(modelSize.x, -1));
+		playgroundSize = new LetrisGameCoordinates(316, 399);
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
@@ -139,15 +147,40 @@ public class LetrisGameView extends GameView {
 		pointsPanel.setWidgetPosition(nextBlockText, 27, 130);
 		pointsPanel.add(nextBlockCanvas);
 		pointsPanel.setWidgetPosition(nextBlockCanvas, 27, 210);
-//		pointsPanel.add(targetWordHeader);
-//		pointsPanel.setWidgetPosition(targetWordHeader, 27, 260);
-//		pointsPanel.add(targetWordText);
-//		pointsPanel.setWidgetPosition(targetWordText, 27, 300);
-//		updateTargetWord("");
 		updateNextBlock(null);
 
 		focusPanel.addKeyDownHandler(letrisGameController);
 		focusPanel.addKeyUpHandler(letrisGameController);
+		
+		// Setup pause message.
+		
+		Rectangle rect = new Rectangle(0, 0, 250, 150);
+		rect.setRoundedCorners(10);
+		rect.setFillColor("gray");
+		rect.setFillOpacity(0.5);
+		rect.setStrokeOpacity(0);
+		
+		// Center rectangle in canvas.
+		int xOffset = (int) Math.floor(((double)playgroundSize.x - rect.getWidth()) / 2.0);
+		int yOffset = (int) Math.floor(((double)playgroundSize.y - rect.getHeight()) / 2.0);
+		rect.setX(playgroundOrigin.x + xOffset);
+		rect.setY(playgroundOrigin.y + yOffset);
+		
+		Text pauseText = new Text(0, 0, "Pause");
+		pauseText.setFillColor("white");
+		pauseText.setStrokeOpacity(0);
+		pauseText.setFillOpacity(0.5);
+		pauseText.setFontSize(80);
+		
+		// Center text in rectangle.
+		xOffset = (int) Math.floor(((double)rect.getWidth() - pauseText.getTextWidth()) / 2.0);
+		yOffset = (int) Math.floor(((double)rect.getHeight() - pauseText.getTextHeight()) / 2.0) +
+				pauseText.getTextHeight() - (rect.getHeight() / 10);
+		pauseText.setX(rect.getX() + xOffset);
+		pauseText.setY(rect.getY() + yOffset);
+		
+		pauseMessage.add(rect);
+		pauseMessage.add(pauseText);
 
 		motherPanel.add(gamePanel);
 		motherPanel.add(pointsPanel);
@@ -164,6 +197,20 @@ public class LetrisGameView extends GameView {
 	}
 	
 	/**
+	 * Show the pause message.
+	 */
+	public void showPauseMessage() {
+		canvas.add(pauseMessage);
+	}
+	
+	/**
+	 * Hide the pause message.
+	 */
+	public void hidePauseMessage() {
+		canvas.remove(pauseMessage);
+	}
+	
+	/**
 	 * Play the target word that should be built by the player.
 	 * @param targetWord
 	 */
@@ -172,13 +219,7 @@ public class LetrisGameView extends GameView {
 		
 		// Play the target word.
 		playWord(LetrisGameSoundRetriever.getAudioElement(targetWord), targetWord.getWordString());
-		
-		// Show the target word.
-		// TODO Make this optional.
-//		targetWordText.setHTML("<div style='font-size:20px;color:red'>" + targetWord.getWordString() + "</div>");
-//		TargetWordTimer timer = new TargetWordTimer(targetWordText);
-//		// Hide the target word after 2s.
-//		timer.schedule(2000);
+
 	}
 	
 	/**
@@ -199,8 +240,6 @@ public class LetrisGameView extends GameView {
 		} else {
 			Group letterBlockImage = drawLetterBlock(letterBlock, false, LetterBlockSize.LARGE);
 			nextBlockCanvas.clear();
-			// TODO Scale the letter block larger. Has to be made manually.
-//			letterBlockImage.setSize("40px", "40px");
 			nextBlockCanvas.add(letterBlockImage);
 		}
 	}
@@ -228,14 +267,14 @@ public class LetrisGameView extends GameView {
 		letter2HexColor.put("T", "#ABCB92");
 		letter2HexColor.put("U", "#F49699");
 		letter2HexColor.put("V", "#E6A63E");
-		letter2HexColor.put("W", "#494C62"); // TODO Change color.
+		letter2HexColor.put("W", "#494C62");
 		letter2HexColor.put("X", "#524575");
 		letter2HexColor.put("Y", "#893C77");
-		letter2HexColor.put("Z", "#ED8EF8"); // TODO Change color.
+		letter2HexColor.put("Z", "#ED8EF8");
 		letter2HexColor.put("Ä", "#E2306E");
 		letter2HexColor.put("Ö", "#0A6318");
-		letter2HexColor.put("Ü", "#8CD7DF"); // TODO Change color.
-		letter2HexColor.put("ß", "#F4C162"); // TODO Change color.
+		letter2HexColor.put("Ü", "#8CD7DF");
+		letter2HexColor.put("ß", "#F4C162");
 	}
 	
 	protected void setExplanationText() {
@@ -264,11 +303,15 @@ public class LetrisGameView extends GameView {
 	}
 	
 	/**
-	 * Takes the given game state and refreshes the drawing of the playgroundSize with its information. 
+	 * Takes the given game state and draws the playground and the letter blocks with its information. 
 	 * @param gameState
 	 */
 	public void updatePlayground(LetrisGameState gameState) {
 		Group grid = drawPlaygroundGrid();
+		
+		GWT.log("Clearing the hash map.");
+		id2LetterBlock.clear();
+		
 		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true,
 				LetterBlockSize.NORMAL);
 		Group staticLetterBlockImages = new Group();
@@ -280,6 +323,76 @@ public class LetrisGameView extends GameView {
 		canvas.add(grid);
 		canvas.add(staticLetterBlockImages);
 		canvas.add(movingLetterBlockImage);
+	}
+	
+	/**
+	 * Update the position and the rotation of an already existing letter block in the view.
+	 * @param letterBlock
+	 */
+	public void updateLetterBlock(LetrisGameLetterBlock letterBlock) {
+		
+		GWT.log("Trying to retrieve letter block image with ID: " + letterBlock.getId());
+		
+		// Get the letter block image.
+		Group letterBlockImage = id2LetterBlock.get(letterBlock.getId());
+		
+		if (letterBlockImage != null) {
+			GWT.log("Successfully retrieved the letter block image.");
+		} else {
+			GWT.log("Failed to retrieved the letter block image.");
+		}
+		
+		// Get the new position of the rectangle in the view.
+		LetrisGameCoordinates viewCoordinates = transform.transformModelToView(new LetrisGameCoordinates(letterBlock.getX(), letterBlock.getY()));
+		viewCoordinates.add(playgroundOrigin);
+		
+		// Get the two vector objects of the group.
+		Rectangle box = (Rectangle)letterBlockImage.getVectorObject(0);
+		Text letter = (Text)letterBlockImage.getVectorObject(1);
+		
+		letterBlockImage.clear();
+		
+		// Move the rectangle.
+		box.setX(viewCoordinates.x);
+		box.setY(viewCoordinates.y);
+		
+		// Rotate letter.
+		// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
+//		switch (letterBlock.getOrientation()) {
+//		case EAST:
+//			letter.setRotation(-90); // -90
+//			break;
+//		case WEST:
+//			letter.setRotation(90); // 90
+//			break;
+//		case NORTH:
+//			letter.setRotation(180); // 180
+//			break;
+//		case SOUTH:
+//			letter.setRotation(0);
+//			break;
+//		}
+
+		// Center letter.
+		int xOffset = (int) Math.floor(((double)normalBlockSize - letter.getTextWidth()) / 2.0);
+		int yOffset = (int) Math.floor(((double)normalBlockSize - letter.getTextHeight()) / 2.0) +
+				letter.getTextHeight() - (normalBlockSize / 10);
+		letter.setX(viewCoordinates.x + xOffset);
+		letter.setY(viewCoordinates.y + yOffset);
+		
+		// Update the two objects.
+		letterBlockImage.add(box);
+		letterBlockImage.add(letter);
+		letterBlockImage.setRotation(90);
+	}
+	
+	/**
+	 * True, if the given letter block currently is drawn.
+	 * @param letterBlock
+	 * @return
+	 */
+	public boolean isDrawn(LetrisGameLetterBlock letterBlock) {
+		return id2LetterBlock.containsKey(letterBlock.getId());
 	}
 	
 	/**
@@ -416,24 +529,20 @@ public class LetrisGameView extends GameView {
 
 			// Rotate letter.
 			// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
-			//		switch (letterBlock.getOrientation()) {
-			//		case EAST:
-			//			letter.setRotation(0); // -90
-			//			GWT.log("EAST");
-			//			break;
-			//		case WEST:
-			//			letter.setRotation(0); // 90
-			//			GWT.log("WEST");
-			//			break;
-			//		case NORTH:
-			//			letter.setRotation(0); // 180
-			//			GWT.log("NORTH");
-			//			break;
-			//		case SOUTH:
-			//			letter.setRotation(0);
-			//			GWT.log("SOUTH");
-			//			break;
-			//		}
+			switch (letterBlock.getOrientation()) {
+			case EAST:
+				letter.setRotation(-90); // -90
+				break;
+			case WEST:
+				letter.setRotation(90); // 90
+				break;
+			case NORTH:
+				letter.setRotation(180); // 180
+				break;
+			case SOUTH:
+				letter.setRotation(0);
+				break;
+			}
 
 			// Center letter.
 			int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
@@ -451,6 +560,10 @@ public class LetrisGameView extends GameView {
 			letterBlockImage.add(letter);
 		
 		}
+		
+		// Insert this letter block into the has map.
+		GWT.log("Storing letter block image with ID: " + letterBlock.getId());
+		id2LetterBlock.put(letterBlock.getId(), letterBlockImage);
 		
 		return letterBlockImage;
 	}

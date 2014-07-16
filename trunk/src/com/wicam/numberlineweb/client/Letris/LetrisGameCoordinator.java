@@ -22,10 +22,15 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  * @author timfissler
  *
  */
-
-// TODO Moving block to left or right causes block to stop from being dropped.
+// TODO Check pseudo random target words. Or directly switch to single item retrieval from server.
 // TODO Add letter block 'ghost' to display the horizontal position of the current block
 // on the bottom of the playground.
+// TODO Add multiplayer support.
+/*
+ *  TODO Add AI for NPC player.
+ *  1. Estimate the target position of the current block with error probability x (e.g. 0.02).
+ *  2. Move the current block to this position with time delay per movement.
+ */
 
 public class LetrisGameCoordinator extends GameCoordinator {
 	
@@ -79,6 +84,16 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	public LetrisGameState getGameState() {
 		return (LetrisGameState) this.openGame;
 	}
+	
+	/**
+	 * True, if the given letter block currently is drawn.
+	 * @param letterBlock
+	 * @return
+	 */
+	public boolean isDrawn(LetrisGameLetterBlock letterBlock) {
+		LetrisGameView gameView = (LetrisGameView)view;
+		return gameView.isDrawn(letterBlock);
+	}
 
 
 	@Override
@@ -97,14 +112,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		LetrisGameCommunicationServiceAsync letrisCommServ = (LetrisGameCommunicationServiceAsync) commServ;
 		letrisCommServ.getTargetWords(targetWordsCallback);
 	}
-	
-//	/**
-//	 * (Re-)Set the focus so that commands are being recognized.
-//	 */
-//	public void setFocused() {
-//		LetrisGameView gameView = (LetrisGameView) view;
-//		gameView.setFocused();
-//	}
 	
 	/**
 	 * Set the target word that should be built by the player in the view.
@@ -127,6 +134,15 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			LetrisGameView gameView = (LetrisGameView) view;
 			gameView.updateNextBlock(nextLetterBlock);
 		}
+	}
+	
+	/**
+	 * Update the given letter block in the view.
+	 * @param letterBlock
+	 */
+	public void updateLetterBlock(LetrisGameLetterBlock letterBlock) {
+		LetrisGameView gameView = (LetrisGameView) view;
+		gameView.updateLetterBlock(letterBlock);
 	}
 
 	@Override
@@ -218,7 +234,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		LetrisGameState g = (LetrisGameState) gameState;
 		LetrisGameView gameView =  (LetrisGameView) view;
 		
-		//we already have the lates state
+		//we already have the latest state
 		if (g==null) return;
 		
 		switch (g.getState()) {
@@ -372,11 +388,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 	};
 
-	/**
-	 * We only want a click to be registered ONCE.
-	 * TODO: an array would be nice here
-	 */
-
+	// We only want a click to be registered ONCE.
 	private boolean keyUpDown = false;
 	private boolean keyDownDown = false;
 	private boolean keyLeftDown = false;
@@ -549,8 +561,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 		keySpaceDown = false;
 		keyWDown = false;
 		keyPDown = false;
-		
-		this.openGame = null;
 	}
 	
 	/**
@@ -558,16 +568,25 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	 * a pause mode this way.
 	 */
 	private void togglePauseMode() {
-		// TODO Display the state of the pause mode in the view.
 		if (gamePaused) {
+			
 			// Start the game.
 			gamePaused = !gamePaused;
+			
+			LetrisGameView gameView = (LetrisGameView) view;
+			gameView.hidePauseMessage();
+			
 			gameModel.startMoving();
+			
 		} else {
+			
 			// Stop the game.
 			gamePaused = !gamePaused;
 			
 			GWT.log("Game paused.");
+			
+			LetrisGameView gameView = (LetrisGameView) view;
+			gameView.showPauseMessage();
 			
 			gameModel.stopMoving();
 			
@@ -592,16 +611,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 		}
 	}
-	
-//	AsyncCallback<LetrisGameState> keyEventCallback = new AsyncCallback<LetrisGameState>() {
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			caught.printStackTrace();
-//		}
-//		@Override
-//		public void onSuccess(LetrisGameState result) {
-//		}
-//	};
 	
 	/**
 	 * What is to be done when the list of target words has been retrieved from the server.

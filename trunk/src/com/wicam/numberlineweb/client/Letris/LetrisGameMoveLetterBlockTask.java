@@ -54,7 +54,13 @@ public class LetrisGameMoveLetterBlockTask extends AnimationTimerTask {
 				if (!gameModel.isCollidingWithStaticLetterBlocks(letterBlock)
 						&& !(letterBlock.getY() < 0)) {
 					gameModel.updateMovingLetterBlock(letterBlock);
-					gameModel.updateViewAndServer();
+//					gameModel.updateViewAndServer();
+					// TODO Check if this works.
+					if (gameModel.isDrawn(letterBlock)) {
+						gameModel.updateLetterBlockInView(letterBlock);
+					} else {
+						gameModel.updateViewAndServer();
+					}
 				} else {
 					// Store last moving direction to be checked later.
 					MovementDirection lastDirection = letterBlock.getLastMovingDirection();
