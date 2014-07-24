@@ -50,7 +50,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	/**
 	 * The ratio of all letter blocks of a target word that are not oriented correctly.
 	 */
-	public static double STARTING_ROTATED_LETTER_RATIO = 0.3;
+	public static double STARTING_ROTATED_LETTER_RATIO = 0;//0.3;
 	/**
 	 * The time in milliseconds a block movement needs from one block to another.
 	 */

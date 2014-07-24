@@ -6,12 +6,11 @@ import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Line;
 import org.vaadin.gwtgraphics.client.VectorObject;
+import org.vaadin.gwtgraphics.client.animation.Animate;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
-import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -45,7 +44,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
  *  Address changes in the game directly as in the model and
  *  thereby prevent building up the whole view every drawing cycle.
  */
-// TODO Switch from GWT Graphics to GWT HTML5 canvas. 
 // TODO Is GWT.Audio capable of playing midi-files with increasing speed?
 // TODO Add game sound that increases with the speed of the game.
 // TODO Add dropping sound.
@@ -309,7 +307,6 @@ public class LetrisGameView extends GameView {
 	public void updatePlayground(LetrisGameState gameState) {
 		Group grid = drawPlaygroundGrid();
 		
-		GWT.log("Clearing the hash map.");
 		id2LetterBlock.clear();
 		
 		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true,
@@ -331,16 +328,8 @@ public class LetrisGameView extends GameView {
 	 */
 	public void updateLetterBlock(LetrisGameLetterBlock letterBlock) {
 		
-		GWT.log("Trying to retrieve letter block image with ID: " + letterBlock.getId());
-		
 		// Get the letter block image.
 		Group letterBlockImage = id2LetterBlock.get(letterBlock.getId());
-		
-		if (letterBlockImage != null) {
-			GWT.log("Successfully retrieved the letter block image.");
-		} else {
-			GWT.log("Failed to retrieved the letter block image.");
-		}
 		
 		// Get the new position of the rectangle in the view.
 		LetrisGameCoordinates viewCoordinates = transform.transformModelToView(new LetrisGameCoordinates(letterBlock.getX(), letterBlock.getY()));
@@ -350,28 +339,25 @@ public class LetrisGameView extends GameView {
 		Rectangle box = (Rectangle)letterBlockImage.getVectorObject(0);
 		Text letter = (Text)letterBlockImage.getVectorObject(1);
 		
-		letterBlockImage.clear();
-		
 		// Move the rectangle.
 		box.setX(viewCoordinates.x);
 		box.setY(viewCoordinates.y);
 		
 		// Rotate letter.
-		// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
-//		switch (letterBlock.getOrientation()) {
-//		case EAST:
-//			letter.setRotation(-90); // -90
-//			break;
-//		case WEST:
-//			letter.setRotation(90); // 90
-//			break;
-//		case NORTH:
-//			letter.setRotation(180); // 180
-//			break;
-//		case SOUTH:
-//			letter.setRotation(0);
-//			break;
-//		}
+		switch (letterBlock.getOrientation()) {
+		case EAST:
+			letter.setRotation(-90);
+			break;
+		case WEST:
+			letter.setRotation(90);
+			break;
+		case NORTH:
+			letter.setRotation(180);
+			break;
+		case SOUTH:
+			letter.setRotation(0);
+			break;
+		}
 
 		// Center letter.
 		int xOffset = (int) Math.floor(((double)normalBlockSize - letter.getTextWidth()) / 2.0);
@@ -379,11 +365,6 @@ public class LetrisGameView extends GameView {
 				letter.getTextHeight() - (normalBlockSize / 10);
 		letter.setX(viewCoordinates.x + xOffset);
 		letter.setY(viewCoordinates.y + yOffset);
-		
-		// Update the two objects.
-		letterBlockImage.add(box);
-		letterBlockImage.add(letter);
-		letterBlockImage.setRotation(90);
 	}
 	
 	/**
@@ -528,16 +509,15 @@ public class LetrisGameView extends GameView {
 			letter.setFontFamily("Andale Mono");
 
 			// Rotate letter.
-			// TODO Why leads the rotation to the warnings and why does the letter rotate ever again?
 			switch (letterBlock.getOrientation()) {
 			case EAST:
-				letter.setRotation(-90); // -90
+				letter.setRotation(-90);
 				break;
 			case WEST:
-				letter.setRotation(90); // 90
+				letter.setRotation(90);
 				break;
 			case NORTH:
-				letter.setRotation(180); // 180
+				letter.setRotation(180);
 				break;
 			case SOUTH:
 				letter.setRotation(0);
@@ -547,7 +527,7 @@ public class LetrisGameView extends GameView {
 			// Center letter.
 			int xOffset = (int) Math.floor(((double)blockSize - letter.getTextWidth()) / 2.0);
 			int yOffset = (int) Math.floor(((double)blockSize - letter.getTextHeight()) / 2.0) +
-					letter.getTextHeight() - (blockSize / 10); // - 2;
+					letter.getTextHeight() - (blockSize / 10);
 			if (useViewCoordinates) {
 				letter.setX(viewCoordinates.x + xOffset);
 				letter.setY(viewCoordinates.y + yOffset);
@@ -562,7 +542,6 @@ public class LetrisGameView extends GameView {
 		}
 		
 		// Insert this letter block into the has map.
-		GWT.log("Storing letter block image with ID: " + letterBlock.getId());
 		id2LetterBlock.put(letterBlock.getId(), letterBlockImage);
 		
 		return letterBlockImage;
@@ -575,7 +554,6 @@ public class LetrisGameView extends GameView {
 	 * @param audio	       sound which should be played
 	 * @param word         word as a string
 	 */
-	// TODO Continue the game when the playback of the word has ENDED.
 	public void playWord(Audio audio, String word){
 		
 		if (audio == null) {
