@@ -49,7 +49,7 @@ public class MultiplicationNPC extends NPC{
 
 
 	/**
-	 * @return Returns the MultiplicationGameState
+	 * @return Returns the MathAssessmentState
 	 */
 	protected MultiplicationGameState getGameState() {
 		return ((MultiplicationGameState) comm.getGameById(gameid));

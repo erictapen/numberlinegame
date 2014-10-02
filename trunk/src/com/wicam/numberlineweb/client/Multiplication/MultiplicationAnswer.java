@@ -32,7 +32,7 @@ public class MultiplicationAnswer implements IsSerializable {
 	
 	/**
 	 * Compares this to an other answer and checks if equal
-	 * @param other MultiplicationAnswer to compare this with
+	 * @param other MathAssessmentAnswer to compare this with
 	 * @return Returns true, if other is equal to this
 	 */
 	public boolean equals(MultiplicationAnswer other) {
