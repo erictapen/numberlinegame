@@ -15,16 +15,8 @@ import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
  */
 
 public interface LetrisGameCommunicationServiceAsync extends GameCommunicationServiceAsync {
-
-//	public void buttonClicked(String ids,AsyncCallback<GameState> callback);
 	
 	public void updatePoints(String ids, AsyncCallback<GameState> callback);
 	
 	public void getTargetWords(AsyncCallback<ArrayList<VowelGameWord>> callback);
-	
-//	public void wordEntered(String ids, AsyncCallback<GameState> callback);
-		
-//	public void enableWordInput(String ids, AsyncCallback<GameState> callback);
-	
-//	public void updatePlayerPos(String ids, AsyncCallback<GameState> callback);
 }

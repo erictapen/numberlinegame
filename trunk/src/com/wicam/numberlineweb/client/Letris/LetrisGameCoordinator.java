@@ -244,10 +244,6 @@ public class LetrisGameCoordinator extends GameCoordinator {
 			gameModel.startMoving();		
 			gameView.showLetrisGame();
 			break;
-			//evaluation, who has won?
-		case 5:
-			// TODO Implement this.
-			break;
 			// for synchronization
 		case 6:
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
