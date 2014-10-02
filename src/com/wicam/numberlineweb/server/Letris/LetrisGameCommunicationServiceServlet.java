@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.wicam.numberlineweb.client.GameOpenException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
+import com.wicam.numberlineweb.client.Letris.LetrisGameLetterBlock;
+import com.wicam.numberlineweb.client.Letris.LetrisGameState;
 import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.logging.LetrisGameHandicap;
@@ -79,5 +81,48 @@ public class LetrisGameCommunicationServiceServlet extends
 	public ArrayList<VowelGameWord> getTargetWords() {
 		return LetrisGameWordList.createWordList();
 	}
+	
+	/**
+	 * Log the current target word.
+	 * @param g
+	 */
+	public void targetWordPresented(LetrisGameState g) {
+		// TODO Implement this.
+		System.out.println("Logging target word: " + g.getCurrentWord());
+	}
+	
+	/**
+	 * Log the last letter block that was set by the player.
+	 * @param letterBlock
+	 * @param g
+	 */
+	public void letterBlockSet(LetrisGameLetterBlock letterBlock, LetrisGameState g) {
+		// TODO Implement this.
+		System.out.println("Logging set letter block: " + letterBlock);
+	}
+	
+	/**
+	 * Log the last word that was built correctly by the user and
+	 * add a filler row to the playground of the other player. 
+	 * @param word
+	 * @param g
+	 */
+	public void correctWordBuilt(String word, LetrisGameState g) {
+		// TODO Implement this.
+		System.out.println("Logging correct word: " + word);
+	}
+	
+	/**
+	 * Log the last word that was built incorrectly by the user and
+	 * remove a filler row to the playground of the other player
+	 * (if possible). 
+	 * @param word
+	 * @param g
+	 */
+	public void incorrectWordBuilt(String word, LetrisGameState g) {
+		// TODO Implement this.
+		System.out.println("Logging incorrect word: " + word);
+	}
+	
 
 }

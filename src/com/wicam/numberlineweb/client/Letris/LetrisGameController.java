@@ -48,7 +48,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 		if (keysEnabled){
 			event.preventDefault();
 
-			int id = 1;
+			int id = 0;
 
 			switch(event.getNativeKeyCode()) {
 
@@ -81,7 +81,7 @@ public class LetrisGameController extends GameController implements KeyDownHandl
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
 		if (keysEnabled){
-			int id = 1;
+			int id = 0;
 
 			switch(event.getNativeKeyCode()) {
 
