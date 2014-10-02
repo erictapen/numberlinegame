@@ -107,7 +107,7 @@ public class MultiplicationInverseNPC extends NPC{
 
 
 	/**
-	 * @return Returns the MultiplicationGameState
+	 * @return Returns the MathAssessmentState
 	 */
 	protected MultiplicationInverseGameState getGameState() {
 		return ((MultiplicationInverseGameState) comm.getGameById(gameid));

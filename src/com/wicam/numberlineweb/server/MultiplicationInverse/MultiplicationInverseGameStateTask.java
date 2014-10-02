@@ -11,7 +11,7 @@ public class MultiplicationInverseGameStateTask extends SetGameStateTask {
 
 		if (((MultiplicationInverseGameState)s.getGameById(gameid)) != null) {
 			// reset clicked pos
-			//((MultiplicationGameState)s.getGameById(gameid)).resetAllPlayerActPos();
+			//((MathAssessmentState)s.getGameById(gameid)).resetAllPlayerActPos();
 
 			// numbers should be changed while winner info is displayed
 			((MultiplicationInverseGameCommunicationServiceServlet) s).newResults((MultiplicationInverseGameState) s.getGameById(gameid));

@@ -11,6 +11,8 @@ import com.wicam.numberlineweb.server.database.DatabaseConnection;
 
 public class GameLogger {
 	
+	// TODO Add updates because of new assessments in the database.
+	
 	public static enum LoggingActive {ON, OFF};
 	
 	public static LoggingActive loggingActive = LoggingActive.ON;
@@ -57,7 +59,7 @@ public class GameLogger {
 				"MathDiagnosticsCommunicationServiceServlet", LogGame.MATH_DIAGNOSTICS);
 		
 		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
-				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
+				"MathAssessmentCommunicationServiceServlet", LogGame.MULTIPLICATION);
 		
 		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
 				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
@@ -76,6 +78,9 @@ public class GameLogger {
 		
 		tempMap.put("com.wicam.numberlineweb.server.Letris." +
 				"LetrisGameCommunicationServiceServlet", LogGame.LETRIS);
+		
+		tempMap.put("com.wicam.numberlineweb.server.MathAssessment." +
+				"MathAssessmentCommunicationServiceServlet", LogGame.MATH_ASSESSMENT);
 
 		
 		className2GameType = java.util.Collections.unmodifiableMap(tempMap);
@@ -87,7 +92,8 @@ public class GameLogger {
 		NUMBERLINE_NUMBER_PRESENTED, DOPPELUNGGAME_WORD_ENTERED, DOPPELUNGGAME_WORD_CATEGORIZED,
 		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER, MULTIPLICATION_TASK_PRESENTED,
 		MULTIPLICATION_USER_PICKED_ANSWER, MULTIPLICATION_NPC_PICKED_ANSWER, LETRIS_BLOCK_SET,
-		LETRIS_WORD_CORRECT, LETRIS_WORD_INCORRECT, LETRIS_TARGET_WORD_PRESENTED;
+		LETRIS_WORD_CORRECT, LETRIS_WORD_INCORRECT, LETRIS_TARGET_WORD_PRESENTED, MATH_ASSESSMENT_ITEM_PRESENTED,
+		MATH_ASSESSMENT_USER_ANSWER;
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -132,6 +138,10 @@ public class GameLogger {
 					return 18;
 				case LETRIS_TARGET_WORD_PRESENTED:
 					return 19;
+				case MATH_ASSESSMENT_ITEM_PRESENTED:
+					return 20;
+				case MATH_ASSESSMENT_USER_ANSWER:
+					return 21;
 				default:
 					//Should not occur
 					return -1;
@@ -167,7 +177,7 @@ public class GameLogger {
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
 		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, MULTIPLICATION_INVERSE, BUDDY_NUMBER,
-		WORD_STEM, OVER_TEN, WORD_FAMILY, LETRIS;
+		WORD_STEM, OVER_TEN, WORD_FAMILY, LETRIS, MATH_ASSESSMENT;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -196,6 +206,8 @@ public class GameLogger {
 					return 10;
 				case LETRIS:
 					return 11;
+				case MATH_ASSESSMENT:
+					return 12;
 				default:
 					//Should not occur
 					return -1;

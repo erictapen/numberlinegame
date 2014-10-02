@@ -109,8 +109,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	
 	/**
 	 * Return results for the next game round. 
-	 * @param state MultiplicationGameState to alter
-	 * @return The new MultiplicationGameState
+	 * @param state MathAssessmentState to alter
+	 * @return The new MathAssessmentState
 	 */
 	synchronized public MultiplicationInverseGameState newResults(MultiplicationInverseGameState state) {
 		
@@ -581,7 +581,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	
 	/**
 	 * @param clicked gameid:playerid:clickedAnswer
-	 * @return New MultiplicationGameState
+	 * @return New MathAssessmentState
 	 */
 	@Override
 	synchronized public MultiplicationInverseGameState clickedAt(String clicked) {
@@ -595,7 +595,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * User has clicked.
 	 * @param clicked gameid:playerid:clickedAnswer
 	 * @param playerid Playerid
-	 * @return New MultiplicationGameState
+	 * @return New MathAssessmentState
 	 */
 	synchronized public MultiplicationInverseGameState clickedAt(String clicked, int playerid) {
 		

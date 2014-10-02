@@ -34,6 +34,9 @@ import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCoordinator;
+import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService;
+import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCoordinator;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationServiceAsync;
 import com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCoordinator;
@@ -229,6 +232,22 @@ public class NumberLineWeb implements EntryPoint {
 
 				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
 				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});
+		
+		// Adds the MathAssessment.
+		// TODO Occasionally change the game logo.
+		gts.addGame(GameType.MATH, "Mathe-Assessment", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+				"Rechne schnell!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				commService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
+				coordinator = new MathAssessmentCoordinator((MathAssessmentCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

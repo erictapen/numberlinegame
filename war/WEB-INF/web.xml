@@ -66,6 +66,10 @@
 	<servlet-name>remoteLoggingServiceImpl</servlet-name>
 	<servlet-class>com.google.gwt.libideas.logging.server.RemoteLoggingServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+	<servlet-name>MathAssessmentCommunicationServiceServlet</servlet-name>
+	<servlet-class>com.wicam.numberlineweb.server.MathAssessment.MathAssessmentCommunicationServiceServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -126,6 +130,10 @@
   <servlet-mapping>
     <servlet-name>remoteLoggingServiceImpl</servlet-name>
 	<url-pattern>/numberlineweb/logging</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MathAssessmentCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/mathAssessmentCommunication</url-pattern>
   </servlet-mapping>
   
   

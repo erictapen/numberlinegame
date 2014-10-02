@@ -70,8 +70,8 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	
 	
 	/**
-	 * @param state MultiplicationGameState to alter
-	 * @return The new MultiplicationGameState
+	 * @param state MathAssessmentState to alter
+	 * @return The new MathAssessmentState
 	 */
 	public MultiplicationGameState newResults(MultiplicationGameState state) {
 		
@@ -198,7 +198,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	
 	/**
 	 * @param clicked gameid:playerid:clickedAnswer
-	 * @return New MultiplicationGameState
+	 * @return New MathAssessmentState
 	 */
 	@Override
 	synchronized public MultiplicationGameState clickedAt(String clicked) {
@@ -214,7 +214,7 @@ public class MultiplicationGameCommunicationServiceServlet extends
 	 * User has clicked.
 	 * @param clicked gameid:playerid:clickedAnswer
 	 * @param playerid Playerid
-	 * @return New MultiplicationGameState
+	 * @return New MathAssessmentState
 	 */
 	synchronized public MultiplicationGameState clickedAt(String clicked, int playerid) {
 
