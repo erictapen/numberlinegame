@@ -15,6 +15,12 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
 
 public class MathAssessmentCoordinator extends GameCoordinator {
 	
+	/* 
+	 * TODO Add functionality for handling the trial rounds and the (time dependent) switching between
+	 * the three different views.
+	 * TODO Add method for retrieval of the item list.
+	 */	
+	
 	protected MathAssessmentController controller;
 	
 	
@@ -32,7 +38,6 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 	}
 	
 	
-	
 	/**
 	 * Initializes the coordinator
 	 */
@@ -40,8 +45,9 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 	public void init() {
 
 //		gameSelector = new MultiplicationGameSelector(this);
-		rootPanel.add(gameSelector);
+//		rootPanel.add(gameSelector);
 
+		// TODO Change this so that a regular update is not needed anymore.
 		t = new Timer() {
 			@Override
 			public void run() {
@@ -52,13 +58,19 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 		//main loop-timer
 		t.scheduleRepeating(500);
 		refreshGameList();
-		
-		
 
-		GWT.log("multiplication game coordinator loaded.");
+		GWT.log("math assessment coordinator loaded.");
 	}
 	
 	
+	/**
+	 * Is being called when the user has entered a result to the current task.
+	 * @param answer
+	 * @param timestamp
+	 */
+	public void userAnswered(double answer, long timestamp) {
+		// TODO Implement this.
+	}
 	
 	/**
 	 * Open a game name 'name'. Call back will get state of opened game
@@ -66,8 +78,6 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 	 */
 	@Override
 	public void openGame(GameState gameState) {
-		
-		GWT.log("opening! in MultGameCoord");
 
 		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
 		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
@@ -94,7 +104,7 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 		//construct game
 		controller = new MathAssessmentController(this);
 		
-		this.view = new MathAssessmentView(controller, numberOfPlayers, numberOfNPCs);
+		this.view = new MathAssessmentView(controller);
 		
 		MathAssessmentView gameView = (MathAssessmentView) view;
 
@@ -108,10 +118,6 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 		//clear the root panel and draw the game
 		rootPanel.clear();
 		rootPanel.add(gameView);
-		
-		if (this.numberOfPlayers > 1){
-			this.addChatView();
-		}
 	}
 
 	
@@ -122,20 +128,18 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 	 */
 	@Override
 	protected void updateGame(GameState gameState) {
+		
+		// TODO Review this and remove code that is not necessary anymore.
 		super.updateGame(gameState);
 
 		MathAssessmentState g = (MathAssessmentState) gameState;
 		MathAssessmentView gameView = (MathAssessmentView) view;
-		//we already have the lates state
+		//we already have the latest state
 		if (g==null) return;
 		
 		switch (g.getState()) {
 			//started
 		case 3:
-			
-			gameView.setInfoText("Klicke auf die richtige Rechnung!");
-			
-			updateViewIngame(g, gameView);
 			
 			//kritischer moment, setze refreshrate nach oben
 			setRefreshRate(200);
@@ -145,9 +149,7 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 			//evaluation, who has won?
 		case 5:
 			
-			updateViewIngame(g, gameView);
 			setRefreshRate(1000);
-			gameView.setInfoText("Alle richtigen Antworten sind weg.");
 				
 			break;
 			
@@ -156,110 +158,9 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
 			break;
 		}
-		
-
-
 
 		openGame = g;
-
-
 	}
-	
-	
-	
-	/**
-	 * Updates the game view once
-	 * @param g state to get data from
-	 * @param gameView View to update
-	 * 
-	 */
-	protected void updateViewIngame(MathAssessmentState g, MathAssessmentView gameView) {
-		gameView.drawAnwers(g.getAnswers());
-		gameView.setResultText(g.getResult());
-		
-		for (int i = 0; i < g.getPlayers().size(); i++){
-			gameView.setPoints(i+1, g.getPlayerPoints(i+1),g.getPlayerName(i+1));
-		}
-	}
-	
-	
-	
-	/**
-	 * Sets user name in chat and sets points
-	 * info text: "Das Spiel beginnt in wenigen Sekunden"
-	 */
-	@Override
-	protected void handleAwaitingStartState(GameState g){
-		MathAssessmentView gameView = (MathAssessmentView) view;
-		setRefreshRate(1000);
-		if (this.numberOfPlayers > 1)
-			chatC.setUserName(g.getPlayerName(this.playerID));
-		for (int i = 0; i < g.getPlayers().size(); i++)
-			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
-		int notReady = 0;
-		for (Player p : g.getPlayers()) {
-			notReady += (p.isReady()) ? 0 : 1;
-		}
-		gameView.setInfoText("Warte auf " + notReady + " Spieler...");
-		//if (!g.isPlayerReady(playerID))
-			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-	}
-	
-	
-	
-	/**
-	 * "Warte auf Spieler..." is displayed on the view
-	 * and refresh rate is increased to 2000 ms
-	 */
-	@Override
-	protected void handleWaitingForPlayersState(){
-		setRefreshRate(2000);
-		((MathAssessmentView) view).setInfoText("Warte auf Spieler...");
-	}
-
-	
-	
-	/**
-	 * Points are displayed and "Warte auf zweiten/andere Spieler..."
-	 */
-	@Override
-	protected void handleWaitingForOtherPlayersState(GameState g){
-		MathAssessmentView gameView = (MathAssessmentView) view;
-		setRefreshRate(2000);
-		for (int i = 0; i < g.getPlayers().size(); i++)
-			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
-		if (g.getMaxNumberOfPlayers() <= 2)
-			gameView.setInfoText("Warte auf zweiten Spieler...");
-		else
-			gameView.setInfoText("Warte auf andere Spieler...");
-	}
-	
-	/**
-	 * Clicked at position (x,y)
-	 * @param x x-position
-	 * @param y y-position
-	 * @param w Widget, that was clicked
-	 */
-	public void clickAt(Widget w, int x, int y) {
-	}
-	
-	
-	public void clickAt(String answer) {
-		((MultiplicationGameCommunicationServiceAsync)commServ).clickedAt(
-				Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID) + ":" + answer, updateCallback);
-	}
-	
-	
-
-	/**
-	 * Mouse was moved to (x,y)
-	 * @param x x-position
-	 * @param y y-position
-	 * @param w Widget, that was hovered
-	 */
-	public void mouseMovedTo(Widget w, int x, int y) {
-	}
-
 	
 	
 	/**
@@ -271,5 +172,22 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 		}		
 	}
 
+	/**
+	 * We do not need this functionality here.
+	 */
+	@Override
+	protected void handleAwaitingStartState(GameState gameState) {}
+
+	/**
+	 * We do not need this functionality here.
+	 */
+	@Override
+	protected void handleWaitingForPlayersState() {}
+
+	/**
+	 * We do not need this functionality here.
+	 */
+	@Override
+	protected void handleWaitingForOtherPlayersState(GameState g) {}
 
 }

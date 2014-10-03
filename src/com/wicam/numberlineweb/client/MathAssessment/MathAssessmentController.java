@@ -5,61 +5,51 @@ import com.wicam.numberlineweb.client.GameController;
 
 public class MathAssessmentController extends GameController {
 
-
-
 	public MathAssessmentController(MathAssessmentCoordinator coordinator) {
 		super(coordinator);
 	}
-
-	
-	
-	public void clickedAt(String answer) {
-		((MathAssessmentCoordinator) coordinator).clickAt(answer);
-	}
-	
-	
-	/**
-	 * Forwards mouse-clicks to the coordinator
-	 * @param who Widget, that was clicked
-	 */
-	@Override
-	public void onMouseDown(Widget who, int x, int y) {
-		
-		((MathAssessmentCoordinator) coordinator).clickAt(who,x,y);
-		
-	}
-	
-	
-
-	/**
-	 * Forwards mouse movements to the coordinator
-	 * @param who Widget, that was hovered
-	 */
-	@Override
-	public void onMouseMove(Widget who, int x, int y) {
-		
-		((MathAssessmentCoordinator) coordinator).mouseMovedTo(who,x,y);
-
-	}
-	
-	
-
-	/**
-	 * Forwards mouse releases to the coordinator
-	 */
-	@Override
-	public void onMouseUp(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
-
-	}
-
-
 
 	/**
 	 * User clicked on "Start game"
 	 */
 	public void startButtonClicked() {
 		((MathAssessmentCoordinator) coordinator).startButtonClicked();
+	}
+	
+	/**
+	 * User entered the possible result to the given math task.
+	 * @param answer possible result
+	 * @param timestamp the system time stamp at the moment the answer was given
+	 */
+	public void userAnswered(double answer, long timestamp) {
+		((MathAssessmentCoordinator) coordinator).userAnswered(answer, timestamp);
+	}
+
+	/**
+	 * We do not need this method in this package.
+	 */
+	@Override
+	public void onMouseDown(Widget who, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * We do not need this method in this package.
+	 */
+	@Override
+	public void onMouseUp(Widget who, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * We do not need this method in this package.
+	 */
+	@Override
+	public void onMouseMove(Widget who, int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -16,168 +16,30 @@ import com.wicam.numberlineweb.client.Player;
 public class MathAssessmentState extends GameState implements Serializable{
 
 	// we need a serial number for GWT to identify sent instances
-	private static final long serialVersionUID = 846864907276321588L;
-	
-	// The result
-	protected int result;
-	
-	// All wrong and right answers in the game
-	protected ArrayList<MathAssessmentAnswer> answers = new ArrayList<MathAssessmentAnswer>();
-	
-	// Round-counter
-	protected int round = 0;
-	// Max number of rounds to play
-	protected int maxRound;
-	
+	private static final long serialVersionUID = 846864907276321588L;	
 	
 	public MathAssessmentState() {
 		
-	}
-	
-	
+	}	
 	
 	/**
-	 * @param res The new result
-	 */
-	public void setResult(int res) {
-		this.result = res;
-	}
-	
-	
-	
-	/**
-	 * @return Returns the result
-	 */
-	public int getResult() {
-		return this.result;
-	}
-	
-	
-	
-	/**
-	 * @param r the new round
-	 */
-	public void setRound(int r) {
-		this.round = r;
-	}
-	
-	
-	
-	/**
-	 * @return Returns the round
-	 */
-	public int getRound() {
-		return this.round;
-	}
-	
-	
-	
-	/**
-	 * Set maximal number of rounds to play
-	 * @param rounds Max rounds to play
-	 */
-	public void setMaxRound(int rounds) {
-		this.maxRound = rounds;
-	}
-	
-	
-	
-	/**
-	 * Returns maximal number of rounds to play
-	 * @return max rounds to play
-	 */
-	public int getMaxRound() {
-		return this.maxRound;
-	}
-
-	
-	
-	/**
-	 * @return Returns answers
-	 */
-	public ArrayList<MathAssessmentAnswer> getAnswers() {
-		return answers;
-	}
-
-
-
-	/**
-	 * Set answers
-	 * @param answers Set answers to this value
-	 */
-	public void setAnswers(ArrayList<MathAssessmentAnswer> answers) {
-		this.answers = answers;
-	}
-
-
-
-	/**
-	 * @return Returns the number of not taken answers in game
-	 */
-	public int getNoOfAnswers() {
-		int counter = 0;
-		for (MathAssessmentAnswer answer : this.answers) {
-			if (!answer.isTaken())
-				counter++;
-		}
-		return counter;
-	}
-
-	
-	
-	/**
-	 * @param correct Specifies, if the answers have to be correct
-	 * @param taken Specifies, if the answers have to be taken
-	 * @return Returns all answers, that are "correct" (given parameter)
-	 */
-	public ArrayList<MathAssessmentAnswer> getSpecificAnswers(boolean correct, boolean taken) {
-		ArrayList<MathAssessmentAnswer> res = new ArrayList<MathAssessmentAnswer>();
-		for (MathAssessmentAnswer answer : this.answers) {
-			if (answer.isCorrect() == correct && answer.isTaken() == taken) {
-				res.add(answer);
-			}
-		}
-		return res;
-	}
-	
-	/**
-	 * Adds a new player to the game
-	 * @param newName The new player's name
-	 * @param uid The new player's ID
-	 * @return Returns the new number of players
-	 */
-	@Override
-	public int addPlayer(String newName, int uid) {
-		int countSameName = 1;
-		for (Player player: players){
-			// to ensure different namesremovePlayer
-			if (newName.equals(player.getName())){
-				countSameName++;
-				// TODO: only a solution if number of players with same name < 10
-				if (countSameName > 2)
-					newName = newName.substring(0, newName.length()-2) + " " + countSameName;
-				else
-					newName = newName + " " + countSameName;
-			}
-		}
-		MathAssessmentPlayer newPlayer = new MathAssessmentPlayer();
-		newPlayer.setName(newName);
-		newPlayer.setColorId(players.size());
-		newPlayer.setUid(uid);
-		players.add(newPlayer);
-		return players.size();
-	}
-	
-	
-	/**
-	 * Returns a list of playernames
-	 * @return Playernames as List
+	 * Returns a list of player names
+	 * @return Player names as List
 	 */
 	public ArrayList<String> getPlayerNamesList() {
 		ArrayList<String> playerNamesList = new ArrayList<String>();
 		for (Player player: players)
 			playerNamesList.add(player.getName());
 		return playerNamesList;
+	}
+
+	/**
+	 * We do not need this method in this package.
+	 */
+	@Override
+	public int addPlayer(String newName, int uid) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

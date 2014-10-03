@@ -17,16 +17,15 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.wicam.numberlineweb.client.GameView;
 
 /**
- * The game view.
- * @author alex
+ * Math assessment view.
+ * @author timfissler
  *
  */
 
 public class MathAssessmentView extends GameView  {
 
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
-	protected final MathAssessmentDetailView p = new MathAssessmentDetailView();
-	protected final AbsolutePanel playerPanel = new AbsolutePanel();
+//	protected final AbsolutePanel playerPanel = new AbsolutePanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final HTML explanationText = new HTML();
 	protected final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
@@ -34,24 +33,23 @@ public class MathAssessmentView extends GameView  {
 		public void onClick(ClickEvent event) {
 			initGameView();
 			((MathAssessmentController) gameController).startButtonClicked();
-			try {
-				descriptionSound.pause();
-				descriptionSound.setCurrentTime(0);
-			} catch (Exception e) {
-			}
+			// We do not use audio description here.
+//			try {
+//				descriptionSound.pause();
+//				descriptionSound.setCurrentTime(0);
+//			} catch (Exception e) {
+//			}
 		}
 	}); 
-	
-	protected int numberOfNPCs;
-	final FlexTable playerNamesFlexTable = new FlexTable();
+
 	final HTML infoText = new HTML();
 	
-	protected Audio descriptionSound = Audio.createIfSupported();
+//	protected Audio descriptionSound = Audio.createIfSupported();
 
-	public MathAssessmentView(MathAssessmentController gameController, int numberOfPlayers, int numberOfNPCs) {
-		super(numberOfPlayers);
+	public MathAssessmentView(MathAssessmentController gameController) {
+		// Pass the number of players to the super class.
+		super(1);
 		this.gameController = gameController;
-		this.numberOfNPCs = numberOfNPCs;
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
@@ -73,16 +71,15 @@ public class MathAssessmentView extends GameView  {
 		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
 		motherPanel.add(explanationPanel);
 		
-		GWT.log("executing normal init");
-		
-		if (Audio.isSupported() && descriptionSound != null) {
-			
-			descriptionSound.addSource("desc/Multiplication.ogg", "audio/ogg; codecs=vorbis");
-			descriptionSound.addSource("desc/Multiplication.mp3", "audio/mpeg; codecs=MP3");
-			
-			descriptionSound.play();
-			
-		}
+		// We do not use audio description here.
+//		if (Audio.isSupported() && descriptionSound != null) {
+//			
+//			descriptionSound.addSource("desc/Multiplication.ogg", "audio/ogg; codecs=vorbis");
+//			descriptionSound.addSource("desc/Multiplication.mp3", "audio/mpeg; codecs=MP3");
+//			
+//			descriptionSound.play();
+//			
+//		}
 		
 		RootPanel.get().add(motherPanel);
 	}
@@ -94,51 +91,54 @@ public class MathAssessmentView extends GameView  {
 		explanationPanel.clear();
 		explanationPanel.removeFromParent();
 		
-		p.init((MathAssessmentController) this.gameController, numberOfPlayers+numberOfNPCs);
-		p.setStyleName("multiplication-box");
-		motherPanel.add(p);
-
-		playerNamesFlexTable.setStyleName("playerList");
-		playerNamesFlexTable.setCellPadding(5);
-		
-
-		playerPanel.add(playerNamesFlexTable);
-
-		motherPanel.add(playerPanel);
+		// TODO Setup the PANEL with the field for the item/task and the entry field here.
+//		motherPanel.add(PANEL);
 	}
-
-	public void setPoints(int playerid, int p,String name) {
-		playerNamesFlexTable.setHTML(playerid, 1, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
-	}
-
-	public void deletePlayerFromPointList(int playerid) {
-		playerNamesFlexTable.clearCell(playerid, 1);
-		playerNamesFlexTable.removeCell(playerid, 1);
-	}
-
-
-	public void setInfoText(String text) {
-		p.setInfoText(text);
-	}
-
 	
-	public void setResultText(int res) {
-		//System.out.println("Task (" + res + ") set: " + System.currentTimeMillis());
-		p.setResultText(res);
-	}
-
 	/**
-	 * Draw all possible answers
-	 * @param answers Answers to draw
+	 * Shows the screen where the task is presented to the user and the user
+	 * may enter a result to the task. 
 	 */
-	public void drawAnwers(ArrayList<MathAssessmentAnswer> answers) {
-		p.drawAnwers(answers);
+	public void showTaskView() {
+		// TODO Implement this.
 	}
+	
+	/**
+	 * Shows a white screen to the user (between two trials).
+	 */
+	public void showWhiteScreen() {
+		// TODO Implement this.
+	}
+	
+	/**
+	 * Shows a white screen with a fixation cross in its center to the user (between two trials).
+	 */
+	public void showFixationScreen() {
+		// TODO Implement this.
+	}
+	
+	/**
+	 * Sets the new task in the view.
+	 * @param task
+	 */
+	public void setTask(String task) {
+		// TODO Implement this.
+	}
+	
+	/**
+	 * Clear the input field at the beginning of a new round.
+	 */
+	public void clearInputField() {
+		// TODO Implement this.
+	}
+	
+	
 	
 	/**
 	 * Set the explanation-text
 	 */
 	public void setExplanationText(){
+		// TODO Change description appropriately.
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Multiplikationsspiel - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
 				"Du siehst gleich ein gewünschtes Ergebnis, und darüber 12 verschiedene Multiplikationsaufgaben. " +
