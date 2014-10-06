@@ -1,7 +1,10 @@
 package com.wicam.numberlineweb.client.MathAssessment;
 
+import java.util.ArrayList;
+
+import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.wicam.numberlineweb.client.GameCommunicationService;
+import com.wicam.numberlineweb.client.GameState;
 
 @RemoteServiceRelativePath("mathAssessmentCommunication")
 
@@ -11,11 +14,16 @@ import com.wicam.numberlineweb.client.GameCommunicationService;
  *
  */
 
-public interface MathAssessmentCommunicationService extends GameCommunicationService {
-
+public interface MathAssessmentCommunicationService extends RemoteService {
+	
 	public boolean itemPresented(String s);
 
 	public boolean userAnswered(String s);
 	
+	public int startAssessment(String s);
+	
+	public boolean endAssessment(String s);
+	
+	public ArrayList<String> loadShuffledItemList();	
 	
 }

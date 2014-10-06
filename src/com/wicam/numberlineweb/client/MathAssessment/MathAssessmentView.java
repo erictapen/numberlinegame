@@ -1,7 +1,5 @@
 package com.wicam.numberlineweb.client.MathAssessment;
 
-import java.util.ArrayList;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -9,12 +7,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.wicam.numberlineweb.client.GameView;
 
 /**
  * Math assessment view.
@@ -22,23 +19,27 @@ import com.wicam.numberlineweb.client.GameView;
  *
  */
 
-public class MathAssessmentView extends GameView  {
+public class MathAssessmentView extends Composite {
 
+	protected MathAssessmentController controller;
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
 //	protected final AbsolutePanel playerPanel = new AbsolutePanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final HTML explanationText = new HTML();
 	protected final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
+		
 		@Override
 		public void onClick(ClickEvent event) {
+			
 			initGameView();
-			((MathAssessmentController) gameController).startButtonClicked();
+			controller.startButtonClicked();
 			// We do not use audio description here.
 //			try {
 //				descriptionSound.pause();
 //				descriptionSound.setCurrentTime(0);
 //			} catch (Exception e) {
 //			}
+			
 		}
 	}); 
 
@@ -46,18 +47,21 @@ public class MathAssessmentView extends GameView  {
 	
 //	protected Audio descriptionSound = Audio.createIfSupported();
 
+	/**
+	 * Construct a new math assessment view.
+	 * @param gameController
+	 */
 	public MathAssessmentView(MathAssessmentController gameController) {
 		// Pass the number of players to the super class.
-		super(1);
-		this.gameController = gameController;
+		this.controller = gameController;
 		init();
-		sinkEvents(Event.MOUSEEVENTS);
+//		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
 	}
 
 
 	/**
-	 * Show explanation
+	 * Show explanation.
 	 */
 	protected void init() {
 		
@@ -99,8 +103,12 @@ public class MathAssessmentView extends GameView  {
 	 * Shows the screen where the task is presented to the user and the user
 	 * may enter a result to the task. 
 	 */
-	public void showTaskView() {
-		// TODO Implement this.
+	public void showTaskView(String task) {
+		
+		setTask(task);
+		clearInputField();
+		
+		// TODO Show the task view.
 	}
 	
 	/**
@@ -121,14 +129,14 @@ public class MathAssessmentView extends GameView  {
 	 * Sets the new task in the view.
 	 * @param task
 	 */
-	public void setTask(String task) {
+	private void setTask(String task) {
 		// TODO Implement this.
 	}
 	
 	/**
 	 * Clear the input field at the beginning of a new round.
 	 */
-	public void clearInputField() {
+	private void clearInputField() {
 		// TODO Implement this.
 	}
 	

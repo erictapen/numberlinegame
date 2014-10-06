@@ -64,6 +64,9 @@ public class NumberLineWeb implements EntryPoint {
 	protected GameCoordinator coordinator;
 	protected GameTypeSelector gts = new GameTypeSelector();
 	
+	protected MathAssessmentCommunicationServiceAsync mathAssessmentCommService;
+	protected MathAssessmentCoordinator mathAssessmentCoordinator;
+	
 	// TODO Switch that back to -1 before going live in server.
 	// Just for locale testing set the USERID to 2.
 	public static int USERID = -1;
@@ -246,11 +249,11 @@ public class NumberLineWeb implements EntryPoint {
 			@Override
 			public void run() {
 
-				commService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
-				coordinator = new MathAssessmentCoordinator((MathAssessmentCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+				mathAssessmentCommService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
+				mathAssessmentCoordinator = new MathAssessmentCoordinator(mathAssessmentCommService, RootPanel.get("game"), gts);
 
 				gts.hide(RootPanel.get("game"));
-				coordinator.init();
+				mathAssessmentCoordinator.init();
 			}
 		});
 		
