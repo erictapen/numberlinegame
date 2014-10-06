@@ -1,67 +1,105 @@
 package com.wicam.numberlineweb.client.MathAssessment;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Panel;
-import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.GameCoordinator;
-import com.wicam.numberlineweb.client.GameState;
-import com.wicam.numberlineweb.client.GameTypeSelector;
-import com.wicam.numberlineweb.client.NumberLineWeb;
-import com.wicam.numberlineweb.client.Player;
-import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
+import java.util.ArrayList;
 
-public class MathAssessmentCoordinator extends GameCoordinator {
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Panel;
+import com.wicam.numberlineweb.client.GameTypeSelector;
+
+/**
+ * Coordinator of the math assessment.
+ * @author timfissler
+ *
+ */
+
+public class MathAssessmentCoordinator {
 	
 	/* 
 	 * TODO Add functionality for handling the trial rounds and the (time dependent) switching between
 	 * the three different views.
-	 * TODO Add method for retrieval of the item list.
 	 */	
 	
 	protected MathAssessmentController controller;
-	
-	
-	public MathAssessmentCoordinator(GameCommunicationServiceAsync commServ,
-			ChatCommunicationServiceAsync chatCommServ, 
-			Panel root, GameTypeSelector gts) {
-		super(commServ, chatCommServ, root,gts);
-	}
-	
-	@Override
-	public String getGameName() {
-
-		return "Multiplikation";
-
-	}
-	
+	protected Panel rootPanel;
+	protected GameTypeSelector gts;
+	protected int playerID;
+	protected MathAssessmentCommunicationServiceAsync commServ;
+	protected MathAssessmentView view;
+	protected ArrayList<String> itemList;
 	
 	/**
-	 * Initializes the coordinator
+	 * Constructs a new math assessment coordinator.
+	 * @param commServ
+	 * @param root
+	 * @param gts
 	 */
-	@Override
-	public void init() {
-
-//		gameSelector = new MultiplicationGameSelector(this);
-//		rootPanel.add(gameSelector);
-
-		// TODO Change this so that a regular update is not needed anymore.
-		t = new Timer() {
-			@Override
-			public void run() {
-				update();
-			}
-		};
-
-		//main loop-timer
-		t.scheduleRepeating(500);
-		refreshGameList();
-
-		GWT.log("math assessment coordinator loaded.");
+	public MathAssessmentCoordinator(MathAssessmentCommunicationServiceAsync commServ, 
+			Panel root, GameTypeSelector gts) {
+		this.commServ = commServ;
+		this.rootPanel = root;
+		this.gts = gts;
+		this.playerID = 0;
+		this.view = null;
+		this.controller = null;
+		this.itemList = null;
 	}
 	
+	/**
+	 * Initializes the coordinator.
+	 */
+	public void init() {
+
+		// TODO Send client ID so that the server can retrieve an appropriate player ID.
+		commServ.startAssessment("0", initCallback);
+		
+	}
+	
+	AsyncCallback<Integer> initCallback = new AsyncCallback<Integer>() {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			GWT.log("Wasn't able to start a new math assessment.");
+			GWT.log(caught.getMessage());
+			
+		}
+
+		@Override
+		public void onSuccess(Integer result) {
+			GWT.log("New math assessment started.");
+			
+			playerID = result;
+			
+			// Construct the assessment.
+			controller = new MathAssessmentController(MathAssessmentCoordinator.this);
+			view = new MathAssessmentView(controller);
+			
+			// Download the shuffled list of math items.
+			commServ.loadShuffledItemList(itemListCallback);
+		}
+		
+	};
+	
+	AsyncCallback<ArrayList<String>> itemListCallback = new AsyncCallback<ArrayList<String>>() {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			GWT.log("Wasn't able to download the item list for the math assessment.");
+			GWT.log(caught.getMessage());			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<String> result) {
+			GWT.log("Downloaded the item list for the math assessment.");
+			
+			itemList = result;
+			
+			// Clear the root panel and draw the game.
+			rootPanel.clear();
+			rootPanel.add(view);
+		}
+		
+	};
 	
 	/**
 	 * Is being called when the user has entered a result to the current task.
@@ -70,124 +108,13 @@ public class MathAssessmentCoordinator extends GameCoordinator {
 	 */
 	public void userAnswered(double answer, long timestamp) {
 		// TODO Implement this.
-	}
-	
-	/**
-	 * Open a game name 'name'. Call back will get state of opened game
-	 * @param name
-	 */
-	@Override
-	public void openGame(GameState gameState) {
-
-		this.numberOfPlayers = gameState.getMaxNumberOfPlayers();
-		this.numberOfNPCs = gameState.getNumberOfMaxNPCs();
-		
-		gameState.setGameOpenedUserId(NumberLineWeb.USERID);
-		
-		((MultiplicationGameCommunicationServiceAsync)commServ).openGame(gameState, gameOpenedCallBack);
-
-	}
-	
-	
-	
-	/**
-	 * Called after our player joined the game.
-	 * @param playerID
-	 * @param gameID
-	 */
-	@Override
-	protected void joinedGame(int playerID, int gameID) {
-
-		super.joinedGame(playerID, gameID);
-		this.playerID = playerID;
-
-		//construct game
-		controller = new MathAssessmentController(this);
-		
-		this.view = new MathAssessmentView(controller);
-		
-		MathAssessmentView gameView = (MathAssessmentView) view;
-
-		//construct an empty game-state with the given information
-		MathAssessmentState g = new MathAssessmentState();
-		g.setGameId(gameID);
-		g.setState(-1);
-		this.openGame = g;
-		update();
-
-		//clear the root panel and draw the game
-		rootPanel.clear();
-		rootPanel.add(gameView);
-	}
-
-	
-	
-	/**
-	 * Called after game state was received.
-	 * @param gameState The GameState to update
-	 */
-	@Override
-	protected void updateGame(GameState gameState) {
-		
-		// TODO Review this and remove code that is not necessary anymore.
-		super.updateGame(gameState);
-
-		MathAssessmentState g = (MathAssessmentState) gameState;
-		MathAssessmentView gameView = (MathAssessmentView) view;
-		//we already have the latest state
-		if (g==null) return;
-		
-		switch (g.getState()) {
-			//started
-		case 3:
-			
-			//kritischer moment, setze refreshrate nach oben
-			setRefreshRate(200);
-			
-			break;
-
-			//evaluation, who has won?
-		case 5:
-			
-			setRefreshRate(1000);
-				
-			break;
-			
-			// for synchronization
-		case 6:
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-			break;
-		}
-
-		openGame = g;
-	}
-	
+	}	
 	
 	/**
 	 * User clicked on "Start game"
 	 */
 	public void startButtonClicked() {
-		if (!openGame.isPlayerReady(this.playerID)) {
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-		}		
+		// TODO Start the game.	
 	}
-
-	/**
-	 * We do not need this functionality here.
-	 */
-	@Override
-	protected void handleAwaitingStartState(GameState gameState) {}
-
-	/**
-	 * We do not need this functionality here.
-	 */
-	@Override
-	protected void handleWaitingForPlayersState() {}
-
-	/**
-	 * We do not need this functionality here.
-	 */
-	@Override
-	protected void handleWaitingForOtherPlayersState(GameState g) {}
 
 }

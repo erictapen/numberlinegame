@@ -17,61 +17,26 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationGameState;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
+import com.wicam.numberlineweb.server.CustomRemoteServiceServlet;
 import com.wicam.numberlineweb.server.GameCommunicationServiceServlet;
 import com.wicam.numberlineweb.server.NPC;
 import com.wicam.numberlineweb.server.MultiplicationInverse.MultiplicationInverseNPC;
 
-public class MathAssessmentCommunicationServiceServlet extends
-		GameCommunicationServiceServlet implements MathAssessmentCommunicationService {
-	
-	/*
-	 * TODO Add method for sending the shuffled item list to the client.
-	 */
-	
-	// Random generator
-	protected Random rand = new Random();
+/**
+ * Math assessment communication service servlet.
+ * @author timfissler
+ *
+ */
 
+public class MathAssessmentCommunicationServiceServlet extends
+	CustomRemoteServiceServlet implements MathAssessmentCommunicationService {
+	
+	protected Random rand = new Random();
 	private static final long serialVersionUID = 7200332323767902482L;
+	protected String internalName;
 	
 	public MathAssessmentCommunicationServiceServlet() {
-		
-		super("math_assessment");
-		
-	}
-	
-    public MathAssessmentCommunicationServiceServlet(String name) {
-		
-		super(name);
-		
-	}
-    
-	@Override
-	public GameState openGame(GameState g) throws GameOpenException {
-		
-		g.setServerSendTime(System.currentTimeMillis());
-		GWT.log("before opening game");
-		GameState retGameState = super.openGame(g);
-		GWT.log("after opening game");
-		
-		return retGameState;
-
-	}
-
-	@Override
-	public String getGameProperties(GameState gameState) {
-		
-		MultiplicationGameState numberlineGameState = (MultiplicationGameState) gameState;
-		
-		String gamePropertiesStr = "{";
-				
-		gamePropertiesStr += "num_players : " + numberlineGameState.getPlayerCount() + ", ";
-		
-		//TODO gameproperties
-		
-		gamePropertiesStr += "}";
-		
-		return gamePropertiesStr;
-		
+		this.internalName = "math_assessment";
 	}
 
 	/**
@@ -92,6 +57,37 @@ public class MathAssessmentCommunicationServiceServlet extends
 		// TODO Implement this.
 		System.out.println("Logging " + s);
 		return false;
+	}
+
+	/**
+	 * Is being called when an assessment is started by a user.
+	 * Returns the player ID.
+	 */
+	@Override
+	public int startAssessment(String s) {
+		// TODO Implement this.
+		System.out.println("Logging " + s);
+		return 0;
+	}
+
+	/**
+	 * Is being called when an assessment is ended by a user.
+	 */
+	@Override
+	public boolean endAssessment(String s) {
+		// TODO Implement this.
+		System.out.println("Logging " + s);
+		return false;
+	}
+
+	/**
+	 * Retrieve the shuffled list of math tasks.
+	 */
+	@Override
+	public ArrayList<String> loadShuffledItemList() {
+		// TODO Implement this.
+		System.out.println("Item list is being retrieved.");
+		return null;
 	}
 	
 	

@@ -1,19 +1,28 @@
 package com.wicam.numberlineweb.client.MathAssessment;
 
-import com.google.gwt.user.client.ui.Widget;
-import com.wicam.numberlineweb.client.GameController;
+/**
+ * Controller of the math assessment.
+ * @author timfissler
+ *
+ */
 
-public class MathAssessmentController extends GameController {
-
+public class MathAssessmentController {
+	
+	protected MathAssessmentCoordinator coordinator;
+	
+	/**
+	 * Construct a new controller object.
+	 * @param coordinator
+	 */
 	public MathAssessmentController(MathAssessmentCoordinator coordinator) {
-		super(coordinator);
+		this.coordinator = coordinator;
 	}
 
 	/**
 	 * User clicked on "Start game"
 	 */
 	public void startButtonClicked() {
-		((MathAssessmentCoordinator) coordinator).startButtonClicked();
+		coordinator.startButtonClicked();
 	}
 	
 	/**
@@ -22,38 +31,7 @@ public class MathAssessmentController extends GameController {
 	 * @param timestamp the system time stamp at the moment the answer was given
 	 */
 	public void userAnswered(double answer, long timestamp) {
-		((MathAssessmentCoordinator) coordinator).userAnswered(answer, timestamp);
+		coordinator.userAnswered(answer, timestamp);
 	}
-
-	/**
-	 * We do not need this method in this package.
-	 */
-	@Override
-	public void onMouseDown(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 * We do not need this method in this package.
-	 */
-	@Override
-	public void onMouseUp(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 * We do not need this method in this package.
-	 */
-	@Override
-	public void onMouseMove(Widget who, int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
 
 }
