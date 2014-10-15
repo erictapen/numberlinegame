@@ -1,2 +1,0 @@
-serviceClass: com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService
-path: F5C5D365AB81E0EC552BC82F94FE4002.gwt.rpc

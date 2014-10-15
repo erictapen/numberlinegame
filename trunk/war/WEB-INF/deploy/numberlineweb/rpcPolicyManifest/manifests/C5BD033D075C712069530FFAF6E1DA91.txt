@@ -1,2 +1,0 @@
-serviceClass: com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService
-path: E7FAE1B35C5E00D38298F78E8DFFE2E4.gwt.rpc
