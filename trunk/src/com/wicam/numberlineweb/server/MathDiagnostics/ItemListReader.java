@@ -93,10 +93,10 @@ public class ItemListReader {
 	
 	
 	/**
-	 * Reads the information from an element which is needed to create a choice reaction task item
+	 * Reads the information from an element which is needed to create a choice reaction taskText item
 	 * 
 	 * @param elem	element identified by the tag item
-	 * @return		returns a choice reaction task item
+	 * @return		returns a choice reaction taskText item
 	 */
 	private isItem createChoiceReactionItem(Element elem, String operation){
 		ChoiceReactionTaskItem item = new ChoiceReactionTaskItem();
@@ -110,10 +110,10 @@ public class ItemListReader {
 	}
 	
 	/**
-	 * Reads the information from an element which is needed to create a verification task item
+	 * Reads the information from an element which is needed to create a verification taskText item
 	 * 
 	 * @param elem	element identified by the tag item
-	 * @return		returns a verification task item
+	 * @return		returns a verification taskText item
 	 */
 	private isItem createVerificiationTaskItem(Element elem, String operator){
 		VerificationTaskItem item = new VerificationTaskItem();

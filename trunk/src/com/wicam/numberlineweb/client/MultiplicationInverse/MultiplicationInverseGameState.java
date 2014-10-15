@@ -9,7 +9,7 @@ import com.wicam.numberlineweb.client.Multiplication.MultiplicationAnswer;
 import com.wicam.numberlineweb.client.Multiplication.MultiplicationPlayer;
 
 /**
- * Extend a MathAssessmentState with a field for storing the multiplication task.
+ * Extend a MathAssessmentState with a field for storing the multiplication taskText.
  * @author timfissler
  *
  */

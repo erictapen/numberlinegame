@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 
 @RemoteServiceRelativePath("mathAssessmentCommunication")
@@ -16,14 +17,16 @@ import com.wicam.numberlineweb.client.GameState;
 
 public interface MathAssessmentCommunicationService extends RemoteService {
 	
-	public boolean itemPresented(String s);
+	public void itemPresented(String message);
 
-	public boolean userAnswered(String s);
+	public void userAnswered(String message);
 	
-	public int startAssessment(String s);
+	public MathAssessmentState startAssessment(int userID) throws GameJoinException;
 	
-	public boolean endAssessment(String s);
+	public void endAssessment(int assessmentID);
 	
-	public ArrayList<String> loadShuffledItemList();	
+	public ArrayList<String> loadShuffledItemList();
+	
+	public void userAborted(String message);
 	
 }

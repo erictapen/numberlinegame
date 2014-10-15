@@ -129,7 +129,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		// Log the current round and item.
 		System.out.println("Round " + state.getRound() + ", " + item);
 		
-		// Set the multiplication task.
+		// Set the multiplication taskText.
 		String task = item.getFirstFactor() + sign + item.getSecondFactor();
 		state.setTask(task);
 		
@@ -150,7 +150,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		state.setAnswers(answers);
 		
 		logger.log(state.getId(), System.currentTimeMillis(), LogActionType.MULTIPLICATION_TASK_PRESENTED, 
-				"{\"task\" : " + task + "}", this.getClass().getName(), LogActionTrigger.APPLICATION);
+				"{\"taskText\" : " + task + "}", this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
 		return state;
 	}
@@ -625,11 +625,11 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 			if ((!this.isNPC(playerid)) && (uid != -2)) {
 				// Human player clicked.
 				logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_USER_PICKED_ANSWER,
-						"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.USER);
+						"{\"answer\" : " + answer + ", \"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.USER);
 			} else {
 				// NPC clicked.
 				logger.log(g.getId(), uid, System.currentTimeMillis(), LogActionType.MULTIPLICATION_NPC_PICKED_ANSWER,
-						"{\"answer\" : " + answer + ", {\"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.NPC);
+						"{\"answer\" : " + answer + ", \"was_right\" : " + answerState + "}", this.getClass().getName(), LogActionTrigger.NPC);
 			}
 
 			// give/take points

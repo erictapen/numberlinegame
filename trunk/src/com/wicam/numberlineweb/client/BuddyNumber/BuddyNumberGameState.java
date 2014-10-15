@@ -77,7 +77,7 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 
 	
 	/**
-	 * @param playerID ID of the player to be looked up
+	 * @param state ID of the player to be looked up
 	 * @return Returns the hand-digit the user has clicked on
 	 */
 	public int getPlayerClickedOn(int playerID) {
@@ -87,7 +87,7 @@ public class BuddyNumberGameState extends GameState implements Serializable{
 	
 	/**
 	 * Set the hand-digit a user clicked on
-	 * @param playerID ID of the player to be updated
+	 * @param state ID of the player to be updated
 	 * @param clickedOn hand-digit the player clicked on
 	 */
 	public void setPlayerClickedOn(int playerID, int clickedOn) {

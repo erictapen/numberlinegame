@@ -4,7 +4,7 @@ import com.wicam.numberlineweb.client.GameState;
 
 public class MathDiagnosticsGameState extends GameState{
 	
-	// indicate which task is played
+	// indicate which taskText is played
 	private int task = 0;
 	
 	@Override

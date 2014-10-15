@@ -27,7 +27,7 @@ public class AnimationTimer extends Timer {
 
 
 	/**
-	 * run every task in our task lists, remove tasks marked for deletion
+	 * run every taskText in our taskText lists, remove tasks marked for deletion
 	 */
 	@Override
 	public void run() {
@@ -41,7 +41,7 @@ public class AnimationTimer extends Timer {
 				it.remove();
 			}else{
 				
-				//consider the optional delay set in the task
+				//consider the optional delay set in the taskText
 				if (t.getDelay()<=0) {
 					t.run();
 				}else{

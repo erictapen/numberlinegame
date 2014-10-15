@@ -193,7 +193,7 @@ public class OverTenGameCommunicationServiceServlet extends
 	}
 
 	/**
-	 * @param playerID
+	 * @param state
 	 *            id of the player
 	 * @return Checks, if the player has already chosen a calculation
 	 */
@@ -203,7 +203,7 @@ public class OverTenGameCommunicationServiceServlet extends
 	}
 
 	/**
-	 * @param playerID
+	 * @param state
 	 *            id of the player
 	 * @return Checks, if the player has already chosen a community-digit
 	 */

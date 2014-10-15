@@ -13,14 +13,16 @@ import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
 
 public interface MathAssessmentCommunicationServiceAsync {
 
-	public void itemPresented(String s, AsyncCallback<Boolean> dummyCallback);
+	public void itemPresented(String message, AsyncCallback<Void> voidCallback);
 	
-	public void userAnswered(String s, AsyncCallback<Boolean> dummyCallback);
+	public void userAnswered(String message, AsyncCallback<Void> voidCallback);
 
-	public void endAssessment(String s, AsyncCallback<Boolean> callback);
+	public void endAssessment(int assessmentID, AsyncCallback<Void> callback);
 
-	public void startAssessment(String s, AsyncCallback<Integer> callback);
+	public void startAssessment(int userID, AsyncCallback<MathAssessmentState> callback);
 
 	public void loadShuffledItemList(AsyncCallback<ArrayList<String>> callback);
+	
+	public void userAborted(String message, AsyncCallback<Void> voidCallback);
 	
 }

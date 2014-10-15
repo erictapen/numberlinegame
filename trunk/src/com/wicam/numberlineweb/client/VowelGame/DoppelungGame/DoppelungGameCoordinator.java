@@ -364,7 +364,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 	/**
 	 * Registers a new AnimationTimerTask
 	 * 
-	 * @param t		the task to register
+	 * @param t		the taskText to register
 	 */
 	public void registerAniTask(AnimationTimerTask t) {
 		aniTimer.registerTask(t);
@@ -372,7 +372,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	/*
 	 * Animation tasks will later be registered in the animation timer.
-	 * a task exists for every direction the player can move.
+	 * a taskText exists for every direction the player can move.
 	 */
 	private AnimationTimerTask updatePositionTask = new AnimationTimerTask() {
 
@@ -429,7 +429,7 @@ public class DoppelungGameCoordinator extends GameCoordinator{
 
 	};
 
-	// task for the enemy image
+	// taskText for the enemy image
 	private EnemyMoveTask enemyMoveTask;
 
 	/**

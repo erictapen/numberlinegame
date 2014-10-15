@@ -308,7 +308,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	/**
 	 * Registers a new AnimationTimerTask
 	 * 
-	 * @param t		the task to register
+	 * @param t		the taskText to register
 	 */
 	public void registerAniTask(AnimationTimerTask t) {
 		aniTimer.registerTask(t);
@@ -316,11 +316,11 @@ public class LetrisGameCoordinator extends GameCoordinator {
 
 	/*
 	 * Animation tasks will later be registered in the animation timer.
-	 * a task exists for every direction the player can move.
+	 * a taskText exists for every direction the player can move.
 	 */
 	
 	/**
-	 * Timer task for moving the current moving letter block to the left.
+	 * Timer taskText for moving the current moving letter block to the left.
 	 */
 	private AnimationTimerTask moveLeftTask = new AnimationTimerTask() {
 
@@ -333,7 +333,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	};
 	
 	/**
-	 * Timer task for moving the current moving letter block to the right.
+	 * Timer taskText for moving the current moving letter block to the right.
 	 */
 	private AnimationTimerTask moveRightTask = new AnimationTimerTask() {
 
@@ -346,7 +346,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	};
 
 	/**
-	 * Timer task for moving the current moving letter block downwards.
+	 * Timer taskText for moving the current moving letter block downwards.
 	 */
 	private AnimationTimerTask moveDownTask = new AnimationTimerTask() {
 
@@ -359,7 +359,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	};
 	
 	/**
-	 * Timer task for rotating the current moving letter block anticlockwise.
+	 * Timer taskText for rotating the current moving letter block anticlockwise.
 	 */
 	private AnimationTimerTask rotateTask = new AnimationTimerTask() {
 
@@ -372,7 +372,7 @@ public class LetrisGameCoordinator extends GameCoordinator {
 	};
 
 	/**
-	 * Timer task for dropping the current moving letter block at once.
+	 * Timer taskText for dropping the current moving letter block at once.
 	 */
 	private AnimationTimerTask dropTask = new AnimationTimerTask() {
 

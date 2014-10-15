@@ -75,7 +75,7 @@ public class OverTenGameState extends GameState implements Serializable{
 
 
 	/**
-	 * @param playerID ID of the player to be looked up
+	 * @param state ID of the player to be looked up
 	 * @return Returns the calculation the user has clicked on
 	 */
 	public OverTenCalculation getPlayerCalculation(int playerID) {
@@ -85,7 +85,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	
 	/**
 	 * Set the hand-digit a user clicked on
-	 * @param playerID ID of the player to be updated
+	 * @param state ID of the player to be updated
 	 * @param calculation calculation the player clicked on
 	 */
 	public void setPlayerCalculation(int playerID, OverTenCalculation calculation) {
@@ -94,7 +94,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	
 	
 	/**
-	 * @param playerID ID of the player to be looked up
+	 * @param state ID of the player to be looked up
 	 * @return Returns the digit-index the user has clicked on
 	 */
 	public int getPlayerDigit(int playerID) {
@@ -104,7 +104,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	
 	/**
 	 * Set the digit a user clicked on
-	 * @param playerID ID of the player to be updated
+	 * @param state ID of the player to be updated
 	 * @param index digit-index the player clicked on
 	 */
 	public void setPlayerDigit(int playerID, int index) {
