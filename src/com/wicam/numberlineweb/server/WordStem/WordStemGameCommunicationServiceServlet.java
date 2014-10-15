@@ -162,7 +162,7 @@ public class WordStemGameCommunicationServiceServlet extends
 	}
 
 	/**
-	 * @param playerID
+	 * @param state
 	 *            id of the player
 	 * @return Checks, if the player has already chosen a hand-digit
 	 */
@@ -278,7 +278,7 @@ public class WordStemGameCommunicationServiceServlet extends
 
 	/**
 	 * @param clicked
-	 *            gameID:playerID:word
+	 *            gameID:state:word
 	 * @param npcWasRight
 	 *            True, if the answer was correct
 	 * @return Could NPC click? If not, the answer was taken

@@ -4,7 +4,7 @@ abstract public interface isItem {
 	
 	/**
 	 * 
-	 * @return the correct solution of the item in a choice reaction task
+	 * @return the correct solution of the item in a choice reaction taskText
 	 */
 	public int getCorrectSolution();
 }

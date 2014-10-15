@@ -19,18 +19,25 @@ public class MathAssessmentController {
 	}
 
 	/**
-	 * User clicked on "Start game"
+	 * User clicked on "Test starten".
 	 */
 	public void startButtonClicked() {
-		coordinator.startButtonClicked();
+		coordinator.startAssessment();
 	}
 	
 	/**
-	 * User entered the possible result to the given math task.
+	 * User clicked on "Test beenden".
+	 */
+	public void endButtonClicked() {
+		coordinator.endAssessment();
+	}
+	
+	/**
+	 * User entered the possible result to the given math taskText.
 	 * @param answer possible result
 	 * @param timestamp the system time stamp at the moment the answer was given
 	 */
-	public void userAnswered(double answer, long timestamp) {
+	public void userAnswered(String answer, long timestamp) {
 		coordinator.userAnswered(answer, timestamp);
 	}
 

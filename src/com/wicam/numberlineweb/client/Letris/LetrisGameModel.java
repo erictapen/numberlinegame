@@ -98,7 +98,7 @@ public class LetrisGameModel {
 	}
 	
 	/**
-	 * Initialize the moving task and
+	 * Initialize the moving taskText and
 	 * start the movement of the current
 	 * moving block. 
 	 */
@@ -132,7 +132,7 @@ public class LetrisGameModel {
 	 * Stop the movement of all blocks of the LeTris game.
 	 */
 	public void stopMoving() {
-		// Only stop if there is a moving task to stop.
+		// Only stop if there is a moving taskText to stop.
 		if (movingLetterBlockTask != null) {
 			movingLetterBlockTask.markForDelete();
 		}
@@ -693,7 +693,7 @@ public class LetrisGameModel {
 			// Show no next block.
 			coordinator.updateNextBlock(null);
 		}
-		// Create new movement task for new letter block.
+		// Create new movement taskText for new letter block.
 		movingLetterBlockTask = new LetrisGameMoveLetterBlockTask(movingLetterBlock, this);
 		coordinator.registerAniTask(movingLetterBlockTask);
 	}

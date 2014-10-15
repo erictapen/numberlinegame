@@ -82,7 +82,7 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 	
 	/**
 	 * Called after our player joined the game.
-	 * @param playerID
+	 * @param state
 	 * @param gameID
 	 */
 	@Override
@@ -201,8 +201,8 @@ public class MultiplicationGameCoordinator extends GameCoordinator {
 			notReady += (p.isReady()) ? 0 : 1;
 		}
 		gameView.setInfoText("Warte auf " + notReady + " Spieler...");
-		//if (!g.isPlayerReady(playerID))
-			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		//if (!g.isPlayerReady(state))
+			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(state), voidCallback);
 	}
 	
 	

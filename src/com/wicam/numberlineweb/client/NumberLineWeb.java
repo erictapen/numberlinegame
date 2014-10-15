@@ -69,8 +69,8 @@ public class NumberLineWeb implements EntryPoint {
 	
 	// TODO Switch that back to -1 before going live in server.
 	// Just for locale testing set the USERID to 2.
-	public static int USERID = -1;
-//	public static int USERID = 2;
+//	public static int USERID = -1;
+	public static int USERID = 2;
 	
 	/**
 	 * Everything starts here...
@@ -113,7 +113,7 @@ public class NumberLineWeb implements EntryPoint {
 	public void showGameTypeSelector() {
 		//boolean numberLineGame = false;
 
-//		final AsyncCallback<Boolean> dummyCallback = new AsyncCallback<Boolean>() {
+//		final AsyncCallback<Boolean> voidCallback = new AsyncCallback<Boolean>() {
 //
 //			@Override
 //			public void onFailure(Throwable caught) {
@@ -178,7 +178,6 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		//adds the Letris game
-		// TODO Change the image of the game.
 		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
 				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
 
@@ -242,8 +241,7 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// Adds the MathAssessment.
-		// TODO Occasionally change the game logo.
-		gts.addGame(GameType.MATH, "Mathe-Assessment", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+		gts.addGame(GameType.MATH, "Mathe-Test", "pre_mathDiagnostics.png", 
 				"Rechne schnell!", new GameItemStarter() {
 
 			@Override

@@ -76,7 +76,7 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 	
 	/**
 	 * Called after our pĺayer joined the game.
-	 * @param playerID
+	 * @param state
 	 * @param gameID
 	 */
 
@@ -230,8 +230,8 @@ public class NumberLineGameCoordinator extends GameCoordinator {
 		for (int i = 0; i < g.getPlayers().size(); i++)
 			gameView.setPoints(i+1, 0, g.getPlayerName(i+1));
 		gameView.setInfoText("Das Spiel beginnt in wenigen Sekunden!");
-//		if (!g.isPlayerReady(playerID))
-//			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+//		if (!g.isPlayerReady(state))
+//			commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(state), voidCallback);
 	}
 	
 	

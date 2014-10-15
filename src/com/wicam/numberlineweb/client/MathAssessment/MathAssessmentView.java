@@ -1,17 +1,21 @@
 package com.wicam.numberlineweb.client.MathAssessment;
 
-import com.google.gwt.core.client.GWT;
+import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Line;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.media.client.Audio;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Math assessment view.
@@ -23,137 +27,262 @@ public class MathAssessmentView extends Composite {
 
 	protected MathAssessmentController controller;
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
-//	protected final AbsolutePanel playerPanel = new AbsolutePanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
+	protected final AbsolutePanel endPanel = new AbsolutePanel();
+	protected final AbsolutePanel taskPanel = new AbsolutePanel();
+	protected final AbsolutePanel whitePanel = new AbsolutePanel();
+	protected final HorizontalPanel fixationPanel = new HorizontalPanel();
+	protected final DrawingArea fixationDrawing = new DrawingArea(50, 50);
+	protected final HTML taskText = new HTML();
+	protected final TextBox resultBox = new TextBox();
 	protected final HTML explanationText = new HTML();
-	protected final Button startGameButton = new Button("Spiel starten", new ClickHandler() {
-		
+	protected final HTML endText = new HTML();
+	protected final HTML nonNumericWarningText = new HTML();
+	protected final Button startButton = new Button("Test starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
-			
-			initGameView();
-			controller.startButtonClicked();
-			// We do not use audio description here.
-//			try {
-//				descriptionSound.pause();
-//				descriptionSound.setCurrentTime(0);
-//			} catch (Exception e) {
-//			}
-			
+			controller.startButtonClicked();			
 		}
 	}); 
-
+	protected final Button endButton = new Button("Schließen", new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+			controller.endButtonClicked();			
+		}
+	});
 	final HTML infoText = new HTML();
-	
-//	protected Audio descriptionSound = Audio.createIfSupported();
 
 	/**
 	 * Construct a new math assessment view.
 	 * @param gameController
 	 */
 	public MathAssessmentView(MathAssessmentController gameController) {
-		// Pass the number of players to the super class.
 		this.controller = gameController;
 		init();
-//		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
 	}
 
 
 	/**
-	 * Show explanation.
+	 * Initialize the views.
 	 */
 	protected void init() {
 		
+		// Setup the explanation panel.
 		explanationPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		explanationPanel.setHeight("400px");
-		explanationPanel.setWidth("600px");
+		explanationPanel.setWidth("750px");
 		setExplanationText();
 		explanationPanel.add(explanationText);
 		explanationPanel.setWidgetPosition(explanationText, 0, 0);
-		explanationPanel.add(startGameButton);
-		explanationPanel.setWidgetPosition(startGameButton, 480, 350);
+		explanationPanel.add(startButton);
+		explanationPanel.setWidgetPosition(startButton, 600, 350);
+		explanationPanel.setVisible(false);
 		motherPanel.add(explanationPanel);
 		
-		// We do not use audio description here.
-//		if (Audio.isSupported() && descriptionSound != null) {
-//			
-//			descriptionSound.addSource("desc/Multiplication.ogg", "audio/ogg; codecs=vorbis");
-//			descriptionSound.addSource("desc/Multiplication.mp3", "audio/mpeg; codecs=MP3");
-//			
-//			descriptionSound.play();
-//			
-//		}
+		// Setup the panel with the field for the item/taskText and the entry field.
+		taskPanel.setHeight("400px");
+		taskPanel.setWidth("750px");
+		setTask("");
+		taskPanel.add(taskText);
+		taskPanel.setWidgetPosition(taskText, 310, 194);
+		setNonNumericWarning();
+		nonNumericWarningText.setVisible(false);
+		taskPanel.add(nonNumericWarningText);
+		taskPanel.setWidgetPosition(nonNumericWarningText, 100, 230);
+		resultBox.setWidth("40px");
+		resultBox.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				// User hit "Enter".
+				if (((int)event.getCharCode()) == 13) { 
+					// Pass the entered result and the current time stamp to the controller.
+					controller.userAnswered(resultBox.getText(), System.currentTimeMillis());
+				}
+			}
+		});
+		resultBox.setStyleName("resultBox");
+		taskPanel.add(resultBox);
+		taskPanel.setWidgetPosition(resultBox, 390, 190);
+		taskPanel.setVisible(false);
+		motherPanel.add(taskPanel);
+		
+		// Setup white panel.
+		whitePanel.setHeight("400px");
+		whitePanel.setWidth("750px");
+		whitePanel.setVisible(false);
+		motherPanel.add(whitePanel);
+		
+		// Setup fixation panel.
+		fixationPanel.setHeight("400px");
+		fixationPanel.setWidth("750px");
+		Line hLine = new Line(0, 25, 50, 25);
+		hLine.setStrokeWidth(3);
+		Line vLine = new Line(25, 0, 25, 50);
+		vLine.setStrokeWidth(3);
+		fixationDrawing.add(vLine);
+		fixationDrawing.add(hLine);
+		fixationPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		fixationPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		fixationPanel.add(fixationDrawing);
+		fixationPanel.setVisible(false);
+		motherPanel.add(fixationPanel);
+		
+		// Setup end panel.
+		endPanel.setHeight("400px");
+		endPanel.setWidth("750px");
+		setEndText();
+		endPanel.add(endText);
+		endPanel.setWidgetPosition(endText, 0, 0);
+		endPanel.add(endButton);
+		endPanel.setWidgetPosition(endButton, 600, 350);
+		endPanel.setVisible(false);
+		motherPanel.add(endPanel);
 		
 		RootPanel.get().add(motherPanel);
 	}
 	
 	/**
-	 * Show the game, hide explanation
+	 * Show explanation.
 	 */
-	public void initGameView() {
-		explanationPanel.clear();
-		explanationPanel.removeFromParent();
-		
-		// TODO Setup the PANEL with the field for the item/task and the entry field here.
-//		motherPanel.add(PANEL);
+	public void showExplanationScreen() {
+		explanationPanel.setVisible(true);
+		startButton.setFocus(true);
 	}
 	
 	/**
-	 * Shows the screen where the task is presented to the user and the user
-	 * may enter a result to the task. 
+	 * Hide explanation
 	 */
-	public void showTaskView(String task) {
-		
+	public void hideExplanationScreen() {
+		explanationPanel.setVisible(false);
+	}
+	
+	/**
+	 * Shows the screen where the taskText is presented to the user and the user
+	 * may enter a result to the taskText. 
+	 */
+	public void showTaskScreen(String task) {
 		setTask(task);
-		clearInputField();
+		clearResultBox();
 		
-		// TODO Show the task view.
+		// Show the task view.
+		taskPanel.setVisible(true);
+		resultBox.setFocus(true);
+	}
+	
+	/**
+	 * Hide the task view.
+	 */
+	public void hideTaskScreen() {
+		taskPanel.setVisible(false);
 	}
 	
 	/**
 	 * Shows a white screen to the user (between two trials).
 	 */
 	public void showWhiteScreen() {
-		// TODO Implement this.
+		whitePanel.setVisible(true);
+	}
+	
+	/**
+	 * Hide the white screen.
+	 */
+	public void hideWhiteScreen() {
+		whitePanel.setVisible(false);
 	}
 	
 	/**
 	 * Shows a white screen with a fixation cross in its center to the user (between two trials).
 	 */
 	public void showFixationScreen() {
-		// TODO Implement this.
+		fixationPanel.setVisible(true);
 	}
 	
 	/**
-	 * Sets the new task in the view.
-	 * @param task
+	 * Hide the fixation screen.
+	 */
+	public void hideFixationScreen() {
+		fixationPanel.setVisible(false);
+	}
+	
+	/**
+	 * Show the end screen.
+	 */
+	public void showEndScreen() {
+		endPanel.setVisible(true);
+		endButton.setFocus(true);
+	}
+	
+	/**
+	 * Hide the end screen.
+	 */
+	public void hideEndScreen() {
+		endPanel.setVisible(false);
+	}
+	
+	/**
+	 * Sets the new taskText in the view.
+	 * @param taskText
 	 */
 	private void setTask(String task) {
-		// TODO Implement this.
+		taskText.setHTML("<div style='font-size:17px'>" + task + " = </div>"); 
+	}
+	
+	/**
+	 * Sets the non numeric warning text in the view.
+	 * @param nonNumericWarningText
+	 */
+	private void setNonNumericWarning() {
+		nonNumericWarningText.setHTML("<div style='font-size:12px;color:red'>" + 
+										"Bitte gib nur Nummern (0-9) und den Punkt '.' " +
+										"für Kommazahlen, sowie das Minus '-' für negative Zahlen ein!" +
+										"</div>"); 
+	}
+	
+	/**
+	 * Switch warning for non numeric user answers in the task screen.
+	 * @param isShowing
+	 */
+	public void showNotNumericWarning(boolean isShowing) {
+		nonNumericWarningText.setVisible(isShowing);
+	}
+	
+	/**
+	 * Highlight the user answer in the task screen.
+	 */
+	public void highlightUserAnswer() {
+		String result = resultBox.getText();
+		resultBox.setSelectionRange(0, result.length());
 	}
 	
 	/**
 	 * Clear the input field at the beginning of a new round.
 	 */
-	private void clearInputField() {
-		// TODO Implement this.
+	private void clearResultBox() {
+		resultBox.setText("");
 	}
-	
-	
 	
 	/**
 	 * Set the explanation-text
 	 */
 	public void setExplanationText(){
 		// TODO Change description appropriately.
-		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Multiplikationsspiel - Beschreibung</b></div>" +
+		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Mathe-Test - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Du siehst gleich ein gewünschtes Ergebnis, und darüber 12 verschiedene Multiplikationsaufgaben. " +
-				"Klicke so schnell wie möglich auf die Rechnung, die das gewünschte Ergebnis hat. " +
-				"Es können auch mehrere Aufgaben richtig sein. Ist dein Gegenspieler schneller als du, " +
-				"ist die Rechnung, die er angeklickt hat, aus dem Spiel. " +
+				"Dir werden gleich mehrere Matheaufgaben hintereinander gezeigt. Bevor es los geht und zwischen den Aufgaben " +
+				"siehst du ein schwarzes Kreuz. Versuche es mit deinen Augen zu fixieren und dann die Aufgabe so schnell " +
+				"und exakt wie möglich zu lösen. Hast du das Ergebnis eingetragen drücke die \"Enter\"-Taste." +
 				"</div>");
+	}
+	
+	/**
+	 * Set the ending-text
+	 */
+	public void setEndText(){
+		// TODO Change text appropriately.
+		endText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Mathe-Test - Ende</b></div>" +
+				"<div style='padding:5px 20px;font-size:12px'>" +
+				"Vielen Dank für's Mitmachen. Der Test ist nun zu Ende.</div>");
 	}
 	
 }

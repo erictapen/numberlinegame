@@ -37,7 +37,7 @@ public class AnimationTimerTask {
 	}
 	
 	/**
-	 * mark this task for deletion.
+	 * mark this taskText for deletion.
 	 */
 
 	public void markForDelete() {
@@ -47,7 +47,7 @@ public class AnimationTimerTask {
 	}
 
 	/**
-	 * unmark this task for deletion
+	 * unmark this taskText for deletion
 	 */
 	public void unmarkForDelete() {
 

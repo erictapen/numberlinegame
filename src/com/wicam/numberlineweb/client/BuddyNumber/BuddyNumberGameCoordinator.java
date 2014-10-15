@@ -81,7 +81,7 @@ public class BuddyNumberGameCoordinator extends GameCoordinator {
 	
 	/**
 	 * Called after our player joined the game.
-	 * @param playerID
+	 * @param state
 	 * @param gameID
 	 */
 	@Override

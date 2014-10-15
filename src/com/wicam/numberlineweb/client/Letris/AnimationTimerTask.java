@@ -34,7 +34,7 @@ public class AnimationTimerTask {
 	}
 	
 	/**
-	 * Returns true, if the task is in its first run iteration.
+	 * Returns true, if the taskText is in its first run iteration.
 	 * @return
 	 */
 	public boolean isFirstRun() {
@@ -42,7 +42,7 @@ public class AnimationTimerTask {
 	}
 	
 	/**
-	 * Set the delay time for continuous running this task in ms.
+	 * Set the delay time for continuous running this taskText in ms.
 	 * @param delay time
 	 */
 	public void setDelayForContinuousRunning(int delay) {
@@ -50,7 +50,7 @@ public class AnimationTimerTask {
 	}
 	
 	/**
-	 * Get the delay time for continuous running this task in ms.
+	 * Get the delay time for continuous running this taskText in ms.
 	 * @return delay time
 	 */
 	public int getDelayForContinuousRunning() {
@@ -74,7 +74,7 @@ public class AnimationTimerTask {
 	}
 	
 	/**
-	 * mark this task for deletion.
+	 * mark this taskText for deletion.
 	 */
 
 	public void markForDelete() {
@@ -84,7 +84,7 @@ public class AnimationTimerTask {
 	}
 
 	/**
-	 * unmark this task for deletion
+	 * unmark this taskText for deletion
 	 */
 	public void unmarkForDelete() {
 

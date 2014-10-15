@@ -81,13 +81,13 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 	
 	/**
 	 * Called after our player joined the game.
-	 * @param playerID
+	 * @param state
 	 * @param gameID
 	 */
 	@Override
 	protected void joinedGame(int playerID, int gameID) {
 
-//		super.joinedGame(playerID, gameID);
+//		super.joinedGame(state, gameID);
 		
 		History.newItem("game-" + getGameName(),false);
 		
@@ -271,8 +271,8 @@ public class MultiplicationInverseGameCoordinator extends GameCoordinator implem
 			notReady += (p.isReady()) ? 0 : 1;
 		}
 		gameView.setInfoText("Warte auf " + notReady + " Spieler...");
-		//if (!g.isPlayerReady(playerID))
-			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+		//if (!g.isPlayerReady(state))
+			//commServ.updateReadyness(Integer.toString(g.getId()) + ":" + Integer.toString(state), voidCallback);
 	}
 	
 	@Override

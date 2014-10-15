@@ -251,6 +251,10 @@ div.highscore-entry {
 	border: solid black 1px;
 }
 
+.resultBox {
+	font-size: 16px;
+}
+
 body.hidden div,body.hidden img {
 	display: none;
 }

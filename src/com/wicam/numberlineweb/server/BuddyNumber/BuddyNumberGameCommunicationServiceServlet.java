@@ -133,7 +133,7 @@ public class BuddyNumberGameCommunicationServiceServlet extends
 	}
 
 	/**
-	 * @param playerID
+	 * @param state
 	 *            id of the player
 	 * @return Checks, if the player has already chosen a hand-digit
 	 */

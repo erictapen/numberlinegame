@@ -165,7 +165,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 
 	/**
 	 * Called after our pĺayer joined the game.
-	 * @param playerID
+	 * @param state
 	 * @param gameID
 	 */
 	protected void joinedGame(int playerID, int gameID) {
