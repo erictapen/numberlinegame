@@ -1,2 +1,0 @@
-serviceClass: com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService
-path: 701D5A0709B78250BD07251EA4360075.gwt.rpc

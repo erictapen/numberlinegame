@@ -1,2 +1,0 @@
-serviceClass: com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService
-path: 6E7F21697A3F5069139411EFC333625B.gwt.rpc
