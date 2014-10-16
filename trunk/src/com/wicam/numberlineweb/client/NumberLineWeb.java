@@ -8,6 +8,9 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCommunicationService;
+import com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCoordinator;
 import com.wicam.numberlineweb.client.GameTypeSelector.GameType;
 import com.wicam.numberlineweb.client.Resources.ImageResources;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
@@ -66,6 +69,9 @@ public class NumberLineWeb implements EntryPoint {
 	
 	protected MathAssessmentCommunicationServiceAsync mathAssessmentCommService;
 	protected MathAssessmentCoordinator mathAssessmentCoordinator;
+	
+	protected EventServiceTestCommunicationServiceAsync eventServiceCommServ;
+	protected EventServiceTestCoordinator eventServiceCoord;
 	
 	// TODO Switch that back to -1 before going live in server.
 	// Just for locale testing set the USERID to 2.
@@ -145,6 +151,21 @@ public class NumberLineWeb implements EntryPoint {
 			@Override
 			public void run() {
 				gts.showGrammar();
+			}
+		});
+		
+		// Adds the MathAssessment.
+		gts.addGame(GameType.CAT, "GWTEventService Test", "pre_mathDiagnostics.png", 
+				"", new GameItemStarter() {
+
+			@Override
+			public void run() {
+
+				eventServiceCommServ = (EventServiceTestCommunicationServiceAsync) GWT.create(EventServiceTestCommunicationService.class);
+				eventServiceCoord = new EventServiceTestCoordinator(eventServiceCommServ, RootPanel.get("game"), gts);
+
+				gts.hide(RootPanel.get("game"));
+				eventServiceCoord.init();
 			}
 		});
 		
