@@ -31,4 +31,7 @@
   <!-- GWT Graphics package -->
   <inherits name='org.vaadin.gwtgraphics.GWTGraphics'/>
   
+  <!-- GWT Event Service package -->
+  <inherits name='de.novanic.eventservice.GWTEventService'/>
+  
 </module>

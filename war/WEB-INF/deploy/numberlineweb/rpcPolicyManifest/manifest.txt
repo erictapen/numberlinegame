@@ -1,2 +1,15 @@
 # Module numberlineweb
 # RPC service class, partial path of RPC policy file
+com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCommunicationService, 285CD7F6F8E58EA8270D8E1E8F5F15FF.gwt.rpc
+com.wicam.numberlineweb.client.Multiplication.MultiplicationGameCommunicationService, 4E85108D59D65723E441DAB074486099.gwt.rpc
+com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService, 40B541DFD49B1617261F86890821F5F0.gwt.rpc
+com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService, B69C3AF5323C395A5173685F37E9D51D.gwt.rpc
+com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService, 8E0C9D2DAED8A00ECEAA489201D8CC53.gwt.rpc
+com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService, 6E7F21697A3F5069139411EFC333625B.gwt.rpc
+com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService, 0A2AFE6F670CD2E7DA419CC75E1A0854.gwt.rpc
+com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService, B91D50F205AFDF510FFE8CD528558ECB.gwt.rpc
+com.wicam.numberlineweb.client.chat.ChatCommunicationService, 1EAA8D62FC3CA0EDD488E559FF7C173C.gwt.rpc
+com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService, E7FAE1B35C5E00D38298F78E8DFFE2E4.gwt.rpc
+com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService, 701D5A0709B78250BD07251EA4360075.gwt.rpc
+com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService, EE861FD64EC96C3F921E110A6FE15F98.gwt.rpc
+de.novanic.eventservice.client.event.service.EventService, 58EC879E2B826D55FF3E9DC64A62111C.gwt.rpc
