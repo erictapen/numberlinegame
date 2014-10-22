@@ -43,14 +43,13 @@ public class MathAssessmentCommunicationServiceServlet extends
 	 */
 	@Override
 	public synchronized void itemPresented(String message) {
-
-		System.out.println("Item presented.");
-		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
 		String item = message.split(":")[1];
 		long timestamp = Long.parseLong(message.split(":")[2]);
+		
+		System.out.println("Item presented: " + item);
 		
 		// Log the item.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
@@ -67,9 +66,6 @@ public class MathAssessmentCommunicationServiceServlet extends
 	 */
 	@Override
 	public synchronized void userAnswered(String message) {
-
-		System.out.println("User answered.");
-		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
@@ -78,6 +74,8 @@ public class MathAssessmentCommunicationServiceServlet extends
 		boolean isCorrect = Boolean.parseBoolean(message.split(":")[3]);
 		long reactionTime = Long.parseLong(message.split(":")[4]);
 		long timestamp = Long.parseLong(message.split(":")[5]);
+		
+		System.out.println("User answered: " + answer);
 
 		// Log the item.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
@@ -131,8 +129,7 @@ public class MathAssessmentCommunicationServiceServlet extends
 				System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
-		System.out.println("Started assessment " + state.getAssessmentID());
-		System.out.println("User ID: " + state.getUserID());
+		System.out.println("Started assessment: " + state.getAssessmentID() + " with User ID: " + state.getUserID());
 		
 		return state;
 	}
@@ -176,7 +173,7 @@ public class MathAssessmentCommunicationServiceServlet extends
 	public void userAborted(String message) {
 
 		System.out.println("User aborted.");
-		System.out.println("Logging: " + message);
+//		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
