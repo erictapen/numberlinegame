@@ -3,10 +3,10 @@ package com.wicam.numberlineweb.client.MathAssessment;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Line;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -92,20 +92,26 @@ public class MathAssessmentView extends Composite {
 		nonNumericWarningText.setVisible(false);
 		taskPanel.add(nonNumericWarningText);
 		taskPanel.setWidgetPosition(nonNumericWarningText, 100, 230);
-		resultBox.setWidth("40px");
+		resultBox.setWidth("60px");
 		resultBox.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				// User hit "Enter".
-				if (((int)event.getCharCode()) == 13) { 
-					// Pass the entered result and the current time stamp to the controller.
+			    int keyCode = event.getUnicodeCharCode();
+			    // Use Workaround otherwise for Firefox.
+			    if (keyCode == 0) {
+			        // Probably Firefox
+			        keyCode = event.getNativeEvent().getKeyCode();
+			    }
+			    // Do something when Enter is pressed.
+			    if (keyCode == KeyCodes.KEY_ENTER) {
+			    	// Pass the entered result and the current time stamp to the controller.
 					controller.userAnswered(resultBox.getText(), System.currentTimeMillis());
-				}
+			    }
 			}
-		});
+		});		
 		resultBox.setStyleName("resultBox");
 		taskPanel.add(resultBox);
-		taskPanel.setWidgetPosition(resultBox, 390, 190);
+		taskPanel.setWidgetPosition(resultBox, 420, 190);
 		taskPanel.setVisible(false);
 		motherPanel.add(taskPanel);
 		
@@ -227,7 +233,7 @@ public class MathAssessmentView extends Composite {
 	 * @param taskText
 	 */
 	private void setTask(String task) {
-		taskText.setHTML("<div style='font-size:17px'>" + task + " = </div>"); 
+		taskText.setHTML("<div style='font-size:24px'>" + task + " = </div>"); 
 	}
 	
 	/**
