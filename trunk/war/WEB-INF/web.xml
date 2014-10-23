@@ -70,6 +70,12 @@
 	<servlet-name>MathAssessmentCommunicationServiceServlet</servlet-name>
 	<servlet-class>com.wicam.numberlineweb.server.MathAssessment.MathAssessmentCommunicationServiceServlet</servlet-class>
   </servlet>
+
+  <servlet>
+	<servlet-name>SpellingAssessmentCommunicationServiceServlet</servlet-name>
+	<servlet-class>com.wicam.numberlineweb.server.SpellingAssessment.SpellingAssessmentCommunicationServiceServlet</servlet-class>
+  </servlet>
+
   <servlet>
   	<servlet-name>eventServiceImpl</servlet-name>
 	<servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class>
@@ -78,6 +84,7 @@
 	<servlet-name>EventServiceTestCommunicationServiceServlet</servlet-name>
 	<servlet-class>com.wicam.numberlineweb.server.EventServiceTest.EventServiceTestCommunicationServiceServlet</servlet-class>
   </servlet>
+
   
   <servlet-mapping>
     <servlet-name>GameCommunicationServiceServlet</servlet-name>
@@ -143,6 +150,12 @@
     <servlet-name>MathAssessmentCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/mathAssessmentCommunication</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SpellingAssessmentCommunicationServiceServlet</servlet-name>
+    <url-pattern>/numberlineweb/spellingAssessmentCommunication</url-pattern>
+  </servlet-mapping>
+
   <servlet-mapping>
   	<servlet-name>eventServiceImpl</servlet-name>
   	<url-pattern>/numberlineweb/gwteventservice</url-pattern>
@@ -151,6 +164,7 @@
     <servlet-name>EventServiceTestCommunicationServiceServlet</servlet-name>
     <url-pattern>/numberlineweb/eventServiceTestCommunication</url-pattern>
   </servlet-mapping>
+
   
   
   <!-- Default page to serve -->

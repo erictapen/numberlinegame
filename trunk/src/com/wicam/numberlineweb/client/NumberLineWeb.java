@@ -13,6 +13,9 @@ import com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCommunica
 import com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCoordinator;
 import com.wicam.numberlineweb.client.GameTypeSelector.GameType;
 import com.wicam.numberlineweb.client.Resources.ImageResources;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationService;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCoordinator;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.VowelGame.DehnungGame.DehnungGameCoordinator;
@@ -70,9 +73,14 @@ public class NumberLineWeb implements EntryPoint {
 	protected MathAssessmentCommunicationServiceAsync mathAssessmentCommService;
 	protected MathAssessmentCoordinator mathAssessmentCoordinator;
 	
+
+	protected SpellingAssessmentCommunicationServiceAsync spellingAssessmentCommService;
+	protected SpellingAssessmentCoordinator spellingAssessmentCoordinator;
+	
 	protected EventServiceTestCommunicationServiceAsync eventServiceCommServ;
 	protected EventServiceTestCoordinator eventServiceCoord;
 	
+
 	// TODO Switch that back to -1 before going live in server.
 	// Just for locale testing set the USERID to 2.
 //	public static int USERID = -1;
@@ -228,6 +236,24 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
+		/*
+		 * Adds the spelling assessment.
+		 */
+		gts.addGame(GameType.GRAMMAR, "SpellingAssessment", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
+				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				// TODO Logo adjustment. 
+				spellingAssessmentCommService = (SpellingAssessmentCommunicationServiceAsync) GWT.create(SpellingAssessmentCommunicationService.class);
+				spellingAssessmentCoordinator = new SpellingAssessmentCoordinator(spellingAssessmentCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				spellingAssessmentCoordinator.init();
+			}
+		});
+		
 		
 		//adds the dehnung game
 		// TODO This game seems not to be working correctly.
@@ -267,9 +293,10 @@ public class NumberLineWeb implements EntryPoint {
 
 			@Override
 			public void run() {
-
+				
 				mathAssessmentCommService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
 				mathAssessmentCoordinator = new MathAssessmentCoordinator(mathAssessmentCommService, RootPanel.get("game"), gts);
+
 
 				gts.hide(RootPanel.get("game"));
 				mathAssessmentCoordinator.init();

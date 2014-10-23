@@ -15,7 +15,8 @@ public class GameLogger {
 	
 	public static enum LoggingActive {ON, OFF};
 	
-	public static LoggingActive loggingActive = LoggingActive.ON;
+	// TODO set ON as soon as database is working
+	public static LoggingActive loggingActive = LoggingActive.OFF;
 	
 	private DatabaseConnection databaseConnection;
 	
@@ -79,6 +80,9 @@ public class GameLogger {
 		tempMap.put("com.wicam.numberlineweb.server.Letris." +
 				"LetrisGameCommunicationServiceServlet", LogGame.LETRIS);
 		
+		tempMap.put("com.wicam.numberlineweb.server.SpellingAssessment." +
+				"SpellingAssessmentCommunicationServiceServlet", LogGame.SPELLING_ASSESSMENT);
+		
 		tempMap.put("com.wicam.numberlineweb.server.MathAssessment." +
 				"MathAssessmentCommunicationServiceServlet", LogGame.MATH_ASSESSMENT);
 
@@ -93,7 +97,10 @@ public class GameLogger {
 		BUDDYNUMBER_PICKED_NUMBER_PAIR, BUDDYNUMBER_NPC_PICKED_NUMBER, MULTIPLICATION_TASK_PRESENTED,
 		MULTIPLICATION_USER_PICKED_ANSWER, MULTIPLICATION_NPC_PICKED_ANSWER, LETRIS_BLOCK_SET,
 		LETRIS_WORD_CORRECT, LETRIS_WORD_INCORRECT, LETRIS_TARGET_WORD_PRESENTED, MATH_ASSESSMENT_ITEM_PRESENTED,
-		MATH_ASSESSMENT_USER_ANSWERED, MATH_ASSESSMENT_USER_ABORTED;
+
+		SPELLING_ASSESSMENT_ITEM_PRESENTED, SPELLING_ASSESSMENT_INPUTFIELD_PRESENTED,
+		SPELLING_ASSESSMENT_KEY_PRESSED, SPELLING_ASSESSMENT_WORD_COMPLETED, MATH_ASSESSMENT_USER_ANSWERED, MATH_ASSESSMENT_USER_ABORTED;
+
 
 		//Get ID for game type
 		public static int getIndex(LogActionType logActionType){
@@ -144,6 +151,15 @@ public class GameLogger {
 					return 21;
 				case MATH_ASSESSMENT_USER_ABORTED:
 					return 22;
+				case SPELLING_ASSESSMENT_ITEM_PRESENTED:
+					return 23;
+				case SPELLING_ASSESSMENT_INPUTFIELD_PRESENTED:
+					return 24;
+				case SPELLING_ASSESSMENT_KEY_PRESSED:
+					return 25;
+				case SPELLING_ASSESSMENT_WORD_COMPLETED:
+					return 26;
+
 				default:
 					//Should not occur
 					return -1;
@@ -179,7 +195,7 @@ public class GameLogger {
 	
 	public enum LogGame {NUMBER_LINE_GAME, DOPPELUNG_GAME,
 		DEHNUNG_GAME, MATH_DIAGNOSTICS, MULTIPLICATION, MULTIPLICATION_INVERSE, BUDDY_NUMBER,
-		WORD_STEM, OVER_TEN, WORD_FAMILY, LETRIS, MATH_ASSESSMENT;
+		WORD_STEM, OVER_TEN, WORD_FAMILY, LETRIS, MATH_ASSESSMENT, SPELLING_ASSESSMENT;
 
 		//Get ID for game type
 		public static int getIndex(LogGame logGame){
@@ -210,6 +226,8 @@ public class GameLogger {
 					return 11;
 				case MATH_ASSESSMENT:
 					return 12;
+				case SPELLING_ASSESSMENT:
+					return 13;
 				default:
 					//Should not occur
 					return -1;
