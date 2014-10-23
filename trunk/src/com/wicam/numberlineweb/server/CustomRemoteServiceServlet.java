@@ -15,7 +15,7 @@ import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 
-public class CustomRemoteServiceServlet extends RemoteEventServiceServlet {
+public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 
 	/**
 	 * 

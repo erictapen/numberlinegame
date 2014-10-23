@@ -59,7 +59,7 @@ public class GameLogger {
 				"MathDiagnosticsCommunicationServiceServlet", LogGame.MATH_DIAGNOSTICS);
 		
 		tempMap.put("com.wicam.numberlineweb.server.Multiplication." +
-				"MathAssessmentCommunicationServiceServlet", LogGame.MULTIPLICATION);
+				"MultiplicationGameCommunicationServiceServlet", LogGame.MULTIPLICATION);
 		
 		tempMap.put("com.wicam.numberlineweb.server.BuddyNumber." +
 				"BuddyNumberGameCommunicationServiceServlet", LogGame.BUDDY_NUMBER);
