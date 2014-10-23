@@ -13,6 +13,7 @@ import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
 import de.novanic.eventservice.service.EventExecutorService;
 import de.novanic.eventservice.service.EventExecutorServiceFactory;
+import de.novanic.eventservice.service.RemoteEventServiceServlet;
 
 /**
  * The EventService Test servlet that - over CustomRemoteServiceServlet - extends RemoteEventServiceServlet
@@ -21,7 +22,7 @@ import de.novanic.eventservice.service.EventExecutorServiceFactory;
  *
  */
 
-public class EventServiceTestCommunicationServiceServlet extends CustomRemoteServiceServlet implements
+public class EventServiceTestCommunicationServiceServlet extends RemoteEventServiceServlet implements
 		EventServiceTestCommunicationService {
 
 	private static final long serialVersionUID = 129270086406637782L;
@@ -49,6 +50,8 @@ public class EventServiceTestCommunicationServiceServlet extends CustomRemoteSer
 		
 		currentClientID++;
 		clientID2Counter.put(currentClientID, 0);
+		
+		System.out.println("Starting counter for client ID: " + currentClientID);
 
 		EventServiceTestCounterEvent event = new EventServiceTestCounterEvent();
 		event.setCounter(0);
@@ -68,6 +71,8 @@ public class EventServiceTestCommunicationServiceServlet extends CustomRemoteSer
 	 */
 	public void count(int clientID) {
 
+		System.out.println("Counting for client ID: " + clientID);
+		
 		int counter = clientID2Counter.get(clientID) + 1;
 		EventServiceTestCounterEvent event = new EventServiceTestCounterEvent();
 		event.setCounter(counter);
@@ -80,6 +85,8 @@ public class EventServiceTestCommunicationServiceServlet extends CustomRemoteSer
 	 */
 	@Override
 	public void stopCounter(int clientID) {
+		
+		System.out.println("Stopping counter for client ID: " + clientID);
 
 		Timer timer = clientID2Timer.get(clientID);
 		timer.cancel();
