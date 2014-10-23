@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.server.MathAssessment;
+package com.wicam.numberlineweb.server.SpellingAssessment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.Map;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentState;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationService;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentState;
 import com.wicam.numberlineweb.server.CustomRemoteServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
@@ -20,21 +22,21 @@ import com.wicam.numberlineweb.server.logging.GameLogger.LogActionType;
  *
  */
 
-public class MathAssessmentCommunicationServiceServlet extends
-	CustomRemoteServiceServlet implements MathAssessmentCommunicationService {
+public class SpellingAssessmentCommunicationServiceServlet extends
+	CustomRemoteServiceServlet implements SpellingAssessmentCommunicationService {
 	
 	private static final long serialVersionUID = 7200332323767902482L;
 	protected String internalName;
-	protected MathAssessmentItemList itemList;
+	protected SpellingAssessmentItemList itemList;
 	protected Map<Integer, GameLogger> assessmentId2Logger;
-	protected Map<Integer, MathAssessmentState> assessmentId2openAssessments;
+	protected Map<Integer, SpellingAssessmentState> assessmentId2openAssessments;
 	protected int currentAssessmentID;
 	
-	public MathAssessmentCommunicationServiceServlet() {
-		this.internalName = "math_assessment";
-		this.itemList = new MathAssessmentItemList();
+	public SpellingAssessmentCommunicationServiceServlet() {
+		this.internalName = "spelling_assessment";
+		this.itemList = new SpellingAssessmentItemList();
 		this.assessmentId2Logger = new HashMap<Integer, GameLogger>();
-		this.assessmentId2openAssessments = new HashMap<Integer, MathAssessmentState>();
+		this.assessmentId2openAssessments = new HashMap<Integer, SpellingAssessmentState>();
 		this.currentAssessmentID = 0;
 	}
 
@@ -43,13 +45,14 @@ public class MathAssessmentCommunicationServiceServlet extends
 	 */
 	@Override
 	public synchronized void itemPresented(String message) {
+
+		System.out.println("Item presented.");
+		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
 		String item = message.split(":")[1];
 		long timestamp = Long.parseLong(message.split(":")[2]);
-		
-		System.out.println("Item presented: " + item);
 		
 		// Log the item.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
@@ -66,6 +69,9 @@ public class MathAssessmentCommunicationServiceServlet extends
 	 */
 	@Override
 	public synchronized void userAnswered(String message) {
+
+		System.out.println("User answered.");
+		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
@@ -74,8 +80,6 @@ public class MathAssessmentCommunicationServiceServlet extends
 		boolean isCorrect = Boolean.parseBoolean(message.split(":")[3]);
 		long reactionTime = Long.parseLong(message.split(":")[4]);
 		long timestamp = Long.parseLong(message.split(":")[5]);
-		
-		System.out.println("User answered: " + answer);
 
 		// Log the item.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
@@ -94,9 +98,9 @@ public class MathAssessmentCommunicationServiceServlet extends
 	 * @throws GameJoinException 
 	 */
 	@Override
-	public synchronized MathAssessmentState startAssessment(int userID) throws GameJoinException {
+	public synchronized SpellingAssessmentState startAssessment(int userID) throws GameJoinException {
 		
-		MathAssessmentState state = new MathAssessmentState();
+		SpellingAssessmentState state = new SpellingAssessmentState();
 		
 		// Set user ID.
 		state.setUserID(userID);
@@ -129,7 +133,8 @@ public class MathAssessmentCommunicationServiceServlet extends
 				System.currentTimeMillis(), LogActionType.GAME_STARTED, "", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
-		System.out.println("Started assessment: " + state.getAssessmentID() + " with User ID: " + state.getUserID());
+		System.out.println("Started assessment " + state.getAssessmentID());
+		System.out.println("User ID: " + state.getUserID());
 		
 		return state;
 	}
@@ -173,7 +178,7 @@ public class MathAssessmentCommunicationServiceServlet extends
 	public void userAborted(String message) {
 
 		System.out.println("User aborted.");
-//		System.out.println("Logging: " + message);
+		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
 		int assessmentID = Integer.parseInt(message.split(":")[0]);
