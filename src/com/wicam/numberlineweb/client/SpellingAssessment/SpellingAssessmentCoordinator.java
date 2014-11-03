@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 import com.wicam.numberlineweb.client.GameTypeSelector;
 import com.wicam.numberlineweb.client.NumberLineWeb;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 /**
  * Coordinator of the math assessment.
@@ -27,13 +29,12 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	protected SpellingAssessmentState state;
 	protected SpellingAssessmentCommunicationServiceAsync commServ;
 	protected SpellingAssessmentView view;
-	protected ArrayList<String> itemList;
-	protected Iterator<String> itemListIterator;
-	protected String currentItem;
+	protected ArrayList<SpellingAssessmentItem> itemList;
+	protected Iterator<SpellingAssessmentItem> itemListIterator;
+	protected SpellingAssessmentItem currentItem;
 	protected long itemPresentedTimeStamp;
 	protected long userAnsweredTimeStamp;
 	protected long reactionMilliSeconds;
-	protected SpellingAssessmentTaskResultParser taskResultParser = new SpellingAssessmentTaskResultParser();
 	protected WhiteScreenTimer whiteScreenTimer = new WhiteScreenTimer();
 	protected FixationScreenTimer fixationScreenTimer = new FixationScreenTimer();
 	protected int whiteScreenDuration = 500; //ms
@@ -58,7 +59,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		this.view = null;
 		this.controller = null;
 		this.itemList = null;
-		this.currentItem = "";
+		this.currentItem = null;
 		this.itemPresentedTimeStamp = 0;
 		this.userAnsweredTimeStamp = 0;
 		this.reactionMilliSeconds = 0;
@@ -104,7 +105,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		
 	};
 	
-	AsyncCallback<ArrayList<String>> itemListCallback = new AsyncCallback<ArrayList<String>>() {
+	AsyncCallback<ArrayList<SpellingAssessmentItem>> itemListCallback = new AsyncCallback<ArrayList<SpellingAssessmentItem>>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -113,7 +114,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		}
 
 		@Override
-		public void onSuccess(ArrayList<String> result) {
+		public void onSuccess(ArrayList<SpellingAssessmentItem> result) {
 			GWT.log("Downloaded the item list for the spelling assessment.");
 			
 			itemList = result;
@@ -135,14 +136,22 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	public void userAnswered(String answer, long timestamp) {
 		
 		// Handle results that are NOT numeric.
+		// TODO: Steffi fragen, welche Tastatureingaben zulaessig sind
+		/*
 		if (!numericChecker.isDoubleConvertible(answer)) {
 			view.showNotNumericWarning(true);
 			view.highlightUserAnswer();
 			return;
 		}
+		*/
 		
+		boolean isCorrect;
 		// Check the correctness of the given answer.
-		boolean isCorrect = taskResultParser.checkTaskResult(currentItem, answer);
+		if(answer == currentItem.result()){
+			isCorrect = true;
+		} else{
+			isCorrect = false;
+		}
 		
 		// Pass the item, the result, the correctness, the reaction time and the time stamp to the server. 
 		userAnsweredTimeStamp = timestamp;

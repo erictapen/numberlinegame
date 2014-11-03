@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 
 /**
@@ -34,6 +35,8 @@ public class SpellingAssessmentItemList implements IsSerializable{
 	
 	private void init() {
 		items.add(new SpellingAssessmentItem("Eine Bananenschale ist ________.", "Banane.wav", "Abfall"));
+		items.add(new SpellingAssessmentItem("Sonne, Mond und ________.", "Sterne.wav", "Sterne"));
+		items.add(new SpellingAssessmentItem("Hoch auf den gelben ________.", "Wagen.wav", "Wagen"));
 		
 	}
 	

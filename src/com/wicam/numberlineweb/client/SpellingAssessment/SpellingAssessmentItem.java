@@ -1,4 +1,4 @@
-package com.wicam.numberlineweb.server.SpellingAssessment;
+package com.wicam.numberlineweb.client.SpellingAssessment;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

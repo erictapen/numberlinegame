@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Line;
+
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 /**
  * Math assessment view.
@@ -83,7 +85,8 @@ public class SpellingAssessmentView extends Composite {
 		// Setup the panel with the field for the item/taskText and the entry field.
 		taskPanel.setHeight("400px");
 		taskPanel.setWidth("750px");
-		setTask("");
+		
+		setTask(new SpellingAssessmentItem());
 		taskPanel.add(taskText);
 		taskPanel.setWidgetPosition(taskText, 310, 194);
 		setNonNumericWarning();
@@ -161,8 +164,8 @@ public class SpellingAssessmentView extends Composite {
 	 * Shows the screen where the taskText is presented to the user and the user
 	 * may enter a result to the taskText. 
 	 */
-	public void showTaskScreen(String task) {
-		setTask(task);
+	public void showTaskScreen(SpellingAssessmentItem currentItem) {
+		setTask(currentItem);
 		clearResultBox();
 		
 		// Show the task view.
@@ -224,8 +227,9 @@ public class SpellingAssessmentView extends Composite {
 	 * Sets the new taskText in the view.
 	 * @param taskText
 	 */
-	private void setTask(String task) {
-		taskText.setHTML("<div style='font-size:17px'>" + task + " = </div>"); 
+	private void setTask(SpellingAssessmentItem currentItem) {
+		
+		taskText.setHTML("<div style='font-size:17px'>" + currentItem.getSentence() + " = </div>"); 
 	}
 	
 	/**
