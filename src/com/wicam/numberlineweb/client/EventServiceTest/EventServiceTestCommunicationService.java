@@ -12,9 +12,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 
 public interface EventServiceTestCommunicationService extends RemoteService {
-
-	public int startCounter();
 	
-	public void stopCounter(int clientID);
+	public void registerClient(String clientID);
+
+	public void startCounter(String clientID);
+	
+	public void stopCounter(String clientID);
 	
 }
