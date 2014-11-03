@@ -6,6 +6,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
+import com.wicam.numberlineweb.server.SpellingAssessment.SpellingAssessmentItemList;
 
 @RemoteServiceRelativePath("spellingAssessmentCommunication")
 
@@ -25,7 +27,7 @@ public interface SpellingAssessmentCommunicationService extends RemoteService {
 	
 	public void endAssessment(int assessmentID);
 	
-	public ArrayList<String> loadShuffledItemList();
+	public ArrayList<SpellingAssessmentItem> loadShuffledItemList();
 	
 	public void userAborted(String message);
 	

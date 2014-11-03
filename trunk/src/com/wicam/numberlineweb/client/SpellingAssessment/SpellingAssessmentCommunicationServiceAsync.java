@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.wicam.numberlineweb.client.GameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
+import com.wicam.numberlineweb.server.SpellingAssessment.SpellingAssessmentItemList;
 
 /**
  * Math assessment communication service async interface. 
@@ -21,7 +23,7 @@ public interface SpellingAssessmentCommunicationServiceAsync {
 
 	public void startAssessment(int userID, AsyncCallback<SpellingAssessmentState> callback);
 
-	public void loadShuffledItemList(AsyncCallback<ArrayList<String>> callback);
+	public void loadShuffledItemList(AsyncCallback<ArrayList<SpellingAssessmentItem>> callback);
 	
 	public void userAborted(String message, AsyncCallback<Void> voidCallback);
 	

@@ -8,6 +8,7 @@ import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentState;
 import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationService;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentState;
 import com.wicam.numberlineweb.server.CustomRemoteServiceServlet;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
@@ -165,7 +166,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 	 * Retrieve the shuffled list of math tasks.
 	 */
 	@Override
-	public synchronized ArrayList<String> loadShuffledItemList() {
+	public synchronized ArrayList<SpellingAssessmentItem> loadShuffledItemList() {
 
 		System.out.println("Item list is being retrieved.");
 		return itemList.getShuffledItemList();
