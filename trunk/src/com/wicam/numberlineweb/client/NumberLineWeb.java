@@ -125,22 +125,6 @@ public class NumberLineWeb implements EntryPoint {
 	 */
 
 	public void showGameTypeSelector() {
-		//boolean numberLineGame = false;
-
-//		final AsyncCallback<Boolean> voidCallback = new AsyncCallback<Boolean>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO Auto-generated method stub
-//			}
-//
-//			@Override
-//			public void onSuccess(Boolean result) {
-//
-//
-//			}
-//
-//		};
 		
 		// add math games container
 		gts.addGame(GameType.CAT, "Mathespiele", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
@@ -163,7 +147,7 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// Adds the MathAssessment.
-		gts.addGame(GameType.CAT, "GWTEventService Test", "pre_mathDiagnostics.png", 
+		gts.addGame(GameType.CAT, "Server Push Test", "pre_mathDiagnostics.png", 
 				"", new GameItemStarter() {
 
 			@Override
@@ -393,16 +377,10 @@ public class NumberLineWeb implements EntryPoint {
 				coordinator.init();
 			}
 		});
-
-		
-		
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));
 
 	}
-	
-	
-	
 
 }

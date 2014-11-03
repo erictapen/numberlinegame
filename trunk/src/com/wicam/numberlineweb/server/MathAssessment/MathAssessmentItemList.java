@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Stores the math task items of the assessment.
  * @author timfissler
  *
  */
 
-public class MathAssessmentItemList {
+public class MathAssessmentItemList implements IsSerializable {
 
 	private Random rand = new Random();
 	private ArrayList<String> items = new ArrayList<String>();

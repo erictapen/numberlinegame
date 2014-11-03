@@ -22,6 +22,7 @@ public class EventServiceTestView extends Composite {
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
 	private final AbsolutePanel testPanel = new AbsolutePanel();
 	private final HTML counterText = new HTML();
+	private String fontColor;
 	private final Button startButton = new Button("Starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -41,6 +42,7 @@ public class EventServiceTestView extends Composite {
 	 */
 	public EventServiceTestView(EventServiceTestCoordinator coord) {
 		this.coord = coord;
+		this.fontColor = "black";
 		init();
 		this.initWidget(motherPanel);
 	}
@@ -67,11 +69,19 @@ public class EventServiceTestView extends Composite {
 	}
 	
 	/**
+	 * Sets the font color of the counter. Use the format of the HTML font tag, e.g. 'red', 'black'.
+	 * @param fontColor
+	 */
+	public void setFontColor(String fontColor) {
+		this.fontColor = fontColor;
+	}
+	
+	/**
 	 * Sets the new counter in the view.
 	 * @param taskText
 	 */
 	public void setCounter(String counter) {
-		counterText.setHTML("<div style='font-size:32px'>" + counter + "</div>"); 
+		counterText.setHTML("<div style='font-size:32px;color:" + fontColor + "'>" + counter + "</div>"); 
 	}
 	
 }

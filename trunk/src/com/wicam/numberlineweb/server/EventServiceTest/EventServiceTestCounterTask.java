@@ -4,10 +4,10 @@ import java.util.TimerTask;
 
 public class EventServiceTestCounterTask extends TimerTask {
 	
-	private int clientID;
+	private String clientID;
 	private EventServiceTestCommunicationServiceServlet servlet;
 
-	public EventServiceTestCounterTask(int clientID, EventServiceTestCommunicationServiceServlet servlet) {
+	public EventServiceTestCounterTask(String clientID, EventServiceTestCommunicationServiceServlet servlet) {
 		this.clientID = clientID;
 		this.servlet = servlet;
 	}

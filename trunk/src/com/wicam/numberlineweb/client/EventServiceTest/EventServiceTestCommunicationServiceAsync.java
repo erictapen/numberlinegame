@@ -9,9 +9,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 
 public interface EventServiceTestCommunicationServiceAsync {
-
-	public void startCounter(AsyncCallback<Integer> startCallback);
 	
-	public void stopCounter(int clientID, AsyncCallback<Void> stopCallback);
+	public void registerClient(String clientID, AsyncCallback<Void> registerCallback);
+
+	public void startCounter(String clientID, AsyncCallback<Void> startCallback);
+	
+	public void stopCounter(String clientID, AsyncCallback<Void> stopCallback);
 	
 }
