@@ -37,9 +37,9 @@ import com.wicam.numberlineweb.client.OverTen.OverTenGameCoordinator;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCoordinator;
-import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
-import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationServiceAsync;
-import com.wicam.numberlineweb.client.Letris.LetrisGameCoordinator;
+import com.wicam.numberlineweb.client.LetrisPush.LetrisPushGameCommunicationService;
+import com.wicam.numberlineweb.client.LetrisPush.LetrisPushGameCommunicationServiceAsync;
+import com.wicam.numberlineweb.client.LetrisPush.LetrisPushGameCoordinator;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationServiceAsync;
 import com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCoordinator;
@@ -146,7 +146,7 @@ public class NumberLineWeb implements EntryPoint {
 			}
 		});
 		
-		// Adds the MathAssessment.
+		// Adds the EventServiceTest app.
 		gts.addGame(GameType.CAT, "Server Push Test", "pre_mathDiagnostics.png", 
 				"", new GameItemStarter() {
 
@@ -197,8 +197,8 @@ public class NumberLineWeb implements EntryPoint {
 			@Override
 			public void run() {
 
-				commService = (LetrisGameCommunicationServiceAsync) GWT.create(LetrisGameCommunicationService.class);
-				coordinator = new LetrisGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				commService = (LetrisPushGameCommunicationServiceAsync) GWT.create(LetrisPushGameCommunicationService.class);
+				coordinator = new LetrisPushGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

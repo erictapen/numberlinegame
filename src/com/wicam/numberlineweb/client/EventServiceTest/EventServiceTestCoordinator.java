@@ -164,6 +164,7 @@ public class EventServiceTestCoordinator {
 		public void onSuccess(Void result) {
 			// Cleanup.
 			eventService.removeListener(DomainFactory.USER_SPECIFIC_DOMAIN, counterListener);
+			eventService.removeListener(GLOBAL_DOMAIN, fontColorListener);
 			rootPanel.clear();
 			gts.init(rootPanel);
 		}

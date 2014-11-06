@@ -3,6 +3,8 @@ package com.wicam.numberlineweb.client.LetrisPush;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.wicam.numberlineweb.client.GameCommunicationService;
+import com.wicam.numberlineweb.client.GameJoinException;
 import com.wicam.numberlineweb.client.GameState;
 import com.wicam.numberlineweb.client.Letris.LetrisGameCommunicationService;
 import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
@@ -16,9 +18,11 @@ import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 @RemoteServiceRelativePath("letrisPushGameCommunication")
 
 public interface LetrisPushGameCommunicationService extends
-		LetrisGameCommunicationService {
+		GameCommunicationService {
 	
-//	public GameState updatePoints(String ids);
-//	
-//	public ArrayList<VowelGameWord> getTargetWords();
+	public String joinGame(String ids, String connectionID) throws GameJoinException;
+	
+	public void sendTargetUpdate(LetrisPushGamePlaygroundState playgroundState);
+	
+	public ArrayList<VowelGameWord> getTargetWords();
 }

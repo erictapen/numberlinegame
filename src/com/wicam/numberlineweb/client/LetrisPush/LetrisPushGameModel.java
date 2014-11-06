@@ -57,6 +57,40 @@ public class LetrisPushGameModel {
 	 * Amount of letters that have been dropped until now.
 	 */
 	private int droppedLetters;
+	/**
+	 * The word that is currently being displayed letter block by letter block. 
+	 */
+	private VowelGameWord currentWord;
+	/**
+	 * The letter blocks that have already been set on the bottom of the playground. 
+	 */
+	private ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks = new ArrayList<LetrisPushGameLetterBlock>();
+	/**
+	 * The one letter block that currently moves from top to bottom, e.g. is being dropped.
+	 */
+	private LetrisPushGameLetterBlock movingLetterBlock;
+	/**
+	 * The letter blocks that are waiting to be displayed.
+	 */
+	private ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDisplayed = new ArrayList<LetrisPushGameLetterBlock>();
+	/**
+	 * The letter blocks that are waiting to be deleted after presentation.
+	 */
+	private ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDeleted = new ArrayList<LetrisPushGameLetterBlock>();
+	/**
+	 * The words that were build correctly by the player. 
+	 */
+	private ArrayList<VowelGameWord> correctWords = new ArrayList<VowelGameWord>();
+	/**
+	 * The words to be recognized. E.g. the words that are being or have been displayed
+	 * but weren't build correctly by the player yet.
+	 */
+	private ArrayList<VowelGameWord> missingWords = new ArrayList<VowelGameWord>();
+	/**
+	 * Level of the highest filler row displayed on the playground.
+	 * 0 means lowest row is filled. -1 means no row is filled. 
+	 */
+	private int fillerRowLevel = -1;
 	
 	private ArrayList<VowelGameWord> pseudoRandomTargetWords = new ArrayList<VowelGameWord>();
 	
@@ -68,39 +102,146 @@ public class LetrisPushGameModel {
 		this.correctWordsInARow = 0;
 		this.droppedLetters = 0;
 		this.letterBlockCreator = new LetrisPushGameTargetLetterBlockCreator(rotatedLetterRatio, distractorLetterRatio, timePerBlock);
-	}
-	
-	/**
-	 * Construct a functional LeTris game state from a given empty one.
-	 * @param gameState the empty game state
-	 * @return gameState the functional game state
-	 */
-	public void setupGameState(LetrisPushGameState gameState) {
-		gameState.setStaticLetterBlocks(new ArrayList<LetrisPushGameLetterBlock>());
-		gameState.setMissingWords(new ArrayList<VowelGameWord>());
-		gameState.setCorrectWords(new ArrayList<VowelGameWord>());
+		
+		// Initialize the model.
+		setStaticLetterBlocks(new ArrayList<LetrisPushGameLetterBlock>());
+		setMissingWords(new ArrayList<VowelGameWord>());
+		setCorrectWords(new ArrayList<VowelGameWord>());
 		
 		// Set up all the lists and the moving block.
-//		gameState.setCurrentWord(getNextRandomCurrentWord());
-		gameState.setCurrentWord(getNextPseudoRandomCurrentWord());
+//		setCurrentWord(getNextRandomCurrentWord());
+		setCurrentWord(getNextPseudoRandomCurrentWord());
 		
 		// Add current word to missing words.
-		gameState.addMissingWord(gameState.getCurrentWord());
+		addMissingWord(getCurrentWord());
 		
 		// Create new letter blocks and retrieve them.
-		letterBlockCreator.createTargetLetterBlocks(gameState.getCurrentWord().getWordString());
-		gameState.setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
+		letterBlockCreator.createTargetLetterBlocks(getCurrentWord().getWordString());
+		setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
 		
 		// Copy the list so that the blocks to be deleted aren't influenced by the successive
 		// Deletion of the blocks to be displayed.
-		gameState.setLetterBlocksToBeDeleted(new ArrayList<LetrisPushGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
+		setLetterBlocksToBeDeleted(new ArrayList<LetrisPushGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
 		
 		// Set the first letter block to be displayed as the moving letter block and
 		// remove it from the list.
-		LetrisPushGameLetterBlock movingLetterBlock = gameState.getLetterBlocksToBeDisplayed().get(0);
-		gameState.removeLetterBlockToBeDisplayed(movingLetterBlock);
-		gameState.setMovingLetterBlock(movingLetterBlock);
+		LetrisPushGameLetterBlock movingLetterBlock = getLetterBlocksToBeDisplayed().get(0);
+		removeLetterBlockToBeDisplayed(movingLetterBlock);
+		setMovingLetterBlock(movingLetterBlock);
 	}
+	
+	public int getFillerLevel() {
+		return fillerRowLevel;
+	}
+
+	public void setFillerLevel(int fillerRows) {
+		this.fillerRowLevel = fillerRows;
+	}
+
+	public LetrisPushGameLetterBlock getMovingLetterBlock() {
+		return movingLetterBlock;
+	}
+	
+	public void setMovingLetterBlock(LetrisPushGameLetterBlock letterBlock) {
+		movingLetterBlock = letterBlock;
+	}
+	
+	public ArrayList<LetrisPushGameLetterBlock> getStaticLetterBlocks() {
+		return staticLetterBlocks;
+	}
+	
+	public void setStaticLetterBlocks(ArrayList<LetrisPushGameLetterBlock> letterBlocks) {
+		staticLetterBlocks = letterBlocks;
+	}
+	
+	public void addStaticLetterBlock(LetrisPushGameLetterBlock letterBlock) {
+		staticLetterBlocks.add(letterBlock);
+	}
+	
+	public void removeStaticLetterBlock(LetrisPushGameLetterBlock letterBlock) {
+		staticLetterBlocks.remove(letterBlock);
+	}
+	
+	public ArrayList<LetrisPushGameLetterBlock> getLetterBlocksToBeDisplayed() {
+		return letterBlocksToBeDisplayed;
+	}
+	
+	public void setLetterBlocksToBeDisplayed(ArrayList<LetrisPushGameLetterBlock> letterBlocks) {
+		letterBlocksToBeDisplayed = letterBlocks;
+	}
+	
+	public void addLetterBlockToBeDisplayed(LetrisPushGameLetterBlock letterBlock) {
+		letterBlocksToBeDisplayed.add(letterBlock);
+	}
+	
+	public void removeLetterBlockToBeDisplayed(LetrisPushGameLetterBlock letterBlock) {
+		letterBlocksToBeDisplayed.remove(letterBlock);
+	}
+	
+	public ArrayList<LetrisPushGameLetterBlock> getLetterBlocksToBeDeleted() {
+		return letterBlocksToBeDeleted;
+	}
+	
+	public void setLetterBlocksToBeDeleted(ArrayList<LetrisPushGameLetterBlock> letterBlocks) {
+		letterBlocksToBeDeleted = letterBlocks;
+	}
+	
+	public void addLetterBlockToBeDeleted(LetrisPushGameLetterBlock letterBlock) {
+		letterBlocksToBeDeleted.add(letterBlock);
+	}
+	
+	public void removeLetterBlockToBeDeleted(LetrisPushGameLetterBlock letterBlock) {
+		letterBlocksToBeDeleted.remove(letterBlock);
+	}
+	
+	public VowelGameWord getCurrentWord() {
+		return currentWord;
+	}
+	
+	public void setCurrentWord(VowelGameWord currentWord) {
+		this.currentWord = currentWord;
+	}
+	
+	public ArrayList<VowelGameWord> getCorrectWords() {
+		return correctWords;
+	}
+	
+	public void setCorrectWords(ArrayList<VowelGameWord> correctWords) {
+		this.correctWords = correctWords;
+	}
+	
+	public void addCorrectWord(VowelGameWord correctWord) {
+		correctWords.add(correctWord);
+	}
+	
+	public void removeCorrectWord(VowelGameWord correctWord) {
+		correctWords.remove(correctWord);
+	}
+	
+	public ArrayList<VowelGameWord> getMissingWords() {
+		return missingWords;
+	}
+	
+	public void setMissingWords(ArrayList<VowelGameWord> missingWords) {
+		this.missingWords = missingWords;
+	}
+	
+	public void addMissingWord(VowelGameWord missingWord) {
+		missingWords.add(missingWord);
+	}
+	
+	public void removeMissingWord(VowelGameWord missingWord) {
+		missingWords.remove(missingWord);
+	}
+	
+//	/**
+//	 * Construct a functional LeTris game state from a given empty one.
+//	 * @param gameState the empty game state
+//	 * @return gameState the functional game state
+//	 */
+//	public void setupGameState(LetrisPushGameState gameState) {
+//		
+//	}
 	
 	/**
 	 * Initialize the moving taskText and
@@ -109,15 +250,15 @@ public class LetrisPushGameModel {
 	 */
 	public void startMoving() {
 		if (this.movingLetterBlockTask == null) {
-			if (this.coordinator.getGameState().getMovingLetterBlock() != null) {
+			if (getMovingLetterBlock() != null) {
 				
-				this.movingLetterBlockTask = new LetrisPushGameMoveLetterBlockTask(this.coordinator.getGameState().getMovingLetterBlock(), this);
-				GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
+				this.movingLetterBlockTask = new LetrisPushGameMoveLetterBlockTask(getMovingLetterBlock(), this);
+				GWT.log("Current target word: " + getCurrentWord());
 				coordinator.updateTargetWord();
 				
 				// Copy the letter block.
 				LetrisPushGameLetterBlock nextLetterBlock = letterBlockCreator.copyLetterBlock(
-						coordinator.getGameState().getLetterBlocksToBeDisplayed().get(0));
+						getLetterBlocksToBeDisplayed().get(0));
 				coordinator.updateNextBlock(nextLetterBlock);
 				
 			} else {
@@ -128,12 +269,12 @@ public class LetrisPushGameModel {
 	}
 	
 	/**
-	 * True, if the given letter block currently is drawn.
+	 * True, if the given letter block currently is visible on the playground.
 	 * @param letterBlock
 	 * @return
 	 */
-	public boolean isDrawn(LetrisPushGameLetterBlock letterBlock) {
-		return coordinator.isDrawn(letterBlock);
+	public boolean isVisibleOnPlayground(LetrisPushGameLetterBlock letterBlock) {
+		return coordinator.isVisibleOnPlayground(letterBlock);
 	}
 	
 	/**
@@ -209,7 +350,7 @@ public class LetrisPushGameModel {
 	 */
 	public boolean isCollidingWithStaticLetterBlocks(LetrisPushGameLetterBlock letterBlock) {
 		boolean collides = false;
-		ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks = this.coordinator.getGameState().getStaticLetterBlocks();
+		ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks = getStaticLetterBlocks();
 		for (int i = 0; i < staticLetterBlocks.size(); i++) {
 			if (letterBlock.isColliding(staticLetterBlocks.get(i))) {
 				collides = true;
@@ -260,21 +401,20 @@ public class LetrisPushGameModel {
 		
 	}
 	
-	/**
-	 * Update view and server with the current game state.
-	 */
-	public void updateViewAndServer() {
-		coordinator.updatePlaygroundInView();
-		coordinator.pushGameStateToServer();
-	}
+//	/**
+//	 * Update view and server with the current game state.
+//	 */
+//	public void updateViewAndServer(int opponentFillerRowsLevelDiff) {
+//		coordinator.updatePlaygroundInView();
+//		coordinator.sendTargetUpdate(opponentFillerRowsLevelDiff);
+//	}
 	
 	/**
-	 * Updates the game state with the latest version of the currently moving
-	 * letter block.
+	 * Updates the currently moving letter block.
 	 * @param letterBlock
 	 */
 	public void updateMovingLetterBlock(LetrisPushGameLetterBlock letterBlock) {
-		coordinator.getGameState().setMovingLetterBlock(letterBlock);
+		setMovingLetterBlock(letterBlock);
 	}
 	
 	/**
@@ -291,7 +431,7 @@ public class LetrisPushGameModel {
 	 * @param movementDirection
 	 */
 	public void moveLetterBlock(MovementDirection movementDirection) {
-		LetrisPushGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
+		LetrisPushGameLetterBlock movingLetterBlock = getMovingLetterBlock();
 		if (movingLetterBlock != null) {
 			movingLetterBlock.move(movementDirection);
 			// Collision checking.
@@ -301,12 +441,10 @@ public class LetrisPushGameModel {
 					&& !(movingLetterBlock.getX() > 14)) {
 				// No collision.
 				movingLetterBlockTask.updateMovingLetterBlock(movingLetterBlock);
-//				updateViewAndServer();
-				// TODO Check if this works.
-				if (isDrawn(movingLetterBlock)) {
+				if (isVisibleOnPlayground(movingLetterBlock)) {
 					updateLetterBlockInView(movingLetterBlock);
 				} else {
-					updateViewAndServer();
+					coordinator.updatePlaygroundInView();
 				}
 			} else {
 				// Collision.
@@ -329,17 +467,17 @@ public class LetrisPushGameModel {
 	 * Drop the currently moving letter block instantly.
 	 */
 	public void dropLetterBlock() {
-		LetrisPushGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
+		LetrisPushGameLetterBlock movingLetterBlock = getMovingLetterBlock();
 		if (movingLetterBlock != null) {
 			int yPos = findLowestFreePosition(movingLetterBlock.getX());
 			movingLetterBlock.setY(yPos);
 			this.movingLetterBlockTask.updateMovingLetterBlock(movingLetterBlock);
-//			updateViewAndServer();
-			// TODO Check if this works.
-			if (isDrawn(movingLetterBlock)) {
+			if (isVisibleOnPlayground(movingLetterBlock)) {
 				updateLetterBlockInView(movingLetterBlock);
 			} else {
-				updateViewAndServer();
+				coordinator.updatePlaygroundInView();
+				// TODO Delete this line because a server update already happens in swapMovingLetterBlock()?
+				coordinator.sendTargetUpdate(0);
 			}
 			this.movingLetterBlockTask.markForDelete();
 			swapMovingLetterBlock();
@@ -367,7 +505,7 @@ public class LetrisPushGameModel {
 	 * by the player.
 	 */
 	public void rotateLetterBlock(RotationDirection rotationDirection) {
-		LetrisPushGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
+		LetrisPushGameLetterBlock movingLetterBlock = getMovingLetterBlock();
 		if (movingLetterBlock != null) {
 			switch (rotationDirection) {
 			case CLOCKWISE:
@@ -403,12 +541,10 @@ public class LetrisPushGameModel {
 				}
 				break;
 			}
-//			updateViewAndServer();
-			// TODO Check if this works.
-			if (isDrawn(movingLetterBlock)) {
+			if (isVisibleOnPlayground(movingLetterBlock)) {
 				updateLetterBlockInView(movingLetterBlock);
 			} else {
-				updateViewAndServer();
+				coordinator.updatePlaygroundInView();
 			}
 		}
 	}
@@ -425,11 +561,11 @@ public class LetrisPushGameModel {
 	private void checkForCorrectWord(boolean handleOnlyCorrectWord) {
 		ArrayList<LetrisPushGameLetterBlock> foundLetterBlocks;
 		// Look for correct word one row above the fillerRow level.
-		int fillerRows = coordinator.getGameState().getFillerLevel();
+		int fillerRows = getFillerLevel();
 		int row = fillerRows + 1;
 		foundLetterBlocks = findCorrectWord(playground[row]);
 		boolean foundCorrectWord = (foundLetterBlocks.size() > 0);
-		ArrayList<LetrisPushGameLetterBlock> blocksToBeDeleted = coordinator.getGameState().getLetterBlocksToBeDeleted();
+		ArrayList<LetrisPushGameLetterBlock> blocksToBeDeleted = getLetterBlocksToBeDeleted();
 		
 		// Delay the removing of the blocks and the creation of filler blocks.  
 		HandleWordFinishedTimer timer = new HandleWordFinishedTimer(foundCorrectWord, handleOnlyCorrectWord, blocksToBeDeleted);
@@ -446,7 +582,6 @@ public class LetrisPushGameModel {
 	 */
 	private void handleWordFinished(boolean foundCorrectWord, boolean handleOnlyCorrectWord, 
 			ArrayList<LetrisPushGameLetterBlock> blocksToBeDeleted) {
-		int fillerRows = coordinator.getGameState().getFillerLevel();
 		
 		// If there was a correct word found.
 		if (foundCorrectWord) {
@@ -454,7 +589,7 @@ public class LetrisPushGameModel {
 			deleteSetLetterBlocks(blocksToBeDeleted);
 			
 			// Delete the letter blocks to be displayed.
-			coordinator.getGameState().getLetterBlocksToBeDisplayed().clear();
+			getLetterBlocksToBeDisplayed().clear();
 			
 			// Increase correct word counter.
 			correctWordsInARow++;
@@ -464,9 +599,8 @@ public class LetrisPushGameModel {
 			 * decrease the filler row level and delete the upper
 			 * filler row if the level is >= 0.
 			 */
-			if (correctWordsInARow >= 2 && fillerRows >= 0) {
-				coordinator.getGameState().setFillerLevel(fillerRows - 1);
-				removeFillerRow(fillerRows);
+			if (correctWordsInARow >= 2) {
+				updateFillerRows(-1);
 			}
 		}
 		
@@ -480,19 +614,8 @@ public class LetrisPushGameModel {
 			// Delete the letter blocks from the static ones.
 			deleteSetLetterBlocks(blocksToBeDeleted);
 			
-			/*
-			 * Increase the filler row level if it is < 15, else
-			 * set the game to be ended -> GAME OVER.
-			 */
-			if (fillerRows < 15) {
-				coordinator.getGameState().setFillerLevel(fillerRows + 1);
-				letterBlockCreator.createFillerRow(fillerRows + 1);
-				addFillerRow(letterBlockCreator.getFillerRow());
-			} else {
-				coordinator.endGame();
-				coordinator.handlePerformanceState(coordinator.getGameState());
-				return;
-			}
+			// Increase the filler row level.
+			updateFillerRows(1);
 		}
 		
 		// Continue with the next moving letter block.
@@ -522,7 +645,7 @@ public class LetrisPushGameModel {
 		
 		VowelGameWord foundWord;
 		// Loop over missing words and compare them with the string.
-		ArrayList<VowelGameWord> missingWords = this.coordinator.getGameState().getMissingWords();
+		ArrayList<VowelGameWord> missingWords = getMissingWords();
 		for (VowelGameWord missingWord : missingWords) {
 			startIdx = rowStr.indexOf(missingWord.getWordString().toUpperCase());
 			if (startIdx >= 0) {
@@ -558,8 +681,8 @@ public class LetrisPushGameModel {
 	 * @param foundWord
 	 */
 	private void handleFoundWord(VowelGameWord foundWord) {
-		coordinator.getGameState().addCorrectWord(foundWord);
-		coordinator.getGameState().removeMissingWord(foundWord);
+		addCorrectWord(foundWord);
+		removeMissingWord(foundWord);
 		
 		// For each correct letter in the correct words list the player gets 10 points.
 		int points = coordinator.getGameState().getPlayerPoints(coordinator.getPlayerID());
@@ -577,7 +700,7 @@ public class LetrisPushGameModel {
 	 * @param letterBlocks
 	 */
 	private void deleteSetLetterBlocks(ArrayList<LetrisPushGameLetterBlock> letterBlocks) {
-		this.coordinator.getGameState().getStaticLetterBlocks().removeAll(letterBlocks);
+		getStaticLetterBlocks().removeAll(letterBlocks);
 		
 		// Scan the whole playground and delete all blocks that are members of the given
 		// list of letter blocks.
@@ -588,35 +711,94 @@ public class LetrisPushGameModel {
 				}
 			}
 		}
-		updateViewAndServer();
+		coordinator.updatePlaygroundInView();
+		coordinator.sendTargetUpdate(0);
+	}
+	
+	/**
+	 * Update the level of the filler rows in the game. Returns true,
+	 * if the game continues, false if the filler rows exceed their
+	 * maximum and the game is over. After that update view and server.
+	 * @param fillerRowsLevelDiff positive values for adding the given number of rows,
+	 * 			negative values for removing the given number of rows.
+	 * @return
+	 */
+	public boolean updateFillerRows(int fillerRowsLevelDiff) {
+		
+		if (fillerRowsLevelDiff > 0) {
+			/*
+			 * Increase the filler row level if it is < 15, else
+			 * set the game to be ended -> GAME OVER.
+			 */
+			for (int i = 0; i < fillerRowsLevelDiff; i++) {
+				if (getFillerLevel() < 15) {
+					setFillerLevel(getFillerLevel() + 1);
+					letterBlockCreator.createFillerRow(getFillerLevel());
+					addFillerRow(letterBlockCreator.getFillerRow());
+				} else {
+					coordinator.endGame();
+					coordinator.handlePerformanceState(coordinator.getGameState());
+					return false;
+				}
+			}
+		}
+		else if (fillerRowsLevelDiff < 0) {
+			// Decrease the filler rows if their level is >= 0.
+			for (int i = 0; i > fillerRowsLevelDiff; i--) {
+				if (getFillerLevel() >= 0) {
+					setFillerLevel(getFillerLevel() - 1);
+					removeFillerRow(getFillerLevel() + 1);
+				}
+			}
+		}
+		coordinator.updatePlaygroundInView();
+		/*
+		 *  The opponent player should receive the inverse difference of the
+		 *  filler rows level.
+		 */
+		coordinator.sendTargetUpdate(fillerRowsLevelDiff * (-1));
+		return true;
+	}
+	
+	/**
+	 * Update the picture of the playground in the view.
+	 */
+	public void updatePlaygroundInView() {
+		coordinator.updatePlaygroundInView();
+	}
+	
+	/**
+	 * Send update of the playground state and the filler row level
+	 * to the opponent player via the servlet.
+	 * @param fillerRowsLevelDiff
+	 */
+	public void sendTargetUpdate(int fillerRowsLevelDiff) {
+		coordinator.sendTargetUpdate(fillerRowsLevelDiff);
 	}
 	
 	/**
 	 * Add the given list of filler letter blocks to the static list,
-	 * add them to the playground and update the view and the state.
+	 * add them to the playground.
 	 * @param fillerBlocks
 	 */
 	private void addFillerRow(ArrayList<LetrisPushGameLetterBlock> fillerBlocks) {
 		for (LetrisPushGameLetterBlock fillerBlock : fillerBlocks) {
-			this.coordinator.getGameState().addStaticLetterBlock(fillerBlock);
+			addStaticLetterBlock(fillerBlock);
 			playground[fillerBlock.getY()][fillerBlock.getX()] = fillerBlock;
 		}
-		updateViewAndServer();
 	}
 	
 	/**
 	 * Remove the filler blocks from the playground and the static letter blocks
 	 * list for the given filler row level / y position in model coordinates.
-	 * After that update view and state.
 	 * @param fillerRowLevel
 	 */
 	private void removeFillerRow(int fillerRowLevel) {
 		for (int column = 0; column <= 14; column++) {
 			LetrisPushGameLetterBlock fillerBlock = playground[fillerRowLevel][column];
-			coordinator.getGameState().removeStaticLetterBlock(fillerBlock);
+			removeStaticLetterBlock(fillerBlock);
 			playground[fillerRowLevel][column] = null;
 		}
-		updateViewAndServer();
 	}
 	
 	
@@ -635,10 +817,10 @@ public class LetrisPushGameModel {
 		// sorted from top to bottom. That is useful for collision check, because we start
 		// to look for possible collisions at the beginning of the static letter block
 		// list.
-		LetrisPushGameLetterBlock movingLetterBlock = this.coordinator.getGameState().getMovingLetterBlock();
-		this.coordinator.getGameState().addStaticLetterBlock(movingLetterBlock);
+		LetrisPushGameLetterBlock movingLetterBlock = getMovingLetterBlock();
+		addStaticLetterBlock(movingLetterBlock);
 		playground[movingLetterBlock.getY()][movingLetterBlock.getX()] = movingLetterBlock;
-		coordinator.getGameState().setMovingLetterBlock(null);
+		setMovingLetterBlock(null);
 		
 		// If the y position of the moving letter block is greater than 16 the game is over.
 		if (movingLetterBlock.getY() > 16) {
@@ -647,7 +829,7 @@ public class LetrisPushGameModel {
 			return;
 		}
 		
-		ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
+		ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDisplayed = getLetterBlocksToBeDisplayed();
 		
 		// Wait one second before removing the correct words.
 		boolean letterBlockToBeDisplayedIsEmpty = (letterBlocksToBeDisplayed.size() == 0);
@@ -674,42 +856,42 @@ public class LetrisPushGameModel {
 		}		
 		letterBlockCreator.setTimePerBlock(timePerBlock);
 		
-		ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDisplayed = this.coordinator.getGameState().getLetterBlocksToBeDisplayed();
+		ArrayList<LetrisPushGameLetterBlock> letterBlocksToBeDisplayed = getLetterBlocksToBeDisplayed();
 		
 		// If there are no more letter blocks to be displayed setup the next target word. 
 		if (letterBlocksToBeDisplayed.size() == 0) {
-//			coordinator.getGameState().setCurrentWord(getNextRandomCurrentWord());
-			coordinator.getGameState().setCurrentWord(getNextPseudoRandomCurrentWord());
+//			setCurrentWord(getNextRandomCurrentWord());
+			setCurrentWord(getNextPseudoRandomCurrentWord());
 			
 			// Add current word to missing words and present it.
-			this.coordinator.getGameState().addMissingWord(this.coordinator.getGameState().getCurrentWord());
-			GWT.log("Current target word: " + coordinator.getGameState().getCurrentWord());
+			addMissingWord(getCurrentWord());
+			GWT.log("Current target word: " + getCurrentWord());
 			coordinator.updateTargetWord();
 			
 			// Create new letter blocks and retrieve them.
-			letterBlockCreator.createTargetLetterBlocks(this.coordinator.getGameState().getCurrentWord().getWordString());
-			this.coordinator.getGameState().setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
+			letterBlockCreator.createTargetLetterBlocks(getCurrentWord().getWordString());
+			setLetterBlocksToBeDisplayed(letterBlockCreator.getTargetLetterBlocks());
 			
 			// Copy the list so that the blocks to be deleted aren't influenced by the successive
 			// Deletion of the blocks to be displayed.
-			this.coordinator.getGameState().setLetterBlocksToBeDeleted(new ArrayList<LetrisPushGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
-			letterBlocksToBeDisplayed = coordinator.getGameState().getLetterBlocksToBeDisplayed();
+			setLetterBlocksToBeDeleted(new ArrayList<LetrisPushGameLetterBlock>(letterBlockCreator.getTargetLetterBlocks()));
+			letterBlocksToBeDisplayed = getLetterBlocksToBeDisplayed();
 		}
 		
 		// Setup the next moving letter block.
 		LetrisPushGameLetterBlock movingLetterBlock = letterBlocksToBeDisplayed.get(0);
-		coordinator.getGameState().removeLetterBlockToBeDisplayed(movingLetterBlock);
-		coordinator.getGameState().setMovingLetterBlock(movingLetterBlock);
+		removeLetterBlockToBeDisplayed(movingLetterBlock);
+		setMovingLetterBlock(movingLetterBlock);
 		
 		/*
 		 *  If the last letter of the current word is dropped, then there is no next
 		 *  block to be shown here. So show nothing.
 		 */
-		if (coordinator.getGameState().getLetterBlocksToBeDisplayed().size() >= 1) {
+		if (getLetterBlocksToBeDisplayed().size() >= 1) {
 			
 			// Copy the letter block.
 			LetrisPushGameLetterBlock nextLetterBlock = letterBlockCreator.copyLetterBlock(
-					coordinator.getGameState().getLetterBlocksToBeDisplayed().get(0));
+					getLetterBlocksToBeDisplayed().get(0));
 			coordinator.updateNextBlock(nextLetterBlock);
 		} else {
 			
