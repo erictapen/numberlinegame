@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.LetrisPush;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.vaadin.gwtgraphics.client.DrawingArea;
@@ -43,6 +44,9 @@ import com.google.gwt.user.client.ui.FocusPanel;
  *  TODO How can the view be more efficient?
  *  Address changes in the game directly as in the model and
  *  thereby prevent building up the whole view every drawing cycle.
+ *  TODO Wider player panel.
+ *  TODO Next letter block further down.
+ *  
  */
 // TODO Is GWT.Audio capable of playing midi-files with increasing speed?
 // TODO Add game sound that increases with the speed of the game.
@@ -77,6 +81,9 @@ public class LetrisPushGameView extends GameView {
 	private LetrisPushGameCoordinates modelSize;
 	private LetrisPushGameCoordinateTransform transform;
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
+	/**
+	 * Holds the currently visible letter block images by their id.
+	 */
 	private HashMap<Long, Group> id2LetterBlock = new HashMap<Long, Group>();
 	private final int smallBlockSize = 10;
 	private final int normalBlockSize = 20;
@@ -301,18 +308,18 @@ public class LetrisPushGameView extends GameView {
 	}
 	
 	/**
-	 * Takes the given game state and draws the playground and the letter blocks with its information. 
-	 * @param gameState
+	 * Takes the given game model and draws the playground and the letter blocks with its information. 
+	 * @param gameModel
 	 */
-	public void updatePlayground(LetrisPushGameState gameState) {
+	public void updatePlayground(LetrisPushGameModel gameModel) {
 		Group grid = drawPlaygroundGrid();
 		
 		id2LetterBlock.clear();
 		
-		Group movingLetterBlockImage = drawLetterBlock(gameState.getMovingLetterBlock(), true,
+		Group movingLetterBlockImage = drawLetterBlock(gameModel.getMovingLetterBlock(), true,
 				LetterBlockSize.NORMAL);
 		Group staticLetterBlockImages = new Group();
-		for (LetrisPushGameLetterBlock letterBlock : gameState.getStaticLetterBlocks()) {
+		for (LetrisPushGameLetterBlock letterBlock : gameModel.getStaticLetterBlocks()) {
 			Group letterBlockImage = drawLetterBlock(letterBlock, true, LetterBlockSize.NORMAL);
 			staticLetterBlockImages.add(letterBlockImage);
 		}
@@ -368,11 +375,11 @@ public class LetrisPushGameView extends GameView {
 	}
 	
 	/**
-	 * True, if the given letter block currently is drawn.
+	 * True, if the given letter block currently is visible on the playground.
 	 * @param letterBlock
 	 * @return
 	 */
-	public boolean isDrawn(LetrisPushGameLetterBlock letterBlock) {
+	public boolean isVisibleOnPlayground(LetrisPushGameLetterBlock letterBlock) {
 		return id2LetterBlock.containsKey(letterBlock.getId());
 	}
 	
@@ -380,7 +387,7 @@ public class LetrisPushGameView extends GameView {
 	 * Takes the given game state and refreshes the drawing of the opponent's playgroundSize preview.
 	 * @param gameState
 	 */
-	public void updatePreview(LetrisPushGameState gameState) {
+	public void updatePreview(ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks) {
 		// TODO Implement this.
 	}
 	
@@ -388,6 +395,8 @@ public class LetrisPushGameView extends GameView {
 	 * Draws the grid lines of the playgroundSize.
 	 */
 	private Group drawPlaygroundGrid() {
+		
+		// TODO Make that scalable for the preview.
 		
 		// Create the grid and set the starting point.
 		Group grid = new Group();
@@ -575,7 +584,6 @@ public class LetrisPushGameView extends GameView {
 		gamePanel.add(this.canvas);
 	}
 
-	// TODO: real implementation
 	public void showEndScreen(int points){
 		gamePanel.clear();
 	}

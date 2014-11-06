@@ -116,7 +116,7 @@ public class EventServiceTestCommunicationServiceServlet extends CustomRemoteSer
 	}
 
 	/**
-	 * Stop the timer and remove it and the client ID.
+	 * Stop the timer and remove it, the event executor service and the client ID.
 	 */
 	@Override
 	public void stopCounter(String clientID) {
@@ -136,6 +136,10 @@ public class EventServiceTestCommunicationServiceServlet extends CustomRemoteSer
 		
 		if (clientID2Counter.containsKey(clientID)) {
 			clientID2Counter.remove(clientID);
+		}
+		
+		if (clientID2EventExecutorService.containsKey(clientID)) {
+			clientID2EventExecutorService.remove(clientID);
 		}
 	}
 

@@ -32,7 +32,6 @@ public class LetrisPushGameSelector extends GameSelector {
 						gameState.setGameName(gamePopUp.getTextValue());
 						gameState.setNumberOfPlayers(gamePopUp.getPlayerCount());
 						gameState.setNumberOfMaxNPCs(gamePopUp.getNPCsCount());
-						letrisCoordinator.getGameModel().setupGameState(gameState);
 						coordinator.openGame(gameState);
 						gamePopUp.hide();
 					}

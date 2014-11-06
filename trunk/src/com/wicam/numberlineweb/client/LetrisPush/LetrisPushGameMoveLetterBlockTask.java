@@ -56,10 +56,11 @@ public class LetrisPushGameMoveLetterBlockTask extends LetrisPushGameAnimationTi
 					gameModel.updateMovingLetterBlock(letterBlock);
 //					gameModel.updateViewAndServer();
 					// TODO Check if this works.
-					if (gameModel.isDrawn(letterBlock)) {
+					if (gameModel.isVisibleOnPlayground(letterBlock)) {
 						gameModel.updateLetterBlockInView(letterBlock);
 					} else {
-						gameModel.updateViewAndServer();
+//						gameModel.updateViewAndServer();
+						gameModel.updatePlaygroundInView();
 					}
 				} else {
 					// Store last moving direction to be checked later.
