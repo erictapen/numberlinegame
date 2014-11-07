@@ -41,11 +41,10 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 // TODO Add descriptions.
 /*
- *  TODO How can the view be more efficient?
- *  Address changes in the game directly as in the model and
- *  thereby prevent building up the whole view every drawing cycle.
  *  TODO Wider player panel.
  *  TODO Next letter block further down.
+ *  TODO Fix the transform of the preview.
+ *  TODO Too much filler rows are added. 
  *  
  */
 // TODO Is GWT.Audio capable of playing midi-files with increasing speed?
@@ -73,26 +72,28 @@ public class LetrisPushGameView extends GameView {
 	protected final Button startGameButton = new Button("Spiel Starten");
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final TextBox textBox = new TextBox();
-	
-	private LetrisPushGameCoordinates viewSize = new LetrisPushGameCoordinates(600, 400);
-	private final DrawingArea canvas = new DrawingArea(viewSize.x, viewSize.y);
+	private final DrawingArea playgroundCanvas;
+	private final DrawingArea previewCanvas;
 	private final Group pauseMessage = new Group();
-	private final DrawingArea nextBlockCanvas = new DrawingArea(40, 40);
+	private final DrawingArea nextBlockCanvas;
 	private LetrisPushGameCoordinates modelSize;
-	private LetrisPushGameCoordinateTransform transform;
+	private LetrisPushGameCoordinateTransform playgroundTransform;
+	private LetrisPushGameCoordinateTransform previewTransform;
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
 	/**
 	 * Holds the currently visible letter block images by their id.
 	 */
 	private HashMap<Long, Group> id2LetterBlock = new HashMap<Long, Group>();
-	private final int smallBlockSize = 10;
-	private final int normalBlockSize = 20;
-	private final int largeBlockSize = 40;
-	private final int smallFontSize = 8;
-	private final int normalFontSize = 17;
-	private final int largeFontSize = 34;
-	LetrisPushGameCoordinates playgroundSize;
-	LetrisPushGameCoordinates playgroundOrigin = new LetrisPushGameCoordinates(200, 0);
+	private final int previewBlockSize = 10;
+	private final int playgroundBlockSize = 20;
+	private final int nextBlockSize = 40;
+	private final int previewFontSize = 8;
+	private final int playgroundFontSize = 17;
+	private final int nextFontSize = 34;
+	private LetrisPushGameCoordinates playgroundSize;
+	private LetrisPushGameCoordinates playgroundOrigin;
+	private LetrisPushGameCoordinates previewSize;
+	private LetrisPushGameCoordinates previewOrigin;
 	private VowelGameWord targetWord;
 	
 	// TODO Add correct sound file.
@@ -100,9 +101,16 @@ public class LetrisPushGameView extends GameView {
 
 	public LetrisPushGameView(int numberOfPlayers, LetrisPushGameController doppelungGameController, int playgroundWidth, int playgroundHeight) {
 		super(numberOfPlayers, doppelungGameController);
-		this.modelSize = new LetrisPushGameCoordinates(playgroundWidth, playgroundHeight);
-		this.transform = new LetrisPushGameCoordinateTransform(modelSize, viewSize);
+		playgroundOrigin = new LetrisPushGameCoordinates(0, 0);
 		playgroundSize = new LetrisPushGameCoordinates(316, 399);
+		previewOrigin = new LetrisPushGameCoordinates(0, 0);
+		previewSize = new LetrisPushGameCoordinates(158, 200);
+		playgroundCanvas = new DrawingArea(playgroundSize.x, playgroundSize.y);
+		previewCanvas = new DrawingArea(previewSize.x, previewSize.y);
+		nextBlockCanvas = new DrawingArea(nextBlockSize, nextBlockSize);
+		modelSize = new LetrisPushGameCoordinates(playgroundWidth, playgroundHeight);
+		playgroundTransform = new LetrisPushGameCoordinateTransform(modelSize, playgroundSize);
+		previewTransform = new LetrisPushGameCoordinateTransform(modelSize, previewSize);
 		init();
 		sinkEvents(Event.MOUSEEVENTS);
 		this.initWidget(motherPanel);
@@ -130,11 +138,11 @@ public class LetrisPushGameView extends GameView {
 		});
 		
 		setExplanationText();
+		gamePanel.setSize("600px", "400px");
 		gamePanel.add(explanationText);
 		gamePanel.setWidgetPosition(explanationText, 0, 0);
 		gamePanel.add(startGameButton);
 		gamePanel.setWidgetPosition(startGameButton, 480, 350);
-		gamePanel.add(canvas);
 		focusPanel.setSize("600px", "400px");
 
 		pointsPanel.setHeight("400px");
@@ -205,14 +213,14 @@ public class LetrisPushGameView extends GameView {
 	 * Show the pause message.
 	 */
 	public void showPauseMessage() {
-		canvas.add(pauseMessage);
+		playgroundCanvas.add(pauseMessage);
 	}
 	
 	/**
 	 * Hide the pause message.
 	 */
 	public void hidePauseMessage() {
-		canvas.remove(pauseMessage);
+		playgroundCanvas.remove(pauseMessage);
 	}
 	
 	/**
@@ -243,7 +251,7 @@ public class LetrisPushGameView extends GameView {
 		if (letterBlock == null) {
 			nextBlockCanvas.clear();
 		} else {
-			Group letterBlockImage = drawLetterBlock(letterBlock, false, LetterBlockSize.LARGE);
+			Group letterBlockImage = drawLetterBlock(letterBlock, LetterBlockType.NEXT_BLOCK);
 			nextBlockCanvas.clear();
 			nextBlockCanvas.add(letterBlockImage);
 		}
@@ -312,21 +320,20 @@ public class LetrisPushGameView extends GameView {
 	 * @param gameModel
 	 */
 	public void updatePlayground(LetrisPushGameModel gameModel) {
-		Group grid = drawPlaygroundGrid();
+		Group grid = drawGrid(GridType.PLAYGROUND_GRID);
 		
 		id2LetterBlock.clear();
 		
-		Group movingLetterBlockImage = drawLetterBlock(gameModel.getMovingLetterBlock(), true,
-				LetterBlockSize.NORMAL);
+		Group movingLetterBlockImage = drawLetterBlock(gameModel.getMovingLetterBlock(), LetterBlockType.PLAYGROUND_BLOCK);
 		Group staticLetterBlockImages = new Group();
 		for (LetrisPushGameLetterBlock letterBlock : gameModel.getStaticLetterBlocks()) {
-			Group letterBlockImage = drawLetterBlock(letterBlock, true, LetterBlockSize.NORMAL);
+			Group letterBlockImage = drawLetterBlock(letterBlock, LetterBlockType.PLAYGROUND_BLOCK);
 			staticLetterBlockImages.add(letterBlockImage);
 		}
-		canvas.clear();
-		canvas.add(grid);
-		canvas.add(staticLetterBlockImages);
-		canvas.add(movingLetterBlockImage);
+		playgroundCanvas.clear();
+		playgroundCanvas.add(grid);
+		playgroundCanvas.add(staticLetterBlockImages);
+		playgroundCanvas.add(movingLetterBlockImage);
 	}
 	
 	/**
@@ -339,7 +346,7 @@ public class LetrisPushGameView extends GameView {
 		Group letterBlockImage = id2LetterBlock.get(letterBlock.getId());
 		
 		// Get the new position of the rectangle in the view.
-		LetrisPushGameCoordinates viewCoordinates = transform.transformModelToView(new LetrisPushGameCoordinates(letterBlock.getX(), letterBlock.getY()));
+		LetrisPushGameCoordinates viewCoordinates = playgroundTransform.transformModelToView(new LetrisPushGameCoordinates(letterBlock.getX(), letterBlock.getY()));
 		viewCoordinates.add(playgroundOrigin);
 		
 		// Get the two vector objects of the group.
@@ -367,9 +374,9 @@ public class LetrisPushGameView extends GameView {
 		}
 
 		// Center letter.
-		int xOffset = (int) Math.floor(((double)normalBlockSize - letter.getTextWidth()) / 2.0);
-		int yOffset = (int) Math.floor(((double)normalBlockSize - letter.getTextHeight()) / 2.0) +
-				letter.getTextHeight() - (normalBlockSize / 10);
+		int xOffset = (int) Math.floor(((double)playgroundBlockSize - letter.getTextWidth()) / 2.0);
+		int yOffset = (int) Math.floor(((double)playgroundBlockSize - letter.getTextHeight()) / 2.0) +
+				letter.getTextHeight() - (playgroundBlockSize / 10);
 		letter.setX(viewCoordinates.x + xOffset);
 		letter.setY(viewCoordinates.y + yOffset);
 	}
@@ -388,24 +395,58 @@ public class LetrisPushGameView extends GameView {
 	 * @param gameState
 	 */
 	public void updatePreview(ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks) {
-		// TODO Implement this.
+		
+		Group grid = drawGrid(GridType.PREVIEW_GRID);
+		
+		Group staticLetterBlockImages = new Group();
+		for (LetrisPushGameLetterBlock letterBlock : staticLetterBlocks) {
+			Group letterBlockImage = drawLetterBlock(letterBlock, LetterBlockType.PREVIEW_BLOCK);
+			staticLetterBlockImages.add(letterBlockImage);
+		}
+		previewCanvas.clear();
+		previewCanvas.add(grid);
+		previewCanvas.add(staticLetterBlockImages);
 	}
 	
 	/**
-	 * Draws the grid lines of the playgroundSize.
+	 * Possible versions of the grid.
+	 * @author timfissler
+	 *
 	 */
-	private Group drawPlaygroundGrid() {
+	private enum GridType {
+		PREVIEW_GRID, PLAYGROUND_GRID;
+	}
+	
+	/**
+	 * Draws the grid lines of the playground or the preview.
+	 */
+	private Group drawGrid(GridType gridType) {
 		
-		// TODO Make that scalable for the preview.
+		// Setup the appropriate version of the grid.
+		LetrisPushGameCoordinates origin = new LetrisPushGameCoordinates();
+		LetrisPushGameCoordinates size = new LetrisPushGameCoordinates();
+		int blockSize = 0;
+		switch (gridType) {
+		case PLAYGROUND_GRID:
+			origin = playgroundOrigin;
+			size = playgroundSize;
+			blockSize = playgroundBlockSize;
+			break;
+		case PREVIEW_GRID:
+			origin = previewOrigin;
+			size = previewSize;
+			blockSize = previewBlockSize;
+			break;
+		}
 		
-		// Create the grid and set the starting point.
+		// Create the grid.
 		Group grid = new Group();
 		
 		// Draw horizontal lines.
 		for (int i = 0; i <= modelSize.y; i++) {
 			// Create line.
-			Line l = new Line(playgroundOrigin.x, playgroundOrigin.y + (i * (normalBlockSize + 1)), 
-					playgroundOrigin.x + playgroundSize.x, playgroundOrigin.y + (i * (normalBlockSize + 1)));
+			Line l = new Line(origin.x, origin.y + (i * (blockSize + 1)), 
+					origin.x + size.x, origin.y + (i * (blockSize + 1)));
 			// Add color.
 			if (i == 0 || i == modelSize.y) {
 				l.setStrokeColor("black");
@@ -419,8 +460,8 @@ public class LetrisPushGameView extends GameView {
 		// Draw vertical lines.
 		for (int i = 0; i <= modelSize.x; i++) {
 			// Create line.
-			Line l = new Line(playgroundOrigin.x + (i * (normalBlockSize + 1)), playgroundOrigin.y,
-					playgroundOrigin.x + (i * (normalBlockSize + 1)), playgroundOrigin.y + playgroundSize.y);
+			Line l = new Line(origin.x + (i * (blockSize + 1)), origin.y,
+					origin.x + (i * (blockSize + 1)), origin.y + size.y);
 			// Add color.
 			if (i == 0 || i == modelSize.x) {
 				l.setStrokeColor("black");
@@ -434,19 +475,22 @@ public class LetrisPushGameView extends GameView {
 		return grid;
 	}
 	
-	private enum LetterBlockSize {
-		SMALL, NORMAL, LARGE
+	/**
+	 * Possible sizes of a letter block.
+	 * @author timfissler
+	 *
+	 */
+	private enum LetterBlockType {
+		PREVIEW_BLOCK, PLAYGROUND_BLOCK, NEXT_BLOCK;
 	}
 	
 	/**
 	 * Draws the given letter block.
 	 * @param letterBlock 			the letter block to be drawn
-	 * @param useViewCoordinates	if true, use the coordinates of the view, else use (0,0)
+	 * @param blockType					the size of the letter block that also sets the right transform
 	 * @return 						the group containing the letter block
 	 */
-	private Group drawLetterBlock(LetrisPushGameLetterBlock letterBlock,
-			boolean useViewCoordinates,
-			LetterBlockSize size) {
+	private Group drawLetterBlock(LetrisPushGameLetterBlock letterBlock, LetterBlockType blockType) {
 		
 		Group letterBlockImage = new Group();
 		
@@ -455,23 +499,27 @@ public class LetrisPushGameView extends GameView {
 			return letterBlockImage;
 		}
 		
+		// Configure the setup of the letter block.
 		int blockSize = 0;
 		int fontSize = 0;
+		boolean useViewCoordinates = true;
+		LetrisPushGameCoordinateTransform transform = null;
 		
-		switch (size) {
-		case SMALL:
-			blockSize = smallBlockSize;
-			fontSize = smallFontSize;
+		switch (blockType) {
+		case PREVIEW_BLOCK:
+			blockSize = previewBlockSize;
+			fontSize = previewFontSize;
+			transform = previewTransform;
 			break;
-		case NORMAL:
-			blockSize = normalBlockSize;
-			fontSize = normalFontSize;
+		case PLAYGROUND_BLOCK:
+			blockSize = playgroundBlockSize;
+			fontSize = playgroundFontSize;
+			transform = playgroundTransform;
 			break;
-		case LARGE:
-			blockSize = largeBlockSize;
-			fontSize = largeFontSize;
-			break;
-		default:
+		case NEXT_BLOCK:
+			blockSize = nextBlockSize;
+			fontSize = nextFontSize;
+			useViewCoordinates = false;
 			break;
 		}
 		
@@ -581,7 +629,7 @@ public class LetrisPushGameView extends GameView {
 	 */
 	public void clearGamePanel(){
 		gamePanel.clear();
-		gamePanel.add(this.canvas);
+		gamePanel.add(this.playgroundCanvas);
 	}
 
 	public void showEndScreen(int points){
@@ -604,9 +652,11 @@ public class LetrisPushGameView extends GameView {
 		gamePanel.clear();
 		textBox.setText("");
 	
-		gamePanel.add(canvas);
-		canvas.clear();
-		canvas.add(drawPlaygroundGrid());
+		gamePanel.add(playgroundCanvas);
+		gamePanel.setWidgetPosition(playgroundCanvas, 200, 0);
+		gamePanel.add(previewCanvas);
+		playgroundCanvas.clear();
+		playgroundCanvas.add(drawGrid(GridType.PLAYGROUND_GRID));
 
 		gamePanel.add(focusPanel, 0, 0);
 		
