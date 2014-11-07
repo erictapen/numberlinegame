@@ -17,7 +17,8 @@ public class LetrisPushGameCoordinateTransform {
 			LetrisPushGameCoordinates viewSize) {
 		this.modelSize = modelSize;
 		this.viewSize = viewSize;
-		this.scale = (viewSize.y - 1) / modelSize.y;
+//		this.scale = (viewSize.y - 1) / modelSize.y;
+		this.scale = viewSize.y / modelSize.y;
 	}
 	
 	// TODO Transformation is still buggy?
@@ -31,8 +32,6 @@ public class LetrisPushGameCoordinateTransform {
 		// Add the offset because of the grid's frame.
 		viewCoordinates.x++;
 		viewCoordinates.y++;
-		// Add the height of a letter block. TODO Why?
-//		viewCoordinates.y += 20;
 		return viewCoordinates;
 	}
 	
