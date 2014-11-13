@@ -135,15 +135,6 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	 */
 	public void userAnswered(String answer, long timestamp) {
 		
-		// Handle results that are NOT numeric.
-		// TODO: Steffi fragen, welche Tastatureingaben zulaessig sind
-		/*
-		if (!numericChecker.isDoubleConvertible(answer)) {
-			view.showNotNumericWarning(true);
-			view.highlightUserAnswer();
-			return;
-		}
-		*/
 		
 		boolean isCorrect;
 		// Check the correctness of the given answer.
@@ -162,7 +153,6 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 
 		// Hide task screen ...
 		view.hideTaskScreen();
-		view.showNotNumericWarning(false);
 		// ... and start the next trial if there is one left, ...
 		if (itemListIterator.hasNext()) {
 			nextTrial();

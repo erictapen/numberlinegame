@@ -3,15 +3,19 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Line;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -31,7 +35,7 @@ public class SpellingAssessmentView extends Composite {
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final AbsolutePanel endPanel = new AbsolutePanel();
-	protected final AbsolutePanel taskPanel = new AbsolutePanel();
+	protected final HorizontalPanel taskPanel = new HorizontalPanel();
 	protected final AbsolutePanel whitePanel = new AbsolutePanel();
 	protected final HorizontalPanel fixationPanel = new HorizontalPanel();
 	protected final DrawingArea fixationDrawing = new DrawingArea(50, 50);
@@ -39,7 +43,7 @@ public class SpellingAssessmentView extends Composite {
 	protected final TextBox resultBox = new TextBox();
 	protected final HTML explanationText = new HTML();
 	protected final HTML endText = new HTML();
-	protected final HTML nonNumericWarningText = new HTML();
+	protected final HorizontalPanel taskWrapper = new HorizontalPanel();
 	protected final Button startButton = new Button("Test starten", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -86,14 +90,15 @@ public class SpellingAssessmentView extends Composite {
 		taskPanel.setHeight("400px");
 		taskPanel.setWidth("750px");
 		
+		taskPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		taskPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+
 		setTask(new SpellingAssessmentItem());
-		taskPanel.add(taskText);
-		taskPanel.setWidgetPosition(taskText, 310, 194);
-		setNonNumericWarning();
-		nonNumericWarningText.setVisible(false);
-		taskPanel.add(nonNumericWarningText);
-		taskPanel.setWidgetPosition(nonNumericWarningText, 100, 230);
-		resultBox.setWidth("40px");
+		taskWrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		taskWrapper.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		
+		resultBox.getElement().getStyle().setProperty("display", "inline");
+		resultBox.setWidth("100px");
 		resultBox.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
@@ -105,8 +110,10 @@ public class SpellingAssessmentView extends Composite {
 			}
 		});
 		resultBox.setStyleName("resultBox");
-		taskPanel.add(resultBox);
-		taskPanel.setWidgetPosition(resultBox, 390, 190);
+		//taskPanel.add(resultBox);
+		taskWrapper.add(taskText);
+		taskWrapper.add(resultBox);
+		taskPanel.add(taskWrapper);
 		taskPanel.setVisible(false);
 		motherPanel.add(taskPanel);
 		
@@ -232,24 +239,6 @@ public class SpellingAssessmentView extends Composite {
 		taskText.setHTML("<div style='font-size:17px'>" + currentItem.getSentence() + " = </div>"); 
 	}
 	
-	/**
-	 * Sets the non numeric warning text in the view.
-	 * @param nonNumericWarningText
-	 */
-	private void setNonNumericWarning() {
-		nonNumericWarningText.setHTML("<div style='font-size:12px;color:red'>" + 
-										"Bitte gib nur Nummern (0-9) und den Punkt '.' " +
-										"für Kommazahlen, sowie das Minus '-' für negative Zahlen ein!" +
-										"</div>"); 
-	}
-	
-	/**
-	 * Switch warning for non numeric user answers in the task screen.
-	 * @param isShowing
-	 */
-	public void showNotNumericWarning(boolean isShowing) {
-		nonNumericWarningText.setVisible(isShowing);
-	}
 	
 	/**
 	 * Highlight the user answer in the task screen.
