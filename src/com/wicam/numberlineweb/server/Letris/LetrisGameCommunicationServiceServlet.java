@@ -21,22 +21,34 @@ public class LetrisGameCommunicationServiceServlet extends
 		GameCommunicationServiceServlet implements
 		LetrisGameCommunicationService {
 
-	// TODO Add descriptions.
 	// TODO Add possibility to communicate other players achievements to add "deadlines" to the playground. 
 	
-	private static final long serialVersionUID = -7355416542911925385L;	
+	private static final long serialVersionUID = -7355416542911925385L;
+	/**
+	 * List of words that should be presented to the player.
+	 */
 	private LetrisGameWordList wordList = new LetrisGameWordList();
 
+	/**
+	 * Construct a new game communication service.
+	 */
 	public LetrisGameCommunicationServiceServlet() {
 		super("LeTris");
 		this.handicapAdjustment = new LetrisGameHandicap();
 	}
 
+	/**
+	 * Construct a new game communication service given an internal name of the servlet.
+	 * @param internalName
+	 */
 	public LetrisGameCommunicationServiceServlet(String internalName) {
 		super(internalName);
 		this.handicapAdjustment = new LetrisGameHandicap();
 	}
 
+	/**
+	 * Open a new letris game on the server.
+	 */
 	@Override
 	public GameState openGame(GameState g) throws GameOpenException {
 		GameState gameState = super.openGame(g);
@@ -77,6 +89,9 @@ public class LetrisGameCommunicationServiceServlet extends
 		return null;
 	}
 
+	/**
+	 * Get the list of words that should be presented to the player.
+	 */
 	@Override
 	public ArrayList<VowelGameWord> getTargetWords() {
 		return LetrisGameWordList.createWordList();

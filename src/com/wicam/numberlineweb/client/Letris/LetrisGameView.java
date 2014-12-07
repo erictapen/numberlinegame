@@ -38,12 +38,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
  *
  */
 
-// TODO Add descriptions.
-/*
- *  TODO How can the view be more efficient?
- *  Address changes in the game directly as in the model and
- *  thereby prevent building up the whole view every drawing cycle.
- */
 // TODO Is GWT.Audio capable of playing midi-files with increasing speed?
 // TODO Add game sound that increases with the speed of the game.
 // TODO Add dropping sound.
@@ -54,29 +48,80 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class LetrisGameView extends GameView {
 
+	/**
+	 * The panel to where all the other panels are linked to.
+	 */
 	private final HorizontalPanel motherPanel = new HorizontalPanel();
+	/**
+	 * The panel with the playground grid.
+	 */
 	private final AbsolutePanel gamePanel = new AbsolutePanel();
+	/**
+	 * The panel showing the players' points.
+	 */
 	private final AbsolutePanel pointsPanel = new AbsolutePanel();
 	private KeyboardDummy kbd;
-
+	/**
+	 * Text to describe the game.
+	 */
 	protected final HTML explanationText = new HTML();
+	/**
+	 * Messages like 'Waiting for other player' are shown here.
+	 */
 	protected final HTML feedBackText = new HTML();
 	private final HTML canvasScore = new HTML("<div id='canvas' style='width:150px;height:30px;'></div>");
+	/**
+	 * Text with the player points.
+	 */
 	private final HTML pointsText = new HTML("<div style='font-size:24px;color:black'>Punkte</div>");
+	/**
+	 * Table containing the player names.
+	 */
 	private final FlexTable playerNamesFlexTable = new FlexTable();
+	/**
+	 * Text containing the words 'Nächster Spielstein'.
+	 */
 	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>Nächster</br>Stein</div>");
-
+	/**
+	 * Button to start the game.
+	 */
 	protected final Button startGameButton = new Button("Spiel Starten");
+	/**
+	 * Panel for focusing the game.
+	 */
 	private final FocusPanel focusPanel = new FocusPanel();
 	private final TextBox textBox = new TextBox();
-	
+	/**
+	 * Size of the letris view in pixels.
+	 */
 	private LetrisGameCoordinates viewSize = new LetrisGameCoordinates(600, 400);
+	/**
+	 * Game canvas where the grid with the blocks is drawn.
+	 */
 	private final DrawingArea canvas = new DrawingArea(viewSize.x, viewSize.y);
+	/**
+	 * Message displayed when game is paused.
+	 */
 	private final Group pauseMessage = new Group();
+	/**
+	 * Canvas for drawing the next letter block being shown.
+	 */
 	private final DrawingArea nextBlockCanvas = new DrawingArea(40, 40);
+	/** 
+	 * Size of the model playground in blocks.
+	 */
 	private LetrisGameCoordinates modelSize;
+	/**
+	 * Coordinate transform object to transform coordinates between model and view.
+	 */
 	private LetrisGameCoordinateTransform transform;
+	/**
+	 * Hash table containing the colors for the letters.
+	 */
 	private HashMap<String, String> letter2HexColor = new HashMap<String, String>();
+	/**
+	 * Hash table containing the letter block images given a letter block id. 
+	 */
 	private HashMap<Long, Group> id2LetterBlock = new HashMap<Long, Group>();
 	private final int smallBlockSize = 10;
 	private final int normalBlockSize = 20;
@@ -91,6 +136,13 @@ public class LetrisGameView extends GameView {
 	// TODO Add correct sound file.
 //	protected Audio descriptionSound = Audio.createIfSupported();
 
+	/**
+	 * Construct a new view.
+	 * @param numberOfPlayers
+	 * @param doppelungGameController
+	 * @param playgroundWidth
+	 * @param playgroundHeight
+	 */
 	public LetrisGameView(int numberOfPlayers, LetrisGameController doppelungGameController, int playgroundWidth, int playgroundHeight) {
 		super(numberOfPlayers, doppelungGameController);
 		this.modelSize = new LetrisGameCoordinates(playgroundWidth, playgroundHeight);
@@ -101,7 +153,9 @@ public class LetrisGameView extends GameView {
 		this.initWidget(motherPanel);
 	}
 
-
+	/**
+	 * Initialize everything to construct a new view.
+	 */
 	private void init() {
 
 		final LetrisGameController letrisGameController = (LetrisGameController) gameController;
@@ -242,6 +296,9 @@ public class LetrisGameView extends GameView {
 		}
 	}
 	
+	/**
+	 * Initialize the colors hash table.
+	 */
 	private void setupLetterColors() {
 		letter2HexColor.put("A", "#F46943");
 		letter2HexColor.put("B", "#87E3D5");
@@ -275,6 +332,9 @@ public class LetrisGameView extends GameView {
 		letter2HexColor.put("ß", "#F4C162");
 	}
 	
+	/**
+	 * Initialize the game description.
+	 */
 	protected void setExplanationText() {
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>LeTris - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
@@ -294,6 +354,10 @@ public class LetrisGameView extends GameView {
 				"</div>");
 	}
 
+	/**
+	 * Change feedback test according to a given message.
+	 * @param msg
+	 */
 	public void showWaitingForOtherPlayer(String msg){
 		feedBackText.setHTML("<div style='font-size:25px'>" + msg + "</div>");
 		gamePanel.add(feedBackText);
@@ -425,6 +489,11 @@ public class LetrisGameView extends GameView {
 		return grid;
 	}
 	
+	/**
+	 * Possible sizes of a letter block.
+	 * @author timfissler
+	 *
+	 */
 	private enum LetterBlockSize {
 		SMALL, NORMAL, LARGE
 	}
@@ -579,18 +648,28 @@ public class LetrisGameView extends GameView {
 	public void showEndScreen(int points){
 		gamePanel.clear();
 	}
-
+	
+	/**
+	 * Update the player points for a given player id, points p and player name.
+	 * @param playerid
+	 * @param p
+	 * @param name
+	 */
 	public void updatePoints(int playerid, int p,String name) {
 		playerNamesFlexTable.setHTML(playerid+1, 0, "<div style='font-size:30px;color:" + playerColors[playerid-1] + "'>" + Integer.toString(p) +"<span style='font-size:14px'> " + name +"</span></div>");
 	}
 
+	/**
+	 * Delete a player from the points list given his id.
+	 * @param playerid
+	 */
 	public void deletePlayerFromPointList(int playerid) {
 		playerNamesFlexTable.clearCell(playerid, 1);
 		playerNamesFlexTable.removeCell(playerid, 1);
 	}
 
 	/**
-	 * Displays the LeTris game playgroundSize.
+	 * Displays the LeTris game playground.
 	 */
 	public void showLetrisGame() {
 		gamePanel.clear();
@@ -623,28 +702,9 @@ public class LetrisGameView extends GameView {
 		focusPanel.setFocus(true);
 	}
 
+	/* TODO Delete this.
 	public boolean isOnCanvas(int y) {
 		return y < gamePanel.getOffsetHeight();
 	}
-	
-	/**
-	 * Timer for automatically switching off the target word display
-	 * after a time delay.
-	 * @author timfissler
-	 *
-	 */
-	private class TargetWordTimer extends Timer {
-		
-		private HTML targetWordText;
-		
-		public TargetWordTimer(HTML targetWordText) {
-			this.targetWordText = targetWordText;
-		}
-		
-		public void run() {
-			targetWordText.setHTML("<div style='font-size:20px;color:grey'>???</div>");
-		}
-		
-	}
-
+	*/
 }
