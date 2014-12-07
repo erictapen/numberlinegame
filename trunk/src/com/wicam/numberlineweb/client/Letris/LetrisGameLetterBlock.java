@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.Letris;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.MovementDirection;
 import com.wicam.numberlineweb.client.Letris.LetrisGameModel.Orientation;
