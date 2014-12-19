@@ -25,7 +25,7 @@ public interface MathAssessmentCommunicationService extends RemoteService {
 	
 	public void endAssessment(int assessmentID);
 	
-	public ArrayList<String> loadShuffledItemList();
+	public String getNextItem(int assessmentID);
 	
 	public void userAborted(String message);
 	

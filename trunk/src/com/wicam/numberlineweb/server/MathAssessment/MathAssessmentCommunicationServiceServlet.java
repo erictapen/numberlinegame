@@ -25,21 +25,36 @@ public class MathAssessmentCommunicationServiceServlet extends
 	
 	private static final long serialVersionUID = 7200332323767902482L;
 	protected String internalName;
-	protected MathAssessmentItemList itemList;
+	/**
+	 * Stores the logging objects for all open assessments on the server.
+	 */
 	protected Map<Integer, GameLogger> assessmentId2Logger;
+	/**
+	 * Stores the assessment states for all open assessments on the server.
+	 */
 	protected Map<Integer, MathAssessmentState> assessmentId2openAssessments;
+	/**
+	 * Stores the item lists for all open assessments on the server.
+	 */
+	protected Map<Integer, MathAssessmentItemStack> assessmentId2ItemStack;
+	/**
+	 * Stores the current item id to allow each new assessment to get an individual id.
+	 */
 	protected int currentAssessmentID;
 	
+	/**
+	 * Construct a new communication servlet. 
+	 */
 	public MathAssessmentCommunicationServiceServlet() {
 		this.internalName = "math_assessment";
-		this.itemList = new MathAssessmentItemList();
 		this.assessmentId2Logger = new HashMap<Integer, GameLogger>();
 		this.assessmentId2openAssessments = new HashMap<Integer, MathAssessmentState>();
+		this.assessmentId2ItemStack = new HashMap<Integer, MathAssessmentItemStack>();
 		this.currentAssessmentID = 0;
 	}
 
 	/**
-	 * Is being called when a new math taskText is presented to the user. 
+	 * Is being called when a new math taskText is presented to the user. Logs the presented item.
 	 */
 	@Override
 	public synchronized void itemPresented(String message) {
@@ -63,6 +78,7 @@ public class MathAssessmentCommunicationServiceServlet extends
 
 	/**
 	 * Is being called when the user entered the possible result for the current taskText presented.
+	 * Logs the user answer.
 	 */
 	@Override
 	public synchronized void userAnswered(String message) {
@@ -118,6 +134,9 @@ public class MathAssessmentCommunicationServiceServlet extends
 		state.setAssessmentID(currentAssessmentID);
 		currentAssessmentID++;
 		
+		// Create new shuffled item list.
+		this.assessmentId2ItemStack.put(state.getAssessmentID(), new MathAssessmentItemStack());
+		
 		// Create new logger.
 		this.assessmentId2Logger.put(state.getAssessmentID(), new GameLogger());
 		
@@ -135,7 +154,8 @@ public class MathAssessmentCommunicationServiceServlet extends
 	}
 
 	/**
-	 * Is being called when an assessment is ended by a user.
+	 * Is being called when an assessment is ended by a user. Logs the end of the
+	 * assessment and cleans up assessment specific objects.
 	 */
 	@Override
 	public synchronized void endAssessment(int assessmentID) {
@@ -151,23 +171,34 @@ public class MathAssessmentCommunicationServiceServlet extends
 		// Delete the assessment and the logger.
 		this.assessmentId2openAssessments.remove(assessmentID);
 		this.assessmentId2Logger.remove(assessmentID);
+		this.assessmentId2ItemStack.remove(assessmentID);
 		
 		System.out.println("Ended assessment " + assessmentID);
 		
 	}
-
+	
 	/**
-	 * Retrieve the shuffled list of math tasks.
+	 * Return the next item for the given assessmentID.
+	 * @param assessmentID
+	 * @return
 	 */
 	@Override
-	public synchronized ArrayList<String> loadShuffledItemList() {
+	public synchronized String getNextItem(int assessmentID) {
+		
+		String nextItem = null;
+		// If there is at least one item left return it and remove it from the list.
+		if (!assessmentId2ItemStack.get(assessmentID).isEmpty()) {
+			nextItem = assessmentId2ItemStack.get(assessmentID).popItem();
+		}
 
-		System.out.println("Item list is being retrieved.");
-		return itemList.getShuffledItemList();
+		// Else return null.
+		
+		return nextItem;
 	}
 
 	/**
-	 * Log the item and the abort time.
+	 * Log the item and the abort time in case of a user abortion of the
+	 * assessment.
 	 */
 	@Override
 	public void userAborted(String message) {
