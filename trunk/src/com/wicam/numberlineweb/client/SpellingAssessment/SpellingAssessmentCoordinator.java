@@ -21,6 +21,16 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  *
  */
 
+/*
+ * TODO Make input box appear instead of '___'.
+ * TODO Play wave-Files.
+ * TODO Add Training-Trials.
+ * TODO Add item.toString()-method.
+ * TODO Check if database contains adequate table-entries for assessment.
+ * TODO Modify item retrieval from server, so that only one item is retrieved for the next trial.
+ * TODO Add keyboardListener/Handler to input field to react to keystrokes (especially 'enter').
+ * TODO Logging of every typed letter.
+ */
 public class SpellingAssessmentCoordinator implements ValueChangeHandler<String> {	
 	
 	protected SpellingAssessmentController controller;
@@ -138,7 +148,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		
 		boolean isCorrect;
 		// Check the correctness of the given answer.
-		if(answer == currentItem.result()){
+		if(answer == currentItem.getResult()){
 			isCorrect = true;
 		} else{
 			isCorrect = false;
@@ -249,7 +259,8 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 
 			// Send the item and the current time stamp to the server.
 			SpellingAssessmentCoordinator.this.itemPresentedTimeStamp = System.currentTimeMillis();
-			String message = state.getAssessmentID() + ":" + currentItem + ":" + SpellingAssessmentCoordinator.this.itemPresentedTimeStamp;
+			// TODO Modify currentItem toString method.
+			String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + SpellingAssessmentCoordinator.this.itemPresentedTimeStamp;
 			SpellingAssessmentCoordinator.this.commServ.itemPresented(message, voidCallback);
 		}
 
