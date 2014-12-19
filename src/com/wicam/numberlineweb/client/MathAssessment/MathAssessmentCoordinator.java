@@ -27,8 +27,6 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 	protected MathAssessmentState state;
 	protected MathAssessmentCommunicationServiceAsync commServ;
 	protected MathAssessmentView view;
-	protected ArrayList<String> itemList;
-	protected Iterator<String> itemListIterator;
 	protected String currentItem;
 	protected long itemPresentedTimeStamp;
 	protected long userAnsweredTimeStamp;
@@ -57,7 +55,6 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		this.state = null;
 		this.view = null;
 		this.controller = null;
-		this.itemList = null;
 		this.currentItem = "";
 		this.itemPresentedTimeStamp = 0;
 		this.userAnsweredTimeStamp = 0;
@@ -75,13 +72,16 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		
 		// Add history item and register value change handler.
 		History.newItem("math_assessment",false);
-		handlerReg = History.addValueChangeHandler(this);
-
-		// Download the shuffled list of math items.
-		commServ.loadShuffledItemList(itemListCallback);	
+		handlerReg = History.addValueChangeHandler(this);	
+		
+		// Clear the root panel and draw the game.
+		rootPanel.clear();
+		rootPanel.add(view);
+		view.showExplanationScreen();
 	}
 	
-	AsyncCallback<MathAssessmentState> initCallback = new AsyncCallback<MathAssessmentState>() {
+	// Get the assessment state from the server and register the assessment id.
+	AsyncCallback<MathAssessmentState> startCallback = new AsyncCallback<MathAssessmentState>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -99,30 +99,7 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 			
 			// Start the assessment.
 			view.hideExplanationScreen();
-			nextTrial();
-		}
-		
-	};
-	
-	AsyncCallback<ArrayList<String>> itemListCallback = new AsyncCallback<ArrayList<String>>() {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			GWT.log("Wasn't able to download the item list for the math assessment.");
-			GWT.log(caught.getMessage());			
-		}
-
-		@Override
-		public void onSuccess(ArrayList<String> result) {
-			GWT.log("Downloaded the item list for the math assessment.");
-			
-			itemList = result;
-			itemListIterator = itemList.iterator();
-			
-			// Clear the root panel and draw the game.
-			rootPanel.clear();
-			rootPanel.add(view);
-			view.showExplanationScreen();
+			commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
 		}
 		
 	};
@@ -154,16 +131,9 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		// Hide task screen ...
 		view.hideTaskScreen();
 		view.showNotNumericWarning(false);
-		// ... and start the next trial if there is one left, ...
-		if (itemListIterator.hasNext()) {
-			nextTrial();
-		}
-		// ... if not show end screen.
-		else {
-			// Now the assessment has finished.
-			assessmentFinished = true;
-			view.showEndScreen();
-		}
+		
+		// Get next item if there is one else finish assessment.
+		commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
 	}	
 	
 	/**
@@ -174,7 +144,7 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		assessmentStarted = true;
 		
 		// Send the user ID so that the server can retrieve an appropriate player ID.
-		commServ.startAssessment(NumberLineWeb.USERID, initCallback);
+		commServ.startAssessment(NumberLineWeb.USERID, startCallback);
 	}
 	
 	/**
@@ -201,6 +171,34 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		whiteScreenTimer.schedule(whiteScreenDuration);
 	}
 	
+	// Get next item if there is one else finish assessment.
+	public AsyncCallback<String> nextItemCallback = new AsyncCallback<String>() {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			GWT.log("Something went wrong while retrieving the next item!");
+			GWT.log(caught.getMessage());
+		}
+
+		@Override
+		public void onSuccess(String result) {
+			// Start the next trial if there another item left.
+			if (result != null) {
+				// Next trial ...
+				currentItem = result;
+				nextTrial();
+			}
+			// ... if not show end screen.
+			else {
+				// Now the assessment has finished.
+				assessmentFinished = true;
+				view.showEndScreen();
+			}
+		}
+		
+	};
+	
+	// Empty callback, do nothing.
 	public AsyncCallback<Void> voidCallback = new AsyncCallback<Void>() {
 
 		@Override
@@ -244,8 +242,7 @@ public class MathAssessmentCoordinator implements ValueChangeHandler<String> {
 		public void run() {
 			MathAssessmentCoordinator.this.view.hideFixationScreen();
 			
-			// Get next item.
-			currentItem = itemListIterator.next();
+			// Show next item.
 			MathAssessmentCoordinator.this.view.showTaskScreen(currentItem);
 
 			// Send the item and the current time stamp to the server.

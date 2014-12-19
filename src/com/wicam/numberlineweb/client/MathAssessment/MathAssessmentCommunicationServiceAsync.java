@@ -21,7 +21,7 @@ public interface MathAssessmentCommunicationServiceAsync {
 
 	public void startAssessment(int userID, AsyncCallback<MathAssessmentState> callback);
 
-	public void loadShuffledItemList(AsyncCallback<ArrayList<String>> callback);
+	public void getNextItem(int assessmentID, AsyncCallback<String> callback);
 	
 	public void userAborted(String message, AsyncCallback<Void> voidCallback);
 	
