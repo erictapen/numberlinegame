@@ -55,10 +55,10 @@ public class SpellingAssessmentItem implements IsSerializable{
 	}
 	
 	/**
-	 * Get method for the result, so the correct word that should have been entered
+	 * Get method for the result, e.g. the correct word that should have been entered
 	 * @return String result
 	 */
-	public String result(){
+	public String getResult(){
 		return this.result;
 	}
 	
@@ -70,13 +70,11 @@ public class SpellingAssessmentItem implements IsSerializable{
 		return this.audioFile;
 	}
 	
-	/**
-	 * @Overide
-	 */
+	@Override
 	public String toString(){
 		String string = "";
 		
-		string += "Task overview:\n---------\n";
+		string += "Item overview:\n";
 		string += "sentence:\t" + this.sentence + "\n";
 		string += "audio-file:\t" + this.audioFile + "\n";
 		string += "result:\t\t" + this.result + "\n";
@@ -84,9 +82,19 @@ public class SpellingAssessmentItem implements IsSerializable{
 		return string;
 	}
 	
+	/**
+	 * Return a string for logging the item, that contains
+	 * the sentence and the correct result.
+	 * @return
+	 */
+	public String logEntry() {
+		return this.sentence + " (" + this.result + ")";
+	}
+	
 	
 //	public static void main(String args[]){
 //		SpellingAssessmentItem myItem = new SpellingAssessmentItem("Die Banane ist _______", "Banane.wav", "krumm");
 //		System.out.print(myItem.toString());
+//		System.out.print(myItem.logEntry());
 //	}
 }
