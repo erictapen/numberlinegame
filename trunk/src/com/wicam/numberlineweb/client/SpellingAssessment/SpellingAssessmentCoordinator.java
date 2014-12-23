@@ -22,14 +22,16 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  */
 
 /*
- * TODO Make input box appear instead of '___'.
- * TODO Play wave-Files.
- * TODO Add Training-Trials.
- * TODO Add item.toString()-method.
- * TODO Check if database contains adequate table-entries for assessment.
- * TODO Modify item retrieval from server, so that only one item is retrieved for the next trial.
- * TODO Add keyboardListener/Handler to input field to react to keystrokes (especially 'enter').
- * TODO Logging of every typed letter.
+ * TODO Make input box appear at fixed (specific) position. (Sven)
+ * TODO Disable Input-Box until word is completely spoken.  (Sven)
+ * TODO Implement measurement of reaction time. (End of word until key hit). (Sven)
+ * TODO Play wave-Files. (Sven mit Hilfe)
+ * TODO Enter spelling items from audio files into item stack. (Sven)
+ * TODO Add Training-Trials. (Tim)
+ * TODO Check if database contains adequate table-entries for assessment. (Sven&Tim)
+ * TODO Add keyboardListener/Handler to input field to react to keystrokes (especially 'enter'). (Sven mit Hilfe)
+ * TODO Logging of every typed letter. And every other event. (Tim)
+ * TODO Check functionality of shuffle list. (Sven)
  */
 public class SpellingAssessmentCoordinator implements ValueChangeHandler<String> {	
 	
@@ -39,8 +41,6 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	protected SpellingAssessmentState state;
 	protected SpellingAssessmentCommunicationServiceAsync commServ;
 	protected SpellingAssessmentView view;
-	protected ArrayList<SpellingAssessmentItem> itemList;
-	protected Iterator<SpellingAssessmentItem> itemListIterator;
 	protected SpellingAssessmentItem currentItem;
 	protected long itemPresentedTimeStamp;
 	protected long userAnsweredTimeStamp;
@@ -68,7 +68,6 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		this.state = null;
 		this.view = null;
 		this.controller = null;
-		this.itemList = null;
 		this.currentItem = null;
 		this.itemPresentedTimeStamp = 0;
 		this.userAnsweredTimeStamp = 0;
@@ -88,11 +87,13 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		History.newItem("spelling_assessment",false);
 		handlerReg = History.addValueChangeHandler(this);
 
-		// Download the shuffled list of math items.
-		commServ.loadShuffledItemList(itemListCallback);	
+		// Clear the root panel and draw the game.
+		rootPanel.clear();
+		rootPanel.add(view);
+		view.showExplanationScreen();	
 	}
 	
-	AsyncCallback<SpellingAssessmentState> initCallback = new AsyncCallback<SpellingAssessmentState>() {
+	AsyncCallback<SpellingAssessmentState> startCallback = new AsyncCallback<SpellingAssessmentState>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -110,30 +111,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 			
 			// Start the assessment.
 			view.hideExplanationScreen();
-			nextTrial();
-		}
-		
-	};
-	
-	AsyncCallback<ArrayList<SpellingAssessmentItem>> itemListCallback = new AsyncCallback<ArrayList<SpellingAssessmentItem>>() {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			GWT.log("Wasn't able to download the item list for the spelling assessment.");
-			GWT.log(caught.getMessage());			
-		}
-
-		@Override
-		public void onSuccess(ArrayList<SpellingAssessmentItem> result) {
-			GWT.log("Downloaded the item list for the spelling assessment.");
-			
-			itemList = result;
-			itemListIterator = itemList.iterator();
-			
-			// Clear the root panel and draw the game.
-			rootPanel.clear();
-			rootPanel.add(view);
-			view.showExplanationScreen();
+			commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
 		}
 		
 	};
@@ -163,16 +141,9 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 
 		// Hide task screen ...
 		view.hideTaskScreen();
-		// ... and start the next trial if there is one left, ...
-		if (itemListIterator.hasNext()) {
-			nextTrial();
-		}
-		// ... if not show end screen.
-		else {
-			// Now the assessment has finished.
-			assessmentFinished = true;
-			view.showEndScreen();
-		}
+		
+		// Get next item if there is one else finish assessment.
+		commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
 	}	
 	
 	/**
@@ -183,7 +154,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		assessmentStarted = true;
 		
 		// Send the user ID so that the server can retrieve an appropriate player ID.
-		commServ.startAssessment(NumberLineWeb.USERID, initCallback);
+		commServ.startAssessment(NumberLineWeb.USERID, startCallback);
 	}
 	
 	/**
@@ -210,6 +181,34 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		whiteScreenTimer.schedule(whiteScreenDuration);
 	}
 	
+	// Get next item if there is one else finish assessment.
+	public AsyncCallback<SpellingAssessmentItem> nextItemCallback = new AsyncCallback<SpellingAssessmentItem>() {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			GWT.log("Something went wrong while retrieving the next item!");
+			GWT.log(caught.getMessage());
+		}
+
+		@Override
+		public void onSuccess(SpellingAssessmentItem result) {
+			// Start the next trial if there another item left.
+			if (result != null) {
+				// Next trial ...
+				currentItem = result;
+				nextTrial();
+			}
+			// ... if not show end screen.
+			else {
+				// Now the assessment has finished.
+				assessmentFinished = true;
+				view.showEndScreen();
+			}
+		}
+
+	};
+	
+	// Empty callback, do nothing.
 	public AsyncCallback<Void> voidCallback = new AsyncCallback<Void>() {
 
 		@Override
@@ -254,12 +253,10 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 			SpellingAssessmentCoordinator.this.view.hideFixationScreen();
 			
 			// Get next item.
-			currentItem = itemListIterator.next();
 			SpellingAssessmentCoordinator.this.view.showTaskScreen(currentItem);
 
 			// Send the item and the current time stamp to the server.
 			SpellingAssessmentCoordinator.this.itemPresentedTimeStamp = System.currentTimeMillis();
-			// TODO Modify currentItem toString method.
 			String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + SpellingAssessmentCoordinator.this.itemPresentedTimeStamp;
 			SpellingAssessmentCoordinator.this.commServ.itemPresented(message, voidCallback);
 		}
@@ -277,7 +274,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		 */
 		if (assessmentStarted && !assessmentFinished) {
 			String message = state.getAssessmentID() +
-					":" + currentItem + ":" + System.currentTimeMillis();
+					":" + currentItem.logEntry() + ":" + System.currentTimeMillis();
 			commServ.userAborted(message, voidCallback);
 		}
 		

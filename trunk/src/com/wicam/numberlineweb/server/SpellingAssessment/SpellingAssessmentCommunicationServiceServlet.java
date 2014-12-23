@@ -11,6 +11,7 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommu
 import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentState;
 import com.wicam.numberlineweb.server.CustomRemoteServiceServlet;
+import com.wicam.numberlineweb.server.MathAssessment.MathAssessmentItemStack;
 import com.wicam.numberlineweb.server.database.drupal.DrupalCommunicator;
 import com.wicam.numberlineweb.server.database.drupal.UserNotFoundException;
 import com.wicam.numberlineweb.server.logging.GameLogger;
@@ -28,21 +29,33 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 	
 	private static final long serialVersionUID = 7200332323767902482L;
 	protected String internalName;
-	protected SpellingAssessmentItemList itemList;
+	/**
+	 * Stores the logging objects for all open assessments on the server.
+	 */
 	protected Map<Integer, GameLogger> assessmentId2Logger;
+	/**
+	 * Stores the assessment states for all open assessments on the server.
+	 */
 	protected Map<Integer, SpellingAssessmentState> assessmentId2openAssessments;
+	/**
+	 * Stores the item lists for all open assessments on the server.
+	 */
+	protected Map<Integer, SpellingAssessmentItemStack> assessmentId2ItemStack;
+	/**
+	 * Stores the current item id to allow each new assessment to get an individual id.
+	 */
 	protected int currentAssessmentID;
 	
 	public SpellingAssessmentCommunicationServiceServlet() {
 		this.internalName = "spelling_assessment";
-		this.itemList = new SpellingAssessmentItemList();
 		this.assessmentId2Logger = new HashMap<Integer, GameLogger>();
 		this.assessmentId2openAssessments = new HashMap<Integer, SpellingAssessmentState>();
+		this.assessmentId2ItemStack = new HashMap<Integer, SpellingAssessmentItemStack>();
 		this.currentAssessmentID = 0;
 	}
 
 	/**
-	 * Is being called when a new math taskText is presented to the user. 
+	 * Is being called when a new math taskText is presented to the user. Logs the presented item.
 	 */
 	@Override
 	public synchronized void itemPresented(String message) {
@@ -67,6 +80,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 
 	/**
 	 * Is being called when the user entered the possible result for the current taskText presented.
+	 * Logs the user answer.
 	 */
 	@Override
 	public synchronized void userAnswered(String message) {
@@ -123,6 +137,9 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		state.setAssessmentID(currentAssessmentID);
 		currentAssessmentID++;
 		
+		// Create new shuffled item list.
+		this.assessmentId2ItemStack.put(state.getAssessmentID(), new SpellingAssessmentItemStack());
+		
 		// Create new logger.
 		this.assessmentId2Logger.put(state.getAssessmentID(), new GameLogger());
 		
@@ -157,19 +174,29 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		// Delete the assessment and the logger.
 		this.assessmentId2openAssessments.remove(assessmentID);
 		this.assessmentId2Logger.remove(assessmentID);
+		this.assessmentId2ItemStack.remove(assessmentID);
 		
 		System.out.println("Ended assessment " + assessmentID);
 		
 	}
 
 	/**
-	 * Retrieve the shuffled list of math tasks.
+	 * Return the next item for the given assessmentID.
+	 * @param assessmentID
+	 * @return
 	 */
 	@Override
-	public synchronized ArrayList<SpellingAssessmentItem> loadShuffledItemList() {
+	public synchronized SpellingAssessmentItem getNextItem(int assessmentID) {
+		
+		SpellingAssessmentItem nextItem = null;
+		// If there is at least one item left return it and remove it from the list.
+		if (!assessmentId2ItemStack.get(assessmentID).isEmpty()) {
+			nextItem = assessmentId2ItemStack.get(assessmentID).popItem();
+		}
 
-		System.out.println("Item list is being retrieved.");
-		return itemList.getShuffledItemList();
+		// Else return null.
+		
+		return nextItem;
 	}
 
 	/**
