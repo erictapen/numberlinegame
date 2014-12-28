@@ -1,0 +1,2 @@
+serviceClass: com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationService
+path: 6DFCAA992592C5663057188B5A02EDB2.gwt.rpc

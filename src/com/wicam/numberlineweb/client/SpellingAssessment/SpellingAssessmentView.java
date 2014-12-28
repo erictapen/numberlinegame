@@ -3,13 +3,18 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Line;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.EndedEvent;
+import com.google.gwt.event.dom.client.EndedHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -31,6 +36,7 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 public class SpellingAssessmentView extends Composite {
 
+	private SpellingAssessmentItem currentItem;
 	protected SpellingAssessmentController controller;
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
@@ -50,7 +56,7 @@ public class SpellingAssessmentView extends Composite {
 			controller.startButtonClicked();			
 		}
 	}); 
-	protected final Button endButton = new Button("Schließen", new ClickHandler() {
+	protected final Button endButton = new Button("Schlie��en", new ClickHandler() {
 		@Override
 		public void onClick(ClickEvent event) {
 			controller.endButtonClicked();			
@@ -67,12 +73,102 @@ public class SpellingAssessmentView extends Composite {
 		init();
 		this.initWidget(motherPanel);
 	}
+	
+	/**
+	 * Plays the result (word) of a spelling assessment item
+	 * @param item
+	 */
+	public void playResult(SpellingAssessmentItem item){
+		Audio audio = item.getResultAudio();
+		if (audio == null) {
+			try {
+				throw new Exception("No audio found for \"" + item.getResult() + "\"!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			audio.addEndedHandler(resultPlaybackEndedHandler);
+			audio.play();
+		}
+	}
+	
+	/**
+	 * Plays the sentence of a spelling assessment item
+	 * @param item
+	 */
+	public void playSentence(SpellingAssessmentItem item){
+		Audio audio = item.getSentenceAudio();
+		if (audio == null) {
+			try {
+				throw new Exception("No audio found for \"" + item.getResult() + "\"!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			audio.addEndedHandler(sentencePlaybackEndedHandler);
+			audio.play();
+			GWT.log("Fickel die Pickel");
+			
+			
+		}
+	}
+	
+	/**
+	 * Creates a handler that checks the end of an result(word) playback
+	 */
+	public EndedHandler resultPlaybackEndedHandler = new EndedHandler() {
+		
+		@Override
+		public void onEnded(EndedEvent event) {
+			SpellingAssessmentView.this.resultBox.setEnabled(true);
+			long timestamp = System.currentTimeMillis();
+			SpellingAssessmentView.this.controller.playbackEnded(timestamp);			
+		}
+	};
+	
+	/**
+	 * Creates a handler that checks the end of an sentence playback
+	 */
+	public EndedHandler sentencePlaybackEndedHandler = new EndedHandler() {
+		
+		@Override
+		public void onEnded(EndedEvent event) {
+				GWT.log("Hajoo bin geendet");
+				PresentationPauseTimer timer = new PresentationPauseTimer(SpellingAssessmentView.this.currentItem);	
+				timer.schedule(1000);
+		}
+	};
+	
+	
+	/**
+	 * Creates a pause between sentence playback and result playback, 
+	 * so that the user has time to settle.
+	 * @author svenfillinger
+	 *
+	 */
+	public class PresentationPauseTimer extends Timer {
+		
+		private SpellingAssessmentItem item;
+		
+		public PresentationPauseTimer(SpellingAssessmentItem item){
+			this.item = item;
+		}
+		
+		@Override
+		public void run() {
+			GWT.log("Holla die Waldfee, der Timer rennt");
+			playResult(item);
+		}
+
+	}
 
 
 	/**
 	 * Initialize the views.
 	 */
 	protected void init() {
+		
+		this.currentItem = null;
 		
 		// Setup the explanation panel.
 		explanationPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -172,12 +268,18 @@ public class SpellingAssessmentView extends Composite {
 	 * may enter a result to the taskText. 
 	 */
 	public void showTaskScreen(SpellingAssessmentItem currentItem) {
+		this.currentItem = currentItem;
 		setTask(currentItem);
 		clearResultBox();
+		resultBox.setEnabled(false);
 		
 		// Show the task view.
 		taskPanel.setVisible(true);
 		resultBox.setFocus(true);
+		
+		// Start sentence playback
+		playSentence(currentItem);
+		
 	}
 	
 	/**
@@ -262,12 +364,12 @@ public class SpellingAssessmentView extends Composite {
 		// TODO Change description appropriately.
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Rechtschreibe-Test - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Um dich ein wenig mit dem Test vertraut zu machen, darfst du zunächst einmal spielerisch " +
+				"Um dich ein wenig mit dem Test vertraut zu machen, darfst du zun��chst einmal spielerisch " +
 				"ein paar Aufgaben versuchen, ohne dass es dabei wichtig ist wie schnell du bist." +
 				"<br><br><strong>Ablauf des Tests</strong><br>"+
-				"Dir wird zunächst ein Satz angezeigt. Ein Wort im Satz fehlt und das sollst du einsetzen." +
+				"Dir wird zun��chst ein Satz angezeigt. Ein Wort im Satz fehlt und das sollst du einsetzen." +
 				"Gleichzeitig wird dir der Satz mit dem fehlenden Wort vorgelesen. Nach dem Vorlesen " + 
-				"sollst du das gesuchte Wort so schnell wie möglich richtig eingeben. Bist du fertig, kannst " + 
+				"sollst du das gesuchte Wort so schnell wie m��glich richtig eingeben. Bist du fertig, kannst " + 
 				"du mit der \"Enter\"-Taste die Aufgabe beenden. "+
 				"<br><br><strong>Bist du bereit?</strong><br>"+
 				"Dann klicke auf \"Test starten\"."+
@@ -281,7 +383,7 @@ public class SpellingAssessmentView extends Composite {
 		// TODO Change text appropriately.
 		endText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Mathe-Test - Ende</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Vielen Dank für's Mitmachen. Der Test ist nun zu Ende.</div>");
+				"Vielen Dank f��r's Mitmachen. Der Test ist nun zu Ende.</div>");
 	}
 	
 }

@@ -117,6 +117,16 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	};
 	
 	/**
+	 * Send the item and the current time stamp to the server.
+	 * @param timestamp
+	 */
+	public void itemPresented(long timestamp){
+		SpellingAssessmentCoordinator.this.itemPresentedTimeStamp = timestamp;
+		String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + SpellingAssessmentCoordinator.this.itemPresentedTimeStamp;
+		SpellingAssessmentCoordinator.this.commServ.itemPresented(message, voidCallback);
+	}
+	
+	/**
 	 * Is being called when the user has entered a result to the current taskText.
 	 * @param answer
 	 * @param timestamp

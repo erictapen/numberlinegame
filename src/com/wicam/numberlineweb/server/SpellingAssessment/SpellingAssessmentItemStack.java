@@ -62,9 +62,9 @@ public class SpellingAssessmentItemStack implements IsSerializable{
 	}
 	
 	private void setItems() {
-		items.add(new SpellingAssessmentItem("Eine Bananenschale ist ________.", "Banane.wav", "Abfall"));
-		items.add(new SpellingAssessmentItem("Sonne, Mond und ________.", "Sterne.wav", "Sterne"));
-		items.add(new SpellingAssessmentItem("Hoch auf den gelben ________.", "Wagen.wav", "Wagen"));
+		items.add(new SpellingAssessmentItem("In den Obstsalat gehört auch eine ________.", "Orange"));
+		items.add(new SpellingAssessmentItem("Auf der Weide steht ein kleines ________.", "Pony"));
+		items.add(new SpellingAssessmentItem("Meine Schwester ist ein Nesthäkchen, sie wird ständig ________.", "verwöhnt"));
 		
 	}
 	
