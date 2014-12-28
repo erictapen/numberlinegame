@@ -8,7 +8,16 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 
 public class SpellingAssessmentController {
 	
+	
 	protected SpellingAssessmentCoordinator coordinator;
+	
+	/**
+	 * Playback of the result word has finished
+	 */
+	public void playbackEnded(long timestamp){
+		coordinator.itemPresented(timestamp);
+	}
+	
 	
 	/**
 	 * Construct a new controller object.

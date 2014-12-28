@@ -79,9 +79,9 @@ public class LetrisGameView extends GameView {
 	 */
 	private final FlexTable playerNamesFlexTable = new FlexTable();
 	/**
-	 * Text containing the words 'Nächster Spielstein'.
+	 * Text containing the words 'N��chster Spielstein'.
 	 */
-	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>Nächster</br>Stein</div>");
+	private final HTML nextBlockText = new HTML("<div style='font-size:24px;color:black'>N��chster</br>Stein</div>");
 	/**
 	 * Button to start the game.
 	 */
@@ -326,10 +326,10 @@ public class LetrisGameView extends GameView {
 		letter2HexColor.put("X", "#524575");
 		letter2HexColor.put("Y", "#893C77");
 		letter2HexColor.put("Z", "#ED8EF8");
-		letter2HexColor.put("Ä", "#E2306E");
-		letter2HexColor.put("Ö", "#0A6318");
-		letter2HexColor.put("Ü", "#8CD7DF");
-		letter2HexColor.put("ß", "#F4C162");
+		letter2HexColor.put("��", "#E2306E");
+		letter2HexColor.put("��", "#0A6318");
+		letter2HexColor.put("��", "#8CD7DF");
+		letter2HexColor.put("��", "#F4C162");
 	}
 	
 	/**
@@ -338,18 +338,18 @@ public class LetrisGameView extends GameView {
 	protected void setExplanationText() {
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>LeTris - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"In diesem Spiel werden dir Wörter vorgelesen. Versuche diese Wörter " + 
+				"In diesem Spiel werden dir W��rter vorgelesen. Versuche diese W��rter " + 
 				"- genau wie im richtigen Tetris-Spiel - nachzubauen. Verwende dazu die " +
 				"Pfeiltasten um einen Spielstein nach links, rechts oder unten zu bewegen. " +
 				"Mit der Leertaste kannst du einen Stein schnell fallen lassen. Mit der " +
 				"\"W\"-Taste wird dir das aktuelle Wort noch einmal vorgelesen. Mit der " +
 				"\"P\"-Taste kannst du das Spiel pausieren.</br></br>" + 
-				"Aufgepasst, es kommen nicht nur Buchstaben, die du für das aktuelle Wort " +
+				"Aufgepasst, es kommen nicht nur Buchstaben, die du f��r das aktuelle Wort " +
 				"brauchst, sondern auch falsche Buchstaben. Versuche sie zu finden und " +
-				"neben oder über das Wort, das du gerade baust, zu setzen. Baust du einmal " +
+				"neben oder ��ber das Wort, das du gerade baust, zu setzen. Baust du einmal " +
 				"ein Wort falsch zusammen, wird dein Platz im Spiel um eine Zeile geringer " +
 				"werden. Wenn du es schaffst zwei mal hintereinander ein Wort richtig zu " +
-				"bauen kannst du dir wieder eine Zeile \"zurück erobern\".</br></br>" + 
+				"bauen kannst du dir wieder eine Zeile \"zur��ck erobern\".</br></br>" + 
 				"Das Spiel endet, wenn der Platz auf dem Spielfeld voll ist." +
 				"</div>");
 	}

@@ -1,5 +1,6 @@
 package com.wicam.numberlineweb.client.SpellingAssessment;
 
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -15,10 +16,6 @@ public class SpellingAssessmentItem implements IsSerializable{
 	 */
 	private String sentence;
 	
-	/**
-	 * contains the info, which audio file is to be played
-	 */
-	private String audioFile;
 	
 	/**
 	 * contains the right result for this task
@@ -31,9 +28,8 @@ public class SpellingAssessmentItem implements IsSerializable{
 	 * @param audioFile
 	 * @param result
 	 */
-	public SpellingAssessmentItem(String sentence, String audioFile, String result){
+	public SpellingAssessmentItem(String sentence, String result){
 		this.sentence = sentence;
-		this.audioFile = audioFile;
 		this.result = result;
 	}
 	
@@ -42,9 +38,25 @@ public class SpellingAssessmentItem implements IsSerializable{
 	 */
 	public SpellingAssessmentItem(){
 		this.sentence = "";
-		this.audioFile = "";
 		this.result = "";
 	}
+	
+	/**
+	 * gets an audio object of the item word (result)
+	 * @return
+	 */
+	public Audio getResultAudio(){
+		return SpellingAssessmentSoundRetriever.getAudioElement(this, false);
+	}
+	
+	/**
+	 * gets an audio object of the item sentence
+	 * @return
+	 */
+	public Audio getSentenceAudio(){
+		return SpellingAssessmentSoundRetriever.getAudioElement(this, true);
+	}
+	
 	
 	/**
 	 * Get method for the sentence of the current task item
@@ -62,13 +74,6 @@ public class SpellingAssessmentItem implements IsSerializable{
 		return this.result;
 	}
 	
-	/**
-	 * Get method for the audio-file that is bound to the task item
-	 * @return String audio-file
-	 */
-	public String getAudioFile(){
-		return this.audioFile;
-	}
 	
 	@Override
 	public String toString(){
@@ -76,7 +81,6 @@ public class SpellingAssessmentItem implements IsSerializable{
 		
 		string += "Item overview:\n";
 		string += "sentence:\t" + this.sentence + "\n";
-		string += "audio-file:\t" + this.audioFile + "\n";
 		string += "result:\t\t" + this.result + "\n";
 
 		return string;
