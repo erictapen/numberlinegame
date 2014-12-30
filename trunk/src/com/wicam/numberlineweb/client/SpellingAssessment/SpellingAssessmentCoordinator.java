@@ -23,14 +23,15 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 /*
  * TODO Make input box appear at fixed (specific) position. (Sven)
- * TODO Disable Input-Box until word is completely spoken.  (Sven)
- * TODO Implement measurement of reaction time. (End of word until key hit). (Sven)
- * TODO Play wave-Files. (Sven mit Hilfe)
+ * TODO Switch background color of input box. (Sven)
  * TODO Enter spelling items from audio files into item stack. (Sven)
  * TODO Add Training-Trials. (Tim)
- * TODO Check if database contains adequate table-entries for assessment. (Sven&Tim)
- * TODO Check functionality of shuffle list. (Sven)
+ * TODO Check if database contains adequate table-entries for assessment.
+ * 		Change Logger-Calls. (Sven & Tim)
+ * TODO Check functionality of shuffle list. (Probably works) (Sven)
  * TODO Make German umlauts work for logging. (Sven)
+ * TODO Add comments to all methods, members and classes. (Sven & Tim)
+ * TODO Clean imports. (Sven & Tim)
  */
 public class SpellingAssessmentCoordinator implements ValueChangeHandler<String> {	
 	
