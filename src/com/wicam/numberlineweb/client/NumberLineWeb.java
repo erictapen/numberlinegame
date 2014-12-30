@@ -200,8 +200,8 @@ public class NumberLineWeb implements EntryPoint {
 			@Override
 			public void run() {
 
-				commService = (LetrisGameCommunicationServiceAsync) GWT.create(LetrisGameCommunicationService.class);
-				coordinator = new LetrisGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+				commService = (LetrisPushGameCommunicationServiceAsync) GWT.create(LetrisPushGameCommunicationService.class);
+				coordinator = new LetrisPushGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
 
 				gts.hide(RootPanel.get("game"));
 				coordinator.init();

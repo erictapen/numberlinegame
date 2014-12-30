@@ -25,33 +25,39 @@ import de.novanic.eventservice.client.event.domain.DomainFactory;
 
 /**
  * Coordinator of the LeTris game.
+ * 
  * @author timfissler
- *
+ * 
  */
-// TODO Check pseudo random target words. Or directly switch to single item retrieval from server.
-// TODO Add letter block 'ghost' to display the horizontal position of the current block
+// TODO Check pseudo random target words. Or directly switch to single item
+// retrieval from server.
+// TODO Add letter block 'ghost' to display the horizontal position of the
+// current block
 // on the bottom of the playground.
 // TODO Add multiplayer support.
 /*
- * TODO Locate the timed update via the client and delete it.
- * TODO Implement updates of one client if there is pushed some piece of information
- * on the server by another client.
- * TODO Modify server update every time when updateViewAndServer() is called. 
- * TODO Define events and listener (interfaces) for multiplayer operations.
- * TODO What happens in multiplayer games when one player is game over before the other one?
- * TODO Filler rows are not updated.
- * TODO Update server when points are updated but no filler row is deleted.
- * TODO Only send target updates if game consists of more than one player.
+ * TODO Problems to start two games in parallel. Why? Perhaps delete all polling
+ * things and start with a blank version of the game communication?
+ * TODO Locate the timed update via the client and delete it. TODO Implement
+ * updates of one client if there is pushed some piece of information on the
+ * server by another client. TODO Modify server update every time when
+ * updateViewAndServer() is called. TODO Define events and listener (interfaces)
+ * for multiplayer operations. TODO What happens in multiplayer games when one
+ * player is game over before the other one? TODO Filler rows are not updated.
+ * TODO Update server when points are updated but no filler row is deleted. TODO
+ * Only send target updates if game consists of more than one player. TODO
+ * Change pause functionality so that in case of two players the pause gets
+ * activated for the other player too.
  */
 
 /*
- *  TODO Add AI for NPC player.
- *  1. Estimate the target position of the current block with error probability x (e.g. 0.02).
- *  2. Move the current block to this position with time delay per movement.
+ * TODO Add AI for NPC player. 1. Estimate the target position of the current
+ * block with error probability x (e.g. 0.02). 2. Move the current block to this
+ * position with time delay per movement.
  */
 
 public class LetrisPushGameCoordinator extends GameCoordinator {
-	
+
 	/**
 	 * The controller of the LeTris game.
 	 */
@@ -61,16 +67,18 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	 */
 	private LetrisPushGameAnimationTimer aniTimer = new LetrisPushGameAnimationTimer();
 	/**
-     * The ratio of letters of a target word that don't belong to that word
-     * but are drawn from the alphabet.
-     */
-    public static double STARTING_DISTRACTOR_LETTER_RATIO = 0.3;
-	/**
-	 * The ratio of all letter blocks of a target word that are not oriented correctly.
+	 * The ratio of letters of a target word that don't belong to that word but
+	 * are drawn from the alphabet.
 	 */
-	public static double STARTING_ROTATED_LETTER_RATIO = 0;//0.3;
+	public static double STARTING_DISTRACTOR_LETTER_RATIO = 0.3;
 	/**
-	 * The time in milliseconds a block movement needs from one block to another.
+	 * The ratio of all letter blocks of a target word that are not oriented
+	 * correctly.
+	 */
+	public static double STARTING_ROTATED_LETTER_RATIO = 0;// 0.3;
+	/**
+	 * The time in milliseconds a block movement needs from one block to
+	 * another.
 	 */
 	public static int STARTING_TIME_PER_BLOCK = 1000;
 	/**
@@ -90,17 +98,20 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	 */
 	private String connectionID;
 	/**
-	 * Event listener for retrieving user-specific events from the server (server push).
+	 * Event listener for retrieving user-specific events from the server
+	 * (server push).
 	 */
-	private LetrisPushGameListener eventListener;
+	private LetrisPushGameUserSpecificListener eventListener;
 	/**
-	 * Event service for retrieving user-specific events from the server (server push).
+	 * Event service for retrieving user-specific events from the server (server
+	 * push).
 	 */
 	private RemoteEventService remoteEventService;
 
-	public LetrisPushGameCoordinator(GameCommunicationServiceAsync commServ, ChatCommunicationServiceAsync chatServ,
-			Panel root, GameTypeSelector gts) {
-		super(commServ, chatServ, root,gts);
+	public LetrisPushGameCoordinator(GameCommunicationServiceAsync commServ,
+			ChatCommunicationServiceAsync chatServ, Panel root,
+			GameTypeSelector gts) {
+		super(commServ, chatServ, root, gts);
 	}
 
 	/**
@@ -110,26 +121,26 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	public String getGameName() {
 		return "LeTris";
 	}
-	
+
 	public LetrisPushGameState getGameState() {
 		return (LetrisPushGameState) this.openGame;
 	}
-	
+
 	/**
 	 * True, if the given letter block currently is visible on the playground.
+	 * 
 	 * @param letterBlock
 	 * @return
 	 */
 	public boolean isVisibleOnPlayground(LetrisPushGameLetterBlock letterBlock) {
-		LetrisPushGameView gameView = (LetrisPushGameView)view;
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
 		return gameView.isVisibleOnPlayground(letterBlock);
 	}
-
 
 	@Override
 	public void init() {
 		gamePaused = false;
-		
+
 		// Setup animation tasks with delayed continuous running.
 		int delay = 500;
 		moveLeftTask.setDelayForContinuousRunning(delay);
@@ -137,36 +148,38 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		moveDownTask.setDelayForContinuousRunning(delay);
 		rotateTask.setDelayForContinuousRunning(delay);
 		dropTask.setDelayForContinuousRunning(delay);
-		
-		RemoteEventServiceFactory remoteEventServiceFactory = RemoteEventServiceFactory.getInstance();
-		
+
+		RemoteEventServiceFactory remoteEventServiceFactory = RemoteEventServiceFactory
+				.getInstance();
+
 		// Get the remote event service.
 		remoteEventService = remoteEventServiceFactory.getRemoteEventService();
-		
+
 		// Setup the event listener.
-		eventListener = new LetrisPushGameListener(this);
-		
+		eventListener = new LetrisPushGameUserSpecificListener(this);
+
 		// Retrieve the client handler with the connection id.
-		remoteEventServiceFactory.requestClientHandler(new AsyncCallback<ClientHandler>() {
+		remoteEventServiceFactory
+				.requestClientHandler(new AsyncCallback<ClientHandler>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				caught.printStackTrace();
-			}
+					@Override
+					public void onFailure(Throwable caught) {
+						caught.printStackTrace();
+					}
 
-			@Override
-			public void onSuccess(ClientHandler result) {
-				
-				// Store connection id.
-				connectionID = result.getConnectionId();
-				
-				// Get the target words from the server.
-				LetrisPushGameCommunicationServiceAsync letrisCommServ = (LetrisPushGameCommunicationServiceAsync) commServ;
-				letrisCommServ.getTargetWords(targetWordsCallback);
-			}
-		});
+					@Override
+					public void onSuccess(ClientHandler result) {
+
+						// Store connection id.
+						connectionID = result.getConnectionId();
+
+						// Get the target words from the server.
+						LetrisPushGameCommunicationServiceAsync letrisCommServ = (LetrisPushGameCommunicationServiceAsync) commServ;
+						letrisCommServ.getTargetWords(targetWordsCallback);
+					}
+				});
 	}
-	
+
 	/**
 	 * Set the target word that should be built by the player in the view.
 	 */
@@ -177,10 +190,12 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 			gameView.updateTargetWord(getGameModel().getCurrentWord());
 		}
 	}
-	
+
 	/**
 	 * Set the next letter block that will be dropped after the current one.
-	 * @param nextLetterBlock	the letter block to be shown
+	 * 
+	 * @param nextLetterBlock
+	 *            the letter block to be shown
 	 */
 	public void updateNextBlock(LetrisPushGameLetterBlock nextLetterBlock) {
 		// Update only if there is still a view.
@@ -189,19 +204,21 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 			gameView.updateNextBlock(nextLetterBlock);
 		}
 	}
-	
+
 	/**
 	 * Update the given letter block in the view.
+	 * 
 	 * @param letterBlock
 	 */
 	public void updateLetterBlock(LetrisPushGameLetterBlock letterBlock) {
 		LetrisPushGameView gameView = (LetrisPushGameView) view;
 		gameView.updateLetterBlock(letterBlock);
 	}
-	
+
 	/**
-	 * Send the current playground state and the difference for the
-	 * opponent player's filler rows level to the server.
+	 * Send the current playground state and the difference for the opponent
+	 * player's filler rows level to the server.
+	 * 
 	 * @param opponentFillerRowsLevelDiff
 	 */
 	public void sendTargetUpdate(int opponentFillerRowsLevelDiff) {
@@ -211,22 +228,24 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		playgroundState.setPlayerID(playerID);
 		playgroundState.setOpponentPlayerID(getOpponentPlayerID());
 		playgroundState.setPoints(getGameState().getPlayerPoints(playerID));
-		playgroundState.setStaticLetterBlocks(gameModel.getStaticLetterBlocks());
+		playgroundState
+				.setStaticLetterBlocks(gameModel.getStaticLetterBlocks());
 		playgroundState.setFillerRowsLevelDiff(opponentFillerRowsLevelDiff);
-		
+
 		// Send it to the server.
 		LetrisPushGameCommunicationServiceAsync letrisCommServ = (LetrisPushGameCommunicationServiceAsync) commServ;
 		letrisCommServ.sendTargetUpdate(playgroundState, voidCallback);
 	}
-	
+
 	/**
-	 *  Retrieve the player ID of the opponent player from the game state.
+	 * Retrieve the player ID of the opponent player from the game state.
+	 * 
 	 * @return opponent player id
 	 */
 	private int getOpponentPlayerID() {
 		/*
-		 *  The game consists of max 2 players so the one that hasn't the player id of this
-		 *  player is the opponent.
+		 * The game consists of max 2 players so the one that hasn't the player
+		 * id of this player is the opponent.
 		 */
 		int opponentPlayerID = 0;
 		if (playerID == 1) {
@@ -236,46 +255,55 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		}
 		return opponentPlayerID;
 	}
-	
+
 	/**
 	 * join game #id with username 'name'
+	 * 
 	 * @param id
 	 * @param name
 	 */
 
-	public void joinGame(int id,String name, int numberOfPlayers, int numberOfNPCs) {
+	public void joinGame(int id, String name, int numberOfPlayers,
+			int numberOfNPCs) {
 		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfNPCs = numberOfNPCs;
 
-		//we dont want anonymous players
-		if (name.equals("")) name="Spieler";
+		// we dont want anonymous players
+		if (name.equals(""))
+			name = "Spieler";
 
 		name = escapeString(name);
-		
-		// Register user-specific event listener.
-		remoteEventService.addListener(DomainFactory.USER_SPECIFIC_DOMAIN, eventListener);
 
-		((LetrisPushGameCommunicationServiceAsync) commServ).joinGame(Integer.toString(id) + ":" + name, connectionID, gameJoinedCallback);
+		// Register user-specific event listener.
+		remoteEventService.addListener(DomainFactory.USER_SPECIFIC_DOMAIN,
+				eventListener);
+
+		((LetrisPushGameCommunicationServiceAsync) commServ).joinGame(
+				Integer.toString(id) + ":" + name, connectionID,
+				gameJoinedCallback);
 
 	}
 
 	/**
-	 * join game #id with username 'name'
-	 * for games without NPC
+	 * join game #id with username 'name' for games without NPC
+	 * 
 	 * @param id
 	 * @param name
 	 */
 
-	public void joinGame(int id,String name, int numberOfPlayers) {
+	public void joinGame(int id, String name, int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfNPCs = 0;
 
-		//we dont want anonymous players
-		if (name.equals("")) name="Spieler";
+		// we dont want anonymous players
+		if (name.equals(""))
+			name = "Spieler";
 
 		name = escapeString(name);
 
-		((LetrisPushGameCommunicationServiceAsync) commServ).joinGame(Integer.toString(id) + ":" + name, connectionID, gameJoinedCallback);
+		((LetrisPushGameCommunicationServiceAsync) commServ).joinGame(
+				Integer.toString(id) + ":" + name, connectionID,
+				gameJoinedCallback);
 
 	}
 
@@ -284,26 +312,26 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		super.joinedGame(playerID, gameID);
 		this.playerID = playerID;
 
-		//construct game
+		// construct game
 		createControllerAndView();
 		LetrisPushGameView gameView = (LetrisPushGameView) view;
 
-		//construct an empty game-state with the given information
+		// construct an empty game-state with the given information
 		LetrisPushGameState g = new LetrisPushGameState();
 		g.setGameId(gameID);
 		g.setState(-1);
 		openGame = g;
 		update();
 
-		//clear the root panel and draw the game
+		// clear the root panel and draw the game
 		rootPanel.clear();
 		rootPanel.add(gameView);
 
-		if (numberOfPlayers > 1){
+		if (numberOfPlayers > 1) {
 			addChatView();
 		}
 	}
-	
+
 	public ArrayList<VowelGameWord> getTargetWords() {
 		return targetWords;
 	}
@@ -312,18 +340,19 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		this.targetWords = targetWords;
 	}
 
-	protected void createControllerAndView(){
+	protected void createControllerAndView() {
 		controller = new LetrisPushGameController(this);
-		this.view = new LetrisPushGameView(numberOfPlayers, controller, gameModel.getPlaygroundWidth(), gameModel.getPlaygroundHeight());
+		this.view = new LetrisPushGameView(numberOfPlayers, controller,
+				gameModel.getPlaygroundWidth(), gameModel.getPlaygroundHeight());
 	}
-	
+
 	public LetrisPushGameModel getGameModel() {
 		return gameModel;
 	}
-	
+
 	/**
-	 * Redraw the playground in the game view according to the current
-	 * game state.
+	 * Redraw the playground in the game view according to the current game
+	 * state.
 	 */
 	public void updatePlaygroundInView() {
 		// Update only if there is still a view.
@@ -332,45 +361,51 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 			gameView.updatePlayground(gameModel);
 		}
 	}
-	
+
 	/**
 	 * Update the preview of the opponent playground and the opponent points.
+	 * 
 	 * @param opponentPlaygroundState
 	 */
-	public void updateFromOpponent(LetrisPushGamePlaygroundState opponentPlaygroundState) {
-		
+	public void updateFromOpponent(
+			LetrisPushGamePlaygroundState opponentPlaygroundState) {
+
 		// Update player points of opponent player.
 		int playerID = opponentPlaygroundState.getPlayerID();
 		int points = opponentPlaygroundState.getPoints();
 		getGameState().setPlayerPoints(playerID, points);
-		
+
 		// Update filler rows.
-		gameModel.updateFillerRows(opponentPlaygroundState.getFillerRowsLevelDiff());
-		
+		gameModel.updateFillerRows(opponentPlaygroundState
+				.getFillerRowsLevelDiff());
+
 		// Update points in view.
 		updatePoints();
-		
+
 		// Update preview of opponent playground preview.
 		updatePreviewInView(opponentPlaygroundState.getStaticLetterBlocks());
 	}
-	
+
 	/**
-	 * Redraw the preview of the opponent's playground in the
-	 * game view according to the given game state.
+	 * Redraw the preview of the opponent's playground in the game view
+	 * according to the given game state.
 	 */
-	public void updatePreviewInView(ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks) {
+	public void updatePreviewInView(
+			ArrayList<LetrisPushGameLetterBlock> staticLetterBlocks) {
 		LetrisPushGameView gameView = (LetrisPushGameView) view;
 		gameView.updatePreview(staticLetterBlocks);
 	}
-	
+
 	/**
 	 * Update the points from the game state in the view.
+	 * 
 	 * @param points
 	 */
 	public void updatePoints() {
 		LetrisPushGameView gameView = (LetrisPushGameView) view;
-		for (int i = 0; i < getGameState().getPlayers().size(); i++){
-			gameView.updatePoints(i+1,getGameState().getPlayerPoints(i+1),getGameState().getPlayerName(i+1));
+		for (int i = 0; i < getGameState().getPlayers().size(); i++) {
+			gameView.updatePoints(i + 1, getGameState().getPlayerPoints(i + 1),
+					getGameState().getPlayerName(i + 1));
 		}
 	}
 
@@ -378,71 +413,73 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	protected void updateGame(GameState gameState) {
 		super.updateGame(gameState);
 		LetrisPushGameState g = (LetrisPushGameState) gameState;
-		LetrisPushGameView gameView =  (LetrisPushGameView) view;
-		
-		//we already have the latest state
-		if (g==null) return;
-		
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
+
+		// we already have the latest state
+		if (g == null)
+			return;
+
 		switch (g.getState()) {
-			//started
+		// started
 		case 3:
 			this.controller.setKeysEnabled(true);
-			gameModel.startMoving();		
+			gameModel.startMoving();
 			gameView.showLetrisGame();
 			break;
-			// for synchronization
+		// for synchronization
 		case 6:
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":"
+					+ Integer.toString(playerID), dummyCallback);
 			break;
 		}
 		openGame = g;
 	}
-	
-	
+
 	/**
-	 * Sets user name in chat and sets points
-	 * "Warte auf [other player name]" is displayed
+	 * Sets user name in chat and sets points "Warte auf [other player name]" is
+	 * displayed
 	 * 
 	 */
 	@Override
-	protected void handleAwaitingStartState(GameState g){
-		LetrisPushGameView gameView =  (LetrisPushGameView) view;
+	protected void handleAwaitingStartState(GameState g) {
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
 		if (this.numberOfPlayers > 1)
 			chatC.setUserName(g.getPlayerName(this.playerID));
-		for (int i = 0; i < g.getPlayers().size(); i++){
-			gameView.updatePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+		for (int i = 0; i < g.getPlayers().size(); i++) {
+			gameView.updatePoints(i + 1, g.getPlayerPoints(i + 1),
+					g.getPlayerName(i + 1));
 		}
-		if (g.isPlayerReady(this.playerID)){
+		if (g.isPlayerReady(this.playerID)) {
 			// other player ready ?
 
 			gameView.clearGamePanel();
-			gameView.showWaitingForOtherPlayer("Warte auf " + g.getPlayerName(playerID%2+1) + "!");
+			gameView.showWaitingForOtherPlayer("Warte auf "
+					+ g.getPlayerName(playerID % 2 + 1) + "!");
 
 		}
 		setRefreshRate(1000);
 	}
-	
-	
+
 	/**
 	 * the refresh set is increased since the description is displayed
 	 */
 	@Override
-	protected void handleWaitingForPlayersState(){
+	protected void handleWaitingForPlayersState() {
 		setRefreshRate(2000);
 	}
-	
-	
+
 	/**
 	 * points are displayed and "Warte auf zweiten Spieler..." is shown
 	 */
 	@Override
-	protected void handleWaitingForOtherPlayersState(GameState g){
-		LetrisPushGameView gameView =  (LetrisPushGameView) view;
+	protected void handleWaitingForOtherPlayersState(GameState g) {
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
 		setRefreshRate(2000);
-		for (int i = 0; i < g.getPlayers().size(); i++){
-			gameView.updatePoints(i+1,g.getPlayerPoints(i+1),g.getPlayerName(i+1));
+		for (int i = 0; i < g.getPlayers().size(); i++) {
+			gameView.updatePoints(i + 1, g.getPlayerPoints(i + 1),
+					g.getPlayerName(i + 1));
 		}
-		if (g.isPlayerReady(this.playerID)){
+		if (g.isPlayerReady(this.playerID)) {
 			// other player ready ?
 
 			gameView.clearGamePanel();
@@ -450,21 +487,22 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 
 		}
 	}
-	
+
 	/**
 	 * Registers a new AnimationTimerTask
 	 * 
-	 * @param t		the taskText to register
+	 * @param t
+	 *            the taskText to register
 	 */
 	public void registerAniTask(LetrisPushGameAnimationTimerTask t) {
 		aniTimer.registerTask(t);
 	}
 
 	/*
-	 * Animation tasks will later be registered in the animation timer.
-	 * a taskText exists for every direction the player can move.
+	 * Animation tasks will later be registered in the animation timer. a
+	 * taskText exists for every direction the player can move.
 	 */
-	
+
 	/**
 	 * Timer taskText for moving the current moving letter block to the left.
 	 */
@@ -477,7 +515,7 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		}
 
 	};
-	
+
 	/**
 	 * Timer taskText for moving the current moving letter block to the right.
 	 */
@@ -503,9 +541,10 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		}
 
 	};
-	
+
 	/**
-	 * Timer taskText for rotating the current moving letter block anti clockwise.
+	 * Timer taskText for rotating the current moving letter block anti
+	 * clockwise.
 	 */
 	private LetrisPushGameAnimationTimerTask rotateTask = new LetrisPushGameAnimationTimerTask() {
 
@@ -540,17 +579,19 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	private boolean keyPDown = false;
 
 	/**
-	 * Takes key actions from the controller and fires movement
-	 * or rotation commands in the model. Additionally
-	 * handles repetition of the current word and toggling of
-	 * pause mode. 
-	 * @param up true, if the key went up; false, if the key went down
-	 * @param key number representing the key
+	 * Takes key actions from the controller and fires movement or rotation
+	 * commands in the model. Additionally handles repetition of the current
+	 * word and toggling of pause mode.
+	 * 
+	 * @param up
+	 *            true, if the key went up; false, if the key went down
+	 * @param key
+	 *            number representing the key
 	 */
-	public void handleKeyStroke(boolean up, int key){
+	public void handleKeyStroke(boolean up, int key) {
 		// If key went down ...
 		if (!up) {
-			switch(key){
+			switch (key) {
 			// Down key
 			case 1:
 				if (!keyDownDown) {
@@ -617,7 +658,7 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		}
 		// If key went up ...
 		else {
-			switch(key){
+			switch (key) {
 			// Key down
 			case 1:
 				if (keyDownDown) {
@@ -678,7 +719,7 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 			}
 		}
 	}
-	
+
 	protected void restartGame() {
 		endGame();
 		init();
@@ -687,9 +728,9 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 	/**
 	 * Remove the timer tasks when the game should be ended.
 	 */
-	public void endGame() {		
+	public void endGame() {
 		gameModel.stopMoving();
-		
+
 		moveLeftTask.markForDelete();
 		moveRightTask.markForDelete();
 		rotateTask.markForDelete();
@@ -703,84 +744,103 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 		keySpaceDown = false;
 		keyWDown = false;
 		keyPDown = false;
-		
+
 		// Unregister event listener.
-		remoteEventService.removeListener(DomainFactory.USER_SPECIFIC_DOMAIN, eventListener);
+		remoteEventService.removeListener(DomainFactory.USER_SPECIFIC_DOMAIN,
+				eventListener);
 	}
-	
+
 	/**
-	 * Stop the game or start it again and implement
-	 * a pause mode this way.
+	 * Stop the game or start it again and implement a pause mode this way. Send
+	 * the pause toggle action to the server so that the other player - in case
+	 * there is one - gets paused too.
 	 */
 	private void togglePauseMode() {
 		if (gamePaused) {
-			
-			// Start the game.
-			gamePaused = !gamePaused;
-			
-			LetrisPushGameView gameView = (LetrisPushGameView) view;
-			gameView.hidePauseMessage();
-			
-			gameModel.startMoving();
-			
+			// Send the pause command to the server.
+			LetrisPushGameCommunicationServiceAsync letrisCommServ = (LetrisPushGameCommunicationServiceAsync) commServ;
+			letrisCommServ.pauseAllPlayers(getGameState(), voidCallback);
 		} else {
-			
-			// Stop the game.
-			gamePaused = !gamePaused;
-			
-			GWT.log("Game paused.");
-			
-			LetrisPushGameView gameView = (LetrisPushGameView) view;
-			gameView.showPauseMessage();
-			
-			gameModel.stopMoving();
-			
-			moveLeftTask.markForDelete();
-			moveRightTask.markForDelete();
-			rotateTask.markForDelete();
-			moveDownTask.markForDelete();
-			dropTask.markForDelete();
-
-			keyUpDown = false;
-			keyDownDown = false;
-			keyLeftDown = false;
-			keyRightDown = false;
-			keySpaceDown = false;
-			keyWDown = false;
-			keyPDown = false;
+			// Send the unpause command to the server.
+			LetrisPushGameCommunicationServiceAsync letrisCommServ = (LetrisPushGameCommunicationServiceAsync) commServ;
+			letrisCommServ.unpauseAllPlayers(getGameState(), voidCallback);
 		}
 	}
 
-	public void startButtonClicked(){
-		if (!openGame.isPlayerReady(this.playerID)) {
-			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":" + Integer.toString(playerID), dummyCallback);
-		}
-	}
-	
 	/**
-	 * What is to be done when the list of target words has been retrieved from the server.
+	 * Gets called in case of a pause event.
+	 */
+	public void pauseGame() {
+		// Stop the game.
+		gamePaused = !gamePaused;
+
+		GWT.log("Game paused.");
+
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
+		gameView.showPauseMessage();
+
+		gameModel.stopMoving();
+
+		moveLeftTask.markForDelete();
+		moveRightTask.markForDelete();
+		rotateTask.markForDelete();
+		moveDownTask.markForDelete();
+		dropTask.markForDelete();
+
+		keyUpDown = false;
+		keyDownDown = false;
+		keyLeftDown = false;
+		keyRightDown = false;
+		keySpaceDown = false;
+		keyWDown = false;
+		keyPDown = false;
+	}
+
+	/**
+	 * Gets called in case of an unpause event.
+	 */
+	public void unpauseGame() {
+		// Start the game.
+		gamePaused = !gamePaused;
+
+		LetrisPushGameView gameView = (LetrisPushGameView) view;
+		gameView.hidePauseMessage();
+
+		gameModel.startMoving();
+	}
+
+	public void startButtonClicked() {
+		if (!openGame.isPlayerReady(this.playerID)) {
+			commServ.updateReadyness(Integer.toString(openGame.getId()) + ":"
+					+ Integer.toString(playerID), dummyCallback);
+		}
+	}
+
+	/**
+	 * What is to be done when the list of target words has been retrieved from
+	 * the server.
 	 */
 	AsyncCallback<ArrayList<VowelGameWord>> targetWordsCallback = new AsyncCallback<ArrayList<VowelGameWord>>() {
-		
+
 		@Override
 		public void onFailure(Throwable caught) {
 			caught.printStackTrace();
 		}
-		
+
 		@Override
 		public void onSuccess(ArrayList<VowelGameWord> targetWords) {
 			setTargetWords(targetWords);
-			
+
 			// Initialize the game model.
 			gameModel = new LetrisPushGameModel(LetrisPushGameCoordinator.this,
 					STARTING_ROTATED_LETTER_RATIO,
-					STARTING_DISTRACTOR_LETTER_RATIO,
-					STARTING_TIME_PER_BLOCK);
-			
+					STARTING_DISTRACTOR_LETTER_RATIO, STARTING_TIME_PER_BLOCK);
+
 			// Set up the game selector.
-			gameSelector = new LetrisPushGameSelector(LetrisPushGameCoordinator.this);
+			gameSelector = new LetrisPushGameSelector(
+					LetrisPushGameCoordinator.this);
 			rootPanel.add(gameSelector);
-			
+
 			t = new Timer() {
 				@Override
 				public void run() {
@@ -788,25 +848,25 @@ public class LetrisPushGameCoordinator extends GameCoordinator {
 				}
 			};
 
-			//main loop-timer
+			// main loop-timer
 			t.scheduleRepeating(500);
 			refreshGameList();
-			
+
 			GWT.log("LeTris game coordinator loaded.");
 		}
-		
+
 	};
-	
+
 	AsyncCallback<Void> voidCallback = new AsyncCallback<Void>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			caught.printStackTrace();			
+			caught.printStackTrace();
 		}
 
 		@Override
 		public void onSuccess(Void result) {
-			// Do nothing.			
+			// Do nothing.
 		}
 	};
 }

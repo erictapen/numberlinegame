@@ -17,6 +17,8 @@ public interface SpellingAssessmentCommunicationServiceAsync {
 
 	public void itemPresented(String message, AsyncCallback<Void> voidCallback);
 	
+	public void userAnswerComplete(String message, AsyncCallback<Void> voidCallback);
+	
 	public void userAnswered(String message, AsyncCallback<Void> voidCallback);
 
 	public void endAssessment(int assessmentID, AsyncCallback<Void> callback);

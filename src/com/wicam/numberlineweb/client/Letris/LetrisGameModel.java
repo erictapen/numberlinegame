@@ -395,8 +395,6 @@ public class LetrisGameModel {
 				}
 				break;
 			}
-			// TODO Delete this after debugging.
-			GWT.log("Rotated letter block: " + movingLetterBlock);
 			if (isDrawn(movingLetterBlock)) {
 				updateLetterBlockInView(movingLetterBlock);
 			} else {

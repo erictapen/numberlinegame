@@ -11,8 +11,7 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 
 /**
- * Stores a shuffled version of the math task items of the assessment.
- * Items may be retrieved with the popItem()-method.
+ * Stores items of the assessment. Items may be retrieved with the popItem()-method.
  * @author timfissler
  *
  */
@@ -20,26 +19,23 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 public class SpellingAssessmentItemStack implements IsSerializable{
 
 	/**
-	 * Randomizer to shuffle the list items.
-	 */
-	private Random rand = new Random();
-	/**
 	 * List that contains the items.
 	 */
-	private List<SpellingAssessmentItem> items = new LinkedList<SpellingAssessmentItem>();
+	private List<SpellingAssessmentItem> items;
 	
 	/**
 	 * Create a new item stack.
 	 */
 	public SpellingAssessmentItemStack() {
-		
-		// Set all items.
-		setItems();
-
-		// Shuffle the items.
-		rand.setSeed(System.currentTimeMillis());
+		items = new LinkedList<SpellingAssessmentItem>();
+	}
+	
+	/**
+	 * Shuffle the stack given a randomizer.
+	 * @param rand
+	 */
+	public void shuffle(Random rand) {
 		Collections.shuffle(items, rand);
-		
 	}
 	
 	/**
@@ -61,11 +57,12 @@ public class SpellingAssessmentItemStack implements IsSerializable{
 		return item;
 	}
 	
-	private void setItems() {
-		items.add(new SpellingAssessmentItem("In den Obstsalat gehört auch eine ________.", "Orange"));
-		items.add(new SpellingAssessmentItem("Auf der Weide steht ein kleines ________.", "Pony"));
-		items.add(new SpellingAssessmentItem("Meine Schwester ist ein Nesthäkchen, sie wird ständig ________.", "verwöhnt"));
-		
+	/**
+	 * Push the given item to the first position of the stack.
+	 * @param item
+	 */
+	public void pushItem(SpellingAssessmentItem item) {
+		items.add(0, item);
 	}
 	
 }

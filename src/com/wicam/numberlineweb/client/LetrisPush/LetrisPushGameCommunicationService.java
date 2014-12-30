@@ -24,5 +24,9 @@ public interface LetrisPushGameCommunicationService extends
 	
 	public void sendTargetUpdate(LetrisPushGamePlaygroundState playgroundState);
 	
+	public void pauseAllPlayers(LetrisPushGameState gameState);
+	
+	public void unpauseAllPlayers(LetrisPushGameState gameState);
+	
 	public ArrayList<VowelGameWord> getTargetWords();
 }

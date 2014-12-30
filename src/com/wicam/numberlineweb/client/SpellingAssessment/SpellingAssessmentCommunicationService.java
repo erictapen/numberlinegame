@@ -21,6 +21,8 @@ public interface SpellingAssessmentCommunicationService extends RemoteService {
 	
 	public void itemPresented(String message);
 
+	public void userAnswerComplete(String message);
+	
 	public void userAnswered(String message);
 	
 	public SpellingAssessmentState startAssessment(int userID) throws GameJoinException;

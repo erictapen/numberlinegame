@@ -1,11 +1,20 @@
 package com.wicam.numberlineweb.client.SpellingAssessment;
 
+import java.io.File;
+
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.mp3.MP3AudioHeader;
+
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentSoundRetriever;
 
 /**
  * Provides an item for the Spelling Assessment with a sentence, 
- * an audio file that will be played, and the right result for the task
+ * and the right result for the task. Never create an item using
+ * its constructor. Instead use SpellingAssessmentItemFactory to
+ * guarantee right setup of the playback duration in the item.
  * @author svenfillinger
  *
  */
@@ -16,14 +25,24 @@ public class SpellingAssessmentItem implements IsSerializable{
 	 */
 	private String sentence;
 	
-	
 	/**
 	 * contains the right result for this task
 	 */
 	private String result;
 	
 	/**
-	 * The constructor for a SpellingAssessment object
+	 * The duration of the sentence playback in ms.
+	 */
+	private int sentenceDuration; // ms
+	
+	/**
+	 * The duration of the result playback in ms.
+	 */
+	private int resultDuration; // ms
+	
+	/**
+	 * The constructor for a SpellingAssessment object. Calculate time
+	 * duration for result and sentence playback.
 	 * @param sentence
 	 * @param audioFile
 	 * @param result
@@ -39,27 +58,44 @@ public class SpellingAssessmentItem implements IsSerializable{
 	public SpellingAssessmentItem(){
 		this.sentence = "";
 		this.result = "";
+		this.resultDuration = 0;
+		this.sentenceDuration = 0;
 	}
 	
 	/**
-	 * gets an audio object of the item word (result)
+	 * Setter for the duration of the result playback.
+	 * @param duration
+	 */
+	public void setResultDuration(int duration) {
+		this.resultDuration = duration;
+	}
+	
+	/**
+	 * Setter for the duration of the sentence playback.
+	 * @param duration
+	 */
+	public void setSentenceDuration(int duration) {
+		this.sentenceDuration = duration;
+	}
+	
+	/**
+	 * Getter for the duration of the sentence playback.
 	 * @return
 	 */
-	public Audio getResultAudio(){
-		return SpellingAssessmentSoundRetriever.getAudioElement(this, false);
+	public int getSentenceDuration() {
+		return this.sentenceDuration;
 	}
 	
 	/**
-	 * gets an audio object of the item sentence
+	 * Getter for the duration of the result playback.
 	 * @return
 	 */
-	public Audio getSentenceAudio(){
-		return SpellingAssessmentSoundRetriever.getAudioElement(this, true);
-	}
-	
+	public int getResultDuration() {
+		return this.resultDuration;
+	}	
 	
 	/**
-	 * Get method for the sentence of the current task item
+	 * Getter method for the sentence of the current task item
 	 * @return String sentence
 	 */
 	public String getSentence(){
@@ -67,7 +103,7 @@ public class SpellingAssessmentItem implements IsSerializable{
 	}
 	
 	/**
-	 * Get method for the result, e.g. the correct word that should have been entered
+	 * Getter method for the result, e.g. the correct word that should have been entered
 	 * @return String result
 	 */
 	public String getResult(){
@@ -77,28 +113,22 @@ public class SpellingAssessmentItem implements IsSerializable{
 	
 	@Override
 	public String toString(){
-		String string = "";
-		
-		string += "Item overview:\n";
-		string += "sentence:\t" + this.sentence + "\n";
-		string += "result:\t\t" + this.result + "\n";
-
+		String string = "Item overview:\n" +
+				"sentence:\t" + this.sentence + "\n" +
+				"result:\t\t" + this.result + "\n" +
+				"sentence duration:\t" + this.sentenceDuration + "\n" +
+				"result duration:\t" + this.resultDuration + "\n";
 		return string;
 	}
 	
 	/**
 	 * Return a string for logging the item, that contains
-	 * the sentence and the correct result.
+	 * the correct result.
 	 * @return
 	 */
 	public String logEntry() {
-		return this.sentence + " (" + this.result + ")";
+//		return this.sentence + " (" + this.result + ")";
+		return this.result;
 	}
 	
-	
-//	public static void main(String args[]){
-//		SpellingAssessmentItem myItem = new SpellingAssessmentItem("Die Banane ist _______", "Banane.wav", "krumm");
-//		System.out.print(myItem.toString());
-//		System.out.print(myItem.logEntry());
-//	}
 }

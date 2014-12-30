@@ -45,9 +45,14 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 	 * Stores the current item id to allow each new assessment to get an individual id.
 	 */
 	protected int currentAssessmentID;
+	/**
+	 * The stack factory creates new item stacks. 
+	 */
+	protected SpellingAssessmentItemStackFactory stackFactory;
 	
 	public SpellingAssessmentCommunicationServiceServlet() {
 		this.internalName = "spelling_assessment";
+		this.stackFactory = new SpellingAssessmentItemStackFactory();
 		this.assessmentId2Logger = new HashMap<Integer, GameLogger>();
 		this.assessmentId2openAssessments = new HashMap<Integer, SpellingAssessmentState>();
 		this.assessmentId2ItemStack = new HashMap<Integer, SpellingAssessmentItemStack>();
@@ -69,6 +74,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[2]);
 		
 		// Log the item.
+		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 		this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 				this.assessmentId2openAssessments.get(assessmentID).getUserID(),
@@ -83,9 +89,9 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 	 * Logs the user answer.
 	 */
 	@Override
-	public synchronized void userAnswered(String message) {
+	public synchronized void userAnswerComplete(String message) {
 
-		System.out.println("User answered.");
+		System.out.println("User answer complete.");
 		System.out.println("Logging: " + message);
 		
 		// Decode the message string.
@@ -97,11 +103,41 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[5]);
 
 		// Log the item.
+		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 			this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 					this.assessmentId2openAssessments.get(assessmentID).getUserID(),
 					timestamp, LogActionType.MATH_ASSESSMENT_USER_ANSWERED, "{\"taskItem\" : " + item +
 					", \"answer\" : " + answer + ", \"isCorrect\" : " + isCorrect + 
+					", \"reactionTime\" : " + reactionTime + "}",
+					this.getClass().getName(), LogActionTrigger.APPLICATION);
+		
+	}
+	
+	/**
+	 * Is being called when the user entered a single character for the current taskText presented.
+	 * Logs the incomplete user answer.
+	 */
+	@Override
+	public synchronized void userAnswered(String message) {
+
+		System.out.println("User answered.");
+		System.out.println("Logging: " + message);
+		
+		// Decode the message string.
+		int assessmentID = Integer.parseInt(message.split(":")[0]);
+		String item = message.split(":")[1];
+		String answer = message.split(":")[2];
+		long reactionTime = Long.parseLong(message.split(":")[3]);
+		long timestamp = Long.parseLong(message.split(":")[4]);
+
+		// Log the item.
+		// TODO Change to spelling assessment logging.
+		if (this.assessmentId2Logger.containsKey(assessmentID))
+			this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
+					this.assessmentId2openAssessments.get(assessmentID).getUserID(),
+					timestamp, LogActionType.MATH_ASSESSMENT_USER_ANSWERED, "{\"taskItem\" : " + item +
+					", \"answer\" : " + answer + 
 					", \"reactionTime\" : " + reactionTime + "}",
 					this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
@@ -138,7 +174,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		currentAssessmentID++;
 		
 		// Create new shuffled item list.
-		this.assessmentId2ItemStack.put(state.getAssessmentID(), new SpellingAssessmentItemStack());
+		this.assessmentId2ItemStack.put(state.getAssessmentID(), stackFactory.getItemStack());
 		
 		// Create new logger.
 		this.assessmentId2Logger.put(state.getAssessmentID(), new GameLogger());
@@ -214,6 +250,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[2]);
 		
 		// Log the item.
+		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 		this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 				this.assessmentId2openAssessments.get(assessmentID).getUserID(),

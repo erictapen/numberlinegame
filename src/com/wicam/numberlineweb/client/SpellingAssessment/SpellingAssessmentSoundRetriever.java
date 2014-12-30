@@ -2,6 +2,7 @@ package com.wicam.numberlineweb.client.SpellingAssessment;
 
 import com.google.gwt.media.client.Audio;
 import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
+import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
 
 /**
  * Class for retrieving the wave-files
@@ -13,7 +14,7 @@ import com.wicam.numberlineweb.client.VowelGame.VowelGameWord;
 
 public class SpellingAssessmentSoundRetriever {
 	
-	private static String getPath(SpellingAssessmentItem item, boolean getSentence) {
+	public static String getPath(SpellingAssessmentItem item, boolean getSentence) {
 		
 		String type;
 		String value = item.getResult().replace("??", "ae").replace("??", "oe").replace("??", "ue");
