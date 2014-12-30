@@ -22,5 +22,9 @@ public interface LetrisPushGameCommunicationServiceAsync extends GameCommunicati
 	
 	public void sendTargetUpdate(LetrisPushGamePlaygroundState playgroundState, AsyncCallback<Void> callback);
 	
+	public void pauseAllPlayers(LetrisPushGameState gameState, AsyncCallback<Void> callback);
+	
+	public void unpauseAllPlayers(LetrisPushGameState gameState, AsyncCallback<Void> callback);
+	
 	public void getTargetWords(AsyncCallback<ArrayList<VowelGameWord>> callback);
 }

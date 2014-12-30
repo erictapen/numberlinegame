@@ -29,9 +29,8 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  * TODO Enter spelling items from audio files into item stack. (Sven)
  * TODO Add Training-Trials. (Tim)
  * TODO Check if database contains adequate table-entries for assessment. (Sven&Tim)
- * TODO Add keyboardListener/Handler to input field to react to keystrokes (especially 'enter'). (Sven mit Hilfe)
- * TODO Logging of every typed letter. And every other event. (Tim)
  * TODO Check functionality of shuffle list. (Sven)
+ * TODO Make German umlauts work for logging. (Sven)
  */
 public class SpellingAssessmentCoordinator implements ValueChangeHandler<String> {	
 	
@@ -127,16 +126,15 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 	}
 	
 	/**
-	 * Is being called when the user has entered a result to the current taskText.
+	 * Is being called when the user has entered a complete word to answer the current taskText.
 	 * @param answer
 	 * @param timestamp
 	 */
-	public void userAnswered(String answer, long timestamp) {
-		
+	public void userAnswerComplete(String answer, long timestamp) {
 		
 		boolean isCorrect;
 		// Check the correctness of the given answer.
-		if(answer == currentItem.getResult()){
+		if (answer.equals(currentItem.getResult())) {
 			isCorrect = true;
 		} else{
 			isCorrect = false;
@@ -145,15 +143,30 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		// Pass the item, the result, the correctness, the reaction time and the time stamp to the server. 
 		userAnsweredTimeStamp = timestamp;
 		reactionMilliSeconds = userAnsweredTimeStamp - itemPresentedTimeStamp;
-		String message = state.getAssessmentID() + ":" + currentItem + ":" + answer + ":" + isCorrect + ":" +
+		String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + answer + ":" + isCorrect + ":" +
 				Long.toString(reactionMilliSeconds) + ":" + Long.toString(timestamp);
-		commServ.userAnswered(message, voidCallback);
+		commServ.userAnswerComplete(message, voidCallback);
 
 		// Hide task screen ...
 		view.hideTaskScreen();
 		
 		// Get next item if there is one else finish assessment.
 		commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
+	}	
+	
+	/**
+	 * Is being called when the user has entered a character to answer the current taskText.
+	 * @param answer the incomplete user answer
+	 * @param timestamp
+	 */
+	public void userAnswered(String answer, long timestamp) {
+		
+		// Pass the item, the result, the correctness, the reaction time and the time stamp to the server. 
+		userAnsweredTimeStamp = timestamp;
+		reactionMilliSeconds = userAnsweredTimeStamp - itemPresentedTimeStamp;
+		String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + answer + ":" +
+				Long.toString(reactionMilliSeconds) + ":" + Long.toString(timestamp);
+		commServ.userAnswered(message, voidCallback);
 	}	
 	
 	/**
@@ -264,11 +277,6 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 			
 			// Get next item.
 			SpellingAssessmentCoordinator.this.view.showTaskScreen(currentItem);
-
-			// Send the item and the current time stamp to the server.
-			SpellingAssessmentCoordinator.this.itemPresentedTimeStamp = System.currentTimeMillis();
-			String message = state.getAssessmentID() + ":" + currentItem.logEntry() + ":" + SpellingAssessmentCoordinator.this.itemPresentedTimeStamp;
-			SpellingAssessmentCoordinator.this.commServ.itemPresented(message, voidCallback);
 		}
 
 	}

@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwteventservice-1.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-graphics-1.0.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jaudiotagger-2.2.2.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
