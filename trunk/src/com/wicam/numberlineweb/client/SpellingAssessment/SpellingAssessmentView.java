@@ -39,6 +39,7 @@ public class SpellingAssessmentView extends Composite {
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
 	protected final AbsolutePanel explanationPanel = new AbsolutePanel();
 	protected final AbsolutePanel endPanel = new AbsolutePanel();
+	protected final AbsolutePanel switchPanel= new AbsolutePanel();
 	protected final HorizontalPanel taskPanel = new HorizontalPanel();
 	protected final AbsolutePanel whitePanel = new AbsolutePanel();
 	protected final HorizontalPanel fixationPanel = new HorizontalPanel();
@@ -47,6 +48,7 @@ public class SpellingAssessmentView extends Composite {
 	protected final TextBox resultBox = new TextBox();
 	protected final HTML explanationText = new HTML();
 	protected final HTML endText = new HTML();
+	protected final HTML switchText = new HTML();
 	protected final HorizontalPanel taskWrapper = new HorizontalPanel();
 	protected final Button startButton = new Button("Test starten", new ClickHandler() {
 		@Override
@@ -58,6 +60,12 @@ public class SpellingAssessmentView extends Composite {
 		@Override
 		public void onClick(ClickEvent event) {
 			controller.endButtonClicked();			
+		}
+	});
+	protected final Button switchButton = new Button("Los geht's!", new ClickHandler() {
+		@Override
+		public void onClick(ClickEvent event) {
+			controller.startExperimentalMode();			
 		}
 	});
 	final HTML infoText = new HTML();
@@ -226,9 +234,46 @@ public class SpellingAssessmentView extends Composite {
 		endPanel.setVisible(false);
 		motherPanel.add(endPanel);
 		
+		// Setup switch panel.
+		switchPanel.setHeight("400px");
+		switchPanel.setWidth("750px");
+		setSwitchText();
+		switchPanel.add(switchText);
+		switchPanel.setWidgetPosition(switchText, 0, 0);
+		switchPanel.add(switchButton);
+		switchPanel.setWidgetPosition(switchButton, 600, 350);
+		switchPanel.setVisible(false);
+		motherPanel.add(switchPanel);
+		
 		RootPanel.get().add(motherPanel);
 	}
 	
+	/**
+	 * Sets the switch text between training and experimental mode
+	 */
+	private void setSwitchText() {
+		// TODO FSK 0 text input
+		switchText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Rechtschreibe-Test - Experimentalmodus</b></div>" +
+				"<div style='padding:5px 20px;font-size:12px'>" +
+				"Okay. Jetzt geht es richtig zur Sache!</div>");
+	}
+	
+	/**
+	 * Show switch screen.
+	 */
+	public void showEnterExperimentalModeScreen() {
+		
+		switchPanel.setVisible(true);
+		switchButton.setFocus(true);
+	}
+	
+	/**
+	 * Hide switch screen
+	 */
+	public void hideEnterExperimentalModeScreen() {
+		switchPanel.setVisible(false);
+	}
+
 	/**
 	 * Show explanation.
 	 */
@@ -360,9 +405,11 @@ public class SpellingAssessmentView extends Composite {
 	 * Set the ending-text
 	 */
 	public void setEndText(){
+		// TODO change to spelling assessment
 		endText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Mathe-Test - Ende</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
 				"Vielen Dank für's Mitmachen. Der Test ist nun zu Ende.</div>");
 	}
+
 	
 }

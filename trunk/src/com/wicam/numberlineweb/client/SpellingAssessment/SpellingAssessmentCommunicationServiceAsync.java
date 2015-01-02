@@ -27,6 +27,8 @@ public interface SpellingAssessmentCommunicationServiceAsync {
 
 	public void getNextItem(int assessmentID, AsyncCallback<SpellingAssessmentItem> callback);
 	
+	public void getNextTrainingItem(int assessmentID, AsyncCallback<SpellingAssessmentItem> callback);
+	
 	public void userAborted(String message, AsyncCallback<Void> voidCallback);
 	
 }

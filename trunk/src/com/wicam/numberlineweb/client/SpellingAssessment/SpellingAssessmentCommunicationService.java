@@ -31,6 +31,8 @@ public interface SpellingAssessmentCommunicationService extends RemoteService {
 	
 	public SpellingAssessmentItem getNextItem(int assessmentID);
 	
+	public SpellingAssessmentItem getNextTrainingItem(int assessmentID);
+	
 	public void userAborted(String message);
 	
 }
