@@ -33,7 +33,7 @@ public class SpellingAssessmentView extends Composite {
 	/**
 	 * Time between end of sentence playback and start of result playback.
 	 */
-	private final int sentenceResultOffset = 500;
+	private final int sentenceResultOffset = 500; // ms
 	private SpellingAssessmentItem currentItem;
 	protected SpellingAssessmentController controller;
 	protected final HorizontalPanel motherPanel = new HorizontalPanel();
