@@ -84,11 +84,10 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[2]);
 		
 		// Log the item.
-		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 		this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 				this.assessmentId2openAssessments.get(assessmentID).getUserID(),
-				timestamp, LogActionType.MATH_ASSESSMENT_ITEM_PRESENTED,
+				timestamp, LogActionType.SPELLING_ASSESSMENT_ITEM_PRESENTED,
 				"{\"taskItem\" : " + item + "}", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
@@ -113,11 +112,10 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[5]);
 
 		// Log the item.
-		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 			this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 					this.assessmentId2openAssessments.get(assessmentID).getUserID(),
-					timestamp, LogActionType.MATH_ASSESSMENT_USER_ANSWERED, "{\"taskItem\" : " + item +
+					timestamp, LogActionType.SPELLING_ASSESSMENT_USER_ANSWER_COMPLETE, "{\"taskItem\" : " + item +
 					", \"answer\" : " + answer + ", \"isCorrect\" : " + isCorrect + 
 					", \"reactionTime\" : " + reactionTime + "}",
 					this.getClass().getName(), LogActionTrigger.APPLICATION);
@@ -142,11 +140,10 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[4]);
 
 		// Log the item.
-		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 			this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 					this.assessmentId2openAssessments.get(assessmentID).getUserID(),
-					timestamp, LogActionType.MATH_ASSESSMENT_USER_ANSWERED, "{\"taskItem\" : " + item +
+					timestamp, LogActionType.SPELLING_ASSESSMENT_USER_ANSWERED, "{\"taskItem\" : " + item +
 					", \"answer\" : " + answer + 
 					", \"reactionTime\" : " + reactionTime + "}",
 					this.getClass().getName(), LogActionTrigger.APPLICATION);
@@ -264,11 +261,10 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		long timestamp = Long.parseLong(message.split(":")[2]);
 		
 		// Log the item.
-		// TODO Change to spelling assessment logging.
 		if (this.assessmentId2Logger.containsKey(assessmentID))
 		this.assessmentId2Logger.get(assessmentID).log(assessmentID, 
 				this.assessmentId2openAssessments.get(assessmentID).getUserID(),
-				timestamp, LogActionType.MATH_ASSESSMENT_USER_ABORTED,
+				timestamp, LogActionType.SPELLING_ASSESSMENT_USER_ABORTED,
 				"{\"taskItem\" : " + item + "}", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
