@@ -29,8 +29,6 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  * TODO Enter spelling items from audio files into item stack. (Sven)
  * TODO Add Training-Trials. (Sven & Tim)
  *          (logging of test trials???) (Steffi <-> Sven)
- * TODO Check if database contains adequate table-entries for assessment.
- * 		Change Logger-Calls. (Sven & Tim)
  * TODO Check functionality of shuffle list. (Probably works) (Sven)
  * TODO Make German umlauts work for logging. (Sven)
  * TODO Add comments to all methods, members and classes. (Sven & Tim)
