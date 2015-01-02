@@ -49,13 +49,23 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 	 * The stack factory creates new item stacks. 
 	 */
 	protected SpellingAssessmentItemStackFactory stackFactory;
+	/**
+	 * Stores the training item lists for all open training assessments on the server.
+	 */
+	protected Map<Integer, SpellingAssessmentItemStack> assessmentId2TrainingItemStack;
+	/**
+	 * The stack factory creates new item stacks. 
+	 */
+	protected SpellingAssessmentTrainingItemStackFactory trainingStackFactory;
 	
 	public SpellingAssessmentCommunicationServiceServlet() {
 		this.internalName = "spelling_assessment";
 		this.stackFactory = new SpellingAssessmentItemStackFactory();
+		this.trainingStackFactory = new SpellingAssessmentTrainingItemStackFactory();
 		this.assessmentId2Logger = new HashMap<Integer, GameLogger>();
 		this.assessmentId2openAssessments = new HashMap<Integer, SpellingAssessmentState>();
 		this.assessmentId2ItemStack = new HashMap<Integer, SpellingAssessmentItemStack>();
+		this.assessmentId2TrainingItemStack = new HashMap<Integer, SpellingAssessmentItemStack>();
 		this.currentAssessmentID = 0;
 	}
 
@@ -176,6 +186,9 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		// Create new shuffled item stack.
 		this.assessmentId2ItemStack.put(state.getAssessmentID(), stackFactory.getItemStack());
 		
+		// Create new training item stack.
+		this.assessmentId2TrainingItemStack.put(state.getAssessmentID(), trainingStackFactory.getItemStack());
+		
 		// Create new logger.
 		this.assessmentId2Logger.put(state.getAssessmentID(), new GameLogger());
 		
@@ -211,6 +224,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		this.assessmentId2openAssessments.remove(assessmentID);
 		this.assessmentId2Logger.remove(assessmentID);
 		this.assessmentId2ItemStack.remove(assessmentID);
+		this.assessmentId2TrainingItemStack.remove(assessmentID);
 		
 		System.out.println("Ended assessment " + assessmentID);
 		
@@ -258,6 +272,24 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 				"{\"taskItem\" : " + item + "}", 
 				this.getClass().getName(), LogActionTrigger.APPLICATION);
 		
+	}
+
+	/**
+	 * Return the next training item for the given assessmentID.
+	 * @param assessmentID
+	 * @return
+	 */
+	@Override
+	public SpellingAssessmentItem getNextTrainingItem(int assessmentID) {
+		SpellingAssessmentItem nextItem = null;
+		// If there is at least one item left return it and remove it from the list.
+		if (!assessmentId2TrainingItemStack.get(assessmentID).isEmpty()) {
+			nextItem = assessmentId2TrainingItemStack.get(assessmentID).popItem();
+		}
+
+		// Else return null.
+		
+		return nextItem;
 	}
 	
 	

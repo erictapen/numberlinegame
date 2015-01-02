@@ -59,4 +59,11 @@ public class SpellingAssessmentController {
 		coordinator.userAnswered(answer, timestamp);
 	}
 
+	/**
+	 * Starts the experimental mode
+	 */
+	public void startExperimentalMode() {
+		coordinator.startExperimentalMode();
+	}
+
 }

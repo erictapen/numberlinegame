@@ -15,7 +15,7 @@ public class SpellingAssessmentItemStackFactory {
 	/**
 	 * The factory to create new items.
 	 */
-	private SpellingAssessmentItemFactory itemFactory;
+	protected SpellingAssessmentItemFactory itemFactory;
 	
 	/**
 	 * Randomizer to shuffle the items.
@@ -48,7 +48,6 @@ public class SpellingAssessmentItemStackFactory {
 	 * @param stack
 	 */
 	private void fillStack(SpellingAssessmentItemStack stack) {
-		stack.pushItem(itemFactory.getItem("In den Obstsalat gehört auch eine ________.", "Orange"));
 		stack.pushItem(itemFactory.getItem("Auf der Weide steht ein kleines ________.", "Pony"));
 		stack.pushItem(itemFactory.getItem("Meine Schwester ist ein Nesthäkchen, sie wird meistens ________.", "verwöhnt"));
 	}

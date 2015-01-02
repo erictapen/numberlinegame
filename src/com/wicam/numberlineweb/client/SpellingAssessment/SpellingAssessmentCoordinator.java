@@ -22,10 +22,13 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  */
 
 /*
+ * TODO BUG: Check Key-Press-Handler (Timbo)
+ * TODO BUG: reaction time is not determined properly (Sven/Tim)
  * TODO Make input box appear at fixed (specific) position. (Sven)
  * TODO Switch background color of input box. (Sven)
  * TODO Enter spelling items from audio files into item stack. (Sven)
  * TODO Add Training-Trials. (Sven & Tim)
+ *          (logging of test trials???) (Steffi <-> Sven)
  * TODO Check if database contains adequate table-entries for assessment.
  * 		Change Logger-Calls. (Sven & Tim)
  * TODO Check functionality of shuffle list. (Probably works) (Sven)
@@ -35,6 +38,7 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  */
 public class SpellingAssessmentCoordinator implements ValueChangeHandler<String> {	
 	
+	protected boolean isTrainingMode;
 	protected SpellingAssessmentController controller;
 	protected Panel rootPanel;
 	protected GameTypeSelector gts;
@@ -72,6 +76,7 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		this.itemPresentedTimeStamp = 0;
 		this.userAnsweredTimeStamp = 0;
 		this.reactionMilliSeconds = 0;
+		this.isTrainingMode = true;
 	}
 	
 	/**
@@ -111,7 +116,12 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 			
 			// Start the assessment.
 			view.hideExplanationScreen();
-			commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
+			if(isTrainingMode){
+				commServ.getNextTrainingItem(state.getAssessmentID(), nextItemCallback);
+			} else {
+				commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
+			}
+			
 		}
 		
 	};
@@ -152,7 +162,12 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 		view.hideTaskScreen();
 		
 		// Get next item if there is one else finish assessment.
-		commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
+		if(isTrainingMode){
+			commServ.getNextTrainingItem(state.getAssessmentID(), nextItemCallback);
+		} else{
+			commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
+		}
+		
 	}	
 	
 	/**
@@ -222,12 +237,29 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 				currentItem = result;
 				nextTrial();
 			}
-			// ... if not show end screen.
+			// ... if not check in which mode
 			else {
-				// Now the assessment has finished.
-				assessmentFinished = true;
-				view.showEndScreen();
+				// switch to experimental mode
+				if(isTrainingMode){
+					switchToExperimentalMode();
+				} else{
+					// Now the assessment has finished.
+					assessmentFinished = true;
+					view.showEndScreen();
+				}
+				
+				
 			}
+		}
+
+		/**
+		 * Switch from training mode to experimental mode and show
+		 * the hint screen for the user.
+		 */
+		private void switchToExperimentalMode() {
+			isTrainingMode = false;
+			view.showEnterExperimentalModeScreen();
+			
 		}
 
 	};
@@ -310,5 +342,13 @@ public class SpellingAssessmentCoordinator implements ValueChangeHandler<String>
 			// Ask the user if he really wants to abort the assessment.
 			new SpellingAssessmentCloseQuestion(this);
 		}	
+	}
+
+	/**
+	 * Hides the switch screen and enters the experimental mode
+	 */
+	public void startExperimentalMode() {
+		view.hideEnterExperimentalModeScreen();
+		commServ.getNextItem(state.getAssessmentID(), nextItemCallback);
 	}
 }
