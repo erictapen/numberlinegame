@@ -173,7 +173,7 @@ public class SpellingAssessmentCommunicationServiceServlet extends
 		state.setAssessmentID(currentAssessmentID);
 		currentAssessmentID++;
 		
-		// Create new shuffled item list.
+		// Create new shuffled item stack.
 		this.assessmentId2ItemStack.put(state.getAssessmentID(), stackFactory.getItemStack());
 		
 		// Create new logger.

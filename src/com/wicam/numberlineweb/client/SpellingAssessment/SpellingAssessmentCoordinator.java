@@ -25,7 +25,7 @@ import com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentItem;
  * TODO Make input box appear at fixed (specific) position. (Sven)
  * TODO Switch background color of input box. (Sven)
  * TODO Enter spelling items from audio files into item stack. (Sven)
- * TODO Add Training-Trials. (Tim)
+ * TODO Add Training-Trials. (Sven & Tim)
  * TODO Check if database contains adequate table-entries for assessment.
  * 		Change Logger-Calls. (Sven & Tim)
  * TODO Check functionality of shuffle list. (Probably works) (Sven)
