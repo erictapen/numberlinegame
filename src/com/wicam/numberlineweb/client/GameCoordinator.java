@@ -153,7 +153,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 		// chat only if more than 1 player
 
 		ChatView chatView = new ChatView();
-		chatC = new ChatCoordinator(openGame.getId(),chatView,chatCommServ);
+		chatC = new ChatCoordinator(openGame.getId(), chatView, chatCommServ);
 
 		ChatController chatContr = new ChatController(chatC);
 		chatView.addController(chatContr);
@@ -170,7 +170,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	 */
 	protected void joinedGame(int playerID, int gameID) {
 
-		History.newItem("game-" + getGameName(),false);
+		History.newItem("game-" + getGameName(), false);
 		
 		this.handlerReg = History.addValueChangeHandler(this);
 		
@@ -196,38 +196,38 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 		
 		// handle basic cases
 		switch (gameState.getState()){
-		// game closed
-		case -1:
-			handleGameClosedState(gameState);
-			break;
+			// game closed
+			case -1:
+				handleGameClosedState(gameState);
+				break;
 			// awaiting players
-		case 0:
-			handleWaitingForPlayersState();
-			break;
+			case 0:
+				handleWaitingForPlayersState();
+				break;
 			// awaiting other players
-		case 1:
-			handleWaitingForOtherPlayersState(gameState);
-			break;
+			case 1:
+				handleWaitingForOtherPlayersState(gameState);
+				break;
 			// awaiting start 
-		case 2:
-			handleAwaitingStartState(gameState);
-			break;
+			case 2:
+				handleAwaitingStartState(gameState);
+				break;
 			//awaiting start confirmation
-		case 21:
-			handleAwaitingReadyConfirm();
-			break;
+			case 21:
+				handleAwaitingReadyConfirm();
+				break;
 			// performance
-		case 97:
-			handlePerformanceState(gameState);
-			break;
+			case 97:
+				handlePerformanceState(gameState);
+				break;
 			// close game
-		case 98:
-			handleCloseGameState();
-			break;
+			case 98:
+				handleCloseGameState();
+				break;
 			// player left
-		case 99:
-			handlePlayerLeftState(gameState);
-			break;
+			case 99:
+				handlePlayerLeftState(gameState);
+				break;
 		}
 	}
 
@@ -337,7 +337,7 @@ public abstract class GameCoordinator implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * refreshes the game lis Callback will redraw list
+	 * refreshes the game list Callback will redraw list
 	 */
 
 	public void refreshGameList() {

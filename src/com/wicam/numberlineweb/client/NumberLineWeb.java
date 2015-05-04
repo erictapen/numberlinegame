@@ -257,22 +257,22 @@ public class NumberLineWeb implements EntryPoint {
 //			}
 //		});
 		
-		//adds the Multiplication game
-		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
-				"Rechne schnell!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
-				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		//adds the Multiplication game
+//		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+//				"Rechne schnell!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (MultiplicationGameCommunicationServiceAsync) GWT.create(MultiplicationGameCommunicationService.class);
+//				coordinator = new MultiplicationGameCoordinator((MultiplicationGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		// Adds the MathAssessment.
 		gts.addGame(GameType.MATH, "Mathe-Test", "pre_mathDiagnostics.png", 
@@ -291,21 +291,21 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		//adds the inverse Multiplication game
-//		gts.addGame(GameType.MATH, "Multiplikation", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
-//				"Rechne schnell!", new GameItemStarter() {
-//
-//			@Override
-//			public void run() {
-//				
-//				GWT.log("gurr");
-//
-//				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
-//				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-//
-//				gts.hide(RootPanel.get("game"));
-//				coordinator.init();
-//			}
-//		});		
+		gts.addGame(GameType.MATH, "MultiplikationInverse", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
+				"Rechne schnell!", new GameItemStarter() {
+
+			@Override
+			public void run() {
+				
+				GWT.log("gurr");
+
+				commService = (MultiplicationInverseGameCommunicationServiceAsync) GWT.create(MultiplicationInverseGameCommunicationService.class);
+				coordinator = new MultiplicationInverseGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+
+				gts.hide(RootPanel.get("game"));
+				coordinator.init();
+			}
+		});		
 		
 		
 		//adds the BuddyNumber game
