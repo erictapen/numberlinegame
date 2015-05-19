@@ -452,35 +452,23 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	synchronized private MultiplicationInverseItem nextPseudoRandomItem(int gameId) {
 		ArrayList<MultiplicationInverseItem> availableItems = new ArrayList<MultiplicationInverseItem>();
 		ArrayList<MultiplicationInverseItem> items = this.gameId2Items.get(gameId);
-		boolean itemForThisPseudoRandomRoundFound = false;
 		
-		// Find the items that havn't reached the max number of presentations.
-		for (MultiplicationInverseItem item : items) {
-			if (item.getNumberOfPresentations() < pseudoRandomPresentationRound) {
-				availableItems.add(item);
-				itemForThisPseudoRandomRoundFound = true;
-			}
-		}
-		
-		// If there is no item left for the last pseudo random round
-		// increase the round counter and set all items available if
-		// the pseudo random round counter is smaller or equals the
-		// number of presentations per item.
-		if (!itemForThisPseudoRandomRoundFound) {
-			pseudoRandomPresentationRound++;
-			if (pseudoRandomPresentationRound <= numberOfPresentationsPerItem) {
-				availableItems = items;
-			}
-		}
-		
-		// Choose a random item of the available ones.
-		Collections.shuffle(availableItems);
-		MultiplicationInverseItem item = null;
-		if (!availableItems.isEmpty()){
-			item = availableItems.get(0);
-			item.increaseNumberOfPresentations();
-		}
-		return item;
+        //get the item with the highest number of presentations
+        int highest = 0;
+        for (MultiplicationInverseItem item : items) {
+                if(item.getNumberOfPresentations() > highest) highest = item.getNumberOfPresentations();
+        }
+        for (MultiplicationInverseItem item : items) {
+                if(item.getNumberOfPresentations() < highest) availableItems.add(item);
+        }
+        if(availableItems.size() == 0) {
+                if(highest == this.numberOfPresentationsPerItem) return null;
+                availableItems.addAll(items);
+        }
+        Collections.shuffle(availableItems);
+        MultiplicationInverseItem res = availableItems.get(0);
+        res.increaseNumberOfPresentations();
+        return res;
 	}
 	
 	/**
