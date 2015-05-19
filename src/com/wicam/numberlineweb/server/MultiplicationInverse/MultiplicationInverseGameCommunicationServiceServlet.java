@@ -43,10 +43,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * This is also the number of trials an item is used for.
 	 */
 	protected final int numberOfPresentationsPerItem = 6;
-	/**
-	 * Here the pseudo-random presentation round is stored.
-	 */
-	protected int pseudoRandomPresentationRound;
+	
 	/**
 	 * If true present the items in a pseudo random ordering (see nextPseudoRandomItem()).
 	 * If false, use completely random item presentation (see nextRandomItem()).
@@ -62,7 +59,6 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		
 		// Set the number of presentations of each item.
 //		numberOfPresentationsPerItem = 6;
-		pseudoRandomPresentationRound = 1;
 		
 //		// Test if the items are produced 112 times each 7 times.
 //		MultiplicationInverseItem item = nextRandomItem();
