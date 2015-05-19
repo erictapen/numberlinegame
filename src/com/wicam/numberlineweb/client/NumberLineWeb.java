@@ -65,6 +65,7 @@ import com.wicam.numberlineweb.client.chat.ChatCommunicationServiceAsync;
  * @author patrick
  *
  */
+@SuppressWarnings("unused")
 public class NumberLineWeb implements EntryPoint {
 
 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wicam.numberlineweb.server.StaticDebuggingFunctions;
 import com.wicam.numberlineweb.server.database.DatabaseConnection;
 
 public class GameLogger {
@@ -20,19 +21,19 @@ public class GameLogger {
 	private final String dbHost = "localhost";
 	private final String dbPort = "5432";
 	private final String db = "logging";
-	private final String dbUser = "log_user";
+	private final String dbUser = "logging"; //log_user"; //it is not clear yet, which user should be used.
 	private final String dbPassword = "ner8tiro5";
 	
 	private int gameInstanceId;
 	
 	private static final String STATEMENT_LOGS = "INSERT INTO logs (log_user_id, " +
 			"log_action_id, log_action_parameters, log_action_trigger, log_game_instance, log_action_time)" +
-			" VALUES (?, ?, ?, ?, ?, ?)";
+			" VALUES (?, ?, ?, ?, ?, ?);"; //Added a semicolon at the end of the string
 	private PreparedStatement preparedStatementLogs;
 	
 	private static final String STATEMENT_GAME_INSTANCE = "INSERT INTO game_instances (game_id," +
 			"game_property)" +
-			" VALUES (?, ?)";
+			" VALUES (?, ?);"; //Added a semicolon at the end of the string
 	private PreparedStatement preparedStatementGameInstance;
 
 	private boolean userIDProvided = false;
@@ -293,6 +294,9 @@ public class GameLogger {
 			//Action time
 			this.preparedStatementLogs.setTimestamp(6, new java.sql.Timestamp(logActionTime));
 			
+			//print finished sql-statement
+			System.out.println(this.preparedStatementLogs.toString());
+			
 			//Write entry to database
 			// Check if connection is still open first to avoid exceptions with closed database connection.
 			// TODO This may lead to unlogged user checkouts. Fix this.
@@ -302,6 +306,7 @@ public class GameLogger {
 		
 		} catch (SQLException e) {
 			e.printStackTrace();
+			StaticDebuggingFunctions.printSQLException(e);
 		};
 		
 	}

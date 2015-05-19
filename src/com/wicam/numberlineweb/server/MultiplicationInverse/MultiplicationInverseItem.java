@@ -87,7 +87,8 @@ public class MultiplicationInverseItem {
 		for (int x : this.possibleAnswers) {
 			str += x + ", ";
 		}
-		str += this.isSimple + ".";
+		str += this.isSimple + ". ";
+		str += "was presented " + this.numberOfPresentations + " times.";
 		return str;
 	}
 
