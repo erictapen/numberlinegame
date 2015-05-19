@@ -42,7 +42,7 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	 * Store the maximum number of presentations of an item.
 	 * This is also the number of trials an item is used for.
 	 */
-	protected final int numberOfPresentationsPerItem = 6;
+	protected final int numberOfPresentationsPerItem = 5;
 	
 	/**
 	 * If true present the items in a pseudo random ordering (see nextPseudoRandomItem()).
