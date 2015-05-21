@@ -165,9 +165,10 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 	synchronized private void setItems(int currentId) {
 		
 		ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();
-		
+
 		// The complex items.
-		MultiplicationInverseItem item1 = new MultiplicationInverseItem(13, 4, 52, false);
+		MultiplicationInverseItem item1 = new MultiplicationInverseItem( 13, 4, 52, 
+		false);
 		item1.addPossibleAnswer(56);
 		item1.addPossibleAnswer(48);
 		item1.addPossibleAnswer(65);
@@ -182,7 +183,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item1.addPossibleAnswer(52);
 		items.add(item1);
 
-		MultiplicationInverseItem item2 = new MultiplicationInverseItem(3, 19, 57, false);
+		MultiplicationInverseItem item2 = new MultiplicationInverseItem( 3, 19, 57, 
+		false);
 		item2.addPossibleAnswer(76);
 		item2.addPossibleAnswer(38);
 		item2.addPossibleAnswer(60);
@@ -197,7 +199,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item2.addPossibleAnswer(57);
 		items.add(item2);
 
-		MultiplicationInverseItem item3 = new MultiplicationInverseItem(5, 13, 65, false);
+		MultiplicationInverseItem item3 = new MultiplicationInverseItem( 5, 13, 65, 
+		false);
 		item3.addPossibleAnswer(78);
 		item3.addPossibleAnswer(52);
 		item3.addPossibleAnswer(70);
@@ -212,7 +215,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item3.addPossibleAnswer(65);
 		items.add(item3);
 
-		MultiplicationInverseItem item4 = new MultiplicationInverseItem(6, 13, 78, false);
+		MultiplicationInverseItem item4 = new MultiplicationInverseItem( 6, 13, 78, 
+		false);
 		item4.addPossibleAnswer(91);
 		item4.addPossibleAnswer(65);
 		item4.addPossibleAnswer(84);
@@ -227,7 +231,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item4.addPossibleAnswer(78);
 		items.add(item4);
 
-		MultiplicationInverseItem item5 = new MultiplicationInverseItem(7, 14, 98, false);
+		MultiplicationInverseItem item5 = new MultiplicationInverseItem( 7, 14, 98, 
+		false);
 		item5.addPossibleAnswer(112);
 		item5.addPossibleAnswer(84);
 		item5.addPossibleAnswer(105);
@@ -242,7 +247,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item5.addPossibleAnswer(98);
 		items.add(item5);
 
-		MultiplicationInverseItem item6 = new MultiplicationInverseItem(12, 8, 96, false);
+		MultiplicationInverseItem item6 = new MultiplicationInverseItem( 12, 8, 96, 
+		false);
 		item6.addPossibleAnswer(104);
 		item6.addPossibleAnswer(88);
 		item6.addPossibleAnswer(108);
@@ -257,7 +263,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item6.addPossibleAnswer(96);
 		items.add(item6);
 
-		MultiplicationInverseItem item7 = new MultiplicationInverseItem(15, 6, 90, false);
+		MultiplicationInverseItem item7 = new MultiplicationInverseItem( 15, 6, 90, 
+		false);
 		item7.addPossibleAnswer(96);
 		item7.addPossibleAnswer(84);
 		item7.addPossibleAnswer(105);
@@ -272,7 +279,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item7.addPossibleAnswer(90);
 		items.add(item7);
 
-		MultiplicationInverseItem item8 = new MultiplicationInverseItem(18, 4, 72, false);
+		MultiplicationInverseItem item8 = new MultiplicationInverseItem( 18, 4, 72, 
+		false);
 		item8.addPossibleAnswer(76);
 		item8.addPossibleAnswer(68);
 		item8.addPossibleAnswer(90);
@@ -287,8 +295,9 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item8.addPossibleAnswer(72);
 		items.add(item8);
 
-		// The simple items.
-		MultiplicationInverseItem item9 = new MultiplicationInverseItem(5, 3, 15, true);
+		//the easy items
+		MultiplicationInverseItem item9 = new MultiplicationInverseItem( 5, 3, 15, 
+		true);
 		item9.addPossibleAnswer(18);
 		item9.addPossibleAnswer(12);
 		item9.addPossibleAnswer(20);
@@ -303,7 +312,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item9.addPossibleAnswer(15);
 		items.add(item9);
 
-		MultiplicationInverseItem item10 = new MultiplicationInverseItem(2, 8, 16, true);
+		MultiplicationInverseItem item10 = new MultiplicationInverseItem( 2, 8, 16, 
+		true);
 		item10.addPossibleAnswer(24);
 		item10.addPossibleAnswer(8);
 		item10.addPossibleAnswer(18);
@@ -318,7 +328,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item10.addPossibleAnswer(16);
 		items.add(item10);
 
-		MultiplicationInverseItem item11 = new MultiplicationInverseItem(3, 4, 12, true);
+		MultiplicationInverseItem item11 = new MultiplicationInverseItem( 3, 4, 12, 
+		true);
 		item11.addPossibleAnswer(16);
 		item11.addPossibleAnswer(8);
 		item11.addPossibleAnswer(15);
@@ -333,7 +344,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item11.addPossibleAnswer(12);
 		items.add(item11);
 
-		MultiplicationInverseItem item12 = new MultiplicationInverseItem(3, 9, 27, true);
+		MultiplicationInverseItem item12 = new MultiplicationInverseItem( 3, 9, 27, 
+		true);
 		item12.addPossibleAnswer(36);
 		item12.addPossibleAnswer(18);
 		item12.addPossibleAnswer(30);
@@ -348,7 +360,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item12.addPossibleAnswer(27);
 		items.add(item12);
 
-		MultiplicationInverseItem item13 = new MultiplicationInverseItem(5, 6, 30, true);
+		MultiplicationInverseItem item13 = new MultiplicationInverseItem( 5, 6, 30, 
+		true);
 		item13.addPossibleAnswer(36);
 		item13.addPossibleAnswer(24);
 		item13.addPossibleAnswer(35);
@@ -363,7 +376,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item13.addPossibleAnswer(30);
 		items.add(item13);
 
-		MultiplicationInverseItem item14 = new MultiplicationInverseItem(6, 3, 18, true);
+		MultiplicationInverseItem item14 = new MultiplicationInverseItem( 6, 3, 18, 
+		true);
 		item14.addPossibleAnswer(21);
 		item14.addPossibleAnswer(15);
 		item14.addPossibleAnswer(24);
@@ -378,7 +392,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item14.addPossibleAnswer(18);
 		items.add(item14);
 
-		MultiplicationInverseItem item15 = new MultiplicationInverseItem(7, 4, 28, true);
+		MultiplicationInverseItem item15 = new MultiplicationInverseItem( 7, 4, 28, 
+		true);
 		item15.addPossibleAnswer(32);
 		item15.addPossibleAnswer(24);
 		item15.addPossibleAnswer(35);
@@ -393,7 +408,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item15.addPossibleAnswer(28);
 		items.add(item15);
 
-		MultiplicationInverseItem item16 = new MultiplicationInverseItem(8, 4, 32, true);
+		MultiplicationInverseItem item16 = new MultiplicationInverseItem( 8, 4, 32, 
+		true);
 		item16.addPossibleAnswer(36);
 		item16.addPossibleAnswer(28);
 		item16.addPossibleAnswer(40);
@@ -407,6 +423,8 @@ GameCommunicationServiceServlet implements MultiplicationInverseGameCommunicatio
 		item16.addPossibleAnswer(23);
 		item16.addPossibleAnswer(32);
 		items.add(item16);
+
+
 		
 		this.gameId2Items.put(currentId, items);
 	}

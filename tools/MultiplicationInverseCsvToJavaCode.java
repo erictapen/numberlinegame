@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MultiplicationInverseCsvToJavaCode {
@@ -13,10 +15,10 @@ public class MultiplicationInverseCsvToJavaCode {
 	 * @param args
 	 */
 	private static String infile = "/home/justin/Downloads/Timing_dyscalculia.csv";
-	private static String outfile = "/home/justin/Downloads/Timing_dyscalculia.csv";
+	private static String outfile = "/home/justin/Downloads/Timing_dyscalculia.java";
 			
 	public static void main(String[] args) {
-		String[][] table = new String[16][];
+		ArrayList<ArrayList<String>> table = new ArrayList<ArrayList<String>>();
 		BufferedReader br;
 		PrintWriter writer;
 		try {
@@ -24,11 +26,15 @@ public class MultiplicationInverseCsvToJavaCode {
 			String line;
 			String[] values;
 			int i=0;
+			//System.out.println(br.readLine());
 			while ((line = br.readLine()) != null && i<16) {
 				values = line.split(";");
-				table[i] = values;
+				table.add(new ArrayList<String>());
+				table.get(table.size()-1).addAll( Arrays.asList(values));
 				i++;
+				System.out.println("line");
 			}
+			br.close();
 			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -37,32 +43,38 @@ public class MultiplicationInverseCsvToJavaCode {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(table[0][0] == null) System.out.println("Stringtable is empty");
+		if(table.isEmpty()) System.out.println("Stringtable is empty");
 		try {
 			writer = new PrintWriter(outfile, "UTF-8");
 			writer.println("ArrayList<MultiplicationInverseItem> items = new ArrayList<MultiplicationInverseItem>();\n\n" +
 			"// The complex items.");
+			System.out.println("first line written");
 			for(int i=0; i<16; i++) {
 				writer.println("MultiplicationInverseItem item" + (i+1) 
-						+ " = new MultiplicationInverseItem( " + table[i][0] +
-						", " + table[i][1] +
-						", " + table[i][2] + 
+						+ " = new MultiplicationInverseItem( " + table.get(i).get(0) +
+						", " + table.get(i).get(1) +
+						", " + table.get(i).get(2) + 
 						", ");
 				if(i<8) writer.print("false");
 				else writer.print("true");
 				writer.println(");");
 				for(int j=0; j<12; j++) {
 					writer.println("item" + (i+1) +
-							".addPossibleAnswer(" + table[i][4+j] +
+							".addPossibleAnswer(" + table.get(i).get(4+j) +
 							");");
 				}
-				writer.println("items.add(item" + i +
+				writer.println("items.add(item" + (i+1) +
 						");\n");
+				
 			}
+			writer.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
 		
 	}
 
