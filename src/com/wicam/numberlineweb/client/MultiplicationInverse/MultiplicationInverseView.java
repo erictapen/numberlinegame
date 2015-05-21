@@ -94,7 +94,7 @@ public class MultiplicationInverseView extends AbsolutePanel {
 					back = answer.getColor();
 				} else {
 					//color = " wrong";
-					back = "black";
+					back = "red";
 				}
 				DOM.setElementAttribute(b.getElement(), "style", "background-color:"+back+";color:white;");
 			}
