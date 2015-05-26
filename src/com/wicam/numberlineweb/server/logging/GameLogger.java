@@ -21,7 +21,8 @@ public class GameLogger {
 	private final String dbHost = "localhost";
 	private final String dbPort = "5432";
 	private final String db = "logging";
-	private final String dbUser = "logging"; //log_user"; //it is not clear yet, which user should be used.
+	private final String dbUser = "log_user"; //it is not clear yet, which user should be used.
+	//"log_user" seems to be right for going live server
 	private final String dbPassword = "ner8tiro5";
 	
 	private int gameInstanceId;
