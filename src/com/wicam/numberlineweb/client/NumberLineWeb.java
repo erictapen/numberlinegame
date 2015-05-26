@@ -141,106 +141,106 @@ public class NumberLineWeb implements EntryPoint {
 		});
 		
 		// add grammar games container
-		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-				"Alle Spiele mit Wörtern", new GameItemStarter() {
-			
-			@Override
-			public void run() {
-				gts.showGrammar();
-			}
-		});
+//		gts.addGame(GameType.CAT, "Wortspiele", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+//				"Alle Spiele mit Wörtern", new GameItemStarter() {
+//			
+//			@Override
+//			public void run() {
+//				gts.showGrammar();
+//			}
+//		});
 		
 		// Adds the EventServiceTest app.
-		gts.addGame(GameType.CAT, "Server Push Test", "pre_mathDiagnostics.png", 
-				"", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				eventServiceCommServ = (EventServiceTestCommunicationServiceAsync) GWT.create(EventServiceTestCommunicationService.class);
-				eventServiceCoord = new EventServiceTestCoordinator(eventServiceCommServ, RootPanel.get("game"), gts);
-
-				gts.hide(RootPanel.get("game"));
-				eventServiceCoord.init();
-			}
-		});
+//		gts.addGame(GameType.CAT, "Server Push Test", "pre_mathDiagnostics.png", 
+//				"", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				eventServiceCommServ = (EventServiceTestCommunicationServiceAsync) GWT.create(EventServiceTestCommunicationService.class);
+//				eventServiceCoord = new EventServiceTestCoordinator(eventServiceCommServ, RootPanel.get("game"), gts);
+//
+//				gts.hide(RootPanel.get("game"));
+//				eventServiceCoord.init();
+//			}
+//		});
 		
 		//adds the numberlinegame
-		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
-				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.MATH, "NumberLineGame", "nlg_pre.png", "Schätze die Position der Zahl!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (NumberLineGameCommunicationServiceAsync) GWT.create(NumberLineGameCommunicationService.class);
+//				coordinator = new NumberLineGameCoordinator((NumberLineGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 
 		//adds the doppelung game
-		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
-				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
-				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.GRAMMAR, "Doppelungspiel", ImageResources.INSTANCE.pre_doppelung().getSafeUri().asString(), 
+//				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (DoppelungGameCommunicationServiceAsync) GWT.create(DoppelungGameCommunicationService.class);
+//				coordinator = new DoppelungGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		//adds the Letris game
-		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
-				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (LetrisPushGameCommunicationServiceAsync) GWT.create(LetrisPushGameCommunicationService.class);
-				coordinator = new LetrisPushGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.GRAMMAR, "LeTris", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
+//				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (LetrisPushGameCommunicationServiceAsync) GWT.create(LetrisPushGameCommunicationService.class);
+//				coordinator = new LetrisPushGameCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		
 		//adds the mathe game
-		gts.addGame(GameType.MATH, "Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-
-				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
-				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.MATH, "Matheaufgaben", "pre_mathDiagnostics.png", "Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//
+//				commService = (MathDiagnosticsCommonicationServiceAsync) GWT.create(MathDiagnosticsCommonicationService.class);
+//				coordinator = new MathDiagnosticsCoordinator(commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		/*
 		 * Adds the spelling assessment.
 		 */
-		gts.addGame(GameType.GRAMMAR, "SpellingAssessment", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
-				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				// TODO Logo adjustment. 
-				spellingAssessmentCommService = (SpellingAssessmentCommunicationServiceAsync) GWT.create(SpellingAssessmentCommunicationService.class);
-				spellingAssessmentCoordinator = new SpellingAssessmentCoordinator(spellingAssessmentCommService,RootPanel.get("game"),gts);
-
-				gts.hide(RootPanel.get("game"));
-				spellingAssessmentCoordinator.init();
-			}
-		});
+//		gts.addGame(GameType.GRAMMAR, "SpellingAssessment", ImageResources.INSTANCE.pre_letris().getSafeUri().asString(), 
+//				"Hier könnte Ihre Beschreibung stehen.", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				// TODO Logo adjustment. 
+//				spellingAssessmentCommService = (SpellingAssessmentCommunicationServiceAsync) GWT.create(SpellingAssessmentCommunicationService.class);
+//				spellingAssessmentCoordinator = new SpellingAssessmentCoordinator(spellingAssessmentCommService,RootPanel.get("game"),gts);
+//
+//				gts.hide(RootPanel.get("game"));
+//				spellingAssessmentCoordinator.init();
+//			}
+//		});
 		
 		
 		//adds the dehnung game
@@ -276,20 +276,20 @@ public class NumberLineWeb implements EntryPoint {
 //		});
 		
 		// Adds the MathAssessment.
-		gts.addGame(GameType.MATH, "Mathe-Test", "pre_mathDiagnostics.png", 
-				"Rechne schnell!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				mathAssessmentCommService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
-				mathAssessmentCoordinator = new MathAssessmentCoordinator(mathAssessmentCommService, RootPanel.get("game"), gts);
-
-
-				gts.hide(RootPanel.get("game"));
-				mathAssessmentCoordinator.init();
-			}
-		});
+//		gts.addGame(GameType.MATH, "Mathe-Test", "pre_mathDiagnostics.png", 
+//				"Rechne schnell!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				mathAssessmentCommService = (MathAssessmentCommunicationServiceAsync) GWT.create(MathAssessmentCommunicationService.class);
+//				mathAssessmentCoordinator = new MathAssessmentCoordinator(mathAssessmentCommService, RootPanel.get("game"), gts);
+//
+//
+//				gts.hide(RootPanel.get("game"));
+//				mathAssessmentCoordinator.init();
+//			}
+//		});
 		
 		//adds the inverse Multiplication game
 		gts.addGame(GameType.MATH, "MultiplikationInverse", ImageResources.INSTANCE.pre_multiplication().getSafeUri().asString(), 
@@ -310,77 +310,77 @@ public class NumberLineWeb implements EntryPoint {
 		
 		
 		//adds the BuddyNumber game
-		gts.addGame(GameType.MATH, "Partnerzahl", ImageResources.INSTANCE.pre_buddyNumber().getSafeUri().asString(), 
-				"Kombiniere gut!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
-				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.MATH, "Partnerzahl", ImageResources.INSTANCE.pre_buddyNumber().getSafeUri().asString(), 
+//				"Kombiniere gut!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (BuddyNumberGameCommunicationServiceAsync) GWT.create(BuddyNumberGameCommunicationService.class);
+//				coordinator = new BuddyNumberGameCoordinator((BuddyNumberGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		
 		
 		//adds the WordStem game
-		gts.addGame(GameType.GRAMMAR, "Wortbausteine", ImageResources.INSTANCE.pre_wordstem().getSafeUri().asString(), 
-				"Ordne zu!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
-				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.GRAMMAR, "Wortbausteine", ImageResources.INSTANCE.pre_wordstem().getSafeUri().asString(), 
+//				"Ordne zu!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (WordStemGameCommunicationServiceAsync) GWT.create(WordStemGameCommunicationService.class);
+//				coordinator = new WordStemGameCoordinator((WordStemGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		
 		
 		//adds the OverTen game
-		gts.addGame(GameType.MATH, "Über 10", ImageResources.INSTANCE.pre_overten().getSafeUri().asString(), 
-				"Summiere auf!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
-				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.MATH, "Über 10", ImageResources.INSTANCE.pre_overten().getSafeUri().asString(), 
+//				"Summiere auf!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (OverTenGameCommunicationServiceAsync) GWT.create(OverTenGameCommunicationService.class);
+//				coordinator = new OverTenGameCoordinator((OverTenGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		
 		//adds the WordFamily game
-		gts.addGame(GameType.GRAMMAR, "Wortfamilien", ImageResources.INSTANCE.pre_wordfamily().getSafeUri().asString(), 
-				"Merke dir viel!", new GameItemStarter() {
-
-			@Override
-			public void run() {
-				
-				GWT.log("gurr");
-
-				commService = (WordFamilyGameCommunicationServiceAsync) GWT.create(WordFamilyGameCommunicationService.class);
-				coordinator = new WordFamilyGameCoordinator((WordFamilyGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
-				
-				gts.hide(RootPanel.get("game"));
-				coordinator.init();
-			}
-		});
+//		gts.addGame(GameType.GRAMMAR, "Wortfamilien", ImageResources.INSTANCE.pre_wordfamily().getSafeUri().asString(), 
+//				"Merke dir viel!", new GameItemStarter() {
+//
+//			@Override
+//			public void run() {
+//				
+//				GWT.log("gurr");
+//
+//				commService = (WordFamilyGameCommunicationServiceAsync) GWT.create(WordFamilyGameCommunicationService.class);
+//				coordinator = new WordFamilyGameCoordinator((WordFamilyGameCommunicationServiceAsync) commService,chatCommService,RootPanel.get("game"),gts);
+//				
+//				gts.hide(RootPanel.get("game"));
+//				coordinator.init();
+//			}
+//		});
 		
 		//init the GTS on the root panel.
 		gts.init(RootPanel.get("game"));

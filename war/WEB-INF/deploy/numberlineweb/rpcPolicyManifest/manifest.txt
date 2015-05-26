@@ -1,16 +1,4 @@
 # Module numberlineweb
 # RPC service class, partial path of RPC policy file
-com.wicam.numberlineweb.client.EventServiceTest.EventServiceTestCommunicationService, 285CD7F6F8E58EA8270D8E1E8F5F15FF.gwt.rpc
-com.wicam.numberlineweb.client.NumberLineGame.NumberLineGameCommunicationService, 492E62EF2C197CE63B3A129A0BAD108A.gwt.rpc
-com.wicam.numberlineweb.client.OverTen.OverTenGameCommunicationService, FAB7F35DAADB71661C945831B908853A.gwt.rpc
-com.wicam.numberlineweb.client.LetrisPush.LetrisPushGameCommunicationService, 08916AD80D1A6921A32416B2EE9FCB5D.gwt.rpc
 com.wicam.numberlineweb.client.MultiplicationInverse.MultiplicationInverseGameCommunicationService, C008763EEE4CD648F4A425AE0E68ED3A.gwt.rpc
-com.wicam.numberlineweb.client.SpellingAssessment.SpellingAssessmentCommunicationService, 66959496880A62107149C4CDD74DEF1A.gwt.rpc
-de.novanic.eventservice.client.event.service.EventService, 5F76178FA1EE65E426B0C79B38B34CCA.gwt.rpc
-com.wicam.numberlineweb.client.MathDiagnostics.MathDiagnosticsCommonicationService, 6EAEAA97AD6E57F3EB1C3D17D6D70998.gwt.rpc
-com.wicam.numberlineweb.client.WordStem.WordStemGameCommunicationService, E8A586AA12FAB2C2C1F35B4FD97E1F62.gwt.rpc
-com.wicam.numberlineweb.client.WordFamily.WordFamilyGameCommunicationService, DA97539567C8C1E5686AC085565DA2E2.gwt.rpc
 com.wicam.numberlineweb.client.chat.ChatCommunicationService, 1EAA8D62FC3CA0EDD488E559FF7C173C.gwt.rpc
-com.wicam.numberlineweb.client.VowelGame.DoppelungGame.DoppelungGameCommunicationService, 5BC9E78ADFE2BD257893CA9893F8AFCA.gwt.rpc
-com.wicam.numberlineweb.client.MathAssessment.MathAssessmentCommunicationService, 25D7C6A08A9BCF3799806E52C504A007.gwt.rpc
-com.wicam.numberlineweb.client.BuddyNumber.BuddyNumberGameCommunicationService, 24F23647D6541E5435E510864AB7E1D9.gwt.rpc
