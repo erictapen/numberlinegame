@@ -135,12 +135,13 @@ public abstract class GameCommunicationServiceServlet extends CustomRemoteServic
 
 			uid = Integer.parseInt(player.split("/")[1]);
 			if (uid == -2) player = "Gast"; else{
-				DrupalCommunicator dc = new DrupalCommunicator();
-				try {
-					player = dc.getUser(uid).getUname();
-				} catch (UserNotFoundException e) {
-					throw new GameJoinException("User with id =" + uid + " could not be found.");
-				}
+//				Commented for debugging reasons
+//				DrupalCommunicator dc = new DrupalCommunicator();
+//				try {
+//					player = dc.getUser(uid).getUname();
+//				} catch (UserNotFoundException e) {
+//					throw new GameJoinException("User with id =" + uid + " could not be found.");
+//				}
 			}
 
 		}
