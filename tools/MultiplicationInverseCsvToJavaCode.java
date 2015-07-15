@@ -17,7 +17,7 @@ public class MultiplicationInverseCsvToJavaCode {
 	private static String infile = "/home/justin/Downloads/Timing_dyscalculia.csv";
 	private static String outfile = "/home/justin/Downloads/Timing_dyscalculia.java";
 			
-	public static void main(String[] args) {
+	public static void main(String[]  args) {
 		ArrayList<ArrayList<String>> table = new ArrayList<ArrayList<String>>();
 		BufferedReader br;
 		PrintWriter writer;
