@@ -19,6 +19,15 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class MathAssessmentItemStack implements IsSerializable {
 
+	
+	private final int numOfTasks = 4;
+	private final int biggestInt = 50;
+	private final int kindsOfOperators = 4;
+	private String multSign = "*";
+	private String divSign = "/";
+	private String addSign = "+";
+	private String subSign = "-";
+	
 	/**
 	 * Randomizer to shuffle the list items.
 	 */
@@ -62,12 +71,38 @@ public class MathAssessmentItemStack implements IsSerializable {
 	
 	/**
 	 * Initially set all stack items.
+	 * Ballanced occurence of all kinds of operators
 	 */
 	private void setItems() {
-		items.add("15 × 30");
-		items.add("8 ÷ 2");
-		items.add("3 + 39");
-		items.add("50 - 8");
+		
+		for(int i=0; i<numOfTasks; i++){
+			int j = rand.nextInt(biggestInt);
+			int k = rand.nextInt(biggestInt);
+			
+			switch (i%kindsOfOperators){
+			case 0:
+				items.add(j+" "+addSign+" "+k);
+				break;
+			case 1:
+				while (k>j){
+					k = rand.nextInt(biggestInt);
+				}
+				items.add(j+" "+subSign+" "+k);
+				break;
+			case 2:
+				while (k>10 && k<=20 && j>10 && j<=20 && j!=k || k>20 && j>20){
+					k = rand.nextInt(biggestInt);
+				}
+				items.add(j+" "+multSign+" "+k);
+				break;
+			case 3:
+				while (j % k != 0 || k==0){
+					k = rand.nextInt(biggestInt);
+				}
+				items.add(j+" "+divSign+" "+k);
+				break;
+			}
+		}
 	}
 	
 }

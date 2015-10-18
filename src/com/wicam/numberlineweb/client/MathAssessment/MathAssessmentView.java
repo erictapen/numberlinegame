@@ -277,9 +277,10 @@ public class MathAssessmentView extends Composite {
 		// TODO Change description appropriately.
 		explanationText.setHTML("<div style='padding:5px 20px;font-size:25px'><b>Mathe-Test - Beschreibung</b></div>" +
 				"<div style='padding:5px 20px;font-size:12px'>" +
-				"Dir werden gleich mehrere Matheaufgaben hintereinander gezeigt. Bevor es los geht und zwischen den Aufgaben " +
+				"Dir werden gleich mehrere Matheaufgaben hintereinander gezeigt. Zwischen den Aufgaben " +
 				"siehst du ein schwarzes Kreuz. Versuche es mit deinen Augen zu fixieren und dann die Aufgabe so schnell " +
-				"und exakt wie möglich zu lösen. Hast du das Ergebnis eingetragen drücke die \"Enter\"-Taste." +
+				"und exakt wie möglich zu lösen, indem du die Lösung eingibst und anschließend "+
+				"die \"Enter\"-Taste drückst." +
 				"</div>");
 	}
 	

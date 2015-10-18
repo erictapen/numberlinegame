@@ -17,8 +17,8 @@ public class MathAssessmentTaskResultParser {
 	/**
 	 * The strings representing the math operations.
 	 */
-	private String multSign = "×";
-	private String divSign = "÷";
+	private String multSign = "*";
+	private String divSign = "/";
 	private String addSign = "+";
 	private String subSign = "-";
 	private double a = 0;
@@ -132,8 +132,8 @@ public class MathAssessmentTaskResultParser {
 	 */
 //	public static void main(String[] args) {
 //		MathAssessmentTaskResultParser parser = new MathAssessmentTaskResultParser();
-//		System.out.println(parser.checkTaskResult("15 × 30", "450"));
-//		System.out.println(parser.checkTaskResult("10 ÷ 8", "1.25"));
+//		System.out.println(parser.checkTaskResult("15 * 30", "450"));
+//		System.out.println(parser.checkTaskResult("10 / 8", "1.25"));
 //		System.out.println(parser.checkTaskResult("3 + 39", "42"));
 //		System.out.println(parser.checkTaskResult("50 - 8", "42"));
 //	}
