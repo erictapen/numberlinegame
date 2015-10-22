@@ -198,18 +198,7 @@ public class OverTenGameState extends GameState implements Serializable{
 	 */
 	@Override
 	public int addPlayer(String newName, int uid) {
-		int countSameName = 1;
-		for (Player player: players){
-			// to ensure different namesremovePlayer
-			if (newName.equals(player.getName())){
-				countSameName++;
-				// TODO: only a solution if number of players with same name < 10
-				if (countSameName > 2)
-					newName = newName.substring(0, newName.length()-2) + " " + countSameName;
-				else
-					newName = newName + " " + countSameName;
-			}
-		}
+		newName = checkDuplicateName(newName);
 		OverTenPlayer newPlayer = new OverTenPlayer();
 		newPlayer.setName(newName);
 		newPlayer.setColorId(players.size());
